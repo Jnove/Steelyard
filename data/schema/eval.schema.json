@@ -1,0 +1,52 @@
+{
+  "title": "方案评估结果",
+  "description": "合规清单 + 指标值 + 维度得分 + 排名，一并交给报告生成器",
+  "group_order": [],
+  "fields": [
+    {
+      "name": "scheme_id",
+      "label": "scheme_id",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": true,
+      "constraints": {}
+    },
+    {
+      "name": "compliance",
+      "label": "compliance",
+      "unit": "",
+      "group": "",
+      "type": "array<string>",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "metrics",
+      "label": "metrics",
+      "unit": "",
+      "group": "",
+      "type": "object<string>",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "dimension_scores",
+      "label": "dimension_scores",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "topsis",
+      "label": "topsis",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    }
+  ]
+}
