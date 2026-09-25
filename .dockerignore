@@ -1,0 +1,18 @@
+# docker build context 的统一过滤规则（同时影响 backend 与 frontend 构建）
+.git/
+.github/
+.claude/
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+dist/
+build/
+.vite/
+.idea/
+.vscode/
+doc/
+data/*.db
+.env
+.env.local
+*.log

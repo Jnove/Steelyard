@@ -1,0 +1,12 @@
+/* 兜底样式：避免 Ant Design 与未加载内容之间出现裸白闪屏 */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', Roboto, sans-serif;
+  background: #f5f5f5;
+}
