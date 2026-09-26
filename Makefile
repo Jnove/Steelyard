@@ -26,7 +26,7 @@ lint:
 	cd frontend && npx tsc --noEmit
 
 seed:
-	uv run python scripts/seed_mock.py
+	uv run --project backend python scripts/seed_mock.py
 
 # —— 前端 ——
 dev-frontend:

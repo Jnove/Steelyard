@@ -7,8 +7,9 @@
 用法：
 
     make seed                                       # 默认从仓库根目录读 data/schemes/mock/
-    uv run python scripts/seed_mock.py              # 同上
-    uv run python scripts/seed_mock.py --mock-dir <dir>
+    uv run --project backend python scripts/seed_mock.py  # 同上（Makefile 展开形式）
+    uv run --project backend python scripts/seed_mock.py --mock-dir <dir>
+    uv run --project backend python scripts/seed_mock.py --dry-run
 
 行为：
 - 每次执行都是「清空 + 导入」：若数据库里已存在同名项目（``杭州钱塘 · 保障性租赁住房 · 虚构示例项目``），
