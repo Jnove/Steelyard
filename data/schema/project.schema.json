@@ -16,7 +16,8 @@
       "group": "基本信息",
       "type": "number",
       "required": false,
-      "constraints": {}
+      "constraints": {},
+      "essential": true
     },
     {
       "name": "far_max",

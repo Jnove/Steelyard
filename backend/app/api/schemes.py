@@ -13,11 +13,20 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 from pydantic import BaseModel, ConfigDict, Field
 from sqlmodel import Session, or_, select
 
 from app.db import get_session
+from app.excel import ParseError, parse_workbook
 from app.models import Project, Scheme, SchemeParams
 
 router = APIRouter(
@@ -224,3 +233,165 @@ def delete_scheme(
         session.delete(ev)
     session.delete(scheme)
     session.commit()
+
+
+# —— 批量导入（从 xlsx）—— #
+
+
+class ImportErrorItem(BaseModel):
+    """单条导入错误（与 ``app.excel.ParseError`` 对应的 API 形态）。"""
+
+    scheme: str | None = Field(None, description="出错方案名；项目层错误为 null")
+    field: str | None = Field(None, description="出错字段的英文名")
+    label: str = Field(description="字段中文名")
+    message: str = Field(description="面向用户的错误说明")
+
+
+class ImportCreatedItem(BaseModel):
+    """成功创建的方案记录。"""
+
+    id: int
+    name: str = Field(description="实际写入的方案名（已做项目内唯一化）")
+
+
+class ImportResponse(BaseModel):
+    """导入结果。"""
+
+    created: list[ImportCreatedItem] = Field(default_factory=list)
+    errors: list[ImportErrorItem] = Field(default_factory=list)
+    project_params_updated: bool = Field(
+        False, description="是否顺便把 xlsx 里的项目参数写入了空项目"
+    )
+
+
+def _to_error_item(err: ParseError) -> ImportErrorItem:
+    return ImportErrorItem(
+        scheme=err.scheme, field=err.field, label=err.label, message=err.message
+    )
+
+
+@router.post(
+    "/import",
+    response_model=ImportResponse,
+    summary="从 xlsx 批量导入方案（multipart/form-data，字段名 file）",
+)
+def import_schemes(
+    project_id: int,
+    file: Annotated[UploadFile, File(description="xlsx 文件")],
+    allow_partial: Annotated[
+        bool, Query(description="是否允许部分成功（失败的方案跳过）")
+    ] = False,
+    session: SessionDep = None,  # type: ignore[assignment]
+) -> ImportResponse:
+    """从 Excel 模板导入项目参数与方案。
+
+    - 默认行为：xlsx 里有任何错误就整个拒绝，不写数据库；返回 422。
+    - ``?allow_partial=true``：把能成功创建的方案写入数据库，跳过有错误的方案；
+      返回 200，并在 ``errors`` 字段给出被跳过的清单。
+    """
+    _require_project(session, project_id)  # type: ignore[arg-type]
+    project = session.get(Project, project_id)  # type: ignore[arg-type]
+    assert project is not None  # _require_project 已经检查过
+
+    content = file.file.read()
+    if not content:
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="上传的文件为空",
+        )
+    try:
+        result = parse_workbook(content)
+    except Exception as exc:  # noqa: BLE001
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"无法解析 xlsx：{exc}",
+        ) from exc
+
+    if result.errors and not allow_partial:
+        # 整文件拒绝
+        raise HTTPException(
+            status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail={
+                "errors": [_to_error_item(e).model_dump() for e in result.errors],
+            },
+        )
+
+    if not result.schemes:
+        # 没有任何方案列
+        if result.errors:
+            raise HTTPException(
+                status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail={
+                    "errors": [_to_error_item(e).model_dump() for e in result.errors],
+                },
+            )
+        raise HTTPException(
+            status.HTTP_400_BAD_REQUEST,
+            detail="xlsx 里没有任何方案列（方案A-方案F 都为空）",
+        )
+
+    # 若项目层原本为空，把 xlsx 里的项目参数顺带写入
+    project_params_updated = False
+    if result.project_params and not project.params:
+        project.params = result.project_params
+        project.updated_at = datetime.now(UTC)
+        session.add(project)
+        project_params_updated = True
+
+    errors_by_scheme: dict[str, list[ParseError]] = {}
+    for e in result.errors:
+        if e.scheme is None:
+            continue
+        errors_by_scheme.setdefault(e.scheme, []).append(e)
+
+    created_items: list[ImportCreatedItem] = []
+    skipped_errors: list[ImportErrorItem] = []
+
+    for scheme_data in result.schemes:
+        name = scheme_data["name"]
+        scheme_errors = errors_by_scheme.get(name, [])
+        if scheme_errors:
+            for e in scheme_errors:
+                skipped_errors.append(_to_error_item(e))
+            continue
+        # 项目内唯一化
+        unique = name
+        existing_names = {
+            s.name
+            for s in session.exec(
+                select(Scheme).where(Scheme.project_id == project_id)
+            ).all()
+        }
+        if unique in existing_names:
+            n = 2
+            while f"{unique} ({n})" in existing_names:
+                n += 1
+            unique = f"{unique} ({n})"
+        try:
+            params = SchemeParams.model_validate(scheme_data["params"])
+        except Exception as exc:  # noqa: BLE001
+            skipped_errors.append(
+                ImportErrorItem(
+                    scheme=name,
+                    field=None,
+                    label="方案参数",
+                    message=f"参数校验失败：{exc}",
+                )
+            )
+            continue
+        scheme = Scheme(
+            project_id=project_id,
+            name=unique,
+            params=params.model_dump(),
+        )
+        session.add(scheme)
+        session.flush()  # 拿到 id
+        created_items.append(ImportCreatedItem(id=scheme.id or 0, name=unique))
+
+    session.commit()
+
+    return ImportResponse(
+        created=created_items,
+        errors=skipped_errors,
+        project_params_updated=project_params_updated,
+    )

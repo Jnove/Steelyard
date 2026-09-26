@@ -11,7 +11,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-_META_KEYS = ("unit", "group", "label", "enum", "options")
+_META_KEYS = ("unit", "group", "label", "enum", "options", "essential")
 
 
 def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
@@ -54,6 +54,8 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
             field_info["enum"] = prop["enum"]
         if "options" in prop:
             field_info["options"] = prop["options"]
+        if prop.get("essential"):
+            field_info["essential"] = True
         fields.append(field_info)
 
     return {

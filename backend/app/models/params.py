@@ -79,7 +79,7 @@ class ProjectParams(BaseModel):
         None,
         description="用地面积",
         gt=0,
-        json_schema_extra=_meta("m²", "基本信息", "用地面积"),
+        json_schema_extra=_meta("m²", "基本信息", "用地面积", essential=True),
     )
     far_max: float | None = Field(
         None,
@@ -131,13 +131,15 @@ class SchemeParams(BaseModel):
     structure_type: StructureType | None = Field(
         None,
         description="结构体系",
-        json_schema_extra=_meta("—", "基本信息", "结构体系", enum=list(STRUCTURE_TYPES)),
+        json_schema_extra=_meta(
+            "—", "基本信息", "结构体系", enum=list(STRUCTURE_TYPES), essential=True
+        ),
     )
     units: int | None = Field(
         None,
         description="总户数",
         gt=0,
-        json_schema_extra=_meta("户", "基本信息", "总户数"),
+        json_schema_extra=_meta("户", "基本信息", "总户数", essential=True),
     )
     unit_mix: dict[str, int] | None = Field(
         None,
@@ -190,7 +192,7 @@ class SchemeParams(BaseModel):
         None,
         description="总建筑面积",
         gt=0,
-        json_schema_extra=_meta("m²", "结构与造价", "总建筑面积"),
+        json_schema_extra=_meta("m²", "结构与造价", "总建筑面积", essential=True),
     )
     footprint: float | None = Field(
         None,
@@ -208,7 +210,7 @@ class SchemeParams(BaseModel):
         None,
         description="层数",
         gt=0,
-        json_schema_extra=_meta("层", "结构与造价", "层数"),
+        json_schema_extra=_meta("层", "结构与造价", "层数", essential=True),
     )
     envelope_area: float | None = Field(
         None,
