@@ -2,7 +2,7 @@
 #
 # 所有目标尽量幂等，失败立即退出。
 
-.PHONY: help dev-backend dev-frontend test lint up down seed
+.PHONY: help dev-backend dev-frontend test lint up down seed docs-check
 
 help:
 	@echo "筑衡常用命令："
@@ -11,6 +11,7 @@ help:
 	@echo "  make test          后端 pytest 测试"
 	@echo "  make lint          后端 ruff check + 前端 tsc --noEmit"
 	@echo "  make seed          清空并导入 data/schemes/mock/ 下的虚构样例"
+	@echo "  make docs-check    校验规则 YAML 与字段对照表（CI 用）"
 	@echo "  make up            docker compose 一键启动（含前后端）"
 	@echo "  make down          docker compose 关闭并清理"
 
@@ -27,6 +28,12 @@ lint:
 
 seed:
 	uv run --project backend python scripts/seed_mock.py
+
+# —— 文档自检（T9） ——
+docs-check:
+	uv run --project backend python scripts/check_rules.py
+	uv run --project backend python scripts/gen_field_table.py --check
+	uv run --project backend python scripts/gen_metric_charts.py
 
 # —— 前端 ——
 dev-frontend:
