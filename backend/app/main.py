@@ -1,7 +1,9 @@
 """筑衡后端 FastAPI 应用入口。
 
 T1 阶段只搭建可运行骨架：路由前缀 /api，提供 /api/health。
-T2 阶段接入项目 / 方案 CRUD 与字段 Schema 查询；业务逻辑继续按 AGENTS.md 推进。
+T2 阶段接入项目 / 方案 CRUD 与字段 Schema 查询。
+T3 阶段接入确定性引擎：启动时加载 rules/*.yaml，提供 /api/projects/{id}/evaluate
+与 /api/rules[/reload]。
 """
 
 from collections.abc import AsyncIterator
@@ -10,17 +12,29 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api import evaluate as evaluate_api
 from app.api import projects as projects_api
+from app.api import rules as rules_api
 from app.api import schema as schema_api
 from app.api import schemes as schemes_api
 from app.config import get_settings
 from app.db import init_db
+from app.engine.rules import RuleLoadError, get_ruleset
 
 
 @asynccontextmanager
 async def lifespan(_: FastAPI) -> AsyncIterator[None]:
-    """应用生命周期：启动时建表，关闭时无需特别清理。"""
+    """应用生命周期：启动时建表并加载规则，关闭时无需特别清理。"""
     init_db()
+    # 规则在启动时加载一次，之后由 POST /api/rules/reload 热重载（仅开发环境）。
+    # 这里刻意**不让加载失败阻断启动**：规则由非程序员维护，写错一条不该让整个演示起不来；
+    # 真正的闸门是 CI 里的 scripts/check_rules.py，而 /api/rules 会把失败原因原样返回。
+    try:
+        get_ruleset()
+    except RuleLoadError as exc:
+        print("⚠️ 规则加载失败，涉及规则的接口会返回错误。请跑 scripts/check_rules.py：")
+        for problem in exc.problems:
+            print(f"   - {problem}")
     yield
 
 
@@ -47,6 +61,8 @@ def create_app() -> FastAPI:
     app.include_router(projects_api.router, prefix="/api")
     app.include_router(schemes_api.router, prefix="/api")
     app.include_router(schema_api.router, prefix="/api")
+    app.include_router(evaluate_api.router, prefix="/api")
+    app.include_router(rules_api.router, prefix="/api")
 
     @app.get("/api/health")
     def health() -> dict[str, str]:
