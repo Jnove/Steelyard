@@ -135,10 +135,39 @@ T2 的模型表达不了引擎需要的两种状态，做了向后兼容的扩�
 make dev-backend
 ```
 
-然后（`make seed` 先灌一套虚构样例数据，项目 id 假设是 1）：
+先灌一套虚构样例数据。**注意要在 `backend/` 下跑**，否则数据库写到别的地方
+（见「遗留问题」第 9 条，`make seed` 目前和 `make dev-backend` 读写的不是同一个库）：
 
 ```bash
-curl -X POST http://localhost:8000/api/projects/1/evaluate
+cd backend && uv run python ../scripts/seed_mock.py
+```
+
+拿到项目 id 后评估（下面假设是 3）：
+
+```bash
+curl -X POST http://localhost:8000/api/projects/3/evaluate
+```
+
+实跑结果（12 条规则 × 5 个方案，`make seed` 的虚构数据）：
+
+```
+rule_count = 12   方案数 = 5
+A 高品质        品质  50.1 结构  70.0 施工  43.3 绿色  70.6 | 覆盖 1.00/1.00/1.00/1.00 | 不通过[]        不适用[S-02]
+B 不合规        品质  62.6 结构 100.0 施工  73.3 绿色  86.1 | 覆盖 1.00/1.00/1.00/1.00 | 不通过[C-01]   不适用[S-02]
+C MiC 高标准化  品质  59.5 结构 100.0 施工 100.0 绿色  98.3 | 覆盖 1.00/1.00/1.00/1.00 | 不通过[]        不适用[S-02]
+D 均衡          品质  54.4 结构 100.0 施工  82.2 绿色  90.0 | 覆盖 1.00/1.00/1.00/1.00 | 不通过[]        不适用[S-02]
+E 被支配        品质  60.6 结构  70.0 施工  64.4 绿色  74.4 | 覆盖 1.00/1.00/1.00/1.00 | 不通过[]        不适用[S-02]
+```
+
+「B 不合规」按虚构数据的设计确实挂在 C-01（层高）上；`S-02` 对所有方案都是
+`not_applicable`，因为虚构数据里没有钢结构方案——两处都符合预期。
+
+单条结果的溯源信息长这样：
+
+```
+G-01  value=0.1184  score=100.0
+      formula = shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0
+      source  = TODO(专业组)：示例数值，正式依据待补
 ```
 
 看当前加载了哪些规则与派生量：
@@ -339,5 +368,11 @@ gen_metric_charts 3 张图已写出
 7. **`rules/.gitkeep` 和 `scripts/.gitkeep` 可以删了**，两个目录早就有真文件。没动，避免噪音。
 8. **指南 §4.3 的维度说明里 `green` 写了"得房率"**，但得房率在示例里归到了 `quality`。
    等专业组定稿指标归属时一并校准。
+9. **`make seed` 与 `make dev-backend` 读写的不是同一个数据库**（这条是实跑"如何运行"时撞上的）。
+   `DATABASE_URL` 默认是相对路径 `sqlite:///./data/zhuheng.db`，而 `make seed` 从仓库根跑、
+   `make dev-backend` 先 `cd backend`，于是一个写 `data/zhuheng.db`、一个读
+   `backend/data/zhuheng.db`。灌了数据却查不到项目，很容易被当成接口 bug。
+   属于 T6/T1 的遗留，没在本 PR 动（改它要动 `config.py` 的默认值或 Makefile 的 CWD，
+   会牵到部署脚本）。建议单独修：把默认路径改成相对仓库根的绝对路径。
 
 🤖 Generated with [Claude Code](https://claude.com/claude-code)
