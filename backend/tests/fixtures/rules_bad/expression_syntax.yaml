@@ -1,0 +1,6 @@
+# 错误示例：表达式语法错误（比较符写成了 =>，且括号没闭合）。
+- id: C-01
+  name: 表达式语法错误
+  type: hard
+  check: "(floor_height => 3.0"
+  source: "TODO(专业组)"

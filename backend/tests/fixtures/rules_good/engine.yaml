@@ -1,0 +1,82 @@
+# 引擎测试专用规则集：覆盖 hard / metric、when 条件、派生量、缺数据、severity。
+# 阈值都是为测试断言方便而定的，不代表任何专业结论。
+
+- id: C-01
+  name: 层高下限
+  type: hard
+  check: "floor_height >= 3.0"
+  message: "层高 {floor_height} m 低于 3.0 m"
+  source: "测试固定值"
+
+- id: C-02
+  name: 容积率不超上限
+  type: hard
+  check: "far <= far_max"
+  message: "容积率 {far} 超过上限 {far_max}"
+  severity: warning
+  source: "测试固定值"
+
+- id: C-03
+  name: 体形系数上限（依赖可能缺的字段）
+  type: hard
+  check: "shape_coef <= 0.5"
+  source: "测试固定值"
+
+- id: C-04
+  name: 钢结构才检查的条件规则
+  type: hard
+  when: "structure_type == '钢结构'"
+  check: "risk_features contains '超限构件'"
+  source: "测试固定值"
+
+- id: K-01
+  name: 标准层重复率
+  type: metric
+  dimension: construction
+  value: "std_floor_repeat"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.50, 0]
+      - [0.80, 70]
+      - [0.95, 100]
+  weight_in_dimension: 3
+  source: "测试固定值"
+
+- id: K-02
+  name: 预制构件种类数
+  type: metric
+  dimension: construction
+  value: "component_types"
+  scoring:
+    kind: piecewise
+    points:
+      - [8, 100]
+      - [40, 0]
+  weight_in_dimension: 1
+  source: "测试固定值"
+
+- id: G-01
+  name: 体形系数（可能缺数据）
+  type: metric
+  dimension: green
+  value: "shape_coef"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.20, 100]
+      - [0.60, 0]
+  source: "测试固定值"
+
+- id: Q-01
+  name: 仅高层适用的单栋户数
+  type: metric
+  dimension: quality
+  value: "units_per_building"
+  when: "floors >= 7"
+  scoring:
+    kind: piecewise
+    points:
+      - [60, 100]
+      - [200, 0]
+  source: "测试固定值"

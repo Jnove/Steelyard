@@ -1,0 +1,12 @@
+# 错误示例：dimension 不在四个合法维度里。
+- id: K-01
+  name: 维度写错
+  type: metric
+  dimension: cost
+  value: "gfa"
+  scoring:
+    kind: piecewise
+    points:
+      - [0, 0]
+      - [100000, 100]
+  source: "TODO(专业组)"
