@@ -1,0 +1,30 @@
+# 结构安全评分指标（metric，dimension: structure）与结构相关硬约束。规则 ID 用 S-XX。
+#
+# ⚠️ 本文件当前只有**格式示例**：阈值和分段点都是随手取的，仅用于演示写法。
+#    专业组定稿后请去掉 name 的「【示例】」前缀，并把 source 换成真实依据。
+
+- id: S-01
+  name: 【示例】风险特征数量（越少越好）
+  type: metric
+  dimension: structure
+  # len() 是允许的五个函数之一；risk_features 是方案填的风险特征列表。
+  value: "len(risk_features)"
+  scoring:
+    kind: piecewise
+    points:
+      - [0, 100]
+      - [2, 70]
+      - [5, 0]
+  weight_in_dimension: 1
+  source: "TODO(专业组)：示例数值，正式依据待补"
+
+- id: S-02
+  name: 【示例】钢结构方案需人工复核防火（条件硬约束）
+  type: hard
+  # when 为假（不是钢结构）时，这条规则记为「不适用」，不影响该方案。
+  when: "structure_type == '钢结构'"
+  # contains 判断列表里有没有某一项，等价于 Python 的 in，但语序更接近中文。
+  check: "risk_features contains '超限构件'"
+  message: "钢结构方案请把需要人工复核的风险特征列入 risk_features"
+  severity: warning
+  source: "TODO(专业组)：示例数值，正式条文号待补"
