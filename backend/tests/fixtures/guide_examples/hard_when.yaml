@@ -1,0 +1,11 @@
+# T9 指南示例 3：带 when 条件的硬约束（条件成立才检查）
+#
+# 用途：只有结构体系是钢结构时，才强制要求防火涂层指标。
+# when 用法：``when`` 子句是另一个布尔表达式，先求值；为真才执行 ``check``。
+- id: C-STEEL-COAT
+  name: 钢结构防火涂层（条件检查）
+  type: hard
+  when: "structure_type == '钢结构'"
+  check: "risk_features contains '防火达标'"
+  message: "钢结构方案必须把「防火达标」列入风险特征并由人工复核"
+  source: "TODO(专业组)：示例数值，正式条文号待补"

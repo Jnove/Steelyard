@@ -1,0 +1,10 @@
+# T9 指南示例 2：硬约束里用派生量
+#
+# 用途：体形系数（envelope_area / volume）不超过 0.5。
+# 派生量由引擎在评估时计算，规则里直接当字段名引用即可。
+- id: C-SHAPE
+  name: 体形系数上限
+  type: hard
+  check: "shape_coefficient <= 0.5"
+  message: "体形系数 {shape_coefficient} 偏大，建筑能耗与造价不利"
+  source: "TODO(专业组)：示例数值，正式条文号待补"

@@ -1,0 +1,6 @@
+# T9 指南反例 6：缺必填字段
+#
+# 期望报错：MISSING_FIELD（id/name/type 缺一个或多个）
+- name: 缺 id 和 type
+  check: "floor_height >= 3.0"
+  source: "TODO(专业组)"

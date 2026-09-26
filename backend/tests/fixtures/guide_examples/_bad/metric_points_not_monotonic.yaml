@@ -1,0 +1,17 @@
+# T9 指南反例 4：points 第一列未严格递增
+#
+# 期望报错：METRIC_POINTS_NOT_MONOTONIC
+# 第一个点的指标值是 0.95，第二个反而是 0.80——破坏了分段线性单调递增前提。
+- id: K-BAD-MONO
+  name: points 不单调
+  type: metric
+  dimension: construction
+  value: "std_floor_repeat"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.95, 100]
+      - [0.80, 70]
+      - [0.50, 0]
+  weight_in_dimension: 1
+  source: "TODO(专业组)"
