@@ -2,7 +2,7 @@
 #
 # 所有目标尽量幂等，失败立即退出。
 
-.PHONY: help dev-backend dev-frontend test lint up down
+.PHONY: help dev-backend dev-frontend test lint up down seed
 
 help:
 	@echo "筑衡常用命令："
@@ -10,6 +10,7 @@ help:
 	@echo "  make dev-frontend  本地启动前端（Vite dev，端口 5173）"
 	@echo "  make test          后端 pytest 测试"
 	@echo "  make lint          后端 ruff check + 前端 tsc --noEmit"
+	@echo "  make seed          清空并导入 data/schemes/mock/ 下的虚构样例"
 	@echo "  make up            docker compose 一键启动（含前后端）"
 	@echo "  make down          docker compose 关闭并清理"
 
@@ -23,6 +24,9 @@ test:
 lint:
 	cd backend && uv run ruff check .
 	cd frontend && npx tsc --noEmit
+
+seed:
+	uv run python scripts/seed_mock.py
 
 # —— 前端 ——
 dev-frontend:
