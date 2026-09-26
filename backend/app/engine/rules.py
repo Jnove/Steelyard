@@ -359,6 +359,13 @@ def analyze_expression(
 
     problems: list[ExpressionProblem] = []
     names: set[str] = set()
+    # 被当成函数调用的名字。先收一遍，免得 ``sum(...)`` 既报"函数不允许"
+    # 又报"不是已知字段"——同一处失误报两遍只是噪音。
+    called: set[str] = {
+        node.func.id
+        for node in ast.walk(tree)
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
+    }
 
     for node in ast.walk(tree):
         if not isinstance(node, _ALLOWED_NODES):
@@ -388,20 +395,25 @@ def analyze_expression(
                     )
                 )
             elif node.func.id not in ALLOWED_FUNCTIONS:
+                close = difflib.get_close_matches(
+                    node.func.id, sorted(ALLOWED_FUNCTIONS), n=2, cutoff=0.5
+                )
+                hint = (
+                    "是不是想写 " + "、".join(f"`{c}`" for c in close) + "？"
+                    if close
+                    else "需要更复杂的计算请提给开发组加成派生量。"
+                )
                 problems.append(
                     ExpressionProblem(
                         field=field_name,
                         expression=expression,
                         message=f"{field_name} 表达式调用了不允许的函数 `{node.func.id}`",
-                        fix=(
-                            f"只能调用 {'、'.join(sorted(ALLOWED_FUNCTIONS))}；"
-                            + _suggest(node.func.id, ALLOWED_FUNCTIONS)
-                        ),
+                        fix=f"{hint}只能调用 {'、'.join(sorted(ALLOWED_FUNCTIONS))}",
                     )
                 )
         elif isinstance(node, ast.Name):
             # 函数名已在 Call 分支里单独校验过，不再当字段名处理。
-            if node.id in ALLOWED_FUNCTIONS:
+            if node.id in called:
                 continue
             if node.id in allowed:
                 names.add(node.id)
