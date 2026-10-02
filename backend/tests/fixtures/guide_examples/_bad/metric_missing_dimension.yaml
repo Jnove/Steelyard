@@ -1,0 +1,16 @@
+# T9 指南反例 5：dimension 写错
+#
+# 期望报错：METRIC_BAD_DIMENSION
+# dimension 必须是 quality / structure / construction / green 之一。
+- id: K-BAD-DIM
+  name: dimension 缺失或错误
+  type: metric
+  dimension: cost
+  value: "gfa"
+  scoring:
+    kind: piecewise
+    points:
+      - [0, 0]
+      - [100000, 100]
+  weight_in_dimension: 1
+  source: "TODO(专业组)"

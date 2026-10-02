@@ -1,0 +1,10 @@
+# T9 指南反例 1：Tab 缩进
+#
+# 期望报错：TAB_INDENT
+# 第一行用了 Tab，YAML 不接受。
+- id: C-TAB
+  name: Tab 缩进示例
+  type: hard
+	check: "floor_height >= 3.0"
+	message: "层高不足"
+	source: "TODO(专业组)"

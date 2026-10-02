@@ -1,0 +1,18 @@
+# T9 指南示例 4：越大越好的评分指标
+#
+# 用途：标准层重复率（std_floor_repeat）越高，模板与构件周转越好，分越高。
+# points 从左到右：横轴是指标值（0.50 重复率 / 0.80 重复率 / 0.95 重复率），
+#              纵轴是分数（0 分 / 70 分 / 100 分）。中间按线性插值。
+- id: K-01
+  name: 标准层重复率（越大越好）
+  type: metric
+  dimension: construction
+  value: "std_floor_repeat"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.50, 0]
+      - [0.80, 70]
+      - [0.95, 100]
+  weight_in_dimension: 1
+  source: "TODO(专业组)：示例数值，正式条文号待补"

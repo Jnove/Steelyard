@@ -1,0 +1,10 @@
+# T9 指南示例 1：最简单的硬约束（直接比字段值）
+#
+# 用途：把"层高不低于 3.0 m"写成一个硬约束。
+# 校验：uv run --project backend python scripts/check_rules.py backend/tests/fixtures/guide_examples/hard_simple.yaml
+- id: C-03
+  name: 住宅层高下限
+  type: hard
+  check: "floor_height >= 3.0"
+  message: "层高 {floor_height} m 低于 3.0 m"
+  source: "TODO(专业组)：示例数值，正式条文号待补"

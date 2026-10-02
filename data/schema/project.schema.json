@@ -1,0 +1,66 @@
+{
+  "title": "项目参数",
+  "description": "项目层（地块条件）参数，对所有候选方案相同",
+  "group_order": [
+    "基本信息",
+    "居住品质",
+    "结构与造价",
+    "施工与安全",
+    "绿色低碳"
+  ],
+  "fields": [
+    {
+      "name": "site_area",
+      "label": "用地面积",
+      "unit": "m²",
+      "group": "基本信息",
+      "type": "number",
+      "required": false,
+      "constraints": {},
+      "essential": true
+    },
+    {
+      "name": "far_max",
+      "label": "容积率上限",
+      "unit": "—",
+      "group": "基本信息",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "density_max",
+      "label": "建筑密度上限",
+      "unit": "—",
+      "group": "基本信息",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "height_max",
+      "label": "限高上限",
+      "unit": "m",
+      "group": "基本信息",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "climate_zone",
+      "label": "气候分区",
+      "unit": "—",
+      "group": "基本信息",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "严寒",
+        "寒冷",
+        "夏热冬冷",
+        "夏热冬暖",
+        "温和"
+      ]
+    }
+  ]
+}

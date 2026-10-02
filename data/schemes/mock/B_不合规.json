@@ -1,0 +1,31 @@
+{
+  "_note": "虚构数据，仅供开发调试，不得用于验证或答辩",
+  "name": "B 不合规",
+  "params": {
+    "structure_type": "剪力墙",
+    "units": 340,
+    "unit_mix": {"两室": 170, "三室": 170},
+    "floor_height": 2.9,
+    "inner_area_ratio": 0.74,
+    "south_room_ratio": 0.70,
+    "window_floor_ratio": 0.22,
+    "window_wall_ratio": {"南": 0.40, "北": 0.25, "东": 0.25, "西": 0.25},
+    "elevators_per_unit": 1,
+    "gfa": 40800,
+    "footprint": 2400,
+    "buildings": 4,
+    "floors": 17,
+    "envelope_area": 13200,
+    "volume": 118320,
+    "std_floor_repeat": 0.80,
+    "component_types": 14,
+    "risk_features": [],
+    "prefab_ratio_est": 0.45
+  },
+  "_design_notes": {
+    "intent": "演示硬约束标红：层高 2.9 m 低于规范要求的 3.0 m，其他指标中等。",
+    "tradeoff": "压低层高把户数与得房率一并往上推，但触发 C-03 类硬约束失败；前端看板会标红，参与排名时自动剔除。",
+    "gfa_consistency": "footprint × floors × buildings = 2400 × 17 = 40,800 m²，与 gfa 一致；总高 17 × 2.9 = 49.3 m < 54 m。",
+    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。"
+  }
+}

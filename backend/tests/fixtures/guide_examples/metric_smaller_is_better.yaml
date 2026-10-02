@@ -1,0 +1,21 @@
+# T9 指南示例 5：越小越好的评分指标
+#
+# 用途：每栋户数过多会导致电梯排队与疏散困难，越少越好。
+# points 写法：横轴（指标值）必须从小到大排列，纵轴（分数）随之变化。
+#   - 60 户/栋 → 100 分（最理想）
+#   - 120 户/栋 → 70 分
+#   - 200 户/栋 → 0 分（太多）
+# 「越小越好」完全靠纵轴的递减体现，横轴仍按 x 升序。
+- id: K-02
+  name: 单栋户数（越小越好）
+  type: metric
+  dimension: quality
+  value: "units_per_building"
+  scoring:
+    kind: piecewise
+    points:
+      - [60, 100]
+      - [120, 70]
+      - [200, 0]
+  weight_in_dimension: 1
+  source: "TODO(专业组)：示例数值，正式条文号待补"
