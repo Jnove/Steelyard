@@ -1,0 +1,224 @@
+{
+  "title": "方案参数",
+  "description": "方案层（设计输入）参数，每个候选方案独立",
+  "group_order": [
+    "基本信息",
+    "居住品质",
+    "结构与造价",
+    "施工与安全",
+    "绿色低碳"
+  ],
+  "fields": [
+    {
+      "name": "structure_type",
+      "label": "结构体系",
+      "description": "结构体系",
+      "unit": "—",
+      "group": "基本信息",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "剪力墙",
+        "框架-剪力墙",
+        "框架",
+        "钢结构",
+        "MiC"
+      ],
+      "essential": true
+    },
+    {
+      "name": "units",
+      "label": "总户数",
+      "description": "总户数",
+      "unit": "户",
+      "group": "基本信息",
+      "type": "integer",
+      "required": false,
+      "constraints": {},
+      "essential": true
+    },
+    {
+      "name": "unit_mix",
+      "label": "户型配比",
+      "description": "户型配比：键为户型名称（如 1室1厅），值为户数",
+      "unit": "户",
+      "group": "基本信息",
+      "type": "object<integer>",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "floor_height",
+      "label": "层高",
+      "description": "层高",
+      "unit": "m",
+      "group": "居住品质",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "inner_area_ratio",
+      "label": "得房率",
+      "description": "得房率（套内面积 / 建筑面积）",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "south_room_ratio",
+      "label": "南向比例",
+      "description": "主要房间南向比例",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "window_floor_ratio",
+      "label": "窗地比",
+      "description": "窗地比（窗面积 / 地面积）",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "window_wall_ratio",
+      "label": "窗墙比",
+      "description": "各朝向窗墙比，键为朝向（南/北/东/西），值为 0-1 小数",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "object<number>",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "elevators_per_unit",
+      "label": "电梯数/单元",
+      "description": "每单元电梯数",
+      "unit": "台",
+      "group": "居住品质",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "gfa",
+      "label": "总建筑面积",
+      "description": "总建筑面积",
+      "unit": "m²",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {},
+      "essential": true
+    },
+    {
+      "name": "footprint",
+      "label": "基底面积",
+      "description": "建筑基底面积",
+      "unit": "m²",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "buildings",
+      "label": "楼栋数",
+      "description": "楼栋数",
+      "unit": "栋",
+      "group": "结构与造价",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "floors",
+      "label": "层数",
+      "description": "层数",
+      "unit": "层",
+      "group": "结构与造价",
+      "type": "integer",
+      "required": false,
+      "constraints": {},
+      "essential": true
+    },
+    {
+      "name": "envelope_area",
+      "label": "外表面积",
+      "description": "建筑外表面积",
+      "unit": "m²",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "volume",
+      "label": "建筑体积",
+      "description": "建筑体积",
+      "unit": "m³",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "std_floor_repeat",
+      "label": "标准层重复率",
+      "description": "标准层重复率",
+      "unit": "—",
+      "group": "施工与安全",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "component_types",
+      "label": "预制构件种类",
+      "description": "预制构件种类数",
+      "unit": "种",
+      "group": "施工与安全",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "risk_features",
+      "label": "风险特征",
+      "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
+      "unit": "—",
+      "group": "施工与安全",
+      "type": "array<string>",
+      "required": false,
+      "constraints": {},
+      "options": [
+        "大悬挑",
+        "高大空间",
+        "深基坑",
+        "高支模",
+        "超长结构",
+        "不规则建筑",
+        "超限构件",
+        "复杂地质"
+      ]
+    },
+    {
+      "name": "prefab_ratio_est",
+      "label": "预估装配率",
+      "description": "预估装配率",
+      "unit": "—",
+      "group": "绿色低碳",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    }
+  ]
+}

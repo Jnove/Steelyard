@@ -1,0 +1,5361 @@
+{
+  "fixture_id": "14bf38e38385b866f3f64f253e2479c423adfcea88ee64f6e20139f8e58c9be6",
+  "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
+  "source_hashes": {
+    "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
+    "backend/app/agents/__init__.py": "c24517b47e56fa7a171c504e57a0fc60571540fed474a1d329a7243edc889225",
+    "backend/app/api/__init__.py": "3910ad746b07b6dd51c524264ac134a53d8b20ff2b2239456e3a261170cf0c19",
+    "backend/app/api/evaluate.py": "0cbec695d4b7f7ba37c95af0683cf11e35fc2a1ec29b36f977cd062c11e667f9",
+    "backend/app/api/projects.py": "6db72f868016996a536a8c7c835eb0a5daf6a975fb5101a4baf2b6e2c807fc21",
+    "backend/app/api/rank.py": "333c8bf6b5adfe21b693ebd08ec878c7b3e8795c2a698d26fe7cd8369a96cae1",
+    "backend/app/api/rules.py": "11617c1e2394e292f04ed7ecf31fa895cf237cd7f065846ca440424a529cd051",
+    "backend/app/api/schema.py": "14a4c82760306b75077674d5bae94be086a359a533266687dcbd177eace88df5",
+    "backend/app/api/schemes.py": "c4a6c5c571fc8ef9350851a8bb7ac934312c0cb2c10cd4523856fc9547adbcdc",
+    "backend/app/config.py": "318de4c4c422e641d3fdf04ffac817cdc0d5afaaa367d4e06d8e7cfc1028207f",
+    "backend/app/db.py": "102706b90dfc3d607ba299fd48a85f93a99b882d094ad23a739fdafe82cda710",
+    "backend/app/engine/__init__.py": "5cdf7615020298e7efbddab43671dfc7c181f1fcc05f628611b05341584fff83",
+    "backend/app/engine/mcdm.py": "a6d08c2c258a91fe4f7852eb8ed913f7141cd4b26b760d92f8c755e5bd61b627",
+    "backend/app/engine/metrics.py": "45f50e62ba0e4854d5be3fed1b9f4044ca4d973d68c83d0afc8adf5f543160e4",
+    "backend/app/engine/rules.py": "32c99b95d1963ba43b873d4c8d27fea17b25ced9c1cd73947e42d42dc42faf6c",
+    "backend/app/engine/scoring.py": "4421d31e533b91383ba8410df5c4a250ad7ff3391946011a77fe6d44a8c98490",
+    "backend/app/engine/weights.py": "d5734c58a7e3dc448be66d384edf3f648f772c30c778a3c818790bd97b7b930f",
+    "backend/app/excel/__init__.py": "6fabad0e7dfbca57d4c51147acae69f43248eb5e53862cbfca5779f439a87b9f",
+    "backend/app/excel/io.py": "6d21372f9f8dc46326f64f2d0ff463e6425b39aa89cfc067068e4db8820ab2d6",
+    "backend/app/main.py": "e5f7857adf3c211dbdc5b5f99f847aa3dbac9b16aa9a761577fd430b10916672",
+    "backend/app/models/__init__.py": "1ac6e4721b9879d7aa2aeedb9543a69795cb7e30a6d54a7dab14e593238bb456",
+    "backend/app/models/eval.py": "19be966480f94885e1e167cd9c8865d5f4d43428d05b9cfb10350cfe23d91b4c",
+    "backend/app/models/orm.py": "b660aec5d6b25078caaf13052b05b453f601e3f85650246642740756a8d013b2",
+    "backend/app/models/params.py": "bb19efddc02df85ae3a5282ec77f6b02b03418673b2046299b2ddfcebcfaa843",
+    "backend/app/rag/__init__.py": "0cdce8a1dfc61e8e917614525afd71e04c0abc7beb37967a5d7dbd5b481a618c",
+    "backend/app/schemas/__init__.py": "684a2de0870806591d5f92950cda5785f841a7853ab60d01df000278418d3b33",
+    "backend/app/schemas/meta.py": "2fe85c35f1fa837bb6cf9291be8134f8741bd72fb6321c1a96bae0d6232d7de3",
+    "rules/_template.yaml": "c4ac5e32cff7ffd9d3bbfc7cf31b0537c845844f0486aabe7a62e9f36706b81f",
+    "rules/compliance.yaml": "9990788b3562114773f97f5e045a84b3e997fba4abd786ae6f2fdad03894fe85",
+    "rules/construction.yaml": "2ff2b8de475a9261274f5b84a64b3f69004f08b55bebc51199c4ddc712d4e7df",
+    "rules/green.yaml": "2519bb6cee17daa12a77c1963a72fc767ef770bea776325d63acee25a3edd67f",
+    "rules/quality.yaml": "07469bfad4f45903d1115d335c87b53e781a96714ec9ba18f6d5596dc8f6ee4a",
+    "rules/structure.yaml": "3f7d227aac17b44bb2df5e90ab17034562d8f37340b4a64607a3a16936b64599",
+    "rules/weights.yaml": "025e398bbcaa93b09fe1772d92653e260be38c73c5f8b25d4a2694c7b37beb62",
+    "data/schemes/mock/project.json": "b8400ca49406bc9e04312bef7b6e01207b65b7c137b7a3301c42dd35189fe322",
+    "data/schemes/mock/A_高品质.json": "3384053b78b7d0c12ad8455c99e4234413f58566ace9f4472e0c19d7e58ce0c4",
+    "data/schemes/mock/B_不合规.json": "41268cf0a929cf1ce5aff722dc89ebbff5fd81761703a949023861e57aba5f43",
+    "data/schemes/mock/C_MiC高标准化.json": "3c96620b59103e76a87cd7c2784f0aaae555c2227e7933331aed57f0fc9091c4",
+    "data/schemes/mock/D_均衡.json": "2bcfc4bc94b26631ffc857e40484ab200fe1cb5c09ac2808767084347f9e0a9f",
+    "data/schemes/mock/E_被支配.json": "b1a27e0a64d8a6ed2089edbef14dfe1825219abaf8f338d67f558784040e5313",
+    "data/schemes/mock/C_现浇.json": "65413dec78e298c87f62b2bd7ecdfcd981ed5bfc8da5b1d1c66e807a8d98e5c6",
+    "scripts/export_frontend_fixtures.py": "981084e06096000a173caf3737c9df5f78f4d0bd6e16b7bd9d43b2159b8afc38"
+  },
+  "grid_step": 10,
+  "projects": [
+    {
+      "id": 1,
+      "name": "杭州钱塘 · 保障性租赁住房 · 虚构示例项目",
+      "params": {
+        "site_area": 18000.0,
+        "far_max": 2.5,
+        "density_max": 0.28,
+        "height_max": 54.0,
+        "climate_zone": "夏热冬冷"
+      },
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  ],
+  "schemes": [
+    {
+      "id": 1,
+      "project_id": 1,
+      "name": "A 高品质",
+      "params": {
+        "structure_type": "剪力墙",
+        "units": 320,
+        "unit_mix": {
+          "三室": 160,
+          "两室": 160
+        },
+        "floor_height": 3.3,
+        "inner_area_ratio": 0.82,
+        "south_room_ratio": 0.85,
+        "window_floor_ratio": 0.28,
+        "window_wall_ratio": {
+          "南": 0.45,
+          "北": 0.3,
+          "东": 0.3,
+          "西": 0.3
+        },
+        "elevators_per_unit": 2,
+        "gfa": 38400.0,
+        "footprint": 2400.0,
+        "buildings": 4,
+        "floors": 16,
+        "envelope_area": 15000.0,
+        "volume": 126720.0,
+        "std_floor_repeat": 0.65,
+        "component_types": 20,
+        "risk_features": [
+          "大悬挑",
+          "高支模"
+        ],
+        "prefab_ratio_est": 0.25
+      },
+      "is_whatif": false,
+      "parent_id": null,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 2,
+      "project_id": 1,
+      "name": "B 不合规",
+      "params": {
+        "structure_type": "剪力墙",
+        "units": 340,
+        "unit_mix": {
+          "两室": 170,
+          "三室": 170
+        },
+        "floor_height": 2.9,
+        "inner_area_ratio": 0.74,
+        "south_room_ratio": 0.7,
+        "window_floor_ratio": 0.22,
+        "window_wall_ratio": {
+          "南": 0.4,
+          "北": 0.25,
+          "东": 0.25,
+          "西": 0.25
+        },
+        "elevators_per_unit": 1,
+        "gfa": 40800.0,
+        "footprint": 2400.0,
+        "buildings": 4,
+        "floors": 17,
+        "envelope_area": 13200.0,
+        "volume": 118320.0,
+        "std_floor_repeat": 0.8,
+        "component_types": 14,
+        "risk_features": [],
+        "prefab_ratio_est": 0.45
+      },
+      "is_whatif": false,
+      "parent_id": null,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 3,
+      "project_id": 1,
+      "name": "C MiC 高标准化",
+      "params": {
+        "structure_type": "MiC",
+        "units": 432,
+        "unit_mix": {
+          "一室": 144,
+          "两室": 192,
+          "三室": 96
+        },
+        "floor_height": 3.0,
+        "inner_area_ratio": 0.76,
+        "south_room_ratio": 0.72,
+        "window_floor_ratio": 0.22,
+        "window_wall_ratio": {
+          "南": 0.4,
+          "北": 0.25,
+          "东": 0.25,
+          "西": 0.25
+        },
+        "elevators_per_unit": 2,
+        "gfa": 43200.0,
+        "footprint": 2400.0,
+        "buildings": 4,
+        "floors": 18,
+        "envelope_area": 14400.0,
+        "volume": 129600.0,
+        "std_floor_repeat": 0.95,
+        "component_types": 8,
+        "risk_features": [],
+        "prefab_ratio_est": 0.75
+      },
+      "is_whatif": false,
+      "parent_id": null,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 4,
+      "project_id": 1,
+      "name": "D 均衡",
+      "params": {
+        "structure_type": "框架-剪力墙",
+        "units": 408,
+        "unit_mix": {
+          "两室": 204,
+          "三室": 204
+        },
+        "floor_height": 3.0,
+        "inner_area_ratio": 0.78,
+        "south_room_ratio": 0.78,
+        "window_floor_ratio": 0.25,
+        "window_wall_ratio": {
+          "南": 0.42,
+          "北": 0.27,
+          "东": 0.27,
+          "西": 0.27
+        },
+        "elevators_per_unit": 2,
+        "gfa": 40800.0,
+        "footprint": 2400.0,
+        "buildings": 4,
+        "floors": 17,
+        "envelope_area": 13000.0,
+        "volume": 122400.0,
+        "std_floor_repeat": 0.85,
+        "component_types": 12,
+        "risk_features": [],
+        "prefab_ratio_est": 0.5
+      },
+      "is_whatif": false,
+      "parent_id": null,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 5,
+      "project_id": 1,
+      "name": "E 被支配",
+      "params": {
+        "structure_type": "框架",
+        "units": 408,
+        "unit_mix": {
+          "两室": 204,
+          "三室": 204
+        },
+        "floor_height": 3.0,
+        "inner_area_ratio": 0.72,
+        "south_room_ratio": 0.68,
+        "window_floor_ratio": 0.2,
+        "window_wall_ratio": {
+          "南": 0.35,
+          "北": 0.22,
+          "东": 0.22,
+          "西": 0.22
+        },
+        "elevators_per_unit": 1,
+        "gfa": 40800.0,
+        "footprint": 2400.0,
+        "buildings": 4,
+        "floors": 17,
+        "envelope_area": 14000.0,
+        "volume": 122400.0,
+        "std_floor_repeat": 0.75,
+        "component_types": 15,
+        "risk_features": [
+          "大悬挑",
+          "复杂地质"
+        ],
+        "prefab_ratio_est": 0.3
+      },
+      "is_whatif": false,
+      "parent_id": null,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    },
+    {
+      "id": 6,
+      "project_id": 1,
+      "name": "C 现浇",
+      "params": {
+        "structure_type": "剪力墙",
+        "units": 432,
+        "unit_mix": {
+          "两室": 216,
+          "三室": 216
+        },
+        "floor_height": 3.0,
+        "inner_area_ratio": 0.74,
+        "south_room_ratio": 0.65,
+        "window_floor_ratio": 0.2,
+        "window_wall_ratio": {
+          "南": 0.38,
+          "北": 0.25,
+          "东": 0.25,
+          "西": 0.25
+        },
+        "elevators_per_unit": 2,
+        "gfa": 43200.0,
+        "footprint": 2400.0,
+        "buildings": 4,
+        "floors": 18,
+        "envelope_area": 14000.0,
+        "volume": 129600.0,
+        "std_floor_repeat": 0.8,
+        "component_types": 18,
+        "risk_features": [
+          "大悬挑"
+        ],
+        "prefab_ratio_est": 0.3
+      },
+      "is_whatif": true,
+      "parent_id": 3,
+      "created_at": "2026-01-01T00:00:00Z",
+      "updated_at": "2026-01-01T00:00:00Z"
+    }
+  ],
+  "evaluation": {
+    "project_id": 1,
+    "rule_count": 12,
+    "results": [
+      {
+        "scheme_id": "1",
+        "scheme_name": "A 高品质",
+        "compliance": [
+          {
+            "rule_id": "C-01",
+            "name": "【示例】住宅层高下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 3.3,
+            "limit": ">= 3.0",
+            "formula": "floor_height >= 3.0",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】住宅层高下限 通过"
+          },
+          {
+            "rule_id": "C-02",
+            "name": "【示例】容积率不超地块上限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "far <= far_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】容积率不超地块上限 通过"
+          },
+          {
+            "rule_id": "C-03",
+            "name": "【示例】建筑总高不超限高",
+            "status": "passed",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "height <= height_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】建筑总高不超限高 通过"
+          },
+          {
+            "rule_id": "S-02",
+            "name": "【示例】钢结构方案需人工复核防火（条件硬约束）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "risk_features contains '超限构件'",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          }
+        ],
+        "metrics": {
+          "K-01": {
+            "rule_id": "K-01",
+            "name": "【示例】标准层重复率（越大越好）",
+            "status": "scored",
+            "value": 0.65,
+            "score": 35.0,
+            "dimension": "construction",
+            "weight_in_dimension": 2.0,
+            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "K-02": {
+            "rule_id": "K-02",
+            "name": "【示例】预制构件种类数（越少越好）",
+            "status": "scored",
+            "value": 20.0,
+            "score": 60.0,
+            "dimension": "construction",
+            "weight_in_dimension": 1.0,
+            "formula": "component_types；分段线性 8→100, 20→60, 40→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-01": {
+            "rule_id": "G-01",
+            "name": "【示例】体形系数（越小越好）",
+            "status": "scored",
+            "value": 0.11837121212121213,
+            "score": 100.0,
+            "dimension": "green",
+            "weight_in_dimension": 2.0,
+            "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-02": {
+            "rule_id": "G-02",
+            "name": "【示例】预估装配率（越大越好）",
+            "status": "scored",
+            "value": 0.25,
+            "score": 11.666666666666664,
+            "dimension": "green",
+            "weight_in_dimension": 1.0,
+            "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-01": {
+            "rule_id": "Q-01",
+            "name": "【示例】主要房间南向比例（适中最好）",
+            "status": "scored",
+            "value": 0.85,
+            "score": 14.285714285714306,
+            "dimension": "quality",
+            "weight_in_dimension": 2.0,
+            "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-02": {
+            "rule_id": "Q-02",
+            "name": "【示例】得房率（越大越好）",
+            "status": "scored",
+            "value": 0.82,
+            "score": 81.99999999999999,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-03": {
+            "rule_id": "Q-03",
+            "name": "【示例】单栋户数（越小越好，仅高层适用）",
+            "status": "scored",
+            "value": 80.0,
+            "score": 90.0,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "S-01": {
+            "rule_id": "S-01",
+            "name": "【示例】风险特征数量（越少越好）",
+            "status": "scored",
+            "value": 2.0,
+            "score": 70.0,
+            "dimension": "structure",
+            "weight_in_dimension": 1.0,
+            "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          }
+        },
+        "dimension_scores": {
+          "quality": 50.1429,
+          "structure": 70.0,
+          "construction": 43.3333,
+          "green": 70.5556
+        },
+        "dimension_coverage": {
+          "quality": 1.0,
+          "structure": 1.0,
+          "construction": 1.0,
+          "green": 1.0
+        },
+        "topsis": null
+      },
+      {
+        "scheme_id": "2",
+        "scheme_name": "B 不合规",
+        "compliance": [
+          {
+            "rule_id": "C-01",
+            "name": "【示例】住宅层高下限",
+            "status": "failed",
+            "severity": "error",
+            "value": 2.9,
+            "limit": ">= 3.0",
+            "formula": "floor_height >= 3.0",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "层高 2.9 m 低于示例阈值 3.0 m"
+          },
+          {
+            "rule_id": "C-02",
+            "name": "【示例】容积率不超地块上限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "far <= far_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】容积率不超地块上限 通过"
+          },
+          {
+            "rule_id": "C-03",
+            "name": "【示例】建筑总高不超限高",
+            "status": "passed",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "height <= height_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】建筑总高不超限高 通过"
+          },
+          {
+            "rule_id": "S-02",
+            "name": "【示例】钢结构方案需人工复核防火（条件硬约束）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "risk_features contains '超限构件'",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          }
+        ],
+        "metrics": {
+          "K-01": {
+            "rule_id": "K-01",
+            "name": "【示例】标准层重复率（越大越好）",
+            "status": "scored",
+            "value": 0.8,
+            "score": 70.0,
+            "dimension": "construction",
+            "weight_in_dimension": 2.0,
+            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "K-02": {
+            "rule_id": "K-02",
+            "name": "【示例】预制构件种类数（越少越好）",
+            "status": "scored",
+            "value": 14.0,
+            "score": 80.0,
+            "dimension": "construction",
+            "weight_in_dimension": 1.0,
+            "formula": "component_types；分段线性 8→100, 20→60, 40→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-01": {
+            "rule_id": "G-01",
+            "name": "【示例】体形系数（越小越好）",
+            "status": "scored",
+            "value": 0.11156186612576065,
+            "score": 100.0,
+            "dimension": "green",
+            "weight_in_dimension": 2.0,
+            "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-02": {
+            "rule_id": "G-02",
+            "name": "【示例】预估装配率（越大越好）",
+            "status": "scored",
+            "value": 0.45,
+            "score": 58.333333333333336,
+            "dimension": "green",
+            "weight_in_dimension": 1.0,
+            "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-01": {
+            "rule_id": "Q-01",
+            "name": "【示例】主要房间南向比例（适中最好）",
+            "status": "scored",
+            "value": 0.7,
+            "score": 57.14285714285717,
+            "dimension": "quality",
+            "weight_in_dimension": 2.0,
+            "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-02": {
+            "rule_id": "Q-02",
+            "name": "【示例】得房率（越大越好）",
+            "status": "scored",
+            "value": 0.74,
+            "score": 48.461538461538446,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-03": {
+            "rule_id": "Q-03",
+            "name": "【示例】单栋户数（越小越好，仅高层适用）",
+            "status": "scored",
+            "value": 85.0,
+            "score": 87.5,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "S-01": {
+            "rule_id": "S-01",
+            "name": "【示例】风险特征数量（越少越好）",
+            "status": "scored",
+            "value": 0.0,
+            "score": 100.0,
+            "dimension": "structure",
+            "weight_in_dimension": 1.0,
+            "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          }
+        },
+        "dimension_scores": {
+          "quality": 62.5618,
+          "structure": 100.0,
+          "construction": 73.3333,
+          "green": 86.1111
+        },
+        "dimension_coverage": {
+          "quality": 1.0,
+          "structure": 1.0,
+          "construction": 1.0,
+          "green": 1.0
+        },
+        "topsis": null
+      },
+      {
+        "scheme_id": "3",
+        "scheme_name": "C MiC 高标准化",
+        "compliance": [
+          {
+            "rule_id": "C-01",
+            "name": "【示例】住宅层高下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 3.0,
+            "limit": ">= 3.0",
+            "formula": "floor_height >= 3.0",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】住宅层高下限 通过"
+          },
+          {
+            "rule_id": "C-02",
+            "name": "【示例】容积率不超地块上限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "far <= far_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】容积率不超地块上限 通过"
+          },
+          {
+            "rule_id": "C-03",
+            "name": "【示例】建筑总高不超限高",
+            "status": "passed",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "height <= height_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】建筑总高不超限高 通过"
+          },
+          {
+            "rule_id": "S-02",
+            "name": "【示例】钢结构方案需人工复核防火（条件硬约束）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "risk_features contains '超限构件'",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          }
+        ],
+        "metrics": {
+          "K-01": {
+            "rule_id": "K-01",
+            "name": "【示例】标准层重复率（越大越好）",
+            "status": "scored",
+            "value": 0.95,
+            "score": 100.0,
+            "dimension": "construction",
+            "weight_in_dimension": 2.0,
+            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "K-02": {
+            "rule_id": "K-02",
+            "name": "【示例】预制构件种类数（越少越好）",
+            "status": "scored",
+            "value": 8.0,
+            "score": 100.0,
+            "dimension": "construction",
+            "weight_in_dimension": 1.0,
+            "formula": "component_types；分段线性 8→100, 20→60, 40→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-01": {
+            "rule_id": "G-01",
+            "name": "【示例】体形系数（越小越好）",
+            "status": "scored",
+            "value": 0.1111111111111111,
+            "score": 100.0,
+            "dimension": "green",
+            "weight_in_dimension": 2.0,
+            "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-02": {
+            "rule_id": "G-02",
+            "name": "【示例】预估装配率（越大越好）",
+            "status": "scored",
+            "value": 0.75,
+            "score": 95.0,
+            "dimension": "green",
+            "weight_in_dimension": 1.0,
+            "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-01": {
+            "rule_id": "Q-01",
+            "name": "【示例】主要房间南向比例（适中最好）",
+            "status": "scored",
+            "value": 0.72,
+            "score": 51.428571428571445,
+            "dimension": "quality",
+            "weight_in_dimension": 2.0,
+            "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-02": {
+            "rule_id": "Q-02",
+            "name": "【示例】得房率（越大越好）",
+            "status": "scored",
+            "value": 0.76,
+            "score": 59.23076923076922,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-03": {
+            "rule_id": "Q-03",
+            "name": "【示例】单栋户数（越小越好，仅高层适用）",
+            "status": "scored",
+            "value": 108.0,
+            "score": 76.0,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "S-01": {
+            "rule_id": "S-01",
+            "name": "【示例】风险特征数量（越少越好）",
+            "status": "scored",
+            "value": 0.0,
+            "score": 100.0,
+            "dimension": "structure",
+            "weight_in_dimension": 1.0,
+            "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          }
+        },
+        "dimension_scores": {
+          "quality": 59.522,
+          "structure": 100.0,
+          "construction": 100.0,
+          "green": 98.3333
+        },
+        "dimension_coverage": {
+          "quality": 1.0,
+          "structure": 1.0,
+          "construction": 1.0,
+          "green": 1.0
+        },
+        "topsis": null
+      },
+      {
+        "scheme_id": "4",
+        "scheme_name": "D 均衡",
+        "compliance": [
+          {
+            "rule_id": "C-01",
+            "name": "【示例】住宅层高下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 3.0,
+            "limit": ">= 3.0",
+            "formula": "floor_height >= 3.0",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】住宅层高下限 通过"
+          },
+          {
+            "rule_id": "C-02",
+            "name": "【示例】容积率不超地块上限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "far <= far_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】容积率不超地块上限 通过"
+          },
+          {
+            "rule_id": "C-03",
+            "name": "【示例】建筑总高不超限高",
+            "status": "passed",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "height <= height_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】建筑总高不超限高 通过"
+          },
+          {
+            "rule_id": "S-02",
+            "name": "【示例】钢结构方案需人工复核防火（条件硬约束）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "risk_features contains '超限构件'",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          }
+        ],
+        "metrics": {
+          "K-01": {
+            "rule_id": "K-01",
+            "name": "【示例】标准层重复率（越大越好）",
+            "status": "scored",
+            "value": 0.85,
+            "score": 80.0,
+            "dimension": "construction",
+            "weight_in_dimension": 2.0,
+            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "K-02": {
+            "rule_id": "K-02",
+            "name": "【示例】预制构件种类数（越少越好）",
+            "status": "scored",
+            "value": 12.0,
+            "score": 86.66666666666667,
+            "dimension": "construction",
+            "weight_in_dimension": 1.0,
+            "formula": "component_types；分段线性 8→100, 20→60, 40→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-01": {
+            "rule_id": "G-01",
+            "name": "【示例】体形系数（越小越好）",
+            "status": "scored",
+            "value": 0.10620915032679738,
+            "score": 100.0,
+            "dimension": "green",
+            "weight_in_dimension": 2.0,
+            "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-02": {
+            "rule_id": "G-02",
+            "name": "【示例】预估装配率（越大越好）",
+            "status": "scored",
+            "value": 0.5,
+            "score": 70.0,
+            "dimension": "green",
+            "weight_in_dimension": 1.0,
+            "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-01": {
+            "rule_id": "Q-01",
+            "name": "【示例】主要房间南向比例（适中最好）",
+            "status": "scored",
+            "value": 0.78,
+            "score": 34.28571428571429,
+            "dimension": "quality",
+            "weight_in_dimension": 2.0,
+            "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-02": {
+            "rule_id": "Q-02",
+            "name": "【示例】得房率（越大越好）",
+            "status": "scored",
+            "value": 0.78,
+            "score": 70.0,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-03": {
+            "rule_id": "Q-03",
+            "name": "【示例】单栋户数（越小越好，仅高层适用）",
+            "status": "scored",
+            "value": 102.0,
+            "score": 79.0,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "S-01": {
+            "rule_id": "S-01",
+            "name": "【示例】风险特征数量（越少越好）",
+            "status": "scored",
+            "value": 0.0,
+            "score": 100.0,
+            "dimension": "structure",
+            "weight_in_dimension": 1.0,
+            "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          }
+        },
+        "dimension_scores": {
+          "quality": 54.3929,
+          "structure": 100.0,
+          "construction": 82.2222,
+          "green": 90.0
+        },
+        "dimension_coverage": {
+          "quality": 1.0,
+          "structure": 1.0,
+          "construction": 1.0,
+          "green": 1.0
+        },
+        "topsis": null
+      },
+      {
+        "scheme_id": "5",
+        "scheme_name": "E 被支配",
+        "compliance": [
+          {
+            "rule_id": "C-01",
+            "name": "【示例】住宅层高下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 3.0,
+            "limit": ">= 3.0",
+            "formula": "floor_height >= 3.0",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】住宅层高下限 通过"
+          },
+          {
+            "rule_id": "C-02",
+            "name": "【示例】容积率不超地块上限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "far <= far_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】容积率不超地块上限 通过"
+          },
+          {
+            "rule_id": "C-03",
+            "name": "【示例】建筑总高不超限高",
+            "status": "passed",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "height <= height_max",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "【示例】建筑总高不超限高 通过"
+          },
+          {
+            "rule_id": "S-02",
+            "name": "【示例】钢结构方案需人工复核防火（条件硬约束）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "risk_features contains '超限构件'",
+            "source": "TODO(专业组)：示例数值，正式条文号待补",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          }
+        ],
+        "metrics": {
+          "K-01": {
+            "rule_id": "K-01",
+            "name": "【示例】标准层重复率（越大越好）",
+            "status": "scored",
+            "value": 0.75,
+            "score": 58.33333333333333,
+            "dimension": "construction",
+            "weight_in_dimension": 2.0,
+            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "K-02": {
+            "rule_id": "K-02",
+            "name": "【示例】预制构件种类数（越少越好）",
+            "status": "scored",
+            "value": 15.0,
+            "score": 76.66666666666666,
+            "dimension": "construction",
+            "weight_in_dimension": 1.0,
+            "formula": "component_types；分段线性 8→100, 20→60, 40→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-01": {
+            "rule_id": "G-01",
+            "name": "【示例】体形系数（越小越好）",
+            "status": "scored",
+            "value": 0.11437908496732026,
+            "score": 100.0,
+            "dimension": "green",
+            "weight_in_dimension": 2.0,
+            "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "G-02": {
+            "rule_id": "G-02",
+            "name": "【示例】预估装配率（越大越好）",
+            "status": "scored",
+            "value": 0.3,
+            "score": 23.33333333333333,
+            "dimension": "green",
+            "weight_in_dimension": 1.0,
+            "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-01": {
+            "rule_id": "Q-01",
+            "name": "【示例】主要房间南向比例（适中最好）",
+            "status": "scored",
+            "value": 0.68,
+            "score": 62.857142857142854,
+            "dimension": "quality",
+            "weight_in_dimension": 2.0,
+            "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-02": {
+            "rule_id": "Q-02",
+            "name": "【示例】得房率（越大越好）",
+            "status": "scored",
+            "value": 0.72,
+            "score": 37.692307692307665,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "Q-03": {
+            "rule_id": "Q-03",
+            "name": "【示例】单栋户数（越小越好，仅高层适用）",
+            "status": "scored",
+            "value": 102.0,
+            "score": 79.0,
+            "dimension": "quality",
+            "weight_in_dimension": 1.0,
+            "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          },
+          "S-01": {
+            "rule_id": "S-01",
+            "name": "【示例】风险特征数量（越少越好）",
+            "status": "scored",
+            "value": 2.0,
+            "score": 70.0,
+            "dimension": "structure",
+            "weight_in_dimension": 1.0,
+            "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0",
+            "source": "TODO(专业组)：示例数值，正式依据待补",
+            "missing_fields": []
+          }
+        },
+        "dimension_scores": {
+          "quality": 60.6016,
+          "structure": 70.0,
+          "construction": 64.4444,
+          "green": 74.4444
+        },
+        "dimension_coverage": {
+          "quality": 1.0,
+          "structure": 1.0,
+          "construction": 1.0,
+          "green": 1.0
+        },
+        "topsis": null
+      }
+    ]
+  },
+  "roles": {
+    "criteria": [
+      "quality",
+      "structure",
+      "construction",
+      "green"
+    ],
+    "roles": [
+      {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.3636363636363637,
+          0.1818181818181818,
+          0.0909090909090909,
+          0.3636363636363636
+        ],
+        "role": "government",
+        "role_name": "政府 / 保障房平台",
+        "note": "居住品质与绿色低碳并重（「为人民建好房」与双碳目标都是考核项）， 结构安全作为底线要求次之，施工友好主要由承包方承担，权重最低。",
+        "ahp": {
+          "weights": [
+            0.3636363636363637,
+            0.1818181818181818,
+            0.0909090909090909,
+            0.3636363636363636
+          ],
+          "lambda_max": 4.0,
+          "ci": 0.0,
+          "cr": 0.0,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      },
+      {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.39073413710298166,
+          0.1460987815076119,
+          0.3669530333930548,
+          0.09621404799635172
+        ],
+        "role": "developer",
+        "role_name": "开发企业",
+        "note": "居住品质是卖点，施工友好直接决定工期与成本，两者接近； 结构安全按规范做到即可，绿色低碳在没有强制指标时投入意愿最低。",
+        "ahp": {
+          "weights": [
+            0.39073413710298166,
+            0.1460987815076119,
+            0.3669530333930548,
+            0.09621404799635172
+          ],
+          "lambda_max": 4.04581928450145,
+          "ci": 0.015273094833816595,
+          "cr": 0.01697010537090733,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      },
+      {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.12096271328944483,
+          0.2196042290598375,
+          0.5384703443612728,
+          0.12096271328944473
+        ],
+        "role": "contractor",
+        "role_name": "施工总包",
+        "note": "施工友好压倒性重要（标准化程度直接决定工期、模板周转与工友安全）， 结构安全次之（风险特征越少越好施工），居住品质与绿色低碳不由自己决定。",
+        "ahp": {
+          "weights": [
+            0.12096271328944483,
+            0.2196042290598375,
+            0.5384703443612728,
+            0.12096271328944473
+          ],
+          "lambda_max": 4.0206201892593105,
+          "ci": 0.0068733964197701765,
+          "cr": 0.007637107133077974,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      },
+      {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.4828856165547409,
+          0.27197446132471886,
+          0.08815006135763408,
+          0.15698986076290622
+        ],
+        "role": "resident",
+        "role_name": "住户",
+        "note": "住得好最重要（采光、通风、户型、电梯），结构安全是不可让的底线， 绿色低碳能省物业费所以有一定分量，施工过程与自己关系最小。",
+        "ahp": {
+          "weights": [
+            0.4828856165547409,
+            0.27197446132471886,
+            0.08815006135763408,
+            0.15698986076290622
+          ],
+          "lambda_max": 4.014520958632259,
+          "ci": 0.004840319544086332,
+          "cr": 0.0053781328267625906,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      }
+    ],
+    "needs_review": [
+      "government",
+      "developer",
+      "contractor",
+      "resident"
+    ]
+  },
+  "ranks": {
+    "government": {
+      "project_id": 1,
+      "criteria": [
+        "quality",
+        "structure",
+        "construction",
+        "green"
+      ],
+      "weights_used": {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.3636363636363637,
+          0.1818181818181818,
+          0.0909090909090909,
+          0.3636363636363636
+        ],
+        "role": "government",
+        "role_name": "政府 / 保障房平台",
+        "note": "居住品质与绿色低碳并重（「为人民建好房」与双碳目标都是考核项）， 结构安全作为底线要求次之，施工友好主要由承包方承担，权重最低。",
+        "ahp": {
+          "weights": [
+            0.3636363636363637,
+            0.1818181818181818,
+            0.0909090909090909,
+            0.3636363636363636
+          ],
+          "lambda_max": 4.0,
+          "ci": 0.0,
+          "cr": 0.0,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      },
+      "ranking": [
+        {
+          "scheme_id": "3",
+          "scheme_name": "C MiC 高标准化",
+          "dimension_scores": [
+            59.522,
+            100.0,
+            100.0,
+            98.3333
+          ],
+          "closeness": 0.9591198783082729,
+          "rank": 1,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 1.0
+        },
+        {
+          "scheme_id": "4",
+          "scheme_name": "D 均衡",
+          "dimension_scores": [
+            54.3929,
+            100.0,
+            82.2222,
+            90.0
+          ],
+          "closeness": 0.6711369052059001,
+          "rank": 2,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3"
+          ],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "5",
+          "scheme_name": "E 被支配",
+          "dimension_scores": [
+            60.6016,
+            70.0,
+            64.4444,
+            74.4444
+          ],
+          "closeness": 0.3658127997974247,
+          "rank": 3,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "1",
+          "scheme_name": "A 高品质",
+          "dimension_scores": [
+            50.1429,
+            70.0,
+            43.3333,
+            70.5556
+          ],
+          "closeness": 0.0,
+          "rank": 4,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3",
+            "4",
+            "5"
+          ],
+          "first_place_probability": 0.0
+        }
+      ],
+      "excluded": [
+        {
+          "scheme_id": "2",
+          "scheme_name": "B 不合规",
+          "reason": "有 1 条 error 级硬约束未通过（C-01），默认不参与排名；想让它参与请传 include_noncompliant=true",
+          "failed_rules": [
+            "C-01"
+          ]
+        }
+      ],
+      "topsis": {
+        "schemes": [
+          {
+            "index": 0,
+            "closeness": 0.0,
+            "distance_to_best": 0.08312261956667717,
+            "distance_to_worst": 0.0,
+            "rank": 4
+          },
+          {
+            "index": 1,
+            "closeness": 0.9591198783082729,
+            "distance_to_best": 0.003485203277178023,
+            "distance_to_worst": 0.08176902623465149,
+            "rank": 1
+          },
+          {
+            "index": 2,
+            "closeness": 0.6711369052059001,
+            "distance_to_best": 0.02899876122121114,
+            "distance_to_worst": 0.05918006358540683,
+            "rank": 2
+          },
+          {
+            "index": 3,
+            "closeness": 0.3658127997974247,
+            "distance_to_best": 0.06422064641654687,
+            "distance_to_worst": 0.037043848350981054,
+            "rank": 3
+          }
+        ],
+        "ideal_best": [
+          0.19563624946483124,
+          0.1053244447933622,
+          0.060217445750085564,
+          0.21259609838645274
+        ],
+        "ideal_worst": [
+          0.16187310059949053,
+          0.07372711135535355,
+          0.026094206419221836,
+          0.1525408511594262
+        ],
+        "weights": [
+          0.3636363636363637,
+          0.1818181818181818,
+          0.0909090909090909,
+          0.3636363636363636
+        ]
+      },
+      "sensitivity": {
+        "baseline_weights": [
+          0.3636363636363637,
+          0.1818181818181818,
+          0.0909090909090909,
+          0.3636363636363636
+        ],
+        "baseline_ranks": [
+          4,
+          1,
+          2,
+          3
+        ],
+        "baseline_top_index": 1,
+        "cells": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.2,
+            "weights": [
+              0.29090909090909095,
+              0.20259740259740258,
+              0.10129870129870129,
+              0.40519480519480516
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.1,
+            "weights": [
+              0.3272727272727273,
+              0.1922077922077922,
+              0.0961038961038961,
+              0.3844155844155844
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.1,
+            "weights": [
+              0.4000000000000001,
+              0.1714285714285714,
+              0.0857142857142857,
+              0.3428571428571428
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.2,
+            "weights": [
+              0.43636363636363645,
+              0.161038961038961,
+              0.0805194805194805,
+              0.322077922077922
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.2,
+            "weights": [
+              0.3797979797979799,
+              0.14545454545454545,
+              0.09494949494949495,
+              0.3797979797979798
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.1,
+            "weights": [
+              0.37171717171717183,
+              0.1636363636363636,
+              0.09292929292929293,
+              0.3717171717171717
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.1,
+            "weights": [
+              0.3555555555555556,
+              0.19999999999999998,
+              0.08888888888888888,
+              0.3555555555555555
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.2,
+            "weights": [
+              0.3474747474747476,
+              0.21818181818181814,
+              0.08686868686868687,
+              0.3474747474747475
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.2,
+            "weights": [
+              0.3709090909090909,
+              0.1854545454545454,
+              0.07272727272727272,
+              0.3709090909090908
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.1,
+            "weights": [
+              0.36727272727272736,
+              0.18363636363636363,
+              0.0818181818181818,
+              0.36727272727272725
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.1,
+            "weights": [
+              0.36000000000000004,
+              0.17999999999999997,
+              0.09999999999999999,
+              0.35999999999999993
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.2,
+            "weights": [
+              0.3563636363636364,
+              0.17818181818181814,
+              0.10909090909090907,
+              0.35636363636363627
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.2,
+            "weights": [
+              0.4051948051948052,
+              0.20259740259740253,
+              0.10129870129870126,
+              0.2909090909090909
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.1,
+            "weights": [
+              0.3844155844155845,
+              0.1922077922077922,
+              0.0961038961038961,
+              0.3272727272727272
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.1,
+            "weights": [
+              0.3428571428571429,
+              0.1714285714285714,
+              0.0857142857142857,
+              0.39999999999999997
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.2,
+            "weights": [
+              0.32207792207792213,
+              0.161038961038961,
+              0.0805194805194805,
+              0.4363636363636363
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          }
+        ],
+        "flip_points": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "baseline_weight": 0.3636363636363637,
+            "flip_weight": 0.91,
+            "new_top_index": 3
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "baseline_weight": 0.1818181818181818,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "baseline_weight": 0.0909090909090909,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "baseline_weight": 0.3636363636363636,
+            "flip_weight": null,
+            "new_top_index": null
+          }
+        ]
+      },
+      "pareto": {
+        "non_dominated": [
+          1,
+          3
+        ],
+        "dominated_by": {
+          "0": [
+            1,
+            2,
+            3
+          ],
+          "2": [
+            1
+          ]
+        }
+      },
+      "rank_acceptability": {
+        "probabilities": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "first_place_probability": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "samples": 1000,
+        "concentration": 50.0,
+        "seed": 0
+      },
+      "elapsed_ms": 0,
+      "participant_ids": [
+        "1",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "developer": {
+      "project_id": 1,
+      "criteria": [
+        "quality",
+        "structure",
+        "construction",
+        "green"
+      ],
+      "weights_used": {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.39073413710298166,
+          0.1460987815076119,
+          0.3669530333930548,
+          0.09621404799635172
+        ],
+        "role": "developer",
+        "role_name": "开发企业",
+        "note": "居住品质是卖点，施工友好直接决定工期与成本，两者接近； 结构安全按规范做到即可，绿色低碳在没有强制指标时投入意愿最低。",
+        "ahp": {
+          "weights": [
+            0.39073413710298166,
+            0.1460987815076119,
+            0.3669530333930548,
+            0.09621404799635172
+          ],
+          "lambda_max": 4.04581928450145,
+          "ci": 0.015273094833816595,
+          "cr": 0.01697010537090733,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      },
+      "ranking": [
+        {
+          "scheme_id": "3",
+          "scheme_name": "C MiC 高标准化",
+          "dimension_scores": [
+            59.522,
+            100.0,
+            100.0,
+            98.3333
+          ],
+          "closeness": 0.9747660296976418,
+          "rank": 1,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 1.0
+        },
+        {
+          "scheme_id": "4",
+          "scheme_name": "D 均衡",
+          "dimension_scores": [
+            54.3929,
+            100.0,
+            82.2222,
+            90.0
+          ],
+          "closeness": 0.6724526521908942,
+          "rank": 2,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3"
+          ],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "5",
+          "scheme_name": "E 被支配",
+          "dimension_scores": [
+            60.6016,
+            70.0,
+            64.4444,
+            74.4444
+          ],
+          "closeness": 0.40835754791884565,
+          "rank": 3,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "1",
+          "scheme_name": "A 高品质",
+          "dimension_scores": [
+            50.1429,
+            70.0,
+            43.3333,
+            70.5556
+          ],
+          "closeness": 0.0,
+          "rank": 4,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3",
+            "4",
+            "5"
+          ],
+          "first_place_probability": 0.0
+        }
+      ],
+      "excluded": [
+        {
+          "scheme_id": "2",
+          "scheme_name": "B 不合规",
+          "reason": "有 1 条 error 级硬约束未通过（C-01），默认不参与排名；想让它参与请传 include_noncompliant=true",
+          "failed_rules": [
+            "C-01"
+          ]
+        }
+      ],
+      "topsis": {
+        "schemes": [
+          {
+            "index": 0,
+            "closeness": 0.0,
+            "distance_to_best": 0.14555079918989586,
+            "distance_to_worst": 0.0,
+            "rank": 4
+          },
+          {
+            "index": 1,
+            "closeness": 0.9747660296976418,
+            "distance_to_best": 0.003744916711625773,
+            "distance_to_worst": 0.1446628315243227,
+            "rank": 1
+          },
+          {
+            "index": 2,
+            "closeness": 0.6724526521908942,
+            "distance_to_best": 0.04851623250051451,
+            "distance_to_worst": 0.09960352125426086,
+            "rank": 2
+          },
+          {
+            "index": 3,
+            "closeness": 0.40835754791884565,
+            "distance_to_best": 0.09110688506906063,
+            "distance_to_worst": 0.06288288484786157,
+            "rank": 3
+          }
+        ],
+        "ideal_best": [
+          0.21021484308193727,
+          0.08463275176001776,
+          0.24306671819293177,
+          0.056250510838476
+        ],
+        "ideal_worst": [
+          0.17393570227804664,
+          0.05924292623201244,
+          0.10532883019469771,
+          0.04036057513085778
+        ],
+        "weights": [
+          0.39073413710298155,
+          0.14609878150761188,
+          0.36695303339305474,
+          0.09621404799635169
+        ]
+      },
+      "sensitivity": {
+        "baseline_weights": [
+          0.39073413710298155,
+          0.14609878150761188,
+          0.36695303339305474,
+          0.09621404799635169
+        ],
+        "baseline_ranks": [
+          4,
+          1,
+          2,
+          3
+        ],
+        "baseline_top_index": 1,
+        "cells": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.2,
+            "weights": [
+              0.31258730968238524,
+              0.16483798381667766,
+              0.41401986762479376,
+              0.10855483887614327
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.1,
+            "weights": [
+              0.3516607233926834,
+              0.1554683826621448,
+              0.3904864505089243,
+              0.10238444343624749
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.1,
+            "weights": [
+              0.42980755081327976,
+              0.13672918035307902,
+              0.3434196162771853,
+              0.09004365255645592
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.2,
+            "weights": [
+              0.46888096452357786,
+              0.12735957919854612,
+              0.31988619916131583,
+              0.08387325711656013
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.2,
+            "weights": [
+              0.4041047191065914,
+              0.1168790252060895,
+              0.3795098467312302,
+              0.09950640895608892
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.1,
+            "weights": [
+              0.39741942810478653,
+              0.1314889033568507,
+              0.37323144006214254,
+              0.09786022847622032
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.1,
+            "weights": [
+              0.38404884610117673,
+              0.16070865965837308,
+              0.36067462672396705,
+              0.09456786751648309
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.2,
+            "weights": [
+              0.3773635550993719,
+              0.17531853780913426,
+              0.3543962200548794,
+              0.0929216870366145
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.2,
+            "weights": [
+              0.43603285407769893,
+              0.163036352928765,
+              0.2935624267144438,
+              0.10736836627909217
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.1,
+            "weights": [
+              0.4133834955903403,
+              0.15456756721818848,
+              0.33025773005374925,
+              0.10179120713772195
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.1,
+            "weights": [
+              0.36808477861562294,
+              0.13762999579703536,
+              0.4036483367323602,
+              0.09063688885498147
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.2,
+            "weights": [
+              0.34543542012826434,
+              0.1291612100864588,
+              0.44034364007166565,
+              0.08505972971361125
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.2,
+            "weights": [
+              0.3990533885668255,
+              0.14920941962829054,
+              0.37476595340780267,
+              0.07697123839708137
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.1,
+            "weights": [
+              0.39489376283490346,
+              0.1476541005679512,
+              0.3708594934004287,
+              0.08659264319671653
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.1,
+            "weights": [
+              0.3865745113710597,
+              0.1445434624472726,
+              0.36304657338568086,
+              0.10583545279598687
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.2,
+            "weights": [
+              0.3824148856391377,
+              0.14298814338693325,
+              0.3591401133783069,
+              0.11545685759562202
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          }
+        ],
+        "flip_points": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "baseline_weight": 0.39073413710298155,
+            "flip_weight": 0.94,
+            "new_top_index": 3
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "baseline_weight": 0.14609878150761188,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "baseline_weight": 0.36695303339305474,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "baseline_weight": 0.09621404799635169,
+            "flip_weight": null,
+            "new_top_index": null
+          }
+        ]
+      },
+      "pareto": {
+        "non_dominated": [
+          1,
+          3
+        ],
+        "dominated_by": {
+          "0": [
+            1,
+            2,
+            3
+          ],
+          "2": [
+            1
+          ]
+        }
+      },
+      "rank_acceptability": {
+        "probabilities": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "first_place_probability": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "samples": 1000,
+        "concentration": 50.0,
+        "seed": 0
+      },
+      "elapsed_ms": 0,
+      "participant_ids": [
+        "1",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "contractor": {
+      "project_id": 1,
+      "criteria": [
+        "quality",
+        "structure",
+        "construction",
+        "green"
+      ],
+      "weights_used": {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.12096271328944483,
+          0.2196042290598375,
+          0.5384703443612728,
+          0.12096271328944473
+        ],
+        "role": "contractor",
+        "role_name": "施工总包",
+        "note": "施工友好压倒性重要（标准化程度直接决定工期、模板周转与工友安全）， 结构安全次之（风险特征越少越好施工），居住品质与绿色低碳不由自己决定。",
+        "ahp": {
+          "weights": [
+            0.12096271328944483,
+            0.2196042290598375,
+            0.5384703443612728,
+            0.12096271328944473
+          ],
+          "lambda_max": 4.0206201892593105,
+          "ci": 0.0068733964197701765,
+          "cr": 0.007637107133077974,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      },
+      "ranking": [
+        {
+          "scheme_id": "3",
+          "scheme_name": "C MiC 高标准化",
+          "dimension_scores": [
+            59.522,
+            100.0,
+            100.0,
+            98.3333
+          ],
+          "closeness": 0.9944278883299199,
+          "rank": 1,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 1.0
+        },
+        {
+          "scheme_id": "4",
+          "scheme_name": "D 均衡",
+          "dimension_scores": [
+            54.3929,
+            100.0,
+            82.2222,
+            90.0
+          ],
+          "closeness": 0.6930780760993225,
+          "rank": 2,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3"
+          ],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "5",
+          "scheme_name": "E 被支配",
+          "dimension_scores": [
+            60.6016,
+            70.0,
+            64.4444,
+            74.4444
+          ],
+          "closeness": 0.3632437602774594,
+          "rank": 3,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "1",
+          "scheme_name": "A 高品质",
+          "dimension_scores": [
+            50.1429,
+            70.0,
+            43.3333,
+            70.5556
+          ],
+          "closeness": 0.0,
+          "rank": 4,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3",
+            "4",
+            "5"
+          ],
+          "first_place_probability": 0.0
+        }
+      ],
+      "excluded": [
+        {
+          "scheme_id": "2",
+          "scheme_name": "B 不合规",
+          "reason": "有 1 条 error 级硬约束未通过（C-01），默认不参与排名；想让它参与请传 include_noncompliant=true",
+          "failed_rules": [
+            "C-01"
+          ]
+        }
+      ],
+      "topsis": {
+        "schemes": [
+          {
+            "index": 0,
+            "closeness": 0.0,
+            "distance_to_best": 0.20696221041457757,
+            "distance_to_worst": 0.0,
+            "rank": 4
+          },
+          {
+            "index": 1,
+            "closeness": 0.9944278883299199,
+            "distance_to_best": 0.0011593440231249807,
+            "distance_to_worst": 0.206902534806436,
+            "rank": 1
+          },
+          {
+            "index": 2,
+            "closeness": 0.6930780760993225,
+            "distance_to_best": 0.06404018035902674,
+            "distance_to_worst": 0.144612820199352,
+            "rank": 2
+          },
+          {
+            "index": 3,
+            "closeness": 0.3632437602774594,
+            "distance_to_best": 0.13354682421850855,
+            "distance_to_worst": 0.07618307850957479,
+            "rank": 3
+          }
+        ],
+        "ideal_best": [
+          0.06507790177085089,
+          0.1272133142500095,
+          0.3566783962456534,
+          0.07071955246283144
+        ],
+        "ideal_worst": [
+          0.05384667600699649,
+          0.08904931997500667,
+          0.15456051948031774,
+          0.05074232692024524
+        ],
+        "weights": [
+          0.12096271328944484,
+          0.21960422905983754,
+          0.538470344361273,
+          0.12096271328944475
+        ]
+      },
+      "sensitivity": {
+        "baseline_weights": [
+          0.12096271328944484,
+          0.21960422905983754,
+          0.538470344361273,
+          0.12096271328944475
+        ],
+        "baseline_ranks": [
+          4,
+          1,
+          2,
+          3
+        ],
+        "baseline_top_index": 1,
+        "cells": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.2,
+            "weights": [
+              0.09677017063155588,
+              0.22564809632201463,
+              0.5532899282093215,
+              0.1242918048371079
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.1,
+            "weights": [
+              0.10886644196050035,
+              0.2226261626909261,
+              0.5458801362852973,
+              0.12262725906327634
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.1,
+            "weights": [
+              0.13305898461838933,
+              0.21658229542874893,
+              0.5310605524372486,
+              0.11929816751561313
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.2,
+            "weights": [
+              0.1451552559473338,
+              0.2135603617976604,
+              0.5236507605132242,
+              0.11763362174178156
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.2,
+            "weights": [
+              0.1277705214263117,
+              0.17568338324787003,
+              0.5687755738995066,
+              0.12777052142631162
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.1,
+            "weights": [
+              0.12436661735787827,
+              0.1976438061538538,
+              0.5536229591303897,
+              0.12436661735787817
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.1,
+            "weights": [
+              0.11755880922101138,
+              0.2415646519658213,
+              0.523317729592156,
+              0.11755880922101128
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.2,
+            "weights": [
+              0.11415490515257797,
+              0.26352507487180504,
+              0.5081651148230392,
+              0.11415490515257787
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.2,
+            "weights": [
+              0.14918834650025073,
+              0.2708470315104804,
+              0.43077627548901837,
+              0.14918834650025062
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.1,
+            "weights": [
+              0.13507552989484778,
+              0.24522563028515892,
+              0.4846233099251457,
+              0.13507552989484767
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.1,
+            "weights": [
+              0.10684989668404186,
+              0.19398282783451604,
+              0.5923173787974003,
+              0.10684989668404178
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.2,
+            "weights": [
+              0.09273708007863896,
+              0.16836142660919468,
+              0.6461644132335275,
+              0.09273708007863889
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.2,
+            "weights": [
+              0.124291804837108,
+              0.22564809632201463,
+              0.5532899282093215,
+              0.0967701706315558
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.1,
+            "weights": [
+              0.12262725906327641,
+              0.22262616269092605,
+              0.5458801362852972,
+              0.10886644196050027
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.1,
+            "weights": [
+              0.11929816751561324,
+              0.21658229542874896,
+              0.5310605524372486,
+              0.13305898461838922
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.2,
+            "weights": [
+              0.11763362174178166,
+              0.2135603617976604,
+              0.5236507605132242,
+              0.1451552559473337
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          }
+        ],
+        "flip_points": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "baseline_weight": 0.12096271328944484,
+            "flip_weight": 0.94,
+            "new_top_index": 3
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "baseline_weight": 0.21960422905983754,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "baseline_weight": 0.538470344361273,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "baseline_weight": 0.12096271328944475,
+            "flip_weight": null,
+            "new_top_index": null
+          }
+        ]
+      },
+      "pareto": {
+        "non_dominated": [
+          1,
+          3
+        ],
+        "dominated_by": {
+          "0": [
+            1,
+            2,
+            3
+          ],
+          "2": [
+            1
+          ]
+        }
+      },
+      "rank_acceptability": {
+        "probabilities": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ]
+        ],
+        "first_place_probability": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "samples": 1000,
+        "concentration": 50.0,
+        "seed": 0
+      },
+      "elapsed_ms": 0,
+      "participant_ids": [
+        "1",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "resident": {
+      "project_id": 1,
+      "criteria": [
+        "quality",
+        "structure",
+        "construction",
+        "green"
+      ],
+      "weights_used": {
+        "source": "role",
+        "criteria": [
+          "quality",
+          "structure",
+          "construction",
+          "green"
+        ],
+        "weights": [
+          0.4828856165547409,
+          0.27197446132471886,
+          0.08815006135763408,
+          0.15698986076290622
+        ],
+        "role": "resident",
+        "role_name": "住户",
+        "note": "住得好最重要（采光、通风、户型、电梯），结构安全是不可让的底线， 绿色低碳能省物业费所以有一定分量，施工过程与自己关系最小。",
+        "ahp": {
+          "weights": [
+            0.4828856165547409,
+            0.27197446132471886,
+            0.08815006135763408,
+            0.15698986076290622
+          ],
+          "lambda_max": 4.014520958632259,
+          "ci": 0.004840319544086332,
+          "cr": 0.0053781328267625906,
+          "ri": 0.9,
+          "consistent": true
+        },
+        "consistency_warning": null
+      },
+      "ranking": [
+        {
+          "scheme_id": "3",
+          "scheme_name": "C MiC 高标准化",
+          "dimension_scores": [
+            59.522,
+            100.0,
+            100.0,
+            98.3333
+          ],
+          "closeness": 0.9418423233676215,
+          "rank": 1,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 1.0
+        },
+        {
+          "scheme_id": "4",
+          "scheme_name": "D 均衡",
+          "dimension_scores": [
+            54.3929,
+            100.0,
+            82.2222,
+            90.0
+          ],
+          "closeness": 0.6635845902494694,
+          "rank": 2,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3"
+          ],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "5",
+          "scheme_name": "E 被支配",
+          "dimension_scores": [
+            60.6016,
+            70.0,
+            64.4444,
+            74.4444
+          ],
+          "closeness": 0.4533752114741232,
+          "rank": 3,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 0.0
+        },
+        {
+          "scheme_id": "1",
+          "scheme_name": "A 高品质",
+          "dimension_scores": [
+            50.1429,
+            70.0,
+            43.3333,
+            70.5556
+          ],
+          "closeness": 0.0,
+          "rank": 4,
+          "is_non_dominated": false,
+          "dominated_by": [
+            "3",
+            "4",
+            "5"
+          ],
+          "first_place_probability": 0.0
+        }
+      ],
+      "excluded": [
+        {
+          "scheme_id": "2",
+          "scheme_name": "B 不合规",
+          "reason": "有 1 条 error 级硬约束未通过（C-01），默认不参与排名；想让它参与请传 include_noncompliant=true",
+          "failed_rules": [
+            "C-01"
+          ]
+        }
+      ],
+      "topsis": {
+        "schemes": [
+          {
+            "index": 0,
+            "closeness": 0.0,
+            "distance_to_best": 0.07753198294191062,
+            "distance_to_worst": 0.0,
+            "rank": 4
+          },
+          {
+            "index": 1,
+            "closeness": 0.9418423233676215,
+            "distance_to_best": 0.004628124966626457,
+            "distance_to_worst": 0.074950792806884,
+            "rank": 1
+          },
+          {
+            "index": 2,
+            "closeness": 0.6635845902494694,
+            "distance_to_best": 0.029608524991014597,
+            "distance_to_worst": 0.058403272723515934,
+            "rank": 2
+          },
+          {
+            "index": 3,
+            "closeness": 0.4533752114741232,
+            "distance_to_best": 0.056233322552550064,
+            "distance_to_worst": 0.046640392165362005,
+            "rank": 3
+          }
+        ],
+        "ideal_best": [
+          0.2597923100940258,
+          0.15755057525349878,
+          0.05838988691437049,
+          0.09178243768217241
+        ],
+        "ideal_worst": [
+          0.21495702796318458,
+          0.11028540267744917,
+          0.025302264866264915,
+          0.0658552592064772
+        ],
+        "weights": [
+          0.4828856165547409,
+          0.27197446132471886,
+          0.08815006135763408,
+          0.15698986076290622
+        ]
+      },
+      "sensitivity": {
+        "baseline_weights": [
+          0.4828856165547409,
+          0.27197446132471886,
+          0.08815006135763408,
+          0.15698986076290622
+        ],
+        "baseline_ranks": [
+          4,
+          1,
+          2,
+          3
+        ],
+        "baseline_top_index": 1,
+        "cells": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.2,
+            "weights": [
+              0.38630849324379274,
+              0.3227688540735459,
+              0.104613110188116,
+              0.18630954249454526
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": -0.1,
+            "weights": [
+              0.4345970548992668,
+              0.29737165769913243,
+              0.09638158577287505,
+              0.17164970162872575
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.1,
+            "weights": [
+              0.5311741782102151,
+              0.24657726495030524,
+              0.07991853694239308,
+              0.14233001989708663
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "delta": 0.2,
+            "weights": [
+              0.5794627398656891,
+              0.22118006857589173,
+              0.07168701252715211,
+              0.12767017903126712
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.2,
+            "weights": [
+              0.5189647232528118,
+              0.2175795690597751,
+              0.09473624939084722,
+              0.16871945829656584
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": -0.1,
+            "weights": [
+              0.5009251699037762,
+              0.24477701519224698,
+              0.09144315537424062,
+              0.162854659529736
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.1,
+            "weights": [
+              0.4648460632057053,
+              0.2991719074571908,
+              0.08485696734102749,
+              0.1511250619960764
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "delta": 0.2,
+            "weights": [
+              0.44680650985666986,
+              0.3263693535896626,
+              0.08156387332442093,
+              0.1452602632292466
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.2,
+            "weights": [
+              0.49222188887853907,
+              0.2772329066976886,
+              0.07052004908610726,
+              0.160025155337665
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": -0.1,
+            "weights": [
+              0.48755375271664003,
+              0.2746036840112037,
+              0.07933505522187068,
+              0.15850750805028563
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.1,
+            "weights": [
+              0.47821748039284173,
+              0.269345238638234,
+              0.09696506749339749,
+              0.1554722134755268
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "delta": 0.2,
+            "weights": [
+              0.4735493442309426,
+              0.2667160159517491,
+              0.10578007362916089,
+              0.1539545661881474
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.2,
+            "weights": [
+              0.5008707254351498,
+              0.28210416933821303,
+              0.0914332166163123,
+              0.12559188861032497
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": -0.1,
+            "weights": [
+              0.4918781709949453,
+              0.2770393153314659,
+              0.08979163898697318,
+              0.1412908746866156
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.1,
+            "weights": [
+              0.4738930621145364,
+              0.26690960731797175,
+              0.08650848372829496,
+              0.17268884683919686
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "delta": 0.2,
+            "weights": [
+              0.464900507674332,
+              0.2618447533112247,
+              0.08486690609895586,
+              0.18838783291548747
+            ],
+            "top_index": 1,
+            "ranks": [
+              4,
+              1,
+              2,
+              3
+            ],
+            "rank_changed": false,
+            "top_changed": false
+          }
+        ],
+        "flip_points": [
+          {
+            "criterion": "quality",
+            "criterion_index": 0,
+            "baseline_weight": 0.4828856165547409,
+            "flip_weight": 0.92,
+            "new_top_index": 3
+          },
+          {
+            "criterion": "structure",
+            "criterion_index": 1,
+            "baseline_weight": 0.27197446132471886,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "construction",
+            "criterion_index": 2,
+            "baseline_weight": 0.08815006135763408,
+            "flip_weight": null,
+            "new_top_index": null
+          },
+          {
+            "criterion": "green",
+            "criterion_index": 3,
+            "baseline_weight": 0.15698986076290622,
+            "flip_weight": null,
+            "new_top_index": null
+          }
+        ]
+      },
+      "pareto": {
+        "non_dominated": [
+          1,
+          3
+        ],
+        "dominated_by": {
+          "0": [
+            1,
+            2,
+            3
+          ],
+          "2": [
+            1
+          ]
+        }
+      },
+      "rank_acceptability": {
+        "probabilities": [
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.961,
+            0.039,
+            0.0
+          ],
+          [
+            0.0,
+            0.039,
+            0.961,
+            0.0
+          ]
+        ],
+        "first_place_probability": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "samples": 1000,
+        "concentration": 50.0,
+        "seed": 0
+      },
+      "elapsed_ms": 0,
+      "participant_ids": [
+        "1",
+        "3",
+        "4",
+        "5"
+      ]
+    }
+  },
+  "schema": {
+    "project_params": {
+      "title": "项目参数",
+      "description": "项目层（地块条件）参数，对所有候选方案相同",
+      "group_order": [
+        "基本信息",
+        "居住品质",
+        "结构与造价",
+        "施工与安全",
+        "绿色低碳"
+      ],
+      "fields": [
+        {
+          "name": "site_area",
+          "label": "用地面积",
+          "description": "用地面积",
+          "unit": "m²",
+          "group": "基本信息",
+          "type": "number",
+          "required": false,
+          "constraints": {},
+          "essential": true
+        },
+        {
+          "name": "far_max",
+          "label": "容积率上限",
+          "description": "容积率上限（无量纲系数，中国常见 0.5–4.0）",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "density_max",
+          "label": "建筑密度上限",
+          "description": "建筑密度上限（小数，0.30 = 30%）",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "height_max",
+          "label": "限高上限",
+          "description": "建筑限高上限",
+          "unit": "m",
+          "group": "基本信息",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "climate_zone",
+          "label": "气候分区",
+          "description": "建筑气候分区",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "严寒",
+            "寒冷",
+            "夏热冬冷",
+            "夏热冬暖",
+            "温和"
+          ]
+        }
+      ]
+    },
+    "scheme_params": {
+      "title": "方案参数",
+      "description": "方案层（设计输入）参数，每个候选方案独立",
+      "group_order": [
+        "基本信息",
+        "居住品质",
+        "结构与造价",
+        "施工与安全",
+        "绿色低碳"
+      ],
+      "fields": [
+        {
+          "name": "structure_type",
+          "label": "结构体系",
+          "description": "结构体系",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "剪力墙",
+            "框架-剪力墙",
+            "框架",
+            "钢结构",
+            "MiC"
+          ],
+          "essential": true
+        },
+        {
+          "name": "units",
+          "label": "总户数",
+          "description": "总户数",
+          "unit": "户",
+          "group": "基本信息",
+          "type": "integer",
+          "required": false,
+          "constraints": {},
+          "essential": true
+        },
+        {
+          "name": "unit_mix",
+          "label": "户型配比",
+          "description": "户型配比：键为户型名称（如 1室1厅），值为户数",
+          "unit": "户",
+          "group": "基本信息",
+          "type": "object<integer>",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "floor_height",
+          "label": "层高",
+          "description": "层高",
+          "unit": "m",
+          "group": "居住品质",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "inner_area_ratio",
+          "label": "得房率",
+          "description": "得房率（套内面积 / 建筑面积）",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "south_room_ratio",
+          "label": "南向比例",
+          "description": "主要房间南向比例",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "window_floor_ratio",
+          "label": "窗地比",
+          "description": "窗地比（窗面积 / 地面积）",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "window_wall_ratio",
+          "label": "窗墙比",
+          "description": "各朝向窗墙比，键为朝向（南/北/东/西），值为 0-1 小数",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "object<number>",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "elevators_per_unit",
+          "label": "电梯数/单元",
+          "description": "每单元电梯数",
+          "unit": "台",
+          "group": "居住品质",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "gfa",
+          "label": "总建筑面积",
+          "description": "总建筑面积",
+          "unit": "m²",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {},
+          "essential": true
+        },
+        {
+          "name": "footprint",
+          "label": "基底面积",
+          "description": "建筑基底面积",
+          "unit": "m²",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "buildings",
+          "label": "楼栋数",
+          "description": "楼栋数",
+          "unit": "栋",
+          "group": "结构与造价",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "floors",
+          "label": "层数",
+          "description": "层数",
+          "unit": "层",
+          "group": "结构与造价",
+          "type": "integer",
+          "required": false,
+          "constraints": {},
+          "essential": true
+        },
+        {
+          "name": "envelope_area",
+          "label": "外表面积",
+          "description": "建筑外表面积",
+          "unit": "m²",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "volume",
+          "label": "建筑体积",
+          "description": "建筑体积",
+          "unit": "m³",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "std_floor_repeat",
+          "label": "标准层重复率",
+          "description": "标准层重复率",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "component_types",
+          "label": "预制构件种类",
+          "description": "预制构件种类数",
+          "unit": "种",
+          "group": "施工与安全",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "risk_features",
+          "label": "风险特征",
+          "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "array<string>",
+          "required": false,
+          "constraints": {},
+          "options": [
+            "大悬挑",
+            "高大空间",
+            "深基坑",
+            "高支模",
+            "超长结构",
+            "不规则建筑",
+            "超限构件",
+            "复杂地质"
+          ]
+        },
+        {
+          "name": "prefab_ratio_est",
+          "label": "预估装配率",
+          "description": "预估装配率",
+          "unit": "—",
+          "group": "绿色低碳",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        }
+      ]
+    },
+    "eval_result": {
+      "title": "方案评估结果",
+      "description": "合规清单 + 指标值 + 维度得分 + 排名，一并交给报告生成器",
+      "group_order": [],
+      "fields": [
+        {
+          "name": "scheme_id",
+          "label": "scheme_id",
+          "description": "方案标识，对应 schemes 表里的 id",
+          "unit": "",
+          "group": "",
+          "type": "string",
+          "required": true,
+          "constraints": {}
+        },
+        {
+          "name": "scheme_name",
+          "label": "scheme_name",
+          "description": "方案名称，报告与看板展示用",
+          "unit": "",
+          "group": "",
+          "type": "string",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "compliance",
+          "label": "compliance",
+          "description": "合规判定清单",
+          "unit": "",
+          "group": "",
+          "type": "array<string>",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "metrics",
+          "label": "metrics",
+          "description": "键为指标 ID，values 为指标结果",
+          "unit": "",
+          "group": "",
+          "type": "object<string>",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "dimension_scores",
+          "label": "dimension_scores",
+          "description": "四维度加权得分",
+          "unit": "",
+          "group": "",
+          "type": "string",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "dimension_coverage",
+          "label": "dimension_coverage",
+          "description": "四维度数据覆盖率，0–1 小数",
+          "unit": "",
+          "group": "",
+          "type": "string",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "topsis",
+          "label": "topsis",
+          "description": "TOPSIS 排序结果；尚未参与排序时为 null",
+          "unit": "",
+          "group": "",
+          "type": "string",
+          "required": false,
+          "constraints": {}
+        }
+      ]
+    }
+  },
+  "rules": {
+    "rule_count": 12,
+    "hard_count": 4,
+    "metric_count": 8,
+    "rules": [
+      {
+        "definition": {
+          "id": "C-01",
+          "name": "【示例】住宅层高下限",
+          "type": "hard",
+          "source": "TODO(专业组)：示例数值，正式条文号待补",
+          "when": null,
+          "check": "floor_height >= 3.0",
+          "message": "层高 {floor_height} m 低于示例阈值 3.0 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "compliance.yaml"
+      },
+      {
+        "definition": {
+          "id": "C-02",
+          "name": "【示例】容积率不超地块上限",
+          "type": "hard",
+          "source": "TODO(专业组)：示例数值，正式条文号待补",
+          "when": null,
+          "check": "far <= far_max",
+          "message": "容积率 {far} 超过地块上限 {far_max}",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "compliance.yaml"
+      },
+      {
+        "definition": {
+          "id": "C-03",
+          "name": "【示例】建筑总高不超限高",
+          "type": "hard",
+          "source": "TODO(专业组)：示例数值，正式条文号待补",
+          "when": null,
+          "check": "height <= height_max",
+          "message": "建筑总高 {height} m 超过限高 {height_max} m",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "compliance.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-01",
+          "name": "【示例】标准层重复率（越大越好）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": null,
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "construction",
+          "value": "std_floor_repeat",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                0.5,
+                0.0
+              ],
+              [
+                0.8,
+                70.0
+              ],
+              [
+                0.95,
+                100.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 2.0
+        },
+        "source_file": "construction.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-02",
+          "name": "【示例】预制构件种类数（越少越好）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": null,
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "construction",
+          "value": "component_types",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                8.0,
+                100.0
+              ],
+              [
+                20.0,
+                60.0
+              ],
+              [
+                40.0,
+                0.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction.yaml"
+      },
+      {
+        "definition": {
+          "id": "G-01",
+          "name": "【示例】体形系数（越小越好）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": null,
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "green",
+          "value": "shape_coef",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                0.2,
+                100.0
+              ],
+              [
+                0.35,
+                70.0
+              ],
+              [
+                0.6,
+                0.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 2.0
+        },
+        "source_file": "green.yaml"
+      },
+      {
+        "definition": {
+          "id": "G-02",
+          "name": "【示例】预估装配率（越大越好）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": null,
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "green",
+          "value": "prefab_ratio_est",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                0.2,
+                0.0
+              ],
+              [
+                0.5,
+                70.0
+              ],
+              [
+                0.8,
+                100.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "green.yaml"
+      },
+      {
+        "definition": {
+          "id": "Q-01",
+          "name": "【示例】主要房间南向比例（适中最好）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": null,
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "quality",
+          "value": "south_room_ratio",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                0.2,
+                0.0
+              ],
+              [
+                0.55,
+                100.0
+              ],
+              [
+                0.9,
+                0.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 2.0
+        },
+        "source_file": "quality.yaml"
+      },
+      {
+        "definition": {
+          "id": "Q-02",
+          "name": "【示例】得房率（越大越好）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": null,
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "quality",
+          "value": "inner_area_ratio",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                0.65,
+                0.0
+              ],
+              [
+                0.78,
+                70.0
+              ],
+              [
+                0.88,
+                100.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "quality.yaml"
+      },
+      {
+        "definition": {
+          "id": "Q-03",
+          "name": "【示例】单栋户数（越小越好，仅高层适用）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": "floors >= 7",
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "quality",
+          "value": "units_per_building",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                60.0,
+                100.0
+              ],
+              [
+                120.0,
+                70.0
+              ],
+              [
+                200.0,
+                0.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "quality.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-01",
+          "name": "【示例】风险特征数量（越少越好）",
+          "type": "metric",
+          "source": "TODO(专业组)：示例数值，正式依据待补",
+          "when": null,
+          "check": null,
+          "message": null,
+          "severity": "error",
+          "dimension": "structure",
+          "value": "len(risk_features)",
+          "scoring": {
+            "kind": "piecewise",
+            "points": [
+              [
+                0.0,
+                100.0
+              ],
+              [
+                2.0,
+                70.0
+              ],
+              [
+                5.0,
+                0.0
+              ]
+            ]
+          },
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-02",
+          "name": "【示例】钢结构方案需人工复核防火（条件硬约束）",
+          "type": "hard",
+          "source": "TODO(专业组)：示例数值，正式条文号待补",
+          "when": "structure_type == '钢结构'",
+          "check": "risk_features contains '超限构件'",
+          "message": "钢结构方案请把需要人工复核的风险特征列入 risk_features",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure.yaml"
+      }
+    ],
+    "derived_quantities": [
+      {
+        "name": "far",
+        "label": "容积率",
+        "unit": "—",
+        "formula": "gfa / site_area",
+        "deps": [
+          "gfa",
+          "site_area"
+        ],
+        "note": "总建筑面积与用地面积之比；与项目层 far_max 比较即可判上限。"
+      },
+      {
+        "name": "density",
+        "label": "建筑密度",
+        "unit": "—",
+        "formula": "footprint / site_area",
+        "deps": [
+          "footprint",
+          "site_area"
+        ],
+        "note": "基底面积与用地面积之比，0–1 小数；与项目层 density_max 比较。"
+      },
+      {
+        "name": "shape_coef",
+        "label": "体形系数",
+        "unit": "—",
+        "formula": "envelope_area / volume",
+        "deps": [
+          "envelope_area",
+          "volume"
+        ],
+        "note": "外表面积与体积之比，越小越利于节能。"
+      },
+      {
+        "name": "height",
+        "label": "建筑总高",
+        "unit": "m",
+        "formula": "floors * floor_height",
+        "deps": [
+          "floors",
+          "floor_height"
+        ],
+        "note": "层数乘层高；与项目层 height_max 比较即可判限高。"
+      },
+      {
+        "name": "units_per_building",
+        "label": "单栋户数",
+        "unit": "户/栋",
+        "formula": "units / buildings",
+        "deps": [
+          "units",
+          "buildings"
+        ],
+        "note": "疏散与电梯服务的关键指标。"
+      },
+      {
+        "name": "units_per_floor",
+        "label": "每层户数",
+        "unit": "户/层",
+        "formula": "units / (floors * buildings)",
+        "deps": [
+          "units",
+          "floors",
+          "buildings"
+        ],
+        "note": "决定标准层交通核大小。"
+      },
+      {
+        "name": "floor_efficiency",
+        "label": "楼层效率",
+        "unit": "—",
+        "formula": "footprint * floors / gfa",
+        "deps": [
+          "footprint",
+          "floors",
+          "gfa"
+        ],
+        "note": "基底与层数对总建筑面积的利用率，越接近 1 越理想。"
+      }
+    ],
+    "todo_source_ids": [
+      "C-01",
+      "C-02",
+      "C-03",
+      "K-01",
+      "K-02",
+      "G-01",
+      "G-02",
+      "Q-01",
+      "Q-02",
+      "Q-03",
+      "S-01",
+      "S-02"
+    ]
+  },
+  "imports": [
+    {
+      "filename": "demo-import.xlsx",
+      "sha256": "36e8f3dcb436e454c45729490935404deee34dbd4aecdfd9a7f24cd512d56648",
+      "schemes": [
+        {
+          "name": "A 高品质",
+          "params": {
+            "structure_type": "剪力墙",
+            "units": 320,
+            "unit_mix": {
+              "三室": 160,
+              "两室": 160
+            },
+            "floor_height": 3.3,
+            "inner_area_ratio": 0.82,
+            "south_room_ratio": 0.85,
+            "window_floor_ratio": 0.28,
+            "window_wall_ratio": {
+              "南": 0.45,
+              "北": 0.3,
+              "东": 0.3,
+              "西": 0.3
+            },
+            "elevators_per_unit": 2,
+            "gfa": 38400.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 16,
+            "envelope_area": 15000.0,
+            "volume": 126720.0,
+            "std_floor_repeat": 0.65,
+            "component_types": 20,
+            "risk_features": [
+              "大悬挑",
+              "高支模"
+            ],
+            "prefab_ratio_est": 0.25
+          }
+        },
+        {
+          "name": "B 不合规",
+          "params": {
+            "structure_type": "剪力墙",
+            "units": 340,
+            "unit_mix": {
+              "两室": 170,
+              "三室": 170
+            },
+            "floor_height": 2.9,
+            "inner_area_ratio": 0.74,
+            "south_room_ratio": 0.7,
+            "window_floor_ratio": 0.22,
+            "window_wall_ratio": {
+              "南": 0.4,
+              "北": 0.25,
+              "东": 0.25,
+              "西": 0.25
+            },
+            "elevators_per_unit": 1,
+            "gfa": 40800.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 17,
+            "envelope_area": 13200.0,
+            "volume": 118320.0,
+            "std_floor_repeat": 0.8,
+            "component_types": 14,
+            "prefab_ratio_est": 0.45
+          }
+        },
+        {
+          "name": "C MiC 高标准化",
+          "params": {
+            "structure_type": "MiC",
+            "units": 432,
+            "unit_mix": {
+              "一室": 144,
+              "两室": 192,
+              "三室": 96
+            },
+            "floor_height": 3.0,
+            "inner_area_ratio": 0.76,
+            "south_room_ratio": 0.72,
+            "window_floor_ratio": 0.22,
+            "window_wall_ratio": {
+              "南": 0.4,
+              "北": 0.25,
+              "东": 0.25,
+              "西": 0.25
+            },
+            "elevators_per_unit": 2,
+            "gfa": 43200.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 18,
+            "envelope_area": 14400.0,
+            "volume": 129600.0,
+            "std_floor_repeat": 0.95,
+            "component_types": 8,
+            "prefab_ratio_est": 0.75
+          }
+        },
+        {
+          "name": "D 均衡",
+          "params": {
+            "structure_type": "框架-剪力墙",
+            "units": 408,
+            "unit_mix": {
+              "两室": 204,
+              "三室": 204
+            },
+            "floor_height": 3.0,
+            "inner_area_ratio": 0.78,
+            "south_room_ratio": 0.78,
+            "window_floor_ratio": 0.25,
+            "window_wall_ratio": {
+              "南": 0.42,
+              "北": 0.27,
+              "东": 0.27,
+              "西": 0.27
+            },
+            "elevators_per_unit": 2,
+            "gfa": 40800.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 17,
+            "envelope_area": 13000.0,
+            "volume": 122400.0,
+            "std_floor_repeat": 0.85,
+            "component_types": 12,
+            "prefab_ratio_est": 0.5
+          }
+        },
+        {
+          "name": "E 被支配",
+          "params": {
+            "structure_type": "框架",
+            "units": 408,
+            "unit_mix": {
+              "两室": 204,
+              "三室": 204
+            },
+            "floor_height": 3.0,
+            "inner_area_ratio": 0.72,
+            "south_room_ratio": 0.68,
+            "window_floor_ratio": 0.2,
+            "window_wall_ratio": {
+              "南": 0.35,
+              "北": 0.22,
+              "东": 0.22,
+              "西": 0.22
+            },
+            "elevators_per_unit": 1,
+            "gfa": 40800.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 17,
+            "envelope_area": 14000.0,
+            "volume": 122400.0,
+            "std_floor_repeat": 0.75,
+            "component_types": 15,
+            "risk_features": [
+              "大悬挑",
+              "复杂地质"
+            ],
+            "prefab_ratio_est": 0.3
+          }
+        }
+      ],
+      "project_params": {
+        "site_area": 18000.0,
+        "far_max": 2.5,
+        "density_max": 0.28,
+        "height_max": 54.0,
+        "climate_zone": "夏热冬冷"
+      },
+      "errors": []
+    },
+    {
+      "filename": "demo-invalid.xlsx",
+      "sha256": "7a35b0d6c282a40badda0ff5681a063ab39c36ab096aac96bf60975f225bcfdf",
+      "schemes": [
+        {
+          "name": "A 高品质",
+          "params": {
+            "structure_type": "剪力墙",
+            "units": 320,
+            "unit_mix": {
+              "三室": 160,
+              "两室": 160
+            },
+            "inner_area_ratio": 0.82,
+            "south_room_ratio": 0.85,
+            "window_floor_ratio": 0.28,
+            "window_wall_ratio": {
+              "南": 0.45,
+              "北": 0.3,
+              "东": 0.3,
+              "西": 0.3
+            },
+            "elevators_per_unit": 2,
+            "gfa": 38400.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "envelope_area": 15000.0,
+            "volume": 126720.0,
+            "std_floor_repeat": 0.65,
+            "component_types": 20,
+            "risk_features": [
+              "大悬挑",
+              "高支模"
+            ],
+            "prefab_ratio_est": 0.25
+          }
+        },
+        {
+          "name": "B 不合规",
+          "params": {
+            "structure_type": "剪力墙",
+            "units": 340,
+            "unit_mix": {
+              "两室": 170,
+              "三室": 170
+            },
+            "floor_height": 2.9,
+            "inner_area_ratio": 0.74,
+            "south_room_ratio": 0.7,
+            "window_floor_ratio": 0.22,
+            "window_wall_ratio": {
+              "南": 0.4,
+              "北": 0.25,
+              "东": 0.25,
+              "西": 0.25
+            },
+            "elevators_per_unit": 1,
+            "gfa": 40800.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 17,
+            "envelope_area": 13200.0,
+            "volume": 118320.0,
+            "std_floor_repeat": 0.8,
+            "component_types": 14,
+            "prefab_ratio_est": 0.45
+          }
+        },
+        {
+          "name": "C MiC 高标准化",
+          "params": {
+            "structure_type": "MiC",
+            "units": 432,
+            "unit_mix": {
+              "一室": 144,
+              "两室": 192,
+              "三室": 96
+            },
+            "floor_height": 3.0,
+            "inner_area_ratio": 0.76,
+            "south_room_ratio": 0.72,
+            "window_floor_ratio": 0.22,
+            "window_wall_ratio": {
+              "南": 0.4,
+              "北": 0.25,
+              "东": 0.25,
+              "西": 0.25
+            },
+            "elevators_per_unit": 2,
+            "gfa": 43200.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 18,
+            "envelope_area": 14400.0,
+            "volume": 129600.0,
+            "std_floor_repeat": 0.95,
+            "component_types": 8,
+            "prefab_ratio_est": 0.75
+          }
+        },
+        {
+          "name": "D 均衡",
+          "params": {
+            "structure_type": "框架-剪力墙",
+            "units": 408,
+            "unit_mix": {
+              "两室": 204,
+              "三室": 204
+            },
+            "floor_height": 3.0,
+            "inner_area_ratio": 0.78,
+            "south_room_ratio": 0.78,
+            "window_floor_ratio": 0.25,
+            "window_wall_ratio": {
+              "南": 0.42,
+              "北": 0.27,
+              "东": 0.27,
+              "西": 0.27
+            },
+            "elevators_per_unit": 2,
+            "gfa": 40800.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 17,
+            "envelope_area": 13000.0,
+            "volume": 122400.0,
+            "std_floor_repeat": 0.85,
+            "component_types": 12,
+            "prefab_ratio_est": 0.5
+          }
+        },
+        {
+          "name": "E 被支配",
+          "params": {
+            "structure_type": "框架",
+            "units": 408,
+            "unit_mix": {
+              "两室": 204,
+              "三室": 204
+            },
+            "floor_height": 3.0,
+            "inner_area_ratio": 0.72,
+            "south_room_ratio": 0.68,
+            "window_floor_ratio": 0.2,
+            "window_wall_ratio": {
+              "南": 0.35,
+              "北": 0.22,
+              "东": 0.22,
+              "西": 0.22
+            },
+            "elevators_per_unit": 1,
+            "gfa": 40800.0,
+            "footprint": 2400.0,
+            "buildings": 4,
+            "floors": 17,
+            "envelope_area": 14000.0,
+            "volume": 122400.0,
+            "std_floor_repeat": 0.75,
+            "component_types": 15,
+            "risk_features": [
+              "大悬挑",
+              "复杂地质"
+            ],
+            "prefab_ratio_est": 0.3
+          }
+        }
+      ],
+      "project_params": {
+        "site_area": 18000.0,
+        "far_max": 2.5,
+        "density_max": 0.28,
+        "height_max": 54.0,
+        "climate_zone": "夏热冬冷"
+      },
+      "errors": [
+        {
+          "scheme": "A 高品质",
+          "field": "floor_height",
+          "label": "层高",
+          "message": "【层高】应为数字，实际填了「错误演示：不是数字」"
+        },
+        {
+          "scheme": "A 高品质",
+          "field": "floors",
+          "label": "层数",
+          "message": "【层数】应为数字，实际填了「错误演示：不是数字」"
+        }
+      ]
+    },
+    {
+      "filename": "方案录入模板.xlsx",
+      "sha256": "793737e5d728137cabd4e79028813921a2436664763a8a6676a8eb80b8b317d2",
+      "schemes": [],
+      "project_params": {},
+      "errors": []
+    }
+  ],
+  "defaults": {
+    "project": {
+      "site_area": null,
+      "far_max": null,
+      "density_max": null,
+      "height_max": null,
+      "climate_zone": null
+    },
+    "scheme": {
+      "structure_type": null,
+      "units": null,
+      "unit_mix": null,
+      "floor_height": null,
+      "inner_area_ratio": null,
+      "south_room_ratio": null,
+      "window_floor_ratio": null,
+      "window_wall_ratio": null,
+      "elevators_per_unit": null,
+      "gfa": null,
+      "footprint": null,
+      "buildings": null,
+      "floors": null,
+      "envelope_area": null,
+      "volume": null,
+      "std_floor_repeat": null,
+      "component_types": null,
+      "risk_features": [],
+      "prefab_ratio_est": null
+    }
+  },
+  "validation": {
+    "project": {
+      "description": "项目层（地块条件）参数，对所有候选方案相同",
+      "group_order": [
+        "基本信息",
+        "居住品质",
+        "结构与造价",
+        "施工与安全",
+        "绿色低碳"
+      ],
+      "properties": {
+        "site_area": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "用地面积",
+          "essential": true,
+          "group": "基本信息",
+          "label": "用地面积",
+          "title": "Site Area",
+          "unit": "m²"
+        },
+        "far_max": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "容积率上限（无量纲系数，中国常见 0.5–4.0）",
+          "group": "基本信息",
+          "label": "容积率上限",
+          "title": "Far Max",
+          "unit": "—"
+        },
+        "density_max": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑密度上限（小数，0.30 = 30%）",
+          "group": "基本信息",
+          "label": "建筑密度上限",
+          "title": "Density Max",
+          "unit": "—"
+        },
+        "height_max": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑限高上限",
+          "group": "基本信息",
+          "label": "限高上限",
+          "title": "Height Max",
+          "unit": "m"
+        },
+        "climate_zone": {
+          "anyOf": [
+            {
+              "enum": [
+                "严寒",
+                "寒冷",
+                "夏热冬冷",
+                "夏热冬暖",
+                "温和"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑气候分区",
+          "enum": [
+            "严寒",
+            "寒冷",
+            "夏热冬冷",
+            "夏热冬暖",
+            "温和"
+          ],
+          "group": "基本信息",
+          "label": "气候分区",
+          "title": "Climate Zone",
+          "unit": "—"
+        }
+      },
+      "title": "项目参数",
+      "type": "object"
+    },
+    "scheme": {
+      "description": "方案层（设计输入）参数，每个候选方案独立",
+      "group_order": [
+        "基本信息",
+        "居住品质",
+        "结构与造价",
+        "施工与安全",
+        "绿色低碳"
+      ],
+      "properties": {
+        "structure_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "剪力墙",
+                "框架-剪力墙",
+                "框架",
+                "钢结构",
+                "MiC"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "结构体系",
+          "enum": [
+            "剪力墙",
+            "框架-剪力墙",
+            "框架",
+            "钢结构",
+            "MiC"
+          ],
+          "essential": true,
+          "group": "基本信息",
+          "label": "结构体系",
+          "title": "Structure Type",
+          "unit": "—"
+        },
+        "units": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "总户数",
+          "essential": true,
+          "group": "基本信息",
+          "label": "总户数",
+          "title": "Units",
+          "unit": "户"
+        },
+        "unit_mix": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "integer"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "户型配比：键为户型名称（如 1室1厅），值为户数",
+          "group": "基本信息",
+          "label": "户型配比",
+          "title": "Unit Mix",
+          "unit": "户"
+        },
+        "floor_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "层高",
+          "group": "居住品质",
+          "label": "层高",
+          "title": "Floor Height",
+          "unit": "m"
+        },
+        "inner_area_ratio": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "得房率（套内面积 / 建筑面积）",
+          "group": "居住品质",
+          "label": "得房率",
+          "title": "Inner Area Ratio",
+          "unit": "—"
+        },
+        "south_room_ratio": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "主要房间南向比例",
+          "group": "居住品质",
+          "label": "南向比例",
+          "title": "South Room Ratio",
+          "unit": "—"
+        },
+        "window_floor_ratio": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "窗地比（窗面积 / 地面积）",
+          "group": "居住品质",
+          "label": "窗地比",
+          "title": "Window Floor Ratio",
+          "unit": "—"
+        },
+        "window_wall_ratio": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "各朝向窗墙比，键为朝向（南/北/东/西），值为 0-1 小数",
+          "group": "居住品质",
+          "label": "窗墙比",
+          "title": "Window Wall Ratio",
+          "unit": "—"
+        },
+        "elevators_per_unit": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "每单元电梯数",
+          "group": "居住品质",
+          "label": "电梯数/单元",
+          "title": "Elevators Per Unit",
+          "unit": "台"
+        },
+        "gfa": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "总建筑面积",
+          "essential": true,
+          "group": "结构与造价",
+          "label": "总建筑面积",
+          "title": "Gfa",
+          "unit": "m²"
+        },
+        "footprint": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑基底面积",
+          "group": "结构与造价",
+          "label": "基底面积",
+          "title": "Footprint",
+          "unit": "m²"
+        },
+        "buildings": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "楼栋数",
+          "group": "结构与造价",
+          "label": "楼栋数",
+          "title": "Buildings",
+          "unit": "栋"
+        },
+        "floors": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "层数",
+          "essential": true,
+          "group": "结构与造价",
+          "label": "层数",
+          "title": "Floors",
+          "unit": "层"
+        },
+        "envelope_area": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑外表面积",
+          "group": "结构与造价",
+          "label": "外表面积",
+          "title": "Envelope Area",
+          "unit": "m²"
+        },
+        "volume": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑体积",
+          "group": "结构与造价",
+          "label": "建筑体积",
+          "title": "Volume",
+          "unit": "m³"
+        },
+        "std_floor_repeat": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "标准层重复率",
+          "group": "施工与安全",
+          "label": "标准层重复率",
+          "title": "Std Floor Repeat",
+          "unit": "—"
+        },
+        "component_types": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "预制构件种类数",
+          "group": "施工与安全",
+          "label": "预制构件种类",
+          "title": "Component Types",
+          "unit": "种"
+        },
+        "risk_features": {
+          "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
+          "group": "施工与安全",
+          "items": {
+            "type": "string"
+          },
+          "label": "风险特征",
+          "options": [
+            "大悬挑",
+            "高大空间",
+            "深基坑",
+            "高支模",
+            "超长结构",
+            "不规则建筑",
+            "超限构件",
+            "复杂地质"
+          ],
+          "title": "Risk Features",
+          "type": "array",
+          "unit": "—"
+        },
+        "prefab_ratio_est": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "预估装配率",
+          "group": "绿色低碳",
+          "label": "预估装配率",
+          "title": "Prefab Ratio Est",
+          "unit": "—"
+        }
+      },
+      "title": "方案参数",
+      "type": "object"
+    }
+  }
+}

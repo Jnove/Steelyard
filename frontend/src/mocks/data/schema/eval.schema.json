@@ -1,0 +1,77 @@
+{
+  "title": "方案评估结果",
+  "description": "合规清单 + 指标值 + 维度得分 + 排名，一并交给报告生成器",
+  "group_order": [],
+  "fields": [
+    {
+      "name": "scheme_id",
+      "label": "scheme_id",
+      "description": "方案标识，对应 schemes 表里的 id",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": true,
+      "constraints": {}
+    },
+    {
+      "name": "scheme_name",
+      "label": "scheme_name",
+      "description": "方案名称，报告与看板展示用",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "compliance",
+      "label": "compliance",
+      "description": "合规判定清单",
+      "unit": "",
+      "group": "",
+      "type": "array<string>",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "metrics",
+      "label": "metrics",
+      "description": "键为指标 ID，values 为指标结果",
+      "unit": "",
+      "group": "",
+      "type": "object<string>",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "dimension_scores",
+      "label": "dimension_scores",
+      "description": "四维度加权得分",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "dimension_coverage",
+      "label": "dimension_coverage",
+      "description": "四维度数据覆盖率，0–1 小数",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "topsis",
+      "label": "topsis",
+      "description": "TOPSIS 排序结果；尚未参与排序时为 null",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    }
+  ]
+}
