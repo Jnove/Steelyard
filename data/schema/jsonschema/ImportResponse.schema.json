@@ -1,0 +1,96 @@
+{
+  "$defs": {
+    "ImportCreatedItem": {
+      "description": "成功创建的方案记录。",
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "integer"
+        },
+        "name": {
+          "description": "实际写入的方案名（已做项目内唯一化）",
+          "title": "Name",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "name"
+      ],
+      "title": "ImportCreatedItem",
+      "type": "object"
+    },
+    "ImportErrorItem": {
+      "description": "单条导入错误（与 ``app.excel.ParseError`` 对应的 API 形态）。",
+      "properties": {
+        "scheme": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "出错方案名；项目层错误为 null",
+          "title": "Scheme"
+        },
+        "field": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "出错字段的英文名",
+          "title": "Field"
+        },
+        "label": {
+          "description": "字段中文名",
+          "title": "Label",
+          "type": "string"
+        },
+        "message": {
+          "description": "面向用户的错误说明",
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "message"
+      ],
+      "title": "ImportErrorItem",
+      "type": "object"
+    }
+  },
+  "description": "导入结果。",
+  "properties": {
+    "created": {
+      "items": {
+        "$ref": "#/$defs/ImportCreatedItem"
+      },
+      "title": "Created",
+      "type": "array"
+    },
+    "errors": {
+      "items": {
+        "$ref": "#/$defs/ImportErrorItem"
+      },
+      "title": "Errors",
+      "type": "array"
+    },
+    "project_params_updated": {
+      "default": false,
+      "description": "是否顺便把 xlsx 里的项目参数写入了空项目",
+      "title": "Project Params Updated",
+      "type": "boolean"
+    }
+  },
+  "title": "ImportResponse",
+  "type": "object"
+}

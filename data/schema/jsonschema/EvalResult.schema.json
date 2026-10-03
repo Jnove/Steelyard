@@ -1,0 +1,359 @@
+{
+  "$defs": {
+    "ComplianceItem": {
+      "description": "对应 rules/*.yaml 中一条规则的判定结果",
+      "properties": {
+        "rule_id": {
+          "description": "规则 ID，例如 C-03",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "规则中文名",
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "description": "判定结果",
+          "enum": [
+            "passed",
+            "failed",
+            "insufficient_data",
+            "not_applicable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "severity": {
+          "default": "error",
+          "description": "严重程度，来自规则的 severity 字段",
+          "enum": [
+            "error",
+            "warning"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "实际取值；只有能从 check 里认出被比较字段时才有",
+          "title": "Value"
+        },
+        "limit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "规则要求的限值，例如 '>= 3.0'",
+          "title": "Limit"
+        },
+        "formula": {
+          "default": "",
+          "description": "判定所用的 check 表达式，供报告溯源",
+          "title": "Formula",
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "规范条文出处",
+          "title": "Source"
+        },
+        "missing_fields": {
+          "description": "status 为 insufficient_data 时，缺少的原始字段名",
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        },
+        "message": {
+          "description": "人类可读的判定说明",
+          "title": "Message",
+          "type": "string"
+        }
+      },
+      "required": [
+        "rule_id",
+        "name",
+        "status",
+        "message"
+      ],
+      "title": "ComplianceItem",
+      "type": "object"
+    },
+    "DimensionCoverage": {
+      "description": "各维度内有数据的指标权重占比，0–1 小数",
+      "properties": {
+        "quality": {
+          "default": 0.0,
+          "description": "居住品质",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Quality",
+          "type": "number"
+        },
+        "structure": {
+          "default": 0.0,
+          "description": "结构安全",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Structure",
+          "type": "number"
+        },
+        "construction": {
+          "default": 0.0,
+          "description": "施工友好",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Construction",
+          "type": "number"
+        },
+        "green": {
+          "default": 0.0,
+          "description": "绿色低碳",
+          "maximum": 1,
+          "minimum": 0,
+          "title": "Green",
+          "type": "number"
+        }
+      },
+      "title": "DimensionCoverage",
+      "type": "object"
+    },
+    "DimensionScores": {
+      "description": "quality / structure / construction / green 四个维度 0-100 的加权得分",
+      "properties": {
+        "quality": {
+          "default": 0.0,
+          "description": "居住品质",
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Quality",
+          "type": "number"
+        },
+        "structure": {
+          "default": 0.0,
+          "description": "结构安全",
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Structure",
+          "type": "number"
+        },
+        "construction": {
+          "default": 0.0,
+          "description": "施工友好",
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Construction",
+          "type": "number"
+        },
+        "green": {
+          "default": 0.0,
+          "description": "绿色低碳",
+          "maximum": 100,
+          "minimum": 0,
+          "title": "Green",
+          "type": "number"
+        }
+      },
+      "title": "DimensionScores",
+      "type": "object"
+    },
+    "MetricResult": {
+      "description": "单条 metric 规则的计算值、得分、所在维度与公式出处",
+      "properties": {
+        "rule_id": {
+          "description": "规则 ID，例如 K-01",
+          "title": "Rule Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "指标中文名",
+          "title": "Name",
+          "type": "string"
+        },
+        "status": {
+          "default": "scored",
+          "description": "指标状态",
+          "enum": [
+            "scored",
+            "insufficient_data",
+            "not_applicable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "计算得到的指标值",
+          "title": "Value"
+        },
+        "score": {
+          "anyOf": [
+            {
+              "maximum": 100,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "该指标 0-100 的得分；数据不足或不适用时为 null",
+          "title": "Score"
+        },
+        "dimension": {
+          "description": "所属评估维度",
+          "enum": [
+            "quality",
+            "structure",
+            "construction",
+            "green"
+          ],
+          "title": "Dimension",
+          "type": "string"
+        },
+        "weight_in_dimension": {
+          "default": 1.0,
+          "description": "同维度内的相对权重",
+          "exclusiveMinimum": 0,
+          "title": "Weight In Dimension",
+          "type": "number"
+        },
+        "formula": {
+          "description": "评分公式或说明",
+          "title": "Formula",
+          "type": "string"
+        },
+        "source": {
+          "description": "规则来源（专业组 / 规范）",
+          "title": "Source",
+          "type": "string"
+        },
+        "missing_fields": {
+          "description": "status 为 insufficient_data 时，缺少的原始字段名",
+          "items": {
+            "type": "string"
+          },
+          "title": "Missing Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "rule_id",
+        "name",
+        "dimension",
+        "formula",
+        "source"
+      ],
+      "title": "MetricResult",
+      "type": "object"
+    },
+    "RankResult": {
+      "description": "TOPSIS 贴近度与排名",
+      "properties": {
+        "closeness": {
+          "description": "TOPSIS 贴近度，0-1",
+          "title": "Closeness",
+          "type": "number"
+        },
+        "rank": {
+          "description": "在所有参与排序方案中的排名，从 1 开始",
+          "title": "Rank",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "closeness",
+        "rank"
+      ],
+      "title": "RankResult",
+      "type": "object"
+    }
+  },
+  "description": "合规清单 + 指标值 + 维度得分 + 排名，一并交给报告生成器",
+  "properties": {
+    "scheme_id": {
+      "description": "方案标识，对应 schemes 表里的 id",
+      "title": "Scheme Id",
+      "type": "string"
+    },
+    "scheme_name": {
+      "default": "",
+      "description": "方案名称，报告与看板展示用",
+      "title": "Scheme Name",
+      "type": "string"
+    },
+    "compliance": {
+      "description": "合规判定清单",
+      "items": {
+        "$ref": "#/$defs/ComplianceItem"
+      },
+      "title": "Compliance",
+      "type": "array"
+    },
+    "metrics": {
+      "additionalProperties": {
+        "$ref": "#/$defs/MetricResult"
+      },
+      "description": "键为指标 ID，values 为指标结果",
+      "title": "Metrics",
+      "type": "object"
+    },
+    "dimension_scores": {
+      "$ref": "#/$defs/DimensionScores",
+      "description": "四维度加权得分"
+    },
+    "dimension_coverage": {
+      "$ref": "#/$defs/DimensionCoverage",
+      "description": "四维度数据覆盖率，0–1 小数"
+    },
+    "topsis": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/RankResult"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "TOPSIS 排序结果；尚未参与排序时为 null"
+    }
+  },
+  "required": [
+    "scheme_id"
+  ],
+  "title": "EvalResult",
+  "type": "object"
+}
