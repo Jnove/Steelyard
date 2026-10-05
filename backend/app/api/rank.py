@@ -398,7 +398,7 @@ def rank_project(
     ranking = _build_ranking(participants, topsis_result, pareto_result, acceptability)
     elapsed_ms = (time.perf_counter() - started) * 1000.0
 
-    return RankResponse(
+    response = RankResponse(
         project_id=project_id,
         scheme_order=[str(scheme.id) for scheme, _ in participants],
         criteria=list(CRITERION_ORDER),
@@ -411,6 +411,13 @@ def rank_project(
         rank_acceptability=acceptability,
         elapsed_ms=elapsed_ms,
     )
+    # T8 对话需要读取权重滑杆经 REST 生成的最近一次排名。
+    from app.agents.tools import record_ranking
+
+    record_ranking(
+        session, project_id, response.model_dump(mode="json"), payload.include_whatif, pairs
+    )
+    return response
 
 
 def _build_ranking(
