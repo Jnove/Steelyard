@@ -2,7 +2,7 @@
 #
 # 期望报错：METRIC_BAD_DIMENSION
 # dimension 必须是 quality / structure / construction / green 之一。
-- id: K-BAD-DIM
+- id: K-94
   name: dimension 缺失或错误
   type: metric
   dimension: cost

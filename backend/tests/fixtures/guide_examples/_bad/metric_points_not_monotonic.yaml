@@ -2,7 +2,7 @@
 #
 # 期望报错：METRIC_POINTS_NOT_MONOTONIC
 # 第一个点的指标值是 0.95，第二个反而是 0.80——破坏了分段线性单调递增前提。
-- id: K-BAD-MONO
+- id: K-95
   name: points 不单调
   type: metric
   dimension: construction

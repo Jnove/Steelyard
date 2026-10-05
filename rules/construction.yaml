@@ -1,0 +1,33 @@
+# 施工友好评分指标（metric，dimension: construction）。规则 ID 用 K-XX。
+#
+# ⚠️ 本文件当前只有**格式示例**：分段点都是随手取的，仅用于演示写法。
+#    专业组定稿后请去掉 name 的「【示例】」前缀，并把 source 换成真实依据。
+
+- id: K-01
+  name: 【示例】标准层重复率（越大越好）
+  type: metric
+  dimension: construction
+  value: "std_floor_repeat"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.50, 0]
+      - [0.80, 70]
+      - [0.95, 100]
+  weight_in_dimension: 2
+  source: "TODO(专业组)：示例数值，正式依据待补"
+
+- id: K-02
+  name: 【示例】预制构件种类数（越少越好）
+  type: metric
+  dimension: construction
+  value: "component_types"
+  scoring:
+    kind: piecewise
+    # 「越少越好」：指标值从小到大，分数递减。
+    points:
+      - [8, 100]
+      - [20, 60]
+      - [40, 0]
+  weight_in_dimension: 1
+  source: "TODO(专业组)：示例数值，正式依据待补"

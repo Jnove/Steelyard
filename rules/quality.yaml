@@ -1,0 +1,51 @@
+# 居住品质评分指标（metric，dimension: quality）。规则 ID 用 Q-XX。
+#
+# ⚠️ 本文件当前只有**格式示例**：分段点都是随手取的，仅用于演示写法与引擎行为。
+#    专业组定稿后请去掉 name 的「【示例】」前缀，并把 source 换成真实依据。
+
+- id: Q-01
+  name: 【示例】主要房间南向比例（适中最好）
+  type: metric
+  dimension: quality
+  value: "south_room_ratio"
+  scoring:
+    kind: piecewise
+    # 「适中最好」= 分数先升后降。指标值仍然必须从小到大严格递增。
+    points:
+      - [0.20, 0]
+      - [0.55, 100]
+      - [0.90, 0]
+  weight_in_dimension: 2
+  source: "TODO(专业组)：示例数值，正式依据待补"
+
+- id: Q-02
+  name: 【示例】得房率（越大越好）
+  type: metric
+  dimension: quality
+  value: "inner_area_ratio"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.65, 0]
+      - [0.78, 70]
+      - [0.88, 100]
+  weight_in_dimension: 1
+  source: "TODO(专业组)：示例数值，正式依据待补"
+
+- id: Q-03
+  name: 【示例】单栋户数（越小越好，仅高层适用）
+  type: metric
+  dimension: quality
+  # units_per_building 是派生量（units / buildings）。
+  value: "units_per_building"
+  # when 为假时这条指标对该方案记为「不适用」，不计入维度得分，也不拉低覆盖率。
+  when: "floors >= 7"
+  scoring:
+    kind: piecewise
+    # 「越小越好」：指标值从小到大，分数递减。
+    points:
+      - [60, 100]
+      - [120, 70]
+      - [200, 0]
+  weight_in_dimension: 1
+  source: "TODO(专业组)：示例数值，正式依据待补"

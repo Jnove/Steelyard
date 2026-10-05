@@ -62,6 +62,7 @@ make down         # docker compose 关闭
 ├── frontend/          Vite + React + TypeScript 前端
 ├── rules/             土木 / 建筑同学维护的 YAML 规则
 ├── data/              SQLite 数据库与测试方案
+├── docs/              规则编写指南、字段对照表、未决事项清单
 ├── scripts/           工程脚本（check_rules.py 等）
 ├── docker-compose.yml 一键启动
 └── Makefile           常用命令
@@ -80,3 +81,7 @@ make down         # docker compose 关闭
 - [ ] **T7**：前端页面与 ECharts 看板
 
 详见 `Agent.md` 的章节划分与 PR 描述。
+
+**还没定下来的事**都记在 [docs/open-items.md](./docs/open-items.md)：
+专业组待定的规则阈值与权重在第一部分，开发侧待修项在第二部分。
+接手前先过一遍这份清单。

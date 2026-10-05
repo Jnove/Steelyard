@@ -7,12 +7,17 @@
 整个文档尽量口语化；遇到术语当场解释；所有数值都标注「示例数值」，
 **不引用任何真实规范条文号**——这些由对应专业组填写。
 
+> 📋 **要填哪些值、要定哪些事，逐条列在 [open-items.md](open-items.md) 第一部分**
+> （12 条规则的阈值、分段点、维度权重，以及几个待定的判断口径）。
+> 这份指南教你「怎么写」，那份清单告你「写什么」。
+
 ---
 
 ## 目录
 
 1. [五分钟看懂 YAML](#1-五分钟看懂-yaml)
 2. [字段对照表（自动生成，不要手改）](#2-字段对照表自动生成不要手改)
+   - [2.1 规则编号怎么取](#21-规则编号怎么取)
 3. [硬约束（hard）怎么写](#3-硬约束hard怎么写)
 4. [评分指标（metric）怎么写](#4-评分指标metric怎么写)
 5. [source 字段怎么填](#5-source-字段怎么填)
@@ -97,7 +102,7 @@ message: '层高 {floor_height} m 低于 3.0 m'  # ✅ 也可用单引号
 | --- | --- | --- |
 | `⇥check: "..."` | 用了 Tab 缩进 | 全选当前层，按一次 Tab → 改成 2 个空格 |
 | `id：C-03` | 用了中文全角冒号 | 把 `：` 替换成英文 `:` |
-| 子键缩进与兄弟节点差 1 个空格 | 缩进不齐（典型表现：第二条规则的子键比第一条多缩了一格） | 让所有同辈字段对齐到同一列（建议 2 或 4 空格） |
+| 子键缩进与兄弟节点差 1 个空格 | 缩进不齐（典型表现：第二条规则的子键比第一条多缩了一格） | 让同一条规则里的所有字段对齐到同一列（统一 2 个空格） |
 
 每个错误 `check_rules` 都会单独报一行，并指出**行号**，照着行号找就行。
 
@@ -119,6 +124,26 @@ CI 会用 `--check` 选项校验，磁盘文件与重新生成结果不一致就
 > 一句话记忆：**字段名用英文小写下划线；单位看表；比例字段一律填 0–1 小数**
 > （如 0.82 表示 82%，不要写 82）。
 
+### 2.1 规则编号怎么取
+
+每条规则都要有一个**全局唯一**的编号（`id`），格式是**一个大写字母 + 短横线 + 两位数字**，
+比如 `C-03`、`Q-01`、`K-12`。前缀按你写在哪个文件里选：
+
+| 文件 | 前缀 | 放什么 |
+| --- | --- | --- |
+| `rules/compliance.yaml` | `C` | 规范硬约束 |
+| `rules/quality.yaml` | `Q` | 居住品质评分指标 |
+| `rules/structure.yaml` | `S` | 结构安全评分指标 |
+| `rules/construction.yaml` | `K` | 施工友好评分指标 |
+| `rules/green.yaml` | `G` | 绿色低碳评分指标 |
+
+**为什么管这么严**：报告里每个结论后面都会跟一个规则编号，评委可以顺着编号回查依据。
+编号格式统一、全局不重，这条链才走得通。想写 `C-层高` 这种"看得懂的编号"是好意，
+但编号会出现在报告、前端、数据库里，中文和不定长会带来一连串麻烦——名字写在 `name` 里就好。
+
+新加一条规则时，**在同一个文件里往后顺一个没用过的数字**即可（不必连续）。
+编号撞了 `check_rules` 会报错，并告诉你另一处在哪一行。
+
 ---
 
 ## 3. 硬约束（hard）怎么写
@@ -130,12 +155,13 @@ CI 会用 `--check` 选项校验，磁盘文件与重新生成结果不一致就
 
 | 字段 | 是否必填 | 含义 |
 | --- | --- | --- |
-| `id` | ✅ | 规则编号，全局唯一，建议用 `C-XX`（Compliance） |
+| `id` | ✅ | 规则编号，全局唯一。格式固定为 **一个大写字母 + 短横线 + 两位数字**，如 `C-03`；前缀按文件选（见 [2.1](#21-规则编号怎么取)） |
 | `name` | ✅ | 中文名，给前端 / 报告看 |
 | `type` | ✅ | 固定写 `hard` |
 | `check` | ✅ | 一个布尔表达式，违反即不通过 |
 | `message` | 可选 | 不通过时给用户看的说明，可以用 `{字段名}` 占位实际取值 |
 | `when` | 可选 | 守卫表达式：为真时才检查 `check`；详见 3.4 |
+| `severity` | 可选 | `error`（默认，标红并踢出排名）或 `warning`（只提示，不影响排名） |
 | `source` | ✅ | 条文 / 经验出处，见第 5 节 |
 
 `check` 表达式支持的运算符：`>=`、`<=`、`>`、`<`、`==`、`!=`、`and`、`or`、`not`，
@@ -154,7 +180,7 @@ CI 会用 `--check` 选项校验，磁盘文件与重新生成结果不一致就
   source: "TODO(专业组)：示例数值，正式条文号待补"
 ```
 
-完整文件见 [`hard_simple.yaml`](../../backend/tests/fixtures/guide_examples/hard_simple.yaml)。
+完整文件见 [`hard_simple.yaml`](../backend/tests/fixtures/guide_examples/hard_simple.yaml)。
 
 ### 3.3 示例 2：用派生量
 
@@ -164,15 +190,15 @@ CI 会用 `--check` 选项校验，磁盘文件与重新生成结果不一致就
 > 体形系数（外表面积 / 体积）不超过 0.5（示例数值）。
 
 ```yaml
-- id: C-SHAPE
+- id: C-10
   name: 体形系数上限
   type: hard
-  check: "shape_coefficient <= 0.5"
-  message: "体形系数 {shape_coefficient} 偏大，建筑能耗与造价不利"
+  check: "shape_coef <= 0.5"
+  message: "体形系数 {shape_coef} 偏大，建筑能耗与造价不利"
   source: "TODO(专业组)：示例数值，正式条文号待补"
 ```
 
-完整文件见 [`hard_derived.yaml`](../../backend/tests/fixtures/guide_examples/hard_derived.yaml)。
+完整文件见 [`hard_derived.yaml`](../backend/tests/fixtures/guide_examples/hard_derived.yaml)。
 
 ### 3.4 示例 3：带 `when` 条件
 
@@ -182,7 +208,7 @@ CI 会用 `--check` 选项校验，磁盘文件与重新生成结果不一致就
 > 仅当结构体系是钢结构时，要求方案把「防火达标」列入风险特征（示例规则）。
 
 ```yaml
-- id: C-STEEL-COAT
+- id: C-11
   name: 钢结构防火涂层（条件检查）
   type: hard
   when: "structure_type == '钢结构'"
@@ -191,7 +217,7 @@ CI 会用 `--check` 选项校验，磁盘文件与重新生成结果不一致就
   source: "TODO(专业组)：示例数值，正式条文号待补"
 ```
 
-完整文件见 [`hard_when.yaml`](../../backend/tests/fixtures/guide_examples/hard_when.yaml)。
+完整文件见 [`hard_when.yaml`](../backend/tests/fixtures/guide_examples/hard_when.yaml)。
 
 ---
 
@@ -252,7 +278,7 @@ scoring:
   source: "TODO(专业组)：示例数值，正式条文号待补"
 ```
 
-完整文件见 [`metric_bigger_is_better.yaml`](../../backend/tests/fixtures/guide_examples/metric_bigger_is_better.yaml)。
+完整文件见 [`metric_bigger_is_better.yaml`](../backend/tests/fixtures/guide_examples/metric_bigger_is_better.yaml)。
 
 #### (2) 越小越好
 
@@ -263,7 +289,7 @@ scoring:
 注意：**横轴仍按 x 从小到大排列**（必须严格递增），纵轴随之递减。
 
 ```yaml
-- id: K-02
+- id: Q-02
   name: 单栋户数（越小越好）
   type: metric
   dimension: quality
@@ -278,7 +304,7 @@ scoring:
   source: "TODO(专业组)：示例数值，正式条文号待补"
 ```
 
-完整文件见 [`metric_smaller_is_better.yaml`](../../backend/tests/fixtures/guide_examples/metric_smaller_is_better.yaml)。
+完整文件见 [`metric_smaller_is_better.yaml`](../backend/tests/fixtures/guide_examples/metric_smaller_is_better.yaml)。
 
 #### (3) 适中最好
 
@@ -290,7 +316,7 @@ scoring:
 到达峰值后再降回 0：
 
 ```yaml
-- id: K-03
+- id: Q-03
   name: 主要房间南向比例（适中最好）
   type: metric
   dimension: quality
@@ -305,7 +331,7 @@ scoring:
   source: "TODO(专业组)：示例数值，正式条文号待补"
 ```
 
-完整文件见 [`metric_optimal_in_middle.yaml`](../../backend/tests/fixtures/guide_examples/metric_optimal_in_middle.yaml)。
+完整文件见 [`metric_optimal_in_middle.yaml`](../backend/tests/fixtures/guide_examples/metric_optimal_in_middle.yaml)。
 
 ### 4.3 `weight_in_dimension` 是什么意思
 
@@ -336,14 +362,15 @@ metric 按 `weight_in_dimension` **加权平均**成"维度分"。
 
 | 字段 | 是否必填 | 含义 |
 | --- | --- | --- |
-| `id` | ✅ | 规则编号，建议 `K-XX`（Key metric） |
+| `id` | ✅ | 规则编号，格式同硬约束；前缀按文件选（见 [2.1](#21-规则编号怎么取)） |
 | `name` | ✅ | 中文名 |
 | `type` | ✅ | 固定写 `metric` |
 | `dimension` | ✅ | 所属维度，取值见 4.3 |
 | `value` | ✅ | 字段名或表达式 |
+| `when` | 可选 | 守卫表达式；为假时该指标对这个方案记「不适用」，不计入维度分 |
 | `scoring.kind` | ✅ | 现阶段固定 `piecewise`（分段线性） |
-| `scoring.points` | ✅ | 控制点列表，每项 `[指标值, 分数]`，x 必须严格递增 |
-| `weight_in_dimension` | ✅ | 同维度内的相对权重（正数） |
+| `scoring.points` | ✅ | 控制点列表，每项 `[指标值, 分数]`；指标值必须严格递增，分数在 0–100 之间 |
+| `weight_in_dimension` | 可选 | 同维度内的相对权重（正数），**默认 1**；只有一个维度里指标不等权时才需要写 |
 | `source` | ✅ | 条文 / 经验出处，见第 5 节 |
 
 ---
@@ -427,6 +454,10 @@ metric 按 `weight_in_dimension` **加权平均**成"维度分"。
 - 评审通过后，队长点 **Merge pull request** → **Confirm merge**，
   改动就合到主分支了。
 
+> **合并后什么时候生效**：后端启动时读一次 `rules/`。本地开发想马上看到效果，
+> 不用重启服务，调一次 `POST /api/rules/reload` 即可（这个接口只在开发环境开放）。
+> 当前加载了哪些规则可以用 `GET /api/rules` 看。
+
 ---
 
 ## 7. 怎么看 check_rules 报错
@@ -448,108 +479,144 @@ uv run --project backend python scripts/check_rules.py rules/quality.yaml
 Y 个 ERROR，Z 个 WARNING」。**任何 ERROR 都会让脚本退出码 = 1**，
 CI 也会因此失败——必须改完再推。
 
-### 7.2 五条典型报错与解法
+### 7.2 报错长什么样
 
-下面 5 条都来自仓库 `backend/tests/fixtures/guide_examples/_bad/`，
-你也可以自己跑一遍看：
+每条报错都是**一行**，由四段组成：
+
+```
+错误  rules/quality.yaml:13  K-01 — 错在哪 — 怎么改：具体动作
+└─┬─┘ └────────┬──────────┘ └─┬─┘
+严重程度   文件名:行号        规则编号
+```
+
+- **严重程度**：`错误` 必须改完才能合并；`警告` 不拦合并（比如 `source` 还挂着 TODO）。
+- **行号是真实行号**，用编辑器跳到那一行就能改。
+- **规则编号**帮你在一个放了好几条规则的文件里认出是哪一条；连 `id` 都还没写时显示 `（未知 ID）`。
+- **`怎么改：` 后面是具体动作**，照着做即可。
+
+### 7.3 七条典型报错与解法
+
+下面几条都来自仓库 `backend/tests/fixtures/guide_examples/_bad/`，你可以自己跑一遍看：
 
 ```bash
 uv run --project backend python scripts/check_rules.py backend/tests/fixtures/guide_examples/_bad/
 ```
 
-#### (1) `TAB_INDENT` · 检测到 Tab 缩进
+#### (1) Tab 缩进
 
 ```
-[ERROR] hard_tab_indent.yaml:8 · TAB_INDENT ·
-  检测到 Tab 缩进。YAML 要求用 2 空格缩进，请把 Tab 替换为空格。
+错误  _bad/hard_tab_indent.yaml:8  （未知 ID） — 这一行用了 Tab 缩进，YAML 不接受 Tab
+      — 怎么改：把行首的 Tab 全部替换成空格；同一层级统一缩 2 个空格
 ```
-
-**原因**：第 8 行以 Tab 开头（或行内有 Tab）。
 
 **怎么改**：
-- **网页编辑器**：右下角点 "Indent mode" 切换到 Spaces，复制粘贴进文本框，
-  GitHub 自动按 4 空格处理；
-- **VS Code 等本地编辑器**：按 `Ctrl+H` 调出替换，正则模式开起来，搜索 `^\t+`
-  替换成 2 个空格，全选文件替换一次；
-- 如果只有一两行，直接删除 Tab 重打 2 个空格。
+- **GitHub 网页编辑器**：右下角把 "Indent mode" 切到 Spaces；
+- **VS Code**：`Ctrl+H` 打开替换，开启正则模式，搜 `^	+` 替换成两个空格，全文替换一次；
+- 只有一两行就直接删掉 Tab 重打 2 个空格。
 
-#### (2) `CHINESE_COLON` · 检测到中文冒号
+> 有几行 Tab 就报几行，改完再跑一次确认清零。
 
-```
-[ERROR] hard_chinese_colon.yaml:5 · CHINESE_COLON ·
-  检测到中文冒号「：」。YAML 的 key 与 value 之间
-  必须用英文半角冒号「:」，请替换。
-```
-
-**原因**：键名后面用了全角 `：` 而不是半角 `:`。
-
-**怎么改**：把那一行的中文冒号 `：` 改成英文冒号 `:`。如果你不知道怎么区分，
-看宽度：英文 `:` 是窄的；中文 `：` 是宽的、和汉字一样宽。
-
-#### (3) `UNALIGNED` · 同一缩进级别内重复出现 key「X」
+#### (2) 中文全角冒号
 
 ```
-[WARNING] hard_unaligned.yaml:12 · UNALIGNED ·
-  同一缩进级别内重复出现 key「id」（行 5 与行 12），
-  通常是缩进不齐导致兄弟节点错位，请检查。
+错误  _bad/hard_chinese_colon.yaml:5  （未知 ID） — 这一行用了中文全角冒号「：」
+      — 怎么改：把它替换成英文半角冒号「:」。半角冒号比汉字窄，全角冒号和汉字一样宽
 ```
 
-**原因**：两条规则（或两个键）的缩进空格数不一致，导致 YAML 把它们当成
-"同辈"重复了。
+**怎么改**：把那一行的 `：` 改成 `:`。分不清就看宽度——英文 `:` 是窄的，中文 `：` 和汉字一样宽。
 
-**怎么改**：让同一文件内所有 `- ` 顶头、所有 `id: / name: / type:` 等子键缩进 2 空格，
-**全文对齐到同一列**。VS Code 里按 `Shift+Alt+F` 格式化（如果有 Prettier 配置）。
-
-#### (4) `METRIC_POINTS_NOT_MONOTONIC` · points 第一列必须严格递增
+#### (3) 缩进对不齐
 
 ```
-[ERROR] metric_points_not_monotonic.yaml:1 · METRIC_POINTS_NOT_MONOTONIC ·
-  points 第一列必须严格递增，当前是 [0.95, 0.8, 0.5]。
-  「适中最好」的指标应当先升后降，但仍要严格递增。
+错误  _bad/hard_unaligned.yaml:13  （未知 ID） — 这一行的缩进和上一行对不齐，YAML 读不懂它属于谁
+      — 怎么改：让同一条规则里的所有字段缩进完全一致（统一 2 个空格）；也检查一行里是不是多打了一个冒号
 ```
 
-**原因**：`points` 列表里的横坐标（第一个数字）没有按从小到大排。
+**原因**：第二条规则的子键缩了 3 个空格，第一条缩了 2 个。
 
-**怎么改**：把控制点按横坐标从小到大排：
+**怎么改**：所有 `- ` 顶头，所有字段统一缩 2 个空格，**全文对齐到同一列**。
+
+#### (4) 缺必填字段
+
+```
+错误  _bad/hard_missing_field.yaml:4  （未知 ID） — 缺少必填字段「id」
+      — 怎么改：补一行 `id: C-01`（前缀字母 C/Q/S/K/G + 短横线 + 两位数字，全局唯一）
+错误  _bad/hard_missing_field.yaml:4  （未知 ID） — 缺少必填字段「type」
+      — 怎么改：补一行 `type: hard`（硬约束）或 `type: metric`（评分指标）
+```
+
+**怎么改**：缺几个就补几个，照着 `怎么改` 里给的那一行抄。行号指向这条规则的开头。
+
+#### (5) points 的指标值不是严格递增
+
+```
+错误  _bad/metric_points_not_monotonic.yaml:13  K-95 — scoring.points 的指标值（每项第一个数）
+      必须严格递增，当前是 [0.95, 0.8, 0.5]；「越小越好」的指标也要按指标值从小到大排，
+      靠分数递减来表达 — 怎么改：把控制点按第一个数字从小到大重排
+```
+
+**怎么改**：按横坐标从小到大重排：
 
 ```yaml
 points:
-  - [0.50, 0]    # ← 最小 x 在最上面
+  - [0.50, 0]    # ← 最小的指标值放最上面
   - [0.80, 70]
-  - [0.95, 100]  # ← 最大 x 在最下面
+  - [0.95, 100]  # ← 最大的指标值放最下面
 ```
 
-**「越小越好」也一样**：横坐标从小到大写，分数纵坐标递减即可表达。
+**「越小越好」也一样**：横坐标从小到大写，靠分数递减表达。
 
-#### (5) `METRIC_BAD_DIMENSION` · dimension 必须是合法维度
+#### (6) dimension 写错
 
 ```
-[ERROR] metric_missing_dimension.yaml:1 · METRIC_BAD_DIMENSION ·
-  dimension 必须是 ('quality', 'structure', 'construction', 'green') 之一，
-  实际是 'cost'
+错误  _bad/metric_missing_dimension.yaml:8  K-94 — dimension 只能是
+      quality / structure / construction / green 之一，当前写的是 'cost'
+      — 怎么改：是不是想写 `construction`？从这四个里选一个
 ```
 
-**原因**：写错了 `dimension` 字段。
+**怎么改**：从四个合法值里挑一个，见 4.3 节的表格。如果你觉得真的需要一个新维度，
+先找队长对齐（要改 `app/models/eval.py` 的 `DimensionKey`），**不要**直接在 YAML 里造新值。
 
-**怎么改**：从四个合法值里选一个——见 4.3 节的表格。
-如果你新加了一个维度，需要先和队长对齐改 `app/models/eval.py` 的 `DimensionKey`，
-**不要**直接在 YAML 里造新值，否则前端 / 评分都会崩。
+#### (7) 字段名拼错
 
-### 7.3 错误汇总速查表
+```
+错误  rules/compliance.yaml:5  C-01 — check 表达式里的 `floor_hieght` 不是已知字段或派生量
+      — 怎么改：是不是想写 `floor_height`、`std_floor_repeat`、`floor_efficiency`？
+      完整字段表见 docs/fields.generated.md
+```
 
-| 错误码 | 含义 | 怎么改 |
+**这是 `check_rules` 最有用的一条**：表达式里的每个名字都会和字段对照表逐个核对，
+拼错时直接告你最接近的几个候选。**拼错的字段名不会被悄悄忽略**——否则一条规则
+看起来生效了其实从没生效过，比报错危险得多。
+
+规则 ID 写错格式也是同一类报错：
+
+```
+错误  rules/compliance.yaml:2  C-SHAPE — 规则 ID「C-SHAPE」格式不对
+      — 怎么改：必须是一个大写字母 + 短横线 + 两位数字，例如 C-03、Q-01、K-12
+```
+
+### 7.4 报错速查表
+
+| 报错里的关键字 | 含义 | 怎么改 |
 | --- | --- | --- |
-| `TAB_INDENT` | 用了 Tab 缩进 | 替换为空格 |
-| `CHINESE_COLON` | 用了中文全角冒号 | 改成英文半角 `:` |
-| `UNALIGNED` | 缩进不齐 | 让所有子键对齐到同一列 |
-| `MISSING_FIELD` | 缺必填字段（id/name/type） | 补上字段 |
-| `METRIC_POINTS_NOT_MONOTONIC` | points 第一列未严格递增 | 按 x 升序重排 |
-| `METRIC_BAD_DIMENSION` | dimension 取值不合法 | 从四选一里挑 |
-| `METRIC_MISSING_SCORING` | metric 规则缺 `scoring` 子对象 | 补上 `scoring.kind` 与 `scoring.points` |
-| `HARD_MISSING_CHECK` | hard 规则缺 `check` 表达式 | 补上一个布尔表达式 |
-| `YAML_PARSE` | YAML 整体解析失败 | 通常是上面几类之一导致，先修格式错误再重跑 |
+| Tab 缩进 | 用了 Tab | 替换成空格，统一 2 个 |
+| 中文全角冒号 | 用了 `：` | 改成英文半角 `:` |
+| 缩进和上一行对不齐 | 缩进不齐 | 同一条规则的字段对齐到同一列 |
+| 缺少必填字段 | 少写了 id / name / type / source 等 | 照 `怎么改` 里给的那一行补上 |
+| 规则 ID「…」格式不对 | 编号不是「字母-两位数字」 | 见 2.1 节 |
+| 规则 ID 重复 | 两条规则用了同一个编号 | 换一个没用过的数字（报错会说另一处在哪行） |
+| 无法识别的字段 | 字段名拼错 | 按提示的候选改，或查 `rules/_template.yaml` |
+| 同一条规则里重复写了字段 | 同一个字段写了两遍 | 删掉多余那行（YAML 只认最后一个） |
+| 指标值…必须严格递增 | points 横坐标没从小到大排 | 按横坐标升序重排 |
+| 分数…超出 0–100 | points 纵坐标越界 | 分数改到 0–100 之间 |
+| 不是已知字段或派生量 | 表达式里字段名拼错 | 按提示的候选改，查 `docs/fields.generated.md` |
+| 表达式写法不合语法 | 括号 / 引号 / 比较符写错 | 检查成对符号；`>=` 不能写成 `=>` |
+| dimension 只能是… | 维度取值不合法 | 从四个里选一个 |
+| 不应该有…字段 | hard 和 metric 的字段写串了 | hard 用 check/message；metric 用 dimension/value/scoring |
 
----
+> **退出码**：有任何 `错误` 都会让脚本退出码 = 1，CI 也会因此变红，必须改完才能合并。
+> 只有 `警告`（比如 `source` 还是 TODO）时退出码是 0，不拦合并。
 
 ## 8. 一页速查卡
 
@@ -565,7 +632,7 @@ points:
 ### 一条 hard 规则的最小骨架
 
 ```yaml
-- id: C-XX             # 编号，全局唯一
+- id: C-01             # 编号，一个大写字母 + 短横线 + 两位数字，全局唯一
   name: 中文名           # 给前端 / 报告看
   type: hard             # 固定
   check: "字段 运算符 阈值"  # 布尔表达式
@@ -577,7 +644,7 @@ points:
 ### 一条 metric 规则的最小骨架
 
 ```yaml
-- id: K-XX
+- id: K-01             # 编号，前缀按文件选：C/Q/S/K/G
   name: 中文名
   type: metric
   dimension: quality     # quality / structure / construction / green
@@ -588,7 +655,7 @@ points:
       - [x1, y1]
       - [x2, y2]
       - [x3, y3]
-  weight_in_dimension: 1 # 同维度内的相对权重
+  weight_in_dimension: 1 # 可选，默认 1。同维度内的相对权重
   source: "经验规则（XX组）：理由"
 ```
 
@@ -598,7 +665,7 @@ points:
 | --- | --- | --- |
 | 越大越好 | 从小到大 | 从小到大 |
 | 越小越好 | 从小到大 | 从大到小 |
-| 适中最好 | 从小到大，**峰值后再继续递增** | 先升后降 |
+| 适中最好 | 从小到大（横坐标永远从小到大） | 先升到 100 再降下来 |
 
 ### 常用命令
 
@@ -618,7 +685,7 @@ make test
 
 ### 改完规则要做的 3 件事
 
-1. 跑 `scripts/check_rules.py`，**所有 ERROR 都得消除**。
+1. 跑 `scripts/check_rules.py`，**所有「错误」都得消除**（「警告」不拦合并）。
 2. 在 PR 描述里写清楚改了哪些字段、参考了哪条规范、为什么这么改。
 3. 等 CI 全绿、队长评审通过后才会合并；任何红色 ❌ 都不能合。
 

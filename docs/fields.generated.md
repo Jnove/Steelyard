@@ -82,9 +82,11 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | 字段名 | 中文名 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- | --- |
 | `scheme_id` | scheme_id | string | 是 | — |
+| `scheme_name` | scheme_name | string | 否 | — |
 | `compliance` | compliance | array<string> | 否 | — |
 | `metrics` | metrics | object<string> | 否 | — |
 | `dimension_scores` | dimension_scores | string | 否 | — |
+| `dimension_coverage` | dimension_coverage | string | 否 | — |
 | `topsis` | topsis | string | 否 | — |
 
 ## 四、派生量
@@ -95,8 +97,10 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 
 | 字段名 | 中文名 | 单位 | 公式 | 说明 |
 | --- | --- | --- | --- | --- |
-| `shape_coefficient` | 体形系数 | — | `envelope_area / volume` | 外表面积与体积之比，越小越利于节能；规则 K-X 经常引用。 |
+| `far` | 容积率 | — | `gfa / site_area` | 总建筑面积与用地面积之比；与项目层 far_max 比较即可判上限。 |
+| `density` | 建筑密度 | — | `footprint / site_area` | 基底面积与用地面积之比，0–1 小数；与项目层 density_max 比较。 |
+| `shape_coef` | 体形系数 | — | `envelope_area / volume` | 外表面积与体积之比，越小越利于节能。 |
+| `height` | 建筑总高 | m | `floors * floor_height` | 层数乘层高；与项目层 height_max 比较即可判限高。 |
 | `units_per_building` | 单栋户数 | 户/栋 | `units / buildings` | 疏散与电梯服务的关键指标。 |
 | `units_per_floor` | 每层户数 | 户/层 | `units / (floors * buildings)` | 决定标准层交通核大小。 |
-| `total_height` | 建筑总高 | m | `floor_height * floors` | 用于与项目层 height_max 比较。 |
 | `floor_efficiency` | 楼层效率 | — | `footprint * floors / gfa` | 基底与层数对总建筑面积的利用率，越接近 1 越理想。 |

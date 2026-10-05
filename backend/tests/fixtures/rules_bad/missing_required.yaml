@@ -1,0 +1,4 @@
+# 错误示例：缺必填字段。这一条既没有 id 也没有 type。
+- name: 缺 id 和 type
+  check: "floor_height >= 3.0"
+  source: "TODO(专业组)"

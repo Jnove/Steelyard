@@ -1,0 +1,33 @@
+# 绿色低碳评分指标（metric，dimension: green）。规则 ID 用 G-XX。
+#
+# ⚠️ 本文件当前只有**格式示例**：分段点都是随手取的，仅用于演示写法。
+#    专业组定稿后请去掉 name 的「【示例】」前缀，并把 source 换成真实依据。
+
+- id: G-01
+  name: 【示例】体形系数（越小越好）
+  type: metric
+  dimension: green
+  # shape_coef 是派生量（envelope_area / volume）。
+  value: "shape_coef"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.20, 100]
+      - [0.35, 70]
+      - [0.60, 0]
+  weight_in_dimension: 2
+  source: "TODO(专业组)：示例数值，正式依据待补"
+
+- id: G-02
+  name: 【示例】预估装配率（越大越好）
+  type: metric
+  dimension: green
+  value: "prefab_ratio_est"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.20, 0]
+      - [0.50, 70]
+      - [0.80, 100]
+  weight_in_dimension: 1
+  source: "TODO(专业组)：示例数值，正式依据待补"

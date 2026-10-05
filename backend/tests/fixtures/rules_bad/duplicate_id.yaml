@@ -1,0 +1,12 @@
+# 错误示例：同一文件里两条规则用了同一个 ID。
+- id: C-01
+  name: 第一条
+  type: hard
+  check: "floor_height >= 3.0"
+  source: "TODO(专业组)"
+
+- id: C-01
+  name: 第二条，ID 撞了
+  type: hard
+  check: "floor_height >= 2.8"
+  source: "TODO(专业组)"

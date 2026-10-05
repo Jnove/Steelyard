@@ -13,6 +13,15 @@
       "constraints": {}
     },
     {
+      "name": "scheme_name",
+      "label": "scheme_name",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "compliance",
       "label": "compliance",
       "unit": "",
@@ -33,6 +42,15 @@
     {
       "name": "dimension_scores",
       "label": "dimension_scores",
+      "unit": "",
+      "group": "",
+      "type": "string",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "dimension_coverage",
+      "label": "dimension_coverage",
       "unit": "",
       "group": "",
       "type": "string",

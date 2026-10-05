@@ -2,7 +2,7 @@
 #
 # 期望报错：CHINESE_COLON
 # id、check、message 三处都把英文冒号写成了中文全角冒号。
-- id：C-CN
+- id：C-91
   name：中文冒号示例
   type：hard
   check："floor_height >= 3.0"

@@ -55,6 +55,7 @@ def override_engine_for_testing(engine: Engine) -> None:
 
 def init_db() -> None:
     """建表（仅创建不存在的；生产应改用迁移工具如 Alembic）。"""
+    from app.agents.storage import AgentResultRow, ReportCacheRow  # noqa: F401
     from app.models.orm import EvalResultRow, Project, Scheme  # noqa: F401
 
     SQLModel.metadata.create_all(get_engine())

@@ -1,0 +1,6 @@
+# 错误示例：Tab 缩进。第 4 行以 Tab 开头。
+- id: C-01
+  name: Tab 缩进
+	type: hard
+	check: "floor_height >= 3.0"
+	source: "TODO(专业组)"

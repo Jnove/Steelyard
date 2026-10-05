@@ -1,0 +1,7 @@
+# 错误示例：写了引擎不认识的字段（这里把 severity 拼成了 serverity）。
+- id: C-01
+  name: 未知字段
+  type: hard
+  check: "floor_height >= 3.0"
+  serverity: warning
+  source: "TODO(专业组)"

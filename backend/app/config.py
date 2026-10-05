@@ -23,6 +23,9 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
+    # —— 运行环境：dev / prod。仅开发环境开放规则热重载等调试接口 ——
+    app_env: Annotated[str, Field(default="dev", alias="APP_ENV")]
+
     # —— LLM 配置（默认走 fake 桩，便于本地无 Key 启动） ——
     llm_provider: Annotated[str, Field(default="fake", alias="LLM_PROVIDER")]
     llm_base_url: Annotated[str | None, Field(default=None, alias="LLM_BASE_URL")]
@@ -40,6 +43,11 @@ class Settings(BaseSettings):
         str,
         Field(default="http://localhost:5173", alias="CORS_ORIGINS"),
     ]
+
+    @property
+    def is_dev(self) -> bool:
+        """是否开发环境。``POST /api/rules/reload`` 等调试接口只在这里放开。"""
+        return self.app_env.strip().lower() in ("dev", "development", "local", "test")
 
     def cors_origins_list(self) -> list[str]:
         """把逗号分隔的字符串拆成列表，方便 CORSMiddleware 使用。"""

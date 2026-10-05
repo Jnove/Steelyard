@@ -1,0 +1,6 @@
+# 错误示例：表达式里引用了不存在的字段（floor_height 拼成了 floor_hieght）。
+- id: C-01
+  name: 字段名拼错
+  type: hard
+  check: "floor_hieght >= 3.0"
+  source: "TODO(专业组)"

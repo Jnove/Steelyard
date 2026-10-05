@@ -2,7 +2,7 @@
 #
 # 用途：只有结构体系是钢结构时，才强制要求防火涂层指标。
 # when 用法：``when`` 子句是另一个布尔表达式，先求值；为真才执行 ``check``。
-- id: C-STEEL-COAT
+- id: C-11
   name: 钢结构防火涂层（条件检查）
   type: hard
   when: "structure_type == '钢结构'"
