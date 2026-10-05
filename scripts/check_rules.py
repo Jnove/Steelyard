@@ -12,7 +12,8 @@
 - 缺必填项、未知字段、字段取值不合法（ID 格式、type、dimension、severity……）；
 - 规则 ID 重复（跨文件也查，并同时报出两处位置）；
 - ``scoring.points`` 的指标值不严格递增、分数超出 0–100；
-- 表达式语法错误，以及引用了不存在的字段（用 ``difflib`` 给出拼写最接近的候选）。
+- 表达式语法错误，以及引用了不存在的字段（用 ``difflib`` 给出拼写最接近的候选）；
+- ``weights.yaml``（角色权重模板）：四个角色齐不齐、矩阵是否互反、一致性比率 CR 是否超过 0.1（超了报警告）。
 
 退出码：有 ERROR 时为 1，只有 WARNING 时为 0（``source`` 还挂着 TODO 属于 WARNING）。
 
@@ -53,14 +54,18 @@ from app.engine.rules import (  # noqa: E402
     known_field_names,
 )
 from app.engine.scoring import SCORE_MAX, SCORE_MIN  # noqa: E402
+from app.engine.weights import (  # noqa: E402
+    WEIGHTS_FILENAME as _WEIGHTS_FILENAME,
+)
+from app.engine.weights import check_weights_file  # noqa: E402
 from pydantic import ValidationError  # noqa: E402
 
 #: 硬约束 / 评分指标共用的枚举维度，取自引擎，避免两处各写一份。
 VALID_DIMENSIONS: tuple[str, ...] = tuple(DIMENSION_KEYS)
 #: 评分指标支持的 ``scoring.kind``。
 VALID_SCORING_KINDS: tuple[str, ...] = ("piecewise",)
-#: ``weights.yaml`` 是 AHP 角色权重模板，不是规则列表，单独跳过。
-WEIGHTS_FILENAME = "weights.yaml"
+#: ``weights.yaml`` 是 AHP 角色权重模板，不按规则列表校验，走 :func:`check_weights` 那套。
+WEIGHTS_FILENAME = _WEIGHTS_FILENAME
 #: 中文全角冒号，在 YAML key/value 分隔位置出现就报错。
 CHINESE_COLON = "："
 
@@ -239,9 +244,7 @@ def _scan_duplicate_keys(text: str) -> list[Issue]:
                 Issue(
                     severity="error",
                     code="DUPLICATE_KEY",
-                    message=(
-                        f"同一条规则里重复写了字段「{key}」（第 {seen[marker]} 行也有一个）"
-                    ),
+                    message=(f"同一条规则里重复写了字段「{key}」（第 {seen[marker]} 行也有一个）"),
                     fix=(
                         "删掉多余的那一行。YAML 遇到重复字段只认最后一个，"
                         "留着会让你改了上面那行却不生效"
@@ -265,8 +268,7 @@ _YAML_PROBLEM_HINTS: tuple[tuple[str, str, str, str], ...] = (
         "mapping values are not allowed here",
         "YAML_INDENT",
         "这一行的缩进和上一行对不齐，YAML 读不懂它属于谁",
-        "让同一条规则里的所有字段缩进完全一致（统一 2 个空格）；"
-        "也检查一行里是不是多打了一个冒号",
+        "让同一条规则里的所有字段缩进完全一致（统一 2 个空格）；也检查一行里是不是多打了一个冒号",
     ),
     (
         "cannot start any token",
@@ -498,8 +500,7 @@ def _translate_pydantic_error(
                 severity="error",
                 code="POINT_SCORE_OUT_OF_RANGE",
                 message=(
-                    f"控制点「{loc_text}」的分数 {raw_input!r} 超出了 "
-                    f"{SCORE_MIN:g}–{SCORE_MAX:g}"
+                    f"控制点「{loc_text}」的分数 {raw_input!r} 超出了 {SCORE_MIN:g}–{SCORE_MAX:g}"
                 ),
                 fix=(
                     f"每个控制点的第二个数字是分数，必须在 {SCORE_MIN:g}–{SCORE_MAX:g} 之间；"
@@ -705,7 +706,66 @@ def check_file(path: Path) -> FileReport:
     return report
 
 
-def check_duplicate_ids(reports: Iterable[tuple[Path, yaml.Node | None]]) -> list[tuple[Path, Issue]]:
+def check_weights(path: Path) -> FileReport:
+    """校验角色权重模板 ``weights.yaml``。
+
+    和规则文件是两套东西：这里没有规则 ID，检查的是四个角色齐不齐、
+    两两比较矩阵是否互反、以及**一致性比率 CR 有没有超过 0.1**。
+
+    CR 超标只报 **警告**：矩阵由专业组填，判断自相矛盾是需要他们回头改，
+    但不该拦住合并（真正该拦的是矩阵写错了根本解不出权重，那是错误）。
+
+    行号：权重模板是"角色名 → 配置"的嵌套结构，Pydantic 式的错误路径下钻在这里
+    收益不大，所以统一指到该角色的键所在行；找不到就不带行号。
+    """
+    report = FileReport(path=path)
+    templates, problems = check_weights_file(path)
+
+    # 角色键所在的行号，用于把问题指到具体角色。
+    role_lines: dict[str, int] = {}
+    try:
+        root = yaml.compose(path.read_text(encoding="utf-8"))
+    except (OSError, yaml.YAMLError):
+        root = None
+    if isinstance(root, yaml.MappingNode):
+        for key_node, _ in root.value:
+            key = getattr(key_node, "value", None)
+            if isinstance(key, str):
+                role_lines[key] = key_node.start_mark.line + 1
+
+    for problem in problems:
+        report.issues.append(
+            Issue(
+                severity="error" if problem.severity == "error" else "warning",
+                code=problem.code,
+                message=problem.message,
+                fix=problem.fix,
+                line=role_lines.get(problem.role or ""),
+                rule_id=problem.role,
+            )
+        )
+
+    # 出处还挂着 TODO 的模板，和规则一样提醒一句。
+    for key, template in templates.items():
+        if "TODO" in template.source:
+            report.issues.append(
+                Issue(
+                    severity="warning",
+                    code="WEIGHTS_SOURCE_TODO",
+                    message=f"角色 {key}（{template.name}）的矩阵还是占位数值",
+                    fix="专业组核定后把 source 里的「【示例】TODO(专业组)」换成真实依据",
+                    line=role_lines.get(key),
+                    rule_id=key,
+                )
+            )
+
+    report.dedupe()
+    return report
+
+
+def check_duplicate_ids(
+    reports: Iterable[tuple[Path, yaml.Node | None]],
+) -> list[tuple[Path, Issue]]:
     """跨文件查重复的规则 ID，两处位置都报出来。"""
     seen: dict[str, tuple[Path, int]] = {}
     out: list[tuple[Path, Issue]] = []
@@ -799,7 +859,18 @@ def main(argv: list[str] | None = None) -> int:
     else:
         files = list(iter_rule_files(ROOT / "rules"))
 
-    if not files:
+    # 角色权重模板走另一套检查（check_weights），不当规则列表看。
+    # iter_rule_files 对**显式指定的单个文件**不做名字过滤（方便校验 _template.yaml），
+    # 所以这里要把 weights.yaml 从规则文件列表里摘出来，免得同一个文件被查两遍。
+    weights_paths = [p for p in files if p.name == WEIGHTS_FILENAME]
+    files = [p for p in files if p.name != WEIGHTS_FILENAME]
+    roots = args.paths or [args.rules_dir or (ROOT / "rules")]
+    for root_path in roots:
+        candidate = root_path / WEIGHTS_FILENAME
+        if root_path.is_dir() and candidate.is_file() and candidate not in weights_paths:
+            weights_paths.append(candidate)
+
+    if not files and not weights_paths:
         print(f"未找到任何 YAML 规则文件（在 {_display_path(ROOT / 'rules')} 下添加规则即可）")
         return 0
 
@@ -817,6 +888,8 @@ def main(argv: list[str] | None = None) -> int:
     for path, issue in check_duplicate_ids(parsed):
         by_path[path].issues.append(issue)
 
+    reports.extend(check_weights(path) for path in weights_paths)
+
     total_errors = 0
     total_warnings = 0
     for report in reports:
@@ -827,7 +900,7 @@ def main(argv: list[str] | None = None) -> int:
         print(report.render())
 
     print()
-    print(f"汇总：{len(files)} 个文件，{total_errors} 个错误，{total_warnings} 个警告")
+    print(f"汇总：{len(reports)} 个文件，{total_errors} 个错误，{total_warnings} 个警告")
     if total_errors:
         print("有错误必须改完才能合并（退出码 1）。看不懂报错请对照 docs/rules-guide.md 第 7 节。")
     return 1 if total_errors else 0
