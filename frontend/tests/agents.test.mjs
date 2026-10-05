@@ -1,14 +1,8 @@
 /** 使用现有 TypeScript 与 Node 内置测试验证网络分块；不增加依赖。 */
 import assert from 'node:assert/strict'
-import { readFile } from 'node:fs/promises'
 import test from 'node:test'
-import ts from 'typescript'
 
-const source = await readFile(new URL('../src/api/agents.ts', import.meta.url), 'utf8')
-const javascript = ts.transpileModule(source, {
-  compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ES2022 },
-}).outputText
-const { streamAgent } = await import(`data:text/javascript;base64,${Buffer.from('import.meta.env = {};\n' + javascript).toString('base64')}`)
+import { streamAgent } from '../src/api/agents.ts'
 
 test('UTF-8 多字节与 CRLF 任意分块仍能读取替换、警告与最终正文', async () => {
   const originalFetch = globalThis.fetch
@@ -47,9 +41,9 @@ test('UTF-8 多字节与 CRLF 任意分块仍能读取替换、警告与最终�
 test('没有最终事件的断流报错，保留已经收到的事件', async () => {
   const originalFetch = globalThis.fetch
   const events = []
-  globalThis.fetch = async () => new Response('event: token\ndata: {"text":"未完成"}\n\n')
+  globalThis.fetch = async () => new Response('event: token\ndata: {"text":"未完成"}\n\n', { headers: { 'content-type': 'text/event-stream' } })
   try {
-    await assert.rejects(streamAgent('1', 'chat', { message: '解释' }, (event) => events.push(event), new AbortController().signal), /事件流提前结束/)
+    await assert.rejects(streamAgent('1', 'chat', { message: '解释' }, (event) => events.push(event), new AbortController().signal), /连接提前结束/)
     assert.equal(events.length, 1)
   } finally {
     globalThis.fetch = originalFetch
@@ -60,7 +54,7 @@ test('error 为终止事件，非成功 HTTP 返回清晰错误', async () => {
   const originalFetch = globalThis.fetch
   const events = []
   try {
-    globalThis.fetch = async () => new Response('event: error\ndata: {"message":"需要先评估"}\n\n')
+    globalThis.fetch = async () => new Response('event: error\ndata: {"message":"需要先评估"}\n\n', { headers: { 'content-type': 'text/event-stream' } })
     await streamAgent('1', 'chat', {}, (event) => events.push(event), new AbortController().signal)
     assert.equal(events[0].data.message, '需要先评估')
     globalThis.fetch = async () => new Response('项目不存在', { status: 404 })

@@ -1,23 +1,18 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { ConfigProvider } from 'antd'
+import { App as AntApp, ConfigProvider } from 'antd'
+import zhCN from 'antd/locale/zh_CN'
 import { BrowserRouter } from 'react-router-dom'
-
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import App from './App'
-import { theme } from './theme'
+import { theme, installTheme } from './theme'
 import './index.css'
+import './workbench.css'
 
-const rootEl = document.getElementById('root')
-if (!rootEl) {
-  throw new Error('Root element #root not found in index.html')
-}
-
-ReactDOM.createRoot(rootEl).render(
-  <React.StrictMode>
-    <ConfigProvider theme={theme}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </ConfigProvider>
-  </React.StrictMode>,
+installTheme()
+const client = new QueryClient({ defaultOptions: { queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false } } })
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode><ConfigProvider theme={theme} locale={zhCN}><AntApp>
+    <QueryClientProvider client={client}><BrowserRouter><App /></BrowserRouter></QueryClientProvider>
+  </AntApp></ConfigProvider></React.StrictMode>,
 )

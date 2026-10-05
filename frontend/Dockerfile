@@ -6,8 +6,8 @@ FROM node:20-alpine AS build
 WORKDIR /app
 
 # 优先安装依赖，最大化缓存命中
-COPY package.json ./
-RUN npm install --no-audit --no-fund
+COPY package.json package-lock.json ./
+RUN npm ci --no-audit --no-fund
 
 COPY tsconfig.json tsconfig.node.json vite.config.ts index.html ./
 COPY src ./src

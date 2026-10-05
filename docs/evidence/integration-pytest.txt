@@ -1,0 +1,14 @@
+........................................................................ [ 16%]
+........................................................................ [ 32%]
+........................................................................ [ 48%]
+........................................................................ [ 65%]
+........................................................................ [ 81%]
+........................................................................ [ 97%]
+...........                                                              [100%]
+============================== warnings summary ===============================
+tests/test_import_endpoint.py::TestImportEndpoint::test_import_default_rejects_on_error
+  C:\Users\Jnove\.codex\worktrees\efc0\海之子\backend\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:1100: StarletteDeprecationWarning: 'HTTP_422_UNPROCESSABLE_ENTITY' is deprecated. Use 'HTTP_422_UNPROCESSABLE_CONTENT' instead.
+    result = context.run(func, *args)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+443 passed, 1 warning in 23.91s

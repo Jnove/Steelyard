@@ -17,11 +17,10 @@ BACKEND = ROOT / "backend"
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
-from sqlmodel import Session, select  # noqa: E402
-
 from app.db import get_engine, init_db  # noqa: E402
 from app.excel import write_export  # noqa: E402
 from app.models import Project, Scheme  # noqa: E402
+from sqlmodel import Session, select  # noqa: E402
 
 # 默认输出 = 当前工作目录下的 data/schemes/，便于在不同环境（开发机 / CI）下都用本地路径
 DEFAULT_OUT = Path("data") / "schemes" / "export_{project_id}.xlsx"
@@ -48,9 +47,7 @@ def main(argv: list[str] | None = None) -> int:
         schemes_rows = session.exec(
             select(Scheme).where(Scheme.project_id == args.project_id)
         ).all()
-        schemes_payload = [
-            {"name": s.name, "params": s.params or {}} for s in schemes_rows
-        ]
+        schemes_payload = [{"name": s.name, "params": s.params or {}} for s in schemes_rows]
 
     out_path = args.out or DEFAULT_OUT.with_name(
         DEFAULT_OUT.name.format(project_id=args.project_id)

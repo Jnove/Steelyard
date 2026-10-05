@@ -8,8 +8,8 @@ help:
 	@echo "筑衡常用命令："
 	@echo "  make dev-backend   本地启动后端（uvicorn --reload，端口 8000）"
 	@echo "  make dev-frontend  本地启动前端（Vite dev，端口 5173）"
-	@echo "  make test          后端 pytest 测试"
-	@echo "  make lint          后端 ruff check + 前端 tsc --noEmit"
+	@echo "  make test          后端 pytest + 前端单元测试"
+	@echo "  make lint          后端与脚本 ruff check + 前端 tsc --noEmit"
 	@echo "  make seed          清空并导入 data/schemes/mock/ 下的虚构样例"
 	@echo "  make docs-check    校验规则 YAML 与字段对照表（CI 用）"
 	@echo "  make up            docker compose 一键启动（含前后端）"
@@ -21,9 +21,11 @@ dev-backend:
 
 test:
 	cd backend && uv run pytest
+	cd frontend && npm test
 
 lint:
 	cd backend && uv run ruff check .
+	cd backend && uv run ruff check --config pyproject.toml ../scripts
 	cd frontend && npx tsc --noEmit
 
 seed:

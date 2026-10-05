@@ -1,54 +1,40 @@
-/**
- * 统一请求封装。
- *
- * - baseURL 默认 /api（开发期 Vite 代理，部署期 Nginx 反代）
- * - 自动 JSON 序列化与解析
- * - 失败时抛出带状态码的 Error，便于调用方捕获
- */
-
-export interface ApiError extends Error {
-  status: number
-  body?: unknown
+/** 统一 HTTP 请求；业务模块按开关动态加载离线适配器。 */
+export const USE_MOCK = import.meta.env?.VITE_USE_MOCK === 'true'
+const API_BASE = (import.meta.env?.VITE_API_BASE ?? '/api').replace(/\/$/, '')
+export class ApiError extends Error {
+  constructor(public readonly status: number, public readonly body?: unknown) {
+    const detail = body && typeof body === 'object' && 'detail' in body ? body.detail : body
+    super(typeof detail === 'string' ? detail : `HTTP ${status}`)
+    this.name = 'ApiError'
+  }
 }
-
-const API_BASE: string = import.meta.env.VITE_API_BASE ?? '/api'
-
-interface RequestOptions {
+export interface RequestOptions {
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
   body?: unknown
   signal?: AbortSignal
 }
-
 export async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
   const { method = 'GET', body, signal } = options
-  const url = `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`
-
-  const init: RequestInit = {
-    method,
-    headers: { 'Content-Type': 'application/json' },
-    signal,
-  }
-  if (body !== undefined) {
-    init.body = JSON.stringify(body)
-  }
-
-  const response = await fetch(url, init)
-  if (!response.ok) {
-    const err: ApiError = Object.assign(new Error(`HTTP ${response.status}`), {
-      status: response.status,
+  const multipart = body instanceof FormData
+  let response: Response
+  try {
+    response = await fetch(`${API_BASE}/${path.replace(/^\//, '')}`, {
+      method, signal,
+      headers: body === undefined || multipart ? undefined : { 'Content-Type': 'application/json' },
+      body: body === undefined ? undefined : multipart ? body : JSON.stringify(body),
     })
-    try {
-      err.body = await response.json()
-    } catch {
-      /* 响应体不是 JSON，忽略 */
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') throw error
+    throw new ApiError(0, { detail: '无法连接服务，请检查网络或后端状态。' })
+  }
+  const raw = await response.text()
+  let parsed: unknown = undefined
+  if (raw) {
+    try { parsed = JSON.parse(raw) } catch {
+      if (response.ok) throw new ApiError(response.status, { detail: '服务返回了非 JSON 响应。', response: raw })
+      parsed = raw
     }
-    throw err
   }
-
-  // 204 No Content 等空响应直接返回空对象
-  const contentLength = response.headers.get('content-length')
-  if (response.status === 204 || contentLength === '0') {
-    return undefined as T
-  }
-  return (await response.json()) as T
+  if (!response.ok) throw new ApiError(response.status, parsed)
+  return parsed as T
 }

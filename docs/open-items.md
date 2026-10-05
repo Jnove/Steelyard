@@ -6,7 +6,7 @@
 > 新发现的未决事项往对应小节追加。这份文档是"还没定下来的事"的唯一入口，
 > 不要把结论只写在聊天记录或 PR 评论里。
 >
-> **最后更新**：2026-10-05（T4 多准则算法与排序接口）
+> **最后更新**：2026-10-05（T1–T9 分支集成，见 [集成记录](integration-t1-t9.md)）
 
 ---
 
@@ -164,16 +164,16 @@ T4 已提供 [weights.yaml](../rules/weights.yaml) 的四个占位矩阵。
 分四类：**需要单独开 PR 修的**、**等专业组结论才能动的**、**后续任务会做的**、
 **设计取舍（用起来不舒服再改）**。
 
-### 2.1 需要单独开 PR 修的
+### 2.1 集成时处理的遗留问题
 
-这三条不属于任何既定任务，是实现 T3 时撞上的，按严重程度排：
+以下前两项已在 T1–T9 集成中解决；原问题保留供排查旧分支。
 
 #### (1) `make seed` 和 `make dev-backend` 读写的不是同一个数据库
 
 **现象**：`make seed` 灌完数据，起服务却查不到项目，`POST /api/projects/3/evaluate`
 返回 404「项目 3 不存在」。很容易被当成接口 bug 排查半天。
 
-**原因**：`DATABASE_URL` 默认是**相对路径** `sqlite:///./data/zhuheng.db`
+**旧分支原因**：`DATABASE_URL` 默认是**相对路径** `sqlite:///./data/zhuheng.db`
 （[config.py](../backend/app/config.py)），而两个 Makefile 目标的工作目录不同——
 `seed` 从仓库根跑，写 `data/zhuheng.db`；`dev-backend` 先 `cd backend`，
 读 `backend/data/zhuheng.db`。于是磁盘上有两个库。
@@ -181,15 +181,16 @@ T4 已提供 [weights.yaml](../rules/weights.yaml) 的四个占位矩阵。
 **为什么 T3 没修**：改它要动 `config.py` 的默认值或 Makefile 的 CWD，
 会牵到 `docker-compose.yml` 的卷挂载和部署脚本，超出 T3 范围。
 
-**建议**：把默认路径解析成"相对仓库根的绝对路径"（`config.py` 里已经有
-`Path(__file__).parents[...]` 的用法可以照抄），或者统一两个目标的工作目录。
-修完加一个测试：seed 之后用 TestClient 能查到项目。
+**集成修复**：默认数据库固定为本工作树 `backend/data/zhuheng.db` 的绝对路径；
+根目录与 `backend/.env` 从固定位置加载，显式数据库配置保留。
+配置测试覆盖工作目录切换；实际从根目录播种并启动后端的联调可读取同一项目。
+容器另显式使用 `/app/data/zhuheng.db` 挂载卷，不共用宿主机绝对路径。
 
-- [ ] 修数据库路径（属 T1/T6 遗留）
+- [x] 修数据库路径（属 T1/T6 遗留，T1–T9 集成）
 
 #### (2) `scripts/` 目录从来没进过 lint 范围
 
-**现象**：`make lint` 和 CI 都只跑 `cd backend && ruff check .`，
+**旧分支现象**：`make lint` 和 CI 都只跑 `cd backend && ruff check .`，
 `scripts/` 下 8 个脚本一次都没被检查过。
 
 **用项目配置扫一遍**（`ruff check --config backend/pyproject.toml scripts/`）**有 3 处**：
@@ -199,9 +200,10 @@ T4 已提供 [weights.yaml](../rules/weights.yaml) 的四个占位矩阵。
 **为什么 T3 没修**：T3 只保证自己改的两个脚本（`check_rules.py`、`gen_field_table.py`）干净，
 没动别人的文件，也没擅自扩大 lint 范围。
 
-**建议**：`make lint` 和 CI 加上 `scripts/`，顺手清掉那 3 处。
+**集成修复**：Makefile 与 CI 使用 `backend/pyproject.toml` 的配置检查 `scripts/`，
+并修正导入排序及未使用导入，完整检查已通过。
 
-- [ ] 把 `scripts/` 纳入 lint
+- [x] 把 `scripts/` 纳入 lint（T1–T9 集成）
 
 #### (3) 两个 `.gitkeep` 可以删了
 
@@ -234,11 +236,16 @@ T4 已提供 [weights.yaml](../rules/weights.yaml) 的四个占位矩阵。
 
 这几条不是缺陷，是 T3 边界之外的活，写在这里只为不丢：
 
-- [ ] **报告如何读取排序结果**：T4 `/rank` 已返回完整排序响应，读取评估结果但不改写它；
-      `EvalResult.topsis` 仍为 `null`。报告模块需使用当前权重下的排序响应。
+- [x] **报告如何读取排序结果**：T8 工具读取 T4 当前角色 / 权重的完整排序响应，
+      报告与对话使用实际 REST / SSE 联调通过；`EvalResult.topsis` 仍为 `null`。
+      数字校验以工具结果与规则出处为依据，详见 [SSE 协议](sse-events.md)。
 - [x] **`severity=error` 的不通过项默认剔除**：T4 `/rank` 已落实，
       在 `excluded` 列出原因；可用 `include_noncompliant=true` 覆盖。
       见 [T4 PR 描述](../.github/PR_T4_mcdm.md)。
+
+- [ ] **T10 条文结构化与检索**：当前 `search_clause` 返回空列表，需提供真实条文后接入。
+- [ ] **真实模型与容器运行验收**：本次使用 FakeLLM 与本地服务；未配置真实模型 Key，
+      集成环境未安装 Docker。已修正规则目录与卷路径，仍需在对应环境验证。
 - [x] **`rules/weights.yaml` 占位模板已建立**：T4 提供四个一致性合格矩阵，
       `check_rules` 专门校验矩阵与 CR；专业核定仍待完成，见 1.10。
       见 [T4 PR 描述](../.github/PR_T4_mcdm.md)。

@@ -1,0 +1,408 @@
+{
+  "$defs": {
+    "SchemeParams": {
+      "description": "方案层（设计输入）参数，每个候选方案独立",
+      "group_order": [
+        "基本信息",
+        "居住品质",
+        "结构与造价",
+        "施工与安全",
+        "绿色低碳"
+      ],
+      "properties": {
+        "structure_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "剪力墙",
+                "框架-剪力墙",
+                "框架",
+                "钢结构",
+                "MiC"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "结构体系",
+          "enum": [
+            "剪力墙",
+            "框架-剪力墙",
+            "框架",
+            "钢结构",
+            "MiC"
+          ],
+          "essential": true,
+          "group": "基本信息",
+          "label": "结构体系",
+          "title": "Structure Type",
+          "unit": "—"
+        },
+        "units": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "总户数",
+          "essential": true,
+          "group": "基本信息",
+          "label": "总户数",
+          "title": "Units",
+          "unit": "户"
+        },
+        "unit_mix": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "integer"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "户型配比：键为户型名称（如 1室1厅），值为户数",
+          "group": "基本信息",
+          "label": "户型配比",
+          "title": "Unit Mix",
+          "unit": "户"
+        },
+        "floor_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "层高",
+          "group": "居住品质",
+          "label": "层高",
+          "title": "Floor Height",
+          "unit": "m"
+        },
+        "inner_area_ratio": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "得房率（套内面积 / 建筑面积）",
+          "group": "居住品质",
+          "label": "得房率",
+          "title": "Inner Area Ratio",
+          "unit": "—"
+        },
+        "south_room_ratio": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "主要房间南向比例",
+          "group": "居住品质",
+          "label": "南向比例",
+          "title": "South Room Ratio",
+          "unit": "—"
+        },
+        "window_floor_ratio": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "窗地比（窗面积 / 地面积）",
+          "group": "居住品质",
+          "label": "窗地比",
+          "title": "Window Floor Ratio",
+          "unit": "—"
+        },
+        "window_wall_ratio": {
+          "anyOf": [
+            {
+              "additionalProperties": {
+                "type": "number"
+              },
+              "type": "object"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "各朝向窗墙比，键为朝向（南/北/东/西），值为 0-1 小数",
+          "group": "居住品质",
+          "label": "窗墙比",
+          "title": "Window Wall Ratio",
+          "unit": "—"
+        },
+        "elevators_per_unit": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "每单元电梯数",
+          "group": "居住品质",
+          "label": "电梯数/单元",
+          "title": "Elevators Per Unit",
+          "unit": "台"
+        },
+        "gfa": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "总建筑面积",
+          "essential": true,
+          "group": "结构与造价",
+          "label": "总建筑面积",
+          "title": "Gfa",
+          "unit": "m²"
+        },
+        "footprint": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑基底面积",
+          "group": "结构与造价",
+          "label": "基底面积",
+          "title": "Footprint",
+          "unit": "m²"
+        },
+        "buildings": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "楼栋数",
+          "group": "结构与造价",
+          "label": "楼栋数",
+          "title": "Buildings",
+          "unit": "栋"
+        },
+        "floors": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "层数",
+          "essential": true,
+          "group": "结构与造价",
+          "label": "层数",
+          "title": "Floors",
+          "unit": "层"
+        },
+        "envelope_area": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑外表面积",
+          "group": "结构与造价",
+          "label": "外表面积",
+          "title": "Envelope Area",
+          "unit": "m²"
+        },
+        "volume": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "建筑体积",
+          "group": "结构与造价",
+          "label": "建筑体积",
+          "title": "Volume",
+          "unit": "m³"
+        },
+        "std_floor_repeat": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "标准层重复率",
+          "group": "施工与安全",
+          "label": "标准层重复率",
+          "title": "Std Floor Repeat",
+          "unit": "—"
+        },
+        "component_types": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "预制构件种类数",
+          "group": "施工与安全",
+          "label": "预制构件种类",
+          "title": "Component Types",
+          "unit": "种"
+        },
+        "risk_features": {
+          "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
+          "group": "施工与安全",
+          "items": {
+            "type": "string"
+          },
+          "label": "风险特征",
+          "options": [
+            "大悬挑",
+            "高大空间",
+            "深基坑",
+            "高支模",
+            "超长结构",
+            "不规则建筑",
+            "超限构件",
+            "复杂地质"
+          ],
+          "title": "Risk Features",
+          "type": "array",
+          "unit": "—"
+        },
+        "prefab_ratio_est": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "预估装配率",
+          "group": "绿色低碳",
+          "label": "预估装配率",
+          "title": "Prefab Ratio Est",
+          "unit": "—"
+        }
+      },
+      "title": "SchemeParams",
+      "type": "object"
+    }
+  },
+  "description": "创建方案请求体。",
+  "properties": {
+    "name": {
+      "description": "方案名称（项目内唯一）",
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "params": {
+      "$ref": "#/$defs/SchemeParams"
+    },
+    "is_whatif": {
+      "default": false,
+      "description": "是否为假设推演副本（T8 用）",
+      "title": "Is Whatif",
+      "type": "boolean"
+    },
+    "parent_id": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "若为 what-if，指向所基于的原方案",
+      "title": "Parent Id"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "title": "SchemeCreate",
+  "type": "object"
+}
