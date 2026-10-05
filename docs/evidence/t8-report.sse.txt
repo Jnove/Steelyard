@@ -1,0 +1,240 @@
+event: node_start
+data: {"node": "coordinator", "attempt": 0}
+
+event: node_start
+data: {"node": "parser", "attempt": 0}
+
+event: node_start
+data: {"node": "compliance", "attempt": 0}
+
+event: tool_call
+data: {"node": "compliance", "tool": "evaluate", "arguments": {"project_id": 1, "include_whatif": false}}
+
+event: tool_result
+data: {"node": "compliance", "tool": "evaluate", "result": {"project_id": 1, "rule_count": 12, "results": [{"scheme_id": "1", "scheme_name": "A 高品质", "compliance": [{"rule_id": "C-01", "name": "【示例】住宅层高下限", "status": "passed", "severity": "error", "value": 3.3, "limit": ">= 3.0", "formula": "floor_height >= 3.0", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】住宅层高下限 通过"}, {"rule_id": "C-02", "name": "【示例】容积率不超地块上限", "status": "passed", "severity": "error", "value": null, "limit": null, "formula": "far <= far_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】容积率不超地块上限 通过"}, {"rule_id": "C-03", "name": "【示例】建筑总高不超限高", "status": "passed", "severity": "warning", "value": null, "limit": null, "formula": "height <= height_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】建筑总高不超限高 通过"}, {"rule_id": "S-02", "name": "【示例】钢结构方案需人工复核防火（条件硬约束）", "status": "not_applicable", "severity": "warning", "value": null, "limit": null, "formula": "risk_features contains '超限构件'", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"}], "metrics": {"K-01": {"rule_id": "K-01", "name": "【示例】标准层重复率（越大越好）", "status": "scored", "value": 0.65, "score": 35.0, "dimension": "construction", "weight_in_dimension": 2.0, "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "K-02": {"rule_id": "K-02", "name": "【示例】预制构件种类数（越少越好）", "status": "scored", "value": 20.0, "score": 60.0, "dimension": "construction", "weight_in_dimension": 1.0, "formula": "component_types；分段线性 8→100, 20→60, 40→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-01": {"rule_id": "G-01", "name": "【示例】体形系数（越小越好）", "status": "scored", "value": 0.11837121212121213, "score": 100.0, "dimension": "green", "weight_in_dimension": 2.0, "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-02": {"rule_id": "G-02", "name": "【示例】预估装配率（越大越好）", "status": "scored", "value": 0.25, "score": 11.666666666666664, "dimension": "green", "weight_in_dimension": 1.0, "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-01": {"rule_id": "Q-01", "name": "【示例】主要房间南向比例（适中最好）", "status": "scored", "value": 0.85, "score": 14.285714285714306, "dimension": "quality", "weight_in_dimension": 2.0, "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-02": {"rule_id": "Q-02", "name": "【示例】得房率（越大越好）", "status": "scored", "value": 0.82, "score": 81.99999999999999, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-03": {"rule_id": "Q-03", "name": "【示例】单栋户数（越小越好，仅高层适用）", "status": "scored", "value": 80.0, "score": 90.0, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "S-01": {"rule_id": "S-01", "name": "【示例】风险特征数量（越少越好）", "status": "scored", "value": 2.0, "score": 70.0, "dimension": "structure", "weight_in_dimension": 1.0, "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}}, "dimension_scores": {"quality": 50.1429, "structure": 70.0, "construction": 43.3333, "green": 70.5556}, "dimension_coverage": {"quality": 1.0, "structure": 1.0, "construction": 1.0, "green": 1.0}, "topsis": null}, {"scheme_id": "2", "scheme_name": "B 不合规", "compliance": [{"rule_id": "C-01", "name": "【示例】住宅层高下限", "status": "failed", "severity": "error", "value": 2.9, "limit": ">= 3.0", "formula": "floor_height >= 3.0", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "层高 2.9 m 低于示例阈值 3.0 m"}, {"rule_id": "C-02", "name": "【示例】容积率不超地块上限", "status": "passed", "severity": "error", "value": null, "limit": null, "formula": "far <= far_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】容积率不超地块上限 通过"}, {"rule_id": "C-03", "name": "【示例】建筑总高不超限高", "status": "passed", "severity": "warning", "value": null, "limit": null, "formula": "height <= height_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】建筑总高不超限高 通过"}, {"rule_id": "S-02", "name": "【示例】钢结构方案需人工复核防火（条件硬约束）", "status": "not_applicable", "severity": "warning", "value": null, "limit": null, "formula": "risk_features contains '超限构件'", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"}], "metrics": {"K-01": {"rule_id": "K-01", "name": "【示例】标准层重复率（越大越好）", "status": "scored", "value": 0.8, "score": 70.0, "dimension": "construction", "weight_in_dimension": 2.0, "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "K-02": {"rule_id": "K-02", "name": "【示例】预制构件种类数（越少越好）", "status": "scored", "value": 14.0, "score": 80.0, "dimension": "construction", "weight_in_dimension": 1.0, "formula": "component_types；分段线性 8→100, 20→60, 40→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-01": {"rule_id": "G-01", "name": "【示例】体形系数（越小越好）", "status": "scored", "value": 0.11156186612576065, "score": 100.0, "dimension": "green", "weight_in_dimension": 2.0, "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-02": {"rule_id": "G-02", "name": "【示例】预估装配率（越大越好）", "status": "scored", "value": 0.45, "score": 58.333333333333336, "dimension": "green", "weight_in_dimension": 1.0, "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-01": {"rule_id": "Q-01", "name": "【示例】主要房间南向比例（适中最好）", "status": "scored", "value": 0.7, "score": 57.14285714285717, "dimension": "quality", "weight_in_dimension": 2.0, "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-02": {"rule_id": "Q-02", "name": "【示例】得房率（越大越好）", "status": "scored", "value": 0.74, "score": 48.461538461538446, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-03": {"rule_id": "Q-03", "name": "【示例】单栋户数（越小越好，仅高层适用）", "status": "scored", "value": 85.0, "score": 87.5, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "S-01": {"rule_id": "S-01", "name": "【示例】风险特征数量（越少越好）", "status": "scored", "value": 0.0, "score": 100.0, "dimension": "structure", "weight_in_dimension": 1.0, "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}}, "dimension_scores": {"quality": 62.5618, "structure": 100.0, "construction": 73.3333, "green": 86.1111}, "dimension_coverage": {"quality": 1.0, "structure": 1.0, "construction": 1.0, "green": 1.0}, "topsis": null}, {"scheme_id": "3", "scheme_name": "C MiC 高标准化", "compliance": [{"rule_id": "C-01", "name": "【示例】住宅层高下限", "status": "passed", "severity": "error", "value": 3.0, "limit": ">= 3.0", "formula": "floor_height >= 3.0", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】住宅层高下限 通过"}, {"rule_id": "C-02", "name": "【示例】容积率不超地块上限", "status": "passed", "severity": "error", "value": null, "limit": null, "formula": "far <= far_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】容积率不超地块上限 通过"}, {"rule_id": "C-03", "name": "【示例】建筑总高不超限高", "status": "passed", "severity": "warning", "value": null, "limit": null, "formula": "height <= height_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】建筑总高不超限高 通过"}, {"rule_id": "S-02", "name": "【示例】钢结构方案需人工复核防火（条件硬约束）", "status": "not_applicable", "severity": "warning", "value": null, "limit": null, "formula": "risk_features contains '超限构件'", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"}], "metrics": {"K-01": {"rule_id": "K-01", "name": "【示例】标准层重复率（越大越好）", "status": "scored", "value": 0.95, "score": 100.0, "dimension": "construction", "weight_in_dimension": 2.0, "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "K-02": {"rule_id": "K-02", "name": "【示例】预制构件种类数（越少越好）", "status": "scored", "value": 8.0, "score": 100.0, "dimension": "construction", "weight_in_dimension": 1.0, "formula": "component_types；分段线性 8→100, 20→60, 40→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-01": {"rule_id": "G-01", "name": "【示例】体形系数（越小越好）", "status": "scored", "value": 0.1111111111111111, "score": 100.0, "dimension": "green", "weight_in_dimension": 2.0, "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-02": {"rule_id": "G-02", "name": "【示例】预估装配率（越大越好）", "status": "scored", "value": 0.75, "score": 95.0, "dimension": "green", "weight_in_dimension": 1.0, "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-01": {"rule_id": "Q-01", "name": "【示例】主要房间南向比例（适中最好）", "status": "scored", "value": 0.72, "score": 51.428571428571445, "dimension": "quality", "weight_in_dimension": 2.0, "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-02": {"rule_id": "Q-02", "name": "【示例】得房率（越大越好）", "status": "scored", "value": 0.76, "score": 59.23076923076922, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-03": {"rule_id": "Q-03", "name": "【示例】单栋户数（越小越好，仅高层适用）", "status": "scored", "value": 108.0, "score": 76.0, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "S-01": {"rule_id": "S-01", "name": "【示例】风险特征数量（越少越好）", "status": "scored", "value": 0.0, "score": 100.0, "dimension": "structure", "weight_in_dimension": 1.0, "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}}, "dimension_scores": {"quality": 59.522, "structure": 100.0, "construction": 100.0, "green": 98.3333}, "dimension_coverage": {"quality": 1.0, "structure": 1.0, "construction": 1.0, "green": 1.0}, "topsis": null}, {"scheme_id": "4", "scheme_name": "D 均衡", "compliance": [{"rule_id": "C-01", "name": "【示例】住宅层高下限", "status": "passed", "severity": "error", "value": 3.0, "limit": ">= 3.0", "formula": "floor_height >= 3.0", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】住宅层高下限 通过"}, {"rule_id": "C-02", "name": "【示例】容积率不超地块上限", "status": "passed", "severity": "error", "value": null, "limit": null, "formula": "far <= far_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】容积率不超地块上限 通过"}, {"rule_id": "C-03", "name": "【示例】建筑总高不超限高", "status": "passed", "severity": "warning", "value": null, "limit": null, "formula": "height <= height_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】建筑总高不超限高 通过"}, {"rule_id": "S-02", "name": "【示例】钢结构方案需人工复核防火（条件硬约束）", "status": "not_applicable", "severity": "warning", "value": null, "limit": null, "formula": "risk_features contains '超限构件'", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"}], "metrics": {"K-01": {"rule_id": "K-01", "name": "【示例】标准层重复率（越大越好）", "status": "scored", "value": 0.85, "score": 80.0, "dimension": "construction", "weight_in_dimension": 2.0, "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "K-02": {"rule_id": "K-02", "name": "【示例】预制构件种类数（越少越好）", "status": "scored", "value": 12.0, "score": 86.66666666666667, "dimension": "construction", "weight_in_dimension": 1.0, "formula": "component_types；分段线性 8→100, 20→60, 40→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-01": {"rule_id": "G-01", "name": "【示例】体形系数（越小越好）", "status": "scored", "value": 0.10620915032679738, "score": 100.0, "dimension": "green", "weight_in_dimension": 2.0, "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-02": {"rule_id": "G-02", "name": "【示例】预估装配率（越大越好）", "status": "scored", "value": 0.5, "score": 70.0, "dimension": "green", "weight_in_dimension": 1.0, "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-01": {"rule_id": "Q-01", "name": "【示例】主要房间南向比例（适中最好）", "status": "scored", "value": 0.78, "score": 34.28571428571429, "dimension": "quality", "weight_in_dimension": 2.0, "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-02": {"rule_id": "Q-02", "name": "【示例】得房率（越大越好）", "status": "scored", "value": 0.78, "score": 70.0, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-03": {"rule_id": "Q-03", "name": "【示例】单栋户数（越小越好，仅高层适用）", "status": "scored", "value": 102.0, "score": 79.0, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "S-01": {"rule_id": "S-01", "name": "【示例】风险特征数量（越少越好）", "status": "scored", "value": 0.0, "score": 100.0, "dimension": "structure", "weight_in_dimension": 1.0, "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}}, "dimension_scores": {"quality": 54.3929, "structure": 100.0, "construction": 82.2222, "green": 90.0}, "dimension_coverage": {"quality": 1.0, "structure": 1.0, "construction": 1.0, "green": 1.0}, "topsis": null}, {"scheme_id": "5", "scheme_name": "E 被支配", "compliance": [{"rule_id": "C-01", "name": "【示例】住宅层高下限", "status": "passed", "severity": "error", "value": 3.0, "limit": ">= 3.0", "formula": "floor_height >= 3.0", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】住宅层高下限 通过"}, {"rule_id": "C-02", "name": "【示例】容积率不超地块上限", "status": "passed", "severity": "error", "value": null, "limit": null, "formula": "far <= far_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】容积率不超地块上限 通过"}, {"rule_id": "C-03", "name": "【示例】建筑总高不超限高", "status": "passed", "severity": "warning", "value": null, "limit": null, "formula": "height <= height_max", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "【示例】建筑总高不超限高 通过"}, {"rule_id": "S-02", "name": "【示例】钢结构方案需人工复核防火（条件硬约束）", "status": "not_applicable", "severity": "warning", "value": null, "limit": null, "formula": "risk_features contains '超限构件'", "source": "TODO(专业组)：示例数值，正式条文号待补", "missing_fields": [], "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"}], "metrics": {"K-01": {"rule_id": "K-01", "name": "【示例】标准层重复率（越大越好）", "status": "scored", "value": 0.75, "score": 58.33333333333333, "dimension": "construction", "weight_in_dimension": 2.0, "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "K-02": {"rule_id": "K-02", "name": "【示例】预制构件种类数（越少越好）", "status": "scored", "value": 15.0, "score": 76.66666666666666, "dimension": "construction", "weight_in_dimension": 1.0, "formula": "component_types；分段线性 8→100, 20→60, 40→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-01": {"rule_id": "G-01", "name": "【示例】体形系数（越小越好）", "status": "scored", "value": 0.11437908496732026, "score": 100.0, "dimension": "green", "weight_in_dimension": 2.0, "formula": "shape_coef = envelope_area / volume；分段线性 0.2→100, 0.35→70, 0.6→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "G-02": {"rule_id": "G-02", "name": "【示例】预估装配率（越大越好）", "status": "scored", "value": 0.3, "score": 23.33333333333333, "dimension": "green", "weight_in_dimension": 1.0, "formula": "prefab_ratio_est；分段线性 0.2→0, 0.5→70, 0.8→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-01": {"rule_id": "Q-01", "name": "【示例】主要房间南向比例（适中最好）", "status": "scored", "value": 0.68, "score": 62.857142857142854, "dimension": "quality", "weight_in_dimension": 2.0, "formula": "south_room_ratio；分段线性 0.2→0, 0.55→100, 0.9→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-02": {"rule_id": "Q-02", "name": "【示例】得房率（越大越好）", "status": "scored", "value": 0.72, "score": 37.692307692307665, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "inner_area_ratio；分段线性 0.65→0, 0.78→70, 0.88→100", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "Q-03": {"rule_id": "Q-03", "name": "【示例】单栋户数（越小越好，仅高层适用）", "status": "scored", "value": 102.0, "score": 79.0, "dimension": "quality", "weight_in_dimension": 1.0, "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}, "S-01": {"rule_id": "S-01", "name": "【示例】风险特征数量（越少越好）", "status": "scored", "value": 2.0, "score": 70.0, "dimension": "structure", "weight_in_dimension": 1.0, "formula": "len(risk_features)；分段线性 0→100, 2→70, 5→0", "source": "TODO(专业组)：示例数值，正式依据待补", "missing_fields": []}}, "dimension_scores": {"quality": 60.6016, "structure": 70.0, "construction": 64.4444, "green": 74.4444}, "dimension_coverage": {"quality": 1.0, "structure": 1.0, "construction": 1.0, "green": 1.0}, "topsis": null}]}}
+
+event: tool_call
+data: {"node": "compliance", "tool": "search_clause", "arguments": {"query": "生成方案比选报告", "k": 5}}
+
+event: tool_result
+data: {"node": "compliance", "tool": "search_clause", "result": []}
+
+event: node_start
+data: {"node": "evaluators", "attempt": 0}
+
+event: node_start
+data: {"node": "evaluators_construction", "attempt": 0}
+
+event: node_start
+data: {"node": "evaluators_green", "attempt": 0}
+
+event: node_start
+data: {"node": "evaluators_quality", "attempt": 0}
+
+event: node_start
+data: {"node": "evaluators_structure", "attempt": 0}
+
+event: node_start
+data: {"node": "decision", "attempt": 0}
+
+event: tool_call
+data: {"node": "decision", "tool": "rank", "arguments": {"project_id": 1, "role": null, "weights": [0.25, 0.25, 0.25, 0.25], "include_whatif": false}}
+
+event: tool_result
+data: {"node": "decision", "tool": "rank", "result": {"project_id": 1, "scheme_order": ["1", "3", "4", "5"], "criteria": ["quality", "structure", "construction", "green"], "weights_used": {"source": "weights", "criteria": ["quality", "structure", "construction", "green"], "weights": [0.25, 0.25, 0.25, 0.25], "role": null, "role_name": null, "note": "", "ahp": null, "consistency_warning": null}, "ranking": [{"scheme_id": "3", "scheme_name": "C MiC 高标准化", "dimension_scores": [59.522, 100.0, 100.0, 98.3333], "closeness": 0.979285508336375, "rank": 1, "is_non_dominated": true, "dominated_by": [], "first_place_probability": 1.0}, {"scheme_id": "4", "scheme_name": "D 均衡", "dimension_scores": [54.3929, 100.0, 82.2222, 90.0], "closeness": 0.7057264479068356, "rank": 2, "is_non_dominated": false, "dominated_by": ["3"], "first_place_probability": 0.0}, {"scheme_id": "5", "scheme_name": "E 被支配", "dimension_scores": [60.6016, 70.0, 64.4444, 74.4444], "closeness": 0.34245994882341035, "rank": 3, "is_non_dominated": true, "dominated_by": [], "first_place_probability": 0.0}, {"scheme_id": "1", "scheme_name": "A 高品质", "dimension_scores": [50.1429, 70.0, 43.3333, 70.5556], "closeness": 0.0, "rank": 4, "is_non_dominated": false, "dominated_by": ["3", "4", "5"], "first_place_probability": 0.0}], "excluded": [{"scheme_id": "2", "scheme_name": "B 不合规", "reason": "有 1 条 error 级硬约束未通过（C-01），默认不参与排名；想让它参与请传 include_noncompliant=true", "failed_rules": ["C-01"]}], "topsis": {"schemes": [{"index": 0, "closeness": 0.0, "distance_to_best": 0.1137401717528535, "distance_to_worst": 0.0, "rank": 4}, {"index": 1, "closeness": 0.979285508336375, "distance_to_best": 0.002396077253059875, "distance_to_worst": 0.11327546767156982, "rank": 1}, {"index": 2, "closeness": 0.7057264479068356, "distance_to_best": 0.034784998410591315, "distance_to_worst": 0.08342133771158489, "rank": 2}, {"index": 3, "closeness": 0.34245994882341035, "distance_to_best": 0.08133366282476917, "distance_to_worst": 0.042360190772790796, "rank": 3}], "ideal_best": [0.13449992150707143, 0.14482111159087308, 0.16559797581273536, 0.14615981764068628], "ideal_worst": [0.11128775666214973, 0.10137477811361113, 0.07175906765286005, 0.10487183517210555], "weights": [0.25, 0.25, 0.25, 0.25]}, "sensitivity": {"baseline_weights": [0.25, 0.25, 0.25, 0.25], "baseline_ranks": [4, 1, 2, 3], "baseline_top_index": 1, "cells": [{"criterion": "quality", "criterion_index": 0, "delta": -0.2, "weights": [0.2, 0.26666666666666666, 0.26666666666666666, 0.26666666666666666], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "quality", "criterion_index": 0, "delta": -0.1, "weights": [0.225, 0.25833333333333336, 0.25833333333333336, 0.25833333333333336], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "quality", "criterion_index": 0, "delta": 0.1, "weights": [0.275, 0.24166666666666667, 0.24166666666666667, 0.24166666666666667], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "quality", "criterion_index": 0, "delta": 0.2, "weights": [0.3, 0.2333333333333333, 0.2333333333333333, 0.2333333333333333], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "structure", "criterion_index": 1, "delta": -0.2, "weights": [0.26666666666666666, 0.2, 0.26666666666666666, 0.26666666666666666], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "structure", "criterion_index": 1, "delta": -0.1, "weights": [0.25833333333333336, 0.225, 0.25833333333333336, 0.25833333333333336], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "structure", "criterion_index": 1, "delta": 0.1, "weights": [0.24166666666666667, 0.275, 0.24166666666666667, 0.24166666666666667], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "structure", "criterion_index": 1, "delta": 0.2, "weights": [0.2333333333333333, 0.3, 0.2333333333333333, 0.2333333333333333], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "construction", "criterion_index": 2, "delta": -0.2, "weights": [0.26666666666666666, 0.26666666666666666, 0.2, 0.26666666666666666], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "construction", "criterion_index": 2, "delta": -0.1, "weights": [0.25833333333333336, 0.25833333333333336, 0.225, 0.25833333333333336], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "construction", "criterion_index": 2, "delta": 0.1, "weights": [0.24166666666666667, 0.24166666666666667, 0.275, 0.24166666666666667], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "construction", "criterion_index": 2, "delta": 0.2, "weights": [0.2333333333333333, 0.2333333333333333, 0.3, 0.2333333333333333], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "green", "criterion_index": 3, "delta": -0.2, "weights": [0.26666666666666666, 0.26666666666666666, 0.26666666666666666, 0.2], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "green", "criterion_index": 3, "delta": -0.1, "weights": [0.25833333333333336, 0.25833333333333336, 0.25833333333333336, 0.225], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "green", "criterion_index": 3, "delta": 0.1, "weights": [0.24166666666666667, 0.24166666666666667, 0.24166666666666667, 0.275], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}, {"criterion": "green", "criterion_index": 3, "delta": 0.2, "weights": [0.2333333333333333, 0.2333333333333333, 0.2333333333333333, 0.3], "top_index": 1, "ranks": [4, 1, 2, 3], "rank_changed": false, "top_changed": false}], "flip_points": [{"criterion": "quality", "criterion_index": 0, "baseline_weight": 0.25, "flip_weight": 0.92, "new_top_index": 3}, {"criterion": "structure", "criterion_index": 1, "baseline_weight": 0.25, "flip_weight": null, "new_top_index": null}, {"criterion": "construction", "criterion_index": 2, "baseline_weight": 0.25, "flip_weight": null, "new_top_index": null}, {"criterion": "green", "criterion_index": 3, "baseline_weight": 0.25, "flip_weight": null, "new_top_index": null}]}, "pareto": {"non_dominated": [1, 3], "dominated_by": {"0": [1, 2, 3], "2": [1]}}, "rank_acceptability": {"probabilities": [[0.0, 0.0, 0.0, 1.0], [1.0, 0.0, 0.0, 0.0], [0.0, 1.0, 0.0, 0.0], [0.0, 0.0, 1.0, 0.0]], "first_place_probability": [0.0, 1.0, 0.0, 0.0], "samples": 1000, "concentration": 50.0, "seed": 0}, "elapsed_ms": 48.831499996595085}}
+
+event: node_start
+data: {"node": "reporter", "attempt": 0}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "", "replace": true}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "## 结论\n\n离线脚本演示；虚构样例不能用作工程依据。\n\n按工具返回的权重排序；未指定角色或权重", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "时使用等权演示。\n\nC MiC 高标准化：名次 1，贴近度 0.98。\n\nD 均衡：名次 2，贴", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "近度 0.71。\n\nE 被支配：名次 3，贴近度 0.34。\n\nA 高品质：名次 4，贴近度 0", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": ".00。\n\n## 合规问题\n\n按规则引擎判定；规则出处含 TODO 的内容仍待专业组确认。\n\nB", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": " 不合规：C-01，层高 2.9 m 低于示例阈值 3.0 m；source：TODO(专业组)", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "：示例数值，正式条文号待补。\n\n## 各维度对比\n\nA 高品质：居住品质 50.14，结构 70", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": ".00，施工 43.33，绿色 70.56。\n\nK-01：取值 0.65，得分 35.00；so", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "urce：TODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 20.00，得分 60", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": ".00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.12，", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": " 0.25，得分 11.67；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "01：取值 0.85，得分 14.29；source：TODO(专业组)：示例数值，正式依据待补", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "。\n\nQ-02：取值 0.82，得分 82.00；source：TODO(专业组)：示例数值，正", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "式依据待补。\n\nQ-03：取值 80.00，得分 90.00；source：TODO(专业组)：", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "示例数值，正式依据待补。\n\nS-01：取值 2.00，得分 70.00；source：TODO(", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "专业组)：示例数值，正式依据待补。\n\nB 不合规：居住品质 62.56，结构 100.00，施工", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": " 73.33，绿色 86.11。\n\nK-01：取值 0.80，得分 70.00；source：T", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "ODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 14.00，得分 80.00；so", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "urce：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 100", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": ".00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.45，", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "得分 58.33；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 ", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "0.70，得分 57.14；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-0", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "2：取值 0.74，得分 48.46；source：TODO(专业组)：示例数值，正式依据待补。", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "\n\nQ-03：取值 85.00，得分 87.50；source：TODO(专业组)：示例数值，正", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "式依据待补。\n\nS-01：取值 0.00，得分 100.00；source：TODO(专业组)：", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "示例数值，正式依据待补。\n\nC MiC 高标准化：居住品质 59.52，结构 100.00，施工", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": " 100.00，绿色 98.33。\n\nK-01：取值 0.95，得分 100.00；source", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "：TODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 8.00，得分 100.00；", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "source：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 1", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "00.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.7", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "5，得分 95.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "值 0.72，得分 51.43；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "-02：取值 0.76，得分 59.23；source：TODO(专业组)：示例数值，正式依据待", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "补。\n\nQ-03：取值 108.00，得分 76.00；source：TODO(专业组)：示例数", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "值，正式依据待补。\n\nS-01：取值 0.00，得分 100.00；source：TODO(专业", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "组)：示例数值，正式依据待补。\n\nD 均衡：居住品质 54.39，结构 100.00，施工 82", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": ".22，绿色 90.00。\n\nK-01：取值 0.85，得分 80.00；source：TODO", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "(专业组)：示例数值，正式依据待补。\n\nK-02：取值 12.00，得分 86.67；sourc", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "e：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 100.00", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.50，得分 ", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "70.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 0.7", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "8，得分 34.29；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-02：取", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "值 0.78，得分 70.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "-03：取值 102.00，得分 79.00；source：TODO(专业组)：示例数值，正式依", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "据待补。\n\nS-01：取值 0.00，得分 100.00；source：TODO(专业组)：示例", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "数值，正式依据待补。\n\nE 被支配：居住品质 60.60，结构 70.00，施工 64.44，绿", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "色 74.44。\n\nK-01：取值 0.75，得分 58.33；source：TODO(专业组)", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "：示例数值，正式依据待补。\n\nK-02：取值 15.00，得分 76.67；source：TOD", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "O(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 100.00；sour", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "ce：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.30，得分 23.33", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 0.68，得分 ", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "62.86；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-02：取值 0.7", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "2，得分 37.69；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-03：取", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "值 102.00，得分 79.00；source：TODO(专业组)：示例数值，正式依据待补。\n", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "\nS-01：取值 2.00，得分 70.00；source：TODO(专业组)：示例数值，正式依", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "据待补。\n\n## 权衡与稳健性\n\n请结合工具提供的敏感性、帕累托与名次概率结果理解权衡；数据覆盖", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "不足时结论不确定。\n\n工具返回权重：[0.25, 0.25, 0.25, 0.25]。\n\nC M", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "iC 高标准化：首位概率 1.00；非劣方案：是。\n\nD 均衡：首位概率 0.00；非劣方案：否", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "。\n\nE 被支配：首位概率 0.00；非劣方案：是。\n\nA 高品质：首位概率 0.00；非劣方案", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "：否。\n\n## 修改建议\n\n优先补齐缺失输入并核对合规问题；TODO(专业组)：确认规则出处、阈", "replace": false}
+
+event: token
+data: {"node": "reporter", "attempt": 0, "text": "值与角色权重。", "replace": false}
+
+event: node_start
+data: {"node": "citation_check", "attempt": 0}
+
+event: done
+data: {"report": "## 结论\n\n离线脚本演示；虚构样例不能用作工程依据。\n\n按工具返回的权重排序；未指定角色或权重时使用等权演示。\n\nC MiC 高标准化：名次 1，贴近度 0.98。\n\nD 均衡：名次 2，贴近度 0.71。\n\nE 被支配：名次 3，贴近度 0.34。\n\nA 高品质：名次 4，贴近度 0.00。\n\n## 合规问题\n\n按规则引擎判定；规则出处含 TODO 的内容仍待专业组确认。\n\nB 不合规：C-01，层高 2.9 m 低于示例阈值 3.0 m；source：TODO(专业组)：示例数值，正式条文号待补。\n\n## 各维度对比\n\nA 高品质：居住品质 50.14，结构 70.00，施工 43.33，绿色 70.56。\n\nK-01：取值 0.65，得分 35.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 20.00，得分 60.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.12，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.25，得分 11.67；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 0.85，得分 14.29；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-02：取值 0.82，得分 82.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-03：取值 80.00，得分 90.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nS-01：取值 2.00，得分 70.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nB 不合规：居住品质 62.56，结构 100.00，施工 73.33，绿色 86.11。\n\nK-01：取值 0.80，得分 70.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 14.00，得分 80.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.45，得分 58.33；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 0.70，得分 57.14；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-02：取值 0.74，得分 48.46；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-03：取值 85.00，得分 87.50；source：TODO(专业组)：示例数值，正式依据待补。\n\nS-01：取值 0.00，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nC MiC 高标准化：居住品质 59.52，结构 100.00，施工 100.00，绿色 98.33。\n\nK-01：取值 0.95，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 8.00，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.75，得分 95.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 0.72，得分 51.43；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-02：取值 0.76，得分 59.23；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-03：取值 108.00，得分 76.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nS-01：取值 0.00，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nD 均衡：居住品质 54.39，结构 100.00，施工 82.22，绿色 90.00。\n\nK-01：取值 0.85，得分 80.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 12.00，得分 86.67；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.50，得分 70.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 0.78，得分 34.29；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-02：取值 0.78，得分 70.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-03：取值 102.00，得分 79.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nS-01：取值 0.00，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nE 被支配：居住品质 60.60，结构 70.00，施工 64.44，绿色 74.44。\n\nK-01：取值 0.75，得分 58.33；source：TODO(专业组)：示例数值，正式依据待补。\n\nK-02：取值 15.00，得分 76.67；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-01：取值 0.11，得分 100.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nG-02：取值 0.30，得分 23.33；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-01：取值 0.68，得分 62.86；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-02：取值 0.72，得分 37.69；source：TODO(专业组)：示例数值，正式依据待补。\n\nQ-03：取值 102.00，得分 79.00；source：TODO(专业组)：示例数值，正式依据待补。\n\nS-01：取值 2.00，得分 70.00；source：TODO(专业组)：示例数值，正式依据待补。\n\n## 权衡与稳健性\n\n请结合工具提供的敏感性、帕累托与名次概率结果理解权衡；数据覆盖不足时结论不确定。\n\n工具返回权重：[0.25, 0.25, 0.25, 0.25]。\n\nC MiC 高标准化：首位概率 1.00；非劣方案：是。\n\nD 均衡：首位概率 0.00；非劣方案：否。\n\nE 被支配：首位概率 0.00；非劣方案：是。\n\nA 高品质：首位概率 0.00；非劣方案：否。\n\n## 修改建议\n\n优先补齐缺失输入并核对合规问题；TODO(专业组)：确认规则出处、阈值与角色权重。", "intent": "new_eval", "unverified_numbers": [], "traces": [{"node": "coordinator", "elapsed_ms": 2.2401000605896115, "tool_calls": []}, {"node": "parser", "elapsed_ms": 4.038400016725063, "tool_calls": []}, {"node": "compliance", "elapsed_ms": 67.71809991914779, "tool_calls": ["evaluate", "search_clause"]}, {"node": "evaluators", "elapsed_ms": 0.001600012183189392, "tool_calls": []}, {"node": "evaluators_construction", "elapsed_ms": 0.5799999926239252, "tool_calls": []}, {"node": "evaluators_green", "elapsed_ms": 0.3477999707683921, "tool_calls": []}, {"node": "evaluators_quality", "elapsed_ms": 0.32380002085119486, "tool_calls": []}, {"node": "evaluators_structure", "elapsed_ms": 0.22929999977350235, "tool_calls": []}, {"node": "decision", "elapsed_ms": 78.25849996879697, "tool_calls": ["rank"]}, {"node": "reporter", "elapsed_ms": 5.791899980977178, "tool_calls": []}, {"node": "citation_check", "elapsed_ms": 14.38329997472465, "tool_calls": []}], "cached": false}
+

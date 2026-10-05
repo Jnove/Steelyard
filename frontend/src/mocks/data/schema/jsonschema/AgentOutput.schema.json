@@ -1,0 +1,97 @@
+{
+  "$defs": {
+    "NodeTrace": {
+      "properties": {
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "elapsed_ms": {
+          "title": "Elapsed Ms",
+          "type": "number"
+        },
+        "tool_calls": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Tool Calls",
+          "type": "array"
+        }
+      },
+      "required": [
+        "node",
+        "elapsed_ms",
+        "tool_calls"
+      ],
+      "title": "NodeTrace",
+      "type": "object"
+    },
+    "NumberIssue": {
+      "properties": {
+        "text": {
+          "title": "Text",
+          "type": "string"
+        },
+        "start": {
+          "title": "Start",
+          "type": "integer"
+        },
+        "end": {
+          "title": "End",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "text",
+        "start",
+        "end"
+      ],
+      "title": "NumberIssue",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "report": {
+      "title": "Report",
+      "type": "string"
+    },
+    "intent": {
+      "enum": [
+        "new_eval",
+        "whatif",
+        "explain",
+        "reweight"
+      ],
+      "title": "Intent",
+      "type": "string"
+    },
+    "unverified_numbers": {
+      "items": {
+        "$ref": "#/$defs/NumberIssue"
+      },
+      "title": "Unverified Numbers",
+      "type": "array"
+    },
+    "traces": {
+      "items": {
+        "$ref": "#/$defs/NodeTrace"
+      },
+      "title": "Traces",
+      "type": "array"
+    },
+    "cached": {
+      "default": false,
+      "title": "Cached",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "report",
+    "intent",
+    "unverified_numbers",
+    "traces",
+    "cached"
+  ],
+  "title": "AgentOutput",
+  "type": "object"
+}

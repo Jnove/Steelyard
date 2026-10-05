@@ -1,0 +1,6 @@
+# 错误示例：规则 ID 不符合 ^[CQSKG]-\d{2}$。
+- id: C-SHAPE
+  name: ID 格式不对
+  type: hard
+  check: "shape_coef <= 0.5"
+  source: "TODO(专业组)"

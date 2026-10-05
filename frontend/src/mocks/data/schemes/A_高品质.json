@@ -1,0 +1,31 @@
+{
+  "_note": "虚构数据，仅供开发调试，不得用于验证或答辩",
+  "name": "A 高品质",
+  "params": {
+    "structure_type": "剪力墙",
+    "units": 320,
+    "unit_mix": {"三室": 160, "两室": 160},
+    "floor_height": 3.3,
+    "inner_area_ratio": 0.82,
+    "south_room_ratio": 0.85,
+    "window_floor_ratio": 0.28,
+    "window_wall_ratio": {"南": 0.45, "北": 0.30, "东": 0.30, "西": 0.30},
+    "elevators_per_unit": 2,
+    "gfa": 38400,
+    "footprint": 2400,
+    "buildings": 4,
+    "floors": 16,
+    "envelope_area": 15000,
+    "volume": 126720,
+    "std_floor_repeat": 0.65,
+    "component_types": 20,
+    "risk_features": ["大悬挑", "高支模"],
+    "prefab_ratio_est": 0.25
+  },
+  "_design_notes": {
+    "intent": "高品质定位：层高 3.3 m、得房率 0.82、南向比例 0.85，走现浇剪力墙路线，户型与立面定制化程度高。",
+    "tradeoff": "高定制换来的代价是标准层重复率仅 0.65、构件种类多达 20 种、装配率 0.25；现场存在大悬挑与高支模两类风险特征。",
+    "gfa_consistency": "footprint × floors × buildings = 2400 × 16 = 38,400 m²，与 gfa 一致；总高 16 × 3.3 = 52.8 m < 54 m。",
+    "far_check": "gfa / site_area = 38,400 / 18,000 ≈ 2.13 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。"
+  }
+}

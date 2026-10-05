@@ -2,14 +2,14 @@
 #
 # 期望报错：UNALIGNED（WARNING）+ YAML_PARSE 或规则结构异常
 # 第二条规则的子键缩进比第一条多缩了 1 个空格，兄弟节点错位。
-- id: C-A
+- id: C-92
   name: 对齐
   type: hard
   check: "floor_height >= 3.0"
   message: "A"
   source: "TODO(专业组)"
 
-- id: C-B
+- id: C-93
    name: 错位
    type: hard
    check: "floor_height >= 3.0"

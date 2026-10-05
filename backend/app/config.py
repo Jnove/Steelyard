@@ -1,27 +1,34 @@
 """应用配置：通过 pydantic-settings 从环境变量 / .env 加载。
 
-T1 阶段只暴露基础设施相关字段；LLM、数据库等真实接入在后续任务中加入。
+根目录与 backend/.env 均可配置；默认数据库固定在当前工作树的 backend/data。
 """
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Annotated
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+BACKEND_ROOT = Path(__file__).resolve().parents[1]
+PROJECT_ROOT = BACKEND_ROOT.parent
+
 
 class Settings(BaseSettings):
     """运行时配置。
 
-    字段名遵循 AGENTS.md 中约定的环境变量命名，方便部署侧统一管理。
+    字段名遵循 Agent.md 中约定的环境变量命名，方便部署侧统一管理。
     """
 
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=(PROJECT_ROOT / ".env", BACKEND_ROOT / ".env"),
         env_file_encoding="utf-8",
         case_sensitive=False,
         extra="ignore",
     )
+
+    # —— 运行环境：dev / prod。仅开发环境开放规则热重载等调试接口 ——
+    app_env: Annotated[str, Field(default="dev", alias="APP_ENV")]
 
     # —— LLM 配置（默认走 fake 桩，便于本地无 Key 启动） ——
     llm_provider: Annotated[str, Field(default="fake", alias="LLM_PROVIDER")]
@@ -32,7 +39,10 @@ class Settings(BaseSettings):
     # —— 数据库（SQLite 即可，演示规模足够） ——
     database_url: Annotated[
         str,
-        Field(default="sqlite:///./data/zhuheng.db", alias="DATABASE_URL"),
+        Field(
+            default=f"sqlite:///{(BACKEND_ROOT / 'data' / 'zhuheng.db').as_posix()}",
+            alias="DATABASE_URL",
+        ),
     ]
 
     # —— CORS：开发环境默认放行 Vite dev server ——
@@ -40,6 +50,11 @@ class Settings(BaseSettings):
         str,
         Field(default="http://localhost:5173", alias="CORS_ORIGINS"),
     ]
+
+    @property
+    def is_dev(self) -> bool:
+        """是否开发环境。``POST /api/rules/reload`` 等调试接口只在这里放开。"""
+        return self.app_env.strip().lower() in ("dev", "development", "local", "test")
 
     def cors_origins_list(self) -> list[str]:
         """把逗号分隔的字符串拆成列表，方便 CORSMiddleware 使用。"""

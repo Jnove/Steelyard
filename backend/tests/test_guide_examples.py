@@ -70,54 +70,47 @@ def test_valid_examples_pass_check_rules(filename: str) -> None:
 # —— 2. 错误示例触发对应的 ERROR / WARNING —— #
 
 
-# 每个错误示例 → 必须出现的错误码
+# 每个错误示例 → 报错里必须出现的中文片段。
+#
+# T3 起 check_rules 的输出格式改成「文件名:行号 规则ID — 中文说明 — 怎么改」，
+# 不再打印英文错误码，所以这里按**中文说明**断言。
+# 想按程序化的错误码断言，见 tests/test_check_rules.py（它直接导入模块读 Issue.code）。
 BAD_CASES: list[tuple[str, list[str]]] = [
-    (
-        "hard_tab_indent.yaml",
-        ["TAB_INDENT", "YAML_PARSE"],
-    ),
-    (
-        "hard_chinese_colon.yaml",
-        ["CHINESE_COLON"],
-    ),
-    (
-        "hard_unaligned.yaml",
-        ["UNALIGNED"],
-    ),
-    (
-        "hard_missing_field.yaml",
-        ["MISSING_FIELD"],
-    ),
-    (
-        "metric_points_not_monotonic.yaml",
-        ["METRIC_POINTS_NOT_MONOTONIC"],
-    ),
-    (
-        "metric_missing_dimension.yaml",
-        ["METRIC_BAD_DIMENSION"],
-    ),
+    ("hard_tab_indent.yaml", ["Tab 缩进"]),
+    ("hard_chinese_colon.yaml", ["中文全角冒号"]),
+    # 缩进不齐由 YAML 解析器直接抓到，行号精确；T9 的文本启发式已移除（对多条规则的文件会误报）。
+    ("hard_unaligned.yaml", ["缩进"]),
+    ("hard_missing_field.yaml", ["缺少必填字段"]),
+    ("metric_points_not_monotonic.yaml", ["严格递增"]),
+    ("metric_missing_dimension.yaml", ["dimension"]),
 ]
 
 
 @pytest.mark.parametrize(
-    "filename, expected_codes",
+    "filename, expected_fragments",
     BAD_CASES,
     ids=[c[0] for c in BAD_CASES],
 )
-def test_bad_examples_fail_with_expected_codes(
-    filename: str, expected_codes: list[str]
+def test_bad_examples_fail_with_expected_message(
+    filename: str, expected_fragments: list[str]
 ) -> None:
-    """每个错误示例至少触发一个期望的错误码，且 exit code = 1。"""
+    """每个错误示例都要 exit code 1，且报错里出现期望的中文说明。"""
     result = _run_script(CHECK_RULES, str(BAD_DIR / filename))
     assert result.returncode == 1, (
         f"{filename} 应当报错但 exit 0：\nSTDOUT:\n{result.stdout}"
     )
     combined = result.stdout + result.stderr
-    missing = [code for code in expected_codes if code not in combined]
+    missing = [f for f in expected_fragments if f not in combined]
     assert not missing, (
-        f"{filename} 缺少期望错误码 {missing}；\n"
+        f"{filename} 的报错里没提到 {missing}；\n"
         f"STDOUT:\n{result.stdout}\nSTDERR:\n{result.stderr}"
     )
+
+
+def test_bad_examples_always_say_how_to_fix(filename: str = "hard_tab_indent.yaml") -> None:
+    """报错必须带「怎么改」——这是 T3 对报错格式的硬要求。"""
+    result = _run_script(CHECK_RULES, str(BAD_DIR / filename))
+    assert "怎么改：" in result.stdout, result.stdout
 
 
 # —— 3. 字段对照表与当前 JSON Schema 同步 —— #
@@ -128,7 +121,7 @@ def test_field_table_exists_and_nonempty() -> None:
     assert FIELDS_MD.exists(), "字段对照表未生成，请跑 gen_field_table.py"
     content = FIELDS_MD.read_text(encoding="utf-8")
     assert "派生量" in content
-    assert "shape_coefficient" in content
+    assert "shape_coef" in content
     assert "ProjectParams" in content
     assert "SchemeParams" in content
 
@@ -154,6 +147,7 @@ def test_check_rules_module_importable() -> None:
     mod = importlib.import_module("scripts.check_rules")
     assert mod.main.__name__ == "main"
     assert mod.VALID_DIMENSIONS == ("quality", "structure", "construction", "green")
+    assert callable(mod.check_file)
 
 
 def test_check_rules_lists_all_yaml_files_in_dir() -> None:

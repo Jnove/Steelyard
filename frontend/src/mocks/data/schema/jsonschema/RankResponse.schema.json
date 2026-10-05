@@ -1,0 +1,674 @@
+{
+  "$defs": {
+    "AhpResult": {
+      "description": "两两比较矩阵解出的权重，以及一致性检验的中间量",
+      "properties": {
+        "weights": {
+          "description": "归一化后的权重，和为 1，顺序同 CRITERION_ORDER",
+          "items": {
+            "type": "number"
+          },
+          "title": "Weights",
+          "type": "array"
+        },
+        "lambda_max": {
+          "description": "最大特征值 λmax",
+          "title": "Lambda Max",
+          "type": "number"
+        },
+        "ci": {
+          "description": "一致性指标 CI = (λmax − n) / (n − 1)",
+          "title": "Ci",
+          "type": "number"
+        },
+        "cr": {
+          "description": "一致性比率 CR = CI / RI；n ≤ 2 时记 0",
+          "title": "Cr",
+          "type": "number"
+        },
+        "ri": {
+          "description": "本阶数对应的随机一致性指标 RI",
+          "title": "Ri",
+          "type": "number"
+        },
+        "consistent": {
+          "description": "CR < 0.1 才算通过一致性检验",
+          "title": "Consistent",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "weights",
+        "lambda_max",
+        "ci",
+        "cr",
+        "ri",
+        "consistent"
+      ],
+      "title": "AhpResult",
+      "type": "object"
+    },
+    "ExcludedScheme": {
+      "description": "未参与排序的方案，以及原因。",
+      "properties": {
+        "scheme_id": {
+          "description": "方案 id",
+          "title": "Scheme Id",
+          "type": "string"
+        },
+        "scheme_name": {
+          "description": "方案名称",
+          "title": "Scheme Name",
+          "type": "string"
+        },
+        "reason": {
+          "description": "为什么没参与排序",
+          "title": "Reason",
+          "type": "string"
+        },
+        "failed_rules": {
+          "description": "导致被排除的 error 级规则 ID",
+          "items": {
+            "type": "string"
+          },
+          "title": "Failed Rules",
+          "type": "array"
+        }
+      },
+      "required": [
+        "scheme_id",
+        "scheme_name",
+        "reason",
+        "failed_rules"
+      ],
+      "title": "ExcludedScheme",
+      "type": "object"
+    },
+    "FlipPoint": {
+      "description": "该准则权重在 [0, 1] 内扫描时，第一名首次改变的权重值",
+      "properties": {
+        "criterion": {
+          "description": "准则名",
+          "title": "Criterion",
+          "type": "string"
+        },
+        "criterion_index": {
+          "description": "准则下标",
+          "title": "Criterion Index",
+          "type": "integer"
+        },
+        "baseline_weight": {
+          "description": "该准则当前的权重。翻转点在它之下表示「调低会翻」，之上表示「调高会翻」",
+          "title": "Baseline Weight",
+          "type": "number"
+        },
+        "flip_weight": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "第一名首次改变时该准则的权重；整个区间内都不变则为 null",
+          "title": "Flip Weight"
+        },
+        "new_top_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "翻转后的第一名行号；没有翻转则为 null",
+          "title": "New Top Index"
+        }
+      },
+      "required": [
+        "criterion",
+        "criterion_index",
+        "baseline_weight",
+        "flip_weight",
+        "new_top_index"
+      ],
+      "title": "FlipPoint",
+      "type": "object"
+    },
+    "ParetoResult": {
+      "description": "非劣方案，以及每个被支配方案被谁支配",
+      "properties": {
+        "non_dominated": {
+          "description": "非劣（帕累托最优）方案的行号",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Non Dominated",
+          "type": "array"
+        },
+        "dominated_by": {
+          "additionalProperties": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "description": "键是被支配方案的行号，值是支配它的方案行号列表",
+          "title": "Dominated By",
+          "type": "object"
+        }
+      },
+      "required": [
+        "non_dominated",
+        "dominated_by"
+      ],
+      "title": "ParetoResult",
+      "type": "object"
+    },
+    "RankAcceptabilityResult": {
+      "description": "在基准权重附近随机抽样，统计每个方案落到每个名次的概率",
+      "properties": {
+        "probabilities": {
+          "description": "第 i 行第 r 列 = 方案 i 排第 (r+1) 名的概率；每行和为 1",
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "title": "Probabilities",
+          "type": "array"
+        },
+        "first_place_probability": {
+          "description": "每个方案排第一的概率",
+          "items": {
+            "type": "number"
+          },
+          "title": "First Place Probability",
+          "type": "array"
+        },
+        "samples": {
+          "description": "抽样组数",
+          "title": "Samples",
+          "type": "integer"
+        },
+        "concentration": {
+          "description": "Dirichlet 集中度；越大越贴近基准权重",
+          "title": "Concentration",
+          "type": "number"
+        },
+        "seed": {
+          "description": "随机种子；同 seed 结果完全可复现",
+          "title": "Seed",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "probabilities",
+        "first_place_probability",
+        "samples",
+        "concentration",
+        "seed"
+      ],
+      "title": "RankAcceptabilityResult",
+      "type": "object"
+    },
+    "RankedScheme": {
+      "description": "参与排序的一个方案。",
+      "properties": {
+        "scheme_id": {
+          "description": "方案 id",
+          "title": "Scheme Id",
+          "type": "string"
+        },
+        "scheme_name": {
+          "description": "方案名称",
+          "title": "Scheme Name",
+          "type": "string"
+        },
+        "dimension_scores": {
+          "description": "四个维度得分，顺序同 criteria",
+          "items": {
+            "type": "number"
+          },
+          "title": "Dimension Scores",
+          "type": "array"
+        },
+        "closeness": {
+          "description": "TOPSIS 贴近度，0–1",
+          "title": "Closeness",
+          "type": "number"
+        },
+        "rank": {
+          "description": "名次，从 1 开始；并列时名次相同",
+          "title": "Rank",
+          "type": "integer"
+        },
+        "is_non_dominated": {
+          "description": "是否为帕累托非劣方案",
+          "title": "Is Non Dominated",
+          "type": "boolean"
+        },
+        "dominated_by": {
+          "description": "支配它的方案 id；非劣方案为空",
+          "items": {
+            "type": "string"
+          },
+          "title": "Dominated By",
+          "type": "array"
+        },
+        "first_place_probability": {
+          "description": "蒙特卡洛下排第一的概率",
+          "title": "First Place Probability",
+          "type": "number"
+        }
+      },
+      "required": [
+        "scheme_id",
+        "scheme_name",
+        "dimension_scores",
+        "closeness",
+        "rank",
+        "is_non_dominated",
+        "dominated_by",
+        "first_place_probability"
+      ],
+      "title": "RankedScheme",
+      "type": "object"
+    },
+    "SchemeCloseness": {
+      "description": "单个方案的 TOPSIS 中间量与结果。",
+      "properties": {
+        "index": {
+          "description": "在输入 scores 里的行号，从 0 开始",
+          "title": "Index",
+          "type": "integer"
+        },
+        "closeness": {
+          "description": "贴近度 C = D⁻ / (D⁺ + D⁻)，0–1",
+          "title": "Closeness",
+          "type": "number"
+        },
+        "distance_to_best": {
+          "description": "到正理想解的欧氏距离 D⁺",
+          "title": "Distance To Best",
+          "type": "number"
+        },
+        "distance_to_worst": {
+          "description": "到负理想解的欧氏距离 D⁻",
+          "title": "Distance To Worst",
+          "type": "number"
+        },
+        "rank": {
+          "description": "名次，从 1 开始；并列时名次相同",
+          "title": "Rank",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "index",
+        "closeness",
+        "distance_to_best",
+        "distance_to_worst",
+        "rank"
+      ],
+      "title": "SchemeCloseness",
+      "type": "object"
+    },
+    "SensitivityCell": {
+      "description": "敏感性表里的一格：某个准则的权重乘上 ``(1 + delta)`` 之后重新排序的结果。",
+      "properties": {
+        "criterion": {
+          "description": "被扰动的准则名",
+          "title": "Criterion",
+          "type": "string"
+        },
+        "criterion_index": {
+          "description": "被扰动的准则下标",
+          "title": "Criterion Index",
+          "type": "integer"
+        },
+        "delta": {
+          "description": "扰动比例，如 -0.2 表示该准则权重下调 20%",
+          "title": "Delta",
+          "type": "number"
+        },
+        "weights": {
+          "description": "扰动并重新归一化后的权重，和为 1",
+          "items": {
+            "type": "number"
+          },
+          "title": "Weights",
+          "type": "array"
+        },
+        "top_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "该权重下的第一名方案行号",
+          "title": "Top Index"
+        },
+        "ranks": {
+          "description": "该权重下每个方案的名次，按输入顺序",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Ranks",
+          "type": "array"
+        },
+        "rank_changed": {
+          "description": "与基准排名相比，是否有任一方案名次变化",
+          "title": "Rank Changed",
+          "type": "boolean"
+        },
+        "top_changed": {
+          "description": "第一名是否换人",
+          "title": "Top Changed",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "criterion",
+        "criterion_index",
+        "delta",
+        "weights",
+        "top_index",
+        "ranks",
+        "rank_changed",
+        "top_changed"
+      ],
+      "title": "SensitivityCell",
+      "type": "object"
+    },
+    "SensitivityResult": {
+      "description": "逐准则扰动权重后的排名变化，以及第一名的翻转点",
+      "properties": {
+        "baseline_weights": {
+          "description": "基准权重",
+          "items": {
+            "type": "number"
+          },
+          "title": "Baseline Weights",
+          "type": "array"
+        },
+        "baseline_ranks": {
+          "description": "基准排名，按输入顺序",
+          "items": {
+            "type": "integer"
+          },
+          "title": "Baseline Ranks",
+          "type": "array"
+        },
+        "baseline_top_index": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "基准第一名行号",
+          "title": "Baseline Top Index"
+        },
+        "cells": {
+          "description": "扰动表，按 (准则, delta) 展开",
+          "items": {
+            "$ref": "#/$defs/SensitivityCell"
+          },
+          "title": "Cells",
+          "type": "array"
+        },
+        "flip_points": {
+          "description": "每个准则一条",
+          "items": {
+            "$ref": "#/$defs/FlipPoint"
+          },
+          "title": "Flip Points",
+          "type": "array"
+        }
+      },
+      "required": [
+        "baseline_weights",
+        "baseline_ranks",
+        "baseline_top_index",
+        "cells",
+        "flip_points"
+      ],
+      "title": "SensitivityResult",
+      "type": "object"
+    },
+    "TopsisResult": {
+      "description": "贴近度、名次与正负理想解，供报告溯源",
+      "properties": {
+        "schemes": {
+          "description": "按输入顺序给出，不重排",
+          "items": {
+            "$ref": "#/$defs/SchemeCloseness"
+          },
+          "title": "Schemes",
+          "type": "array"
+        },
+        "ideal_best": {
+          "description": "正理想解 v⁺（加权归一化空间里）",
+          "items": {
+            "type": "number"
+          },
+          "title": "Ideal Best",
+          "type": "array"
+        },
+        "ideal_worst": {
+          "description": "负理想解 v⁻",
+          "items": {
+            "type": "number"
+          },
+          "title": "Ideal Worst",
+          "type": "array"
+        },
+        "weights": {
+          "description": "本次排序实际使用的权重",
+          "items": {
+            "type": "number"
+          },
+          "title": "Weights",
+          "type": "array"
+        }
+      },
+      "required": [
+        "schemes",
+        "ideal_best",
+        "ideal_worst",
+        "weights"
+      ],
+      "title": "TopsisResult",
+      "type": "object"
+    },
+    "WeightsUsed": {
+      "description": "本次排序用的权重，以及它是怎么来的。报告要写清\"凭什么这么排\"。",
+      "properties": {
+        "source": {
+          "description": "权重来源",
+          "enum": [
+            "role",
+            "weights",
+            "pairwise_matrix"
+          ],
+          "title": "Source",
+          "type": "string"
+        },
+        "criteria": {
+          "description": "准则顺序，固定为四个维度",
+          "items": {
+            "type": "string"
+          },
+          "title": "Criteria",
+          "type": "array"
+        },
+        "weights": {
+          "description": "归一化后的权重，和为 1",
+          "items": {
+            "type": "number"
+          },
+          "title": "Weights",
+          "type": "array"
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "来源是 role 时的角色键",
+          "title": "Role"
+        },
+        "role_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "来源是 role 时的角色中文名",
+          "title": "Role Name"
+        },
+        "note": {
+          "default": "",
+          "description": "角色模板的说明；自定义权重时为空",
+          "title": "Note",
+          "type": "string"
+        },
+        "ahp": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/AhpResult"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "有两两比较矩阵时的一致性检验结果；直接给权重时为 null"
+        },
+        "consistency_warning": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "CR ≥ 0.1 时的中文提示；通过时为 null",
+          "title": "Consistency Warning"
+        }
+      },
+      "required": [
+        "source",
+        "criteria",
+        "weights",
+        "role",
+        "role_name",
+        "note",
+        "ahp",
+        "consistency_warning"
+      ],
+      "title": "WeightsUsed",
+      "type": "object"
+    }
+  },
+  "description": "权重与一致性、名次、敏感性、翻转点、帕累托、名次概率",
+  "properties": {
+    "project_id": {
+      "description": "项目 id",
+      "title": "Project Id",
+      "type": "integer"
+    },
+    "scheme_order": {
+      "description": "所有分析数组的方案 ID 顺序；下标对应此列表，ranking 按名次展示",
+      "items": {
+        "type": "string"
+      },
+      "title": "Scheme Order",
+      "type": "array"
+    },
+    "criteria": {
+      "description": "准则（维度）顺序",
+      "items": {
+        "type": "string"
+      },
+      "title": "Criteria",
+      "type": "array"
+    },
+    "weights_used": {
+      "$ref": "#/$defs/WeightsUsed",
+      "description": "本次使用的权重及其出处"
+    },
+    "ranking": {
+      "description": "参与排序的方案，按名次升序",
+      "items": {
+        "$ref": "#/$defs/RankedScheme"
+      },
+      "title": "Ranking",
+      "type": "array"
+    },
+    "excluded": {
+      "description": "未参与排序的方案及原因",
+      "items": {
+        "$ref": "#/$defs/ExcludedScheme"
+      },
+      "title": "Excluded",
+      "type": "array"
+    },
+    "topsis": {
+      "$ref": "#/$defs/TopsisResult",
+      "description": "TOPSIS 原始结果，含正负理想解"
+    },
+    "sensitivity": {
+      "$ref": "#/$defs/SensitivityResult",
+      "description": "敏感性表与翻转点"
+    },
+    "pareto": {
+      "$ref": "#/$defs/ParetoResult",
+      "description": "帕累托筛选（下标对应 scheme_order）"
+    },
+    "rank_acceptability": {
+      "$ref": "#/$defs/RankAcceptabilityResult",
+      "description": "名次概率矩阵"
+    },
+    "elapsed_ms": {
+      "description": "服务端计算耗时（毫秒），用于盯住滑杆的响应预算",
+      "title": "Elapsed Ms",
+      "type": "number"
+    }
+  },
+  "required": [
+    "project_id",
+    "scheme_order",
+    "criteria",
+    "weights_used",
+    "ranking",
+    "excluded",
+    "topsis",
+    "sensitivity",
+    "pareto",
+    "rank_acceptability",
+    "elapsed_ms"
+  ],
+  "title": "RankResponse",
+  "type": "object"
+}

@@ -1,0 +1,13 @@
+# 错误示例：type 写 hard 却带了 metric 专属的 dimension / value / scoring。
+- id: C-01
+  name: 字段写串了
+  type: hard
+  check: "floor_height >= 3.0"
+  dimension: quality
+  value: "floor_height"
+  scoring:
+    kind: piecewise
+    points:
+      - [2.8, 0]
+      - [3.2, 100]
+  source: "TODO(专业组)"

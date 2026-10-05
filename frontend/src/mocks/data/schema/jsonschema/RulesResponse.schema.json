@@ -1,0 +1,303 @@
+{
+  "$defs": {
+    "DerivedQuantityRead": {
+      "description": "派生量的对外描述。",
+      "properties": {
+        "name": {
+          "description": "字段名，规则里直接引用",
+          "title": "Name",
+          "type": "string"
+        },
+        "label": {
+          "description": "中文名",
+          "title": "Label",
+          "type": "string"
+        },
+        "unit": {
+          "description": "单位；无量纲为 —",
+          "title": "Unit",
+          "type": "string"
+        },
+        "formula": {
+          "description": "计算公式",
+          "title": "Formula",
+          "type": "string"
+        },
+        "deps": {
+          "description": "依赖的原始字段",
+          "items": {
+            "type": "string"
+          },
+          "title": "Deps",
+          "type": "array"
+        },
+        "note": {
+          "default": "",
+          "description": "说明",
+          "title": "Note",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name",
+        "label",
+        "unit",
+        "formula",
+        "deps"
+      ],
+      "title": "DerivedQuantityRead",
+      "type": "object"
+    },
+    "RuleDef": {
+      "additionalProperties": false,
+      "description": "``rules/*.yaml`` 里一条规则的正式定义。\n\n两类规则共用 ``id`` / ``name`` / ``type`` / ``source``，其余字段按 ``type`` 分：\n\n- ``hard``（硬约束）：``check`` 必填，可选 ``message`` / ``severity``；\n- ``metric``（评分指标）：``dimension`` / ``value`` / ``scoring`` 必填，\n  ``weight_in_dimension`` 默认 1。\n\n``extra=\"forbid\"`` 是刻意的：规则由非程序员编写，字段名打错时宁可直接报错，\n也不要静默忽略——静默忽略会让一条规则看起来生效了其实没生效。",
+      "properties": {
+        "id": {
+          "description": "规则编号，形如 C-03；全局唯一。前缀 C/Q/S/K/G 对应 rules/ 下的五个文件",
+          "pattern": "^[CQSKG]-\\d{2}$",
+          "title": "Id",
+          "type": "string"
+        },
+        "name": {
+          "description": "规则中文名，给前端与报告看",
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "type": {
+          "description": "hard 硬约束 / metric 评分指标",
+          "enum": [
+            "hard",
+            "metric"
+          ],
+          "title": "Type",
+          "type": "string"
+        },
+        "source": {
+          "description": "条文或经验出处，报告里会原样引用",
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "when": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "可选守卫表达式；为假时该规则不适用，状态记为 not_applicable",
+          "title": "When"
+        },
+        "check": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "hard 规则的布尔表达式，为假即不通过",
+          "title": "Check"
+        },
+        "message": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "不通过时的说明，可用 {字段名} 占位实际取值",
+          "title": "Message"
+        },
+        "severity": {
+          "default": "error",
+          "description": "hard 规则的严重程度；error 标红并踢出排名，warning 仅提示",
+          "enum": [
+            "error",
+            "warning"
+          ],
+          "title": "Severity",
+          "type": "string"
+        },
+        "dimension": {
+          "anyOf": [
+            {
+              "enum": [
+                "quality",
+                "structure",
+                "construction",
+                "green"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "metric 所属维度",
+          "title": "Dimension"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "metric 的取值：字段名或表达式",
+          "title": "Value"
+        },
+        "scoring": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/ScoringDef"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "metric 的评分定义"
+        },
+        "weight_in_dimension": {
+          "default": 1.0,
+          "description": "同维度内的相对权重，正数，默认 1",
+          "exclusiveMinimum": 0,
+          "title": "Weight In Dimension",
+          "type": "number"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "type",
+        "source"
+      ],
+      "title": "RuleDef",
+      "type": "object"
+    },
+    "RuleRead": {
+      "description": "一条规则的对外描述：规则本体 + 它来自哪个文件。",
+      "properties": {
+        "definition": {
+          "$ref": "#/$defs/RuleDef",
+          "description": "规则定义，字段含义见 rules/_template.yaml"
+        },
+        "source_file": {
+          "description": "来自 rules/ 下的哪个文件",
+          "title": "Source File",
+          "type": "string"
+        }
+      },
+      "required": [
+        "definition",
+        "source_file"
+      ],
+      "title": "RuleRead",
+      "type": "object"
+    },
+    "ScoringDef": {
+      "additionalProperties": false,
+      "description": "metric 规则的评分定义。目前只有分段线性一种。",
+      "properties": {
+        "kind": {
+          "const": "piecewise",
+          "description": "评分方式；现阶段只支持 piecewise（分段线性）",
+          "title": "Kind",
+          "type": "string"
+        },
+        "points": {
+          "description": "控制点列表，每项 [指标值, 分数]；指标值严格递增，分数在 0–100 之间",
+          "items": {
+            "maxItems": 2,
+            "minItems": 2,
+            "prefixItems": [
+              {
+                "type": "number"
+              },
+              {
+                "maximum": 100.0,
+                "minimum": 0.0,
+                "type": "number"
+              }
+            ],
+            "type": "array"
+          },
+          "title": "Points",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind",
+        "points"
+      ],
+      "title": "ScoringDef",
+      "type": "object"
+    }
+  },
+  "description": "当前加载的全部规则与派生量定义",
+  "properties": {
+    "rule_count": {
+      "description": "规则总条数",
+      "title": "Rule Count",
+      "type": "integer"
+    },
+    "hard_count": {
+      "description": "硬约束条数",
+      "title": "Hard Count",
+      "type": "integer"
+    },
+    "metric_count": {
+      "description": "评分指标条数",
+      "title": "Metric Count",
+      "type": "integer"
+    },
+    "rules": {
+      "description": "全部规则",
+      "items": {
+        "$ref": "#/$defs/RuleRead"
+      },
+      "title": "Rules",
+      "type": "array"
+    },
+    "derived_quantities": {
+      "description": "全部派生量定义",
+      "items": {
+        "$ref": "#/$defs/DerivedQuantityRead"
+      },
+      "title": "Derived Quantities",
+      "type": "array"
+    },
+    "todo_source_ids": {
+      "description": "source 里仍含 TODO 的规则 ID；这些规则的出处尚未落实，报告里应提示",
+      "items": {
+        "type": "string"
+      },
+      "title": "Todo Source Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "rule_count",
+    "hard_count",
+    "metric_count",
+    "rules",
+    "derived_quantities",
+    "todo_source_ids"
+  ],
+  "title": "RulesResponse",
+  "type": "object"
+}

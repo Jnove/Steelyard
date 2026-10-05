@@ -12,6 +12,7 @@
     {
       "name": "structure_type",
       "label": "结构体系",
+      "description": "结构体系",
       "unit": "—",
       "group": "基本信息",
       "type": "string",
@@ -29,6 +30,7 @@
     {
       "name": "units",
       "label": "总户数",
+      "description": "总户数",
       "unit": "户",
       "group": "基本信息",
       "type": "integer",
@@ -39,6 +41,7 @@
     {
       "name": "unit_mix",
       "label": "户型配比",
+      "description": "户型配比：键为户型名称（如 1室1厅），值为户数",
       "unit": "户",
       "group": "基本信息",
       "type": "object<integer>",
@@ -48,6 +51,7 @@
     {
       "name": "floor_height",
       "label": "层高",
+      "description": "层高",
       "unit": "m",
       "group": "居住品质",
       "type": "number",
@@ -57,6 +61,7 @@
     {
       "name": "inner_area_ratio",
       "label": "得房率",
+      "description": "得房率（套内面积 / 建筑面积）",
       "unit": "—",
       "group": "居住品质",
       "type": "number",
@@ -66,6 +71,7 @@
     {
       "name": "south_room_ratio",
       "label": "南向比例",
+      "description": "主要房间南向比例",
       "unit": "—",
       "group": "居住品质",
       "type": "number",
@@ -75,6 +81,7 @@
     {
       "name": "window_floor_ratio",
       "label": "窗地比",
+      "description": "窗地比（窗面积 / 地面积）",
       "unit": "—",
       "group": "居住品质",
       "type": "number",
@@ -84,6 +91,7 @@
     {
       "name": "window_wall_ratio",
       "label": "窗墙比",
+      "description": "各朝向窗墙比，键为朝向（南/北/东/西），值为 0-1 小数",
       "unit": "—",
       "group": "居住品质",
       "type": "object<number>",
@@ -93,6 +101,7 @@
     {
       "name": "elevators_per_unit",
       "label": "电梯数/单元",
+      "description": "每单元电梯数",
       "unit": "台",
       "group": "居住品质",
       "type": "integer",
@@ -102,6 +111,7 @@
     {
       "name": "gfa",
       "label": "总建筑面积",
+      "description": "总建筑面积",
       "unit": "m²",
       "group": "结构与造价",
       "type": "number",
@@ -112,6 +122,7 @@
     {
       "name": "footprint",
       "label": "基底面积",
+      "description": "建筑基底面积",
       "unit": "m²",
       "group": "结构与造价",
       "type": "number",
@@ -121,6 +132,7 @@
     {
       "name": "buildings",
       "label": "楼栋数",
+      "description": "楼栋数",
       "unit": "栋",
       "group": "结构与造价",
       "type": "integer",
@@ -130,6 +142,7 @@
     {
       "name": "floors",
       "label": "层数",
+      "description": "层数",
       "unit": "层",
       "group": "结构与造价",
       "type": "integer",
@@ -140,6 +153,7 @@
     {
       "name": "envelope_area",
       "label": "外表面积",
+      "description": "建筑外表面积",
       "unit": "m²",
       "group": "结构与造价",
       "type": "number",
@@ -149,6 +163,7 @@
     {
       "name": "volume",
       "label": "建筑体积",
+      "description": "建筑体积",
       "unit": "m³",
       "group": "结构与造价",
       "type": "number",
@@ -158,6 +173,7 @@
     {
       "name": "std_floor_repeat",
       "label": "标准层重复率",
+      "description": "标准层重复率",
       "unit": "—",
       "group": "施工与安全",
       "type": "number",
@@ -167,6 +183,7 @@
     {
       "name": "component_types",
       "label": "预制构件种类",
+      "description": "预制构件种类数",
       "unit": "种",
       "group": "施工与安全",
       "type": "integer",
@@ -176,6 +193,7 @@
     {
       "name": "risk_features",
       "label": "风险特征",
+      "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
       "unit": "—",
       "group": "施工与安全",
       "type": "array<string>",
@@ -195,6 +213,7 @@
     {
       "name": "prefab_ratio_est",
       "label": "预估装配率",
+      "description": "预估装配率",
       "unit": "—",
       "group": "绿色低碳",
       "type": "number",

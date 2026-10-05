@@ -22,8 +22,8 @@ services:
     ports:
       - "8000:8000"
     environment:
-      # 容器内 uvicorn 跑在 /app，相对路径 ./data/ 即为下方挂载的卷
-      DATABASE_URL: ${DATABASE_URL:-sqlite:///./data/zhuheng.db}
+      # 使用容器内绝对路径，指向下方持久化卷；覆盖值也需使用容器路径
+      DATABASE_URL: ${DATABASE_URL:-sqlite:////app/data/zhuheng.db}
       LLM_PROVIDER: ${LLM_PROVIDER:-fake}
       LLM_BASE_URL: ${LLM_BASE_URL:-}
       LLM_API_KEY: ${LLM_API_KEY:-}
@@ -31,7 +31,7 @@ services:
       CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://localhost:5173}
     volumes:
       # 代码单独挂载以支持本地改代码即时生效（生产部署建议去掉）
-      - ./backend/app:/app/app
+      - ./backend/app:/app/backend/app
       # 持久化数据 / 规则
       - ./data:/app/data
       - ./rules:/app/rules

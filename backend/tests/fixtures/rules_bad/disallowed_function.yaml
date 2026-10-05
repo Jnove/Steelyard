@@ -1,0 +1,12 @@
+# 错误示例：调用了不在白名单里的函数。
+- id: K-01
+  name: 用了不允许的函数
+  type: metric
+  dimension: construction
+  value: "sum(risk_features)"
+  scoring:
+    kind: piecewise
+    points:
+      - [0, 100]
+      - [5, 0]
+  source: "TODO(专业组)"

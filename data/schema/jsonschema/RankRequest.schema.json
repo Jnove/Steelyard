@@ -1,0 +1,90 @@
+{
+  "additionalProperties": false,
+  "description": "role、weights、pairwise_matrix 必须且只能提供一项",
+  "properties": {
+    "role": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "角色键，查 rules/weights.yaml，如 government / developer / contractor / resident",
+      "title": "Role"
+    },
+    "weights": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "直接给权重，4 个非负数，顺序是 quality / structure / construction / green；会自动归一化",
+      "title": "Weights"
+    },
+    "pairwise_matrix": {
+      "anyOf": [
+        {
+          "items": {
+            "items": {
+              "type": "number"
+            },
+            "type": "array"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "4×4 两两比较矩阵，走 AHP 解权重",
+      "title": "Pairwise Matrix"
+    },
+    "include_noncompliant": {
+      "default": false,
+      "description": "是否让存在 error 级硬约束未通过的方案参与排名。默认 false：它们不参与排序，但会在 excluded 里列出并注明原因",
+      "title": "Include Noncompliant",
+      "type": "boolean"
+    },
+    "include_whatif": {
+      "default": false,
+      "description": "是否把 what-if 副本一并纳入排序（需要 evaluate 时也带上了它们）",
+      "title": "Include Whatif",
+      "type": "boolean"
+    },
+    "monte_carlo_samples": {
+      "default": 1000,
+      "description": "名次概率的抽样组数",
+      "exclusiveMinimum": 0,
+      "maximum": 20000,
+      "title": "Monte Carlo Samples",
+      "type": "integer"
+    },
+    "monte_carlo_concentration": {
+      "default": 50.0,
+      "description": "Dirichlet 集中度；越大越贴近基准权重",
+      "exclusiveMinimum": 0,
+      "title": "Monte Carlo Concentration",
+      "type": "number"
+    },
+    "seed": {
+      "default": 0,
+      "description": "蒙特卡洛随机种子；同 seed 结果完全可复现",
+      "minimum": 0,
+      "title": "Seed",
+      "type": "integer"
+    }
+  },
+  "title": "RankRequest",
+  "type": "object"
+}

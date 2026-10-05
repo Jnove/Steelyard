@@ -23,12 +23,10 @@ BACKEND = ROOT / "backend"
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
-from sqlmodel import Session, select  # noqa: E402
-
-from app.config import get_settings  # noqa: E402
 from app.db import get_engine, init_db  # noqa: E402
 from app.excel import ParseError, parse_workbook  # noqa: E402
 from app.models import Project, Scheme, SchemeParams  # noqa: E402
+from sqlmodel import Session, select  # noqa: E402
 
 
 def _format_errors(errors: list[ParseError]) -> str:
@@ -42,10 +40,7 @@ def _format_errors(errors: list[ParseError]) -> str:
 def _unique_name(session: Session, project_id: int, base: str) -> str:
     """项目内唯一化方案名；已存在时加 ``(n)`` 后缀。"""
     existing = {
-        s.name
-        for s in session.exec(
-            select(Scheme).where(Scheme.project_id == project_id)
-        ).all()
+        s.name for s in session.exec(select(Scheme).where(Scheme.project_id == project_id)).all()
     }
     if base not in existing:
         return base
@@ -83,13 +78,9 @@ def main(argv: list[str] | None = None) -> int:
             if e.scheme is None:
                 continue
             errors_by_scheme.setdefault(e.scheme, []).append(e)
-        ok_count = sum(
-            1 for s in result.schemes if s["name"] not in errors_by_scheme
-        )
+        ok_count = sum(1 for s in result.schemes if s["name"] not in errors_by_scheme)
         if ok_count == 0:
-            print(
-                "导入失败：xlsx 含错误，未写入任何方案。", file=sys.stderr
-            )
+            print("导入失败：xlsx 含错误，未写入任何方案。", file=sys.stderr)
             print(_format_errors(result.errors), file=sys.stderr)
             return 1
 

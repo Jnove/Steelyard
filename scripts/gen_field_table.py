@@ -19,64 +19,24 @@ from __future__ import annotations
 import argparse
 import json
 import sys
-from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
+BACKEND = ROOT / "backend"
+if str(BACKEND) not in sys.path:
+    sys.path.insert(0, str(BACKEND))
+
+from app.engine.metrics import DERIVED_QUANTITIES as _DERIVED_QUANTITIES  # noqa: E402
+
 SCHEMA_DIR = ROOT / "data" / "schema"
 OUT_PATH = ROOT / "docs" / "fields.generated.md"
 
 
-@dataclass(frozen=True)
-class DerivedQuantity:
-    """引擎在评估时算出来的派生量，不在 Pydantic 模型里但规则可能引用。"""
-
-    name: str
-    label: str
-    unit: str
-    formula: str
-    note: str = ""
-
-
-#: 评估阶段会计算的派生量清单。改这里的同时建议在 ``docs/rules-guide.md`` 第 3 节里同步描述。
-DERIVED_QUANTITIES: tuple[DerivedQuantity, ...] = (
-    DerivedQuantity(
-        name="shape_coefficient",
-        label="体形系数",
-        unit="—",
-        formula="envelope_area / volume",
-        note="外表面积与体积之比，越小越利于节能；规则 K-X 经常引用。",
-    ),
-    DerivedQuantity(
-        name="units_per_building",
-        label="单栋户数",
-        unit="户/栋",
-        formula="units / buildings",
-        note="疏散与电梯服务的关键指标。",
-    ),
-    DerivedQuantity(
-        name="units_per_floor",
-        label="每层户数",
-        unit="户/层",
-        formula="units / (floors * buildings)",
-        note="决定标准层交通核大小。",
-    ),
-    DerivedQuantity(
-        name="total_height",
-        label="建筑总高",
-        unit="m",
-        formula="floor_height * floors",
-        note="用于与项目层 height_max 比较。",
-    ),
-    DerivedQuantity(
-        name="floor_efficiency",
-        label="楼层效率",
-        unit="—",
-        formula="footprint * floors / gfa",
-        note="基底与层数对总建筑面积的利用率，越接近 1 越理想。",
-    ),
-)
+#: 派生量清单从引擎直接读，**不在这里重复定义**。
+#: 这样规则作者看到的字段表和引擎实际算的东西永远是同一份东西——
+#: 以前两处各写一份，改了 metrics.py 忘了改文档就会悄悄漂移。
+DERIVED_QUANTITIES = _DERIVED_QUANTITIES
 
 
 def _load_schema(path: Path) -> dict[str, Any]:

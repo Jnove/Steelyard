@@ -1,0 +1,2 @@
+# 原始 SSE 证据保留字节与末尾空行，空行是协议帧边界。
+docs/evidence/*.sse.txt -text whitespace=cr-at-eol,-blank-at-eof

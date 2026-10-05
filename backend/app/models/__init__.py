@@ -9,11 +9,14 @@
 from app.models.eval import (
     ComplianceItem,
     ComplianceStatus,
+    DimensionCoverage,
     DimensionKey,
     DimensionScores,
     EvalResult,
     MetricResult,
+    MetricStatus,
     RankResult,
+    Severity,
 )
 from app.models.orm import EvalResultRow, Project, Scheme
 from app.models.params import (
@@ -40,11 +43,14 @@ __all__ = [
     # 评估结果
     "ComplianceItem",
     "ComplianceStatus",
+    "DimensionCoverage",
     "DimensionKey",
     "DimensionScores",
     "EvalResult",
     "MetricResult",
+    "MetricStatus",
     "RankResult",
+    "Severity",
     # SQLModel 表
     "EvalResultRow",
     "Project",

@@ -1,0 +1,13 @@
+# 错误示例：points 的指标值不是严格递增。
+- id: K-01
+  name: points 倒序
+  type: metric
+  dimension: construction
+  value: "std_floor_repeat"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.95, 100]
+      - [0.80, 70]
+      - [0.50, 0]
+  source: "TODO(专业组)"

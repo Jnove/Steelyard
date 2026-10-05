@@ -1,0 +1,12 @@
+# 错误示例：分数超出 0–100（第二个控制点写了 120）。
+- id: K-01
+  name: 分数越界
+  type: metric
+  dimension: construction
+  value: "std_floor_repeat"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.50, 0]
+      - [0.95, 120]
+  source: "TODO(专业组)"

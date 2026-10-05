@@ -1,0 +1,32 @@
+{
+  "_note": "虚构数据，仅供开发调试，不得用于验证或答辩",
+  "name": "E 被支配",
+  "params": {
+    "structure_type": "框架",
+    "units": 408,
+    "unit_mix": {"两室": 204, "三室": 204},
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.72,
+    "south_room_ratio": 0.68,
+    "window_floor_ratio": 0.20,
+    "window_wall_ratio": {"南": 0.35, "北": 0.22, "东": 0.22, "西": 0.22},
+    "elevators_per_unit": 1,
+    "gfa": 40800,
+    "footprint": 2400,
+    "buildings": 4,
+    "floors": 17,
+    "envelope_area": 14000,
+    "volume": 122400,
+    "std_floor_repeat": 0.75,
+    "component_types": 15,
+    "risk_features": ["大悬挑", "复杂地质"],
+    "prefab_ratio_est": 0.30
+  },
+  "_design_notes": {
+    "intent": "演示帕累托支配：构造每个数值字段都朝'更差'的方向偏离 D，使 E 在所有维度都不如 D。",
+    "tradeoff": "比 D 选更弱的结构（框架 < 框架-剪力墙）、更低的得房率与南向比例、更低的标准层重复率与装配率，同时塞入风险特征；电梯数也少 1 台。",
+    "gfa_consistency": "footprint × floors × buildings = 2400 × 17 = 40,800 m²，与 gfa 一致；总高 17 × 3.0 = 51.0 m < 54 m。",
+    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。",
+    "dominance": "相对于 D：inner_area_ratio 0.72<0.78、south_room_ratio 0.68<0.78、prefab 0.30<0.50、std_repeat 0.75<0.85、component_types 15>12（更多种类更差）、结构体系更弱、风险特征非空、电梯数 1<2。预期 E 在四个维度上都不优于 D，被 D 完全支配。"
+  }
+}

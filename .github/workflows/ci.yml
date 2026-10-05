@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main, feat/**]
+    branches: [main, feat/**, codex/**]
   pull_request:
     branches: [main]
 
@@ -19,13 +19,16 @@ jobs:
       - name: 安装 uv
         uses: astral-sh/setup-uv@v3
         with:
-          version: "0.5.0"
+          version: "0.12.19"
 
       - name: 同步依赖（含 dev 组）
-        run: uv sync --all-extras
+        run: uv sync --all-extras --frozen
 
       - name: ruff check
         run: uv run ruff check .
+
+      - name: scripts ruff check
+        run: uv run ruff check --config pyproject.toml ../scripts
 
       - name: pytest
         run: uv run pytest
@@ -36,6 +39,11 @@ jobs:
 
       - name: gen_field_table --check
         run: uv run python ../scripts/gen_field_table.py --check
+
+      - name: 后端 Schema 与提交产物一致
+        run: |
+          uv run python ../scripts/export_schema.py
+          git diff --exit-code -- ../data/schema
 
   frontend:
     name: 前端 tsc + build
@@ -53,7 +61,15 @@ jobs:
           cache-dependency-path: frontend/package-lock.json
 
       - name: 安装依赖
-        run: npm ci || npm install
+        run: npm ci
+
+      - name: 前端测试（T7 + T8 + 集成协议）
+        run: npm test
+
+      - name: 生成类型与提交产物一致
+        run: |
+          npm run gen:types
+          git diff --exit-code -- src/api/generated
 
       - name: 类型检查
         run: npx tsc --noEmit

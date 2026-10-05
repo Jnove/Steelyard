@@ -1,0 +1,32 @@
+# 规范硬约束（hard）——违反即标红、默认踢出排名。规则 ID 用 C-XX。
+#
+# ⚠️ 本文件当前只有**格式示例**：阈值和判断条件都是随手取的，仅用于演示 YAML 怎么写、
+#    引擎怎么跑。name 前缀「【示例】」和 source 里的 TODO 就是这个意思。
+#    专业组核对规范原文后，请把 name 前缀去掉、把 source 换成真实条文号。
+#
+# 写法教程见 docs/rules-guide.md，字段名与单位见 docs/fields.generated.md。
+
+- id: C-01
+  name: 【示例】住宅层高下限
+  type: hard
+  check: "floor_height >= 3.0"
+  message: "层高 {floor_height} m 低于示例阈值 3.0 m"
+  source: "TODO(专业组)：示例数值，正式条文号待补"
+
+- id: C-02
+  name: 【示例】容积率不超地块上限
+  type: hard
+  # far 是派生量（gfa / site_area），far_max 是项目层填的地块上限。
+  check: "far <= far_max"
+  message: "容积率 {far} 超过地块上限 {far_max}"
+  source: "TODO(专业组)：示例数值，正式条文号待补"
+
+- id: C-03
+  name: 【示例】建筑总高不超限高
+  type: hard
+  # height 是派生量（floors * floor_height）。
+  # severity 写 warning：只提示不踢出排名，用于演示两种严重程度的差别。
+  check: "height <= height_max"
+  message: "建筑总高 {height} m 超过限高 {height_max} m"
+  severity: warning
+  source: "TODO(专业组)：示例数值，正式条文号待补"

@@ -16,17 +16,25 @@
 - [uv](https://docs.astral.sh/uv/)（Python 包管理器）
 - Node.js 20+ 与 npm
 
-```bash
-# 1. 启动后端（端口 8000）
-make dev-backend
+```powershell
+# 在仓库根目录安装依赖
+uv sync --project backend --all-extras --frozen
+npm --prefix frontend ci
 
-# 2. 另开一个终端，启动前端（端口 5173）
-make dev-frontend
+# 可选：清空开发数据库并导入虚构样例；已有数据时勿执行
+uv run --project backend python scripts/seed_mock.py
 
-# 浏览器打开 http://localhost:5173 ，右上角应能看到 "后端状态：ok"
+# 启动后端（默认 LLM_PROVIDER=fake，无需 API Key）
+uv run --project backend uvicorn app.main:app --app-dir backend --reload --port 8000
+
+# 另开终端，在仓库根目录启动前端
+npm --prefix frontend run dev
+# 浏览器打开 http://localhost:5173
 ```
 
-可选：复制 `.env.example` 为 `.env` 后按需修改 LLM / 数据库配置。
+也可使用 `make dev-backend` / `make dev-frontend`。复制 `.env.example` 为根目录 `.env` 后可修改 LLM / 数据库配置。默认数据库固定在本工作树的 `backend/data/zhuheng.db`，不受命令工作目录影响；显式配置 `DATABASE_URL` 时建议使用绝对路径。
+
+`npm --prefix frontend run dev:mock` 可启动离线演示。真实模式通过后端计算，接口失败会显示错误。FakeLLM 走真实评估、排序与 SSE 链路，文本由确定性桩生成。当前规则、角色权重与方案均含示例或专业待确认项，结果仅用于开发联调，详见 [未决事项](docs/open-items.md)。
 
 ### 方式二：Docker Compose（演示或云服务器）
 
@@ -37,15 +45,15 @@ docker compose up --build
 # 浏览器打开 http://localhost:8080 ，即可看到 "后端状态：ok"
 ```
 
-数据持久化在 `./data/` 与 `./rules/` 目录，关闭容器不会丢失。
+容器数据库使用 `/app/data/zhuheng.db`，挂载到宿主机 `./data/`；规则挂载到 `/app/rules`。覆盖 `DATABASE_URL` 时必须使用容器内路径。当前集成环境未安装 Docker，本次只核对了容器目录、规则路径与卷配置，容器运行仍需验收。
 
 ---
 
 ## 常用命令
 
 ```bash
-make test         # 后端 pytest
-make lint         # 后端 ruff check + 前端 tsc --noEmit
+make test         # 后端 pytest + 前端单元测试
+make lint         # 后端与 scripts/ 的 ruff + 前端 tsc --noEmit
 make up           # docker compose 一键启动
 make down         # docker compose 关闭
 ```
@@ -58,10 +66,12 @@ make down         # docker compose 关闭
 .
 ├── backend/           FastAPI 后端（uv 管理依赖）
 │   ├── app/           main.py、config.py、api/、models/、engine/、agents/、rag/
-│   └── tests/         pytest 测试
+│   ├── tests/         pytest 测试
+│   └── data/          本地默认 SQLite（运行产物，不提交）
 ├── frontend/          Vite + React + TypeScript 前端
 ├── rules/             土木 / 建筑同学维护的 YAML 规则
-├── data/              SQLite 数据库与测试方案
+├── data/              Schema、虚构方案、Excel 模板；容器 SQLite 卷
+├── docs/              规则编写指南、字段对照表、未决事项清单
 ├── scripts/           工程脚本（check_rules.py 等）
 ├── docker-compose.yml 一键启动
 └── Makefile           常用命令
@@ -72,11 +82,18 @@ make down         # docker compose 关闭
 ## 当前进度
 
 - [x] **T1**：项目脚手架（前后端骨架 + Docker 部署 + CI）
-- [ ] **T2**：数据模型与项目 / 方案 CRUD
-- [ ] **T3**：规则引擎（YAML 加载、安全求值、合规判定）
-- [ ] **T4**：指标计算与分段线性评分
-- [ ] **T5**：AHP / TOPSIS / 敏感性 / 帕累托
-- [ ] **T6**：智能体编排与 SSE 对话 / 报告
-- [ ] **T7**：前端页面与 ECharts 看板
+- [x] **T2**：数据模型与项目 / 方案 CRUD
+- [x] **T3**：规则引擎、指标计算与分段评分
+- [x] **T4**：AHP / TOPSIS / 敏感性 / 帕累托 / 名次概率
+- [x] **T5**：Excel 模板与原子导入
+- [x] **T6**：虚构开发数据与数据库初始化
+- [x] **T7**：前端页面、ECharts 看板与离线演示
+- [x] **T8**：智能体编排、SSE 对话 / 报告、What-if 与引用校验
+- [x] **T9**：规则编写指南与校验工具
+- [ ] **T10**：规范条文结构化与检索
 
-详见 `Agent.md` 的章节划分与 PR 描述。
+任务编号按项目任务提示词对齐。T1–T9 的集成经过完整后端、前端与浏览器联调，见 [集成记录](docs/integration-t1-t9.md)。条文搜索当前仍为空结果桩，待 T10 接入。
+
+**还没定下来的事**都记在 [docs/open-items.md](./docs/open-items.md)：
+专业组待定的规则阈值与权重在第一部分，开发侧待修项在第二部分。
+接手前先过一遍这份清单。

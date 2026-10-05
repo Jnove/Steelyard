@@ -44,6 +44,7 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
         field_info: dict[str, Any] = {
             "name": name,
             "label": prop.get("label", name),
+            "description": prop.get("description", ""),
             "unit": prop.get("unit", ""),
             "group": prop.get("group", ""),
             "type": _simplify_type(prop),
