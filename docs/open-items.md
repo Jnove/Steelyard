@@ -6,7 +6,7 @@
 > 新发现的未决事项往对应小节追加。这份文档是"还没定下来的事"的唯一入口，
 > 不要把结论只写在聊天记录或 PR 评论里。
 >
-> **最后更新**：2026-09-26（T3 规则引擎完成时建立）
+> **最后更新**：2026-10-05（T4 多准则算法与排序接口）
 
 ---
 
@@ -139,8 +139,23 @@ uv run --project backend python scripts/check_rules.py
 3. 跑 `scripts/check_rules.py`，**所有「错误」都要清零**（「警告」里的 TODO 提醒会自动消失）；
 4. 提 PR，描述里写清楚改了哪些数值、参考了哪条规范、为什么这么改。
 
-全部定稿后 `check_rules` 应当是 **0 个错误、0 个警告**。现在是 0 个错误、12 个警告
-（12 条规则的 `source` 各一条 TODO 提醒）——这个数字可以当进度条用。
+全部定稿后 `check_rules` 应当是 **0 个错误、0 个警告**。T4 后现在是 0 个错误、16 个警告
+（12 条规则的 `source` 和 4 个角色模板各一条 TODO 提醒）。
+
+### 1.10 待定：四个角色的维度权重
+
+T4 已提供 [weights.yaml](../rules/weights.yaml) 的四个占位矩阵。
+矩阵顺序为 `quality / structure / construction / green`，每个 4×4，
+`source` 均为 `【示例】TODO(专业组)`。当前 CR 均低于 0.1，仍需专业组核定偏好与依据。
+
+- [ ] 核定 government（政府 / 保障房平台）的矩阵与角色说明
+- [ ] 核定 developer（开发企业）的矩阵与角色说明
+- [ ] 核定 contractor（施工总包）的矩阵与角色说明
+- [ ] 核定 resident（住户）的矩阵与角色说明
+
+矩阵填写后运行 `check_rules.py`。CR ≥ 0.1 会给出中文警告，需要复核判断；
+如改为直接给 `weights`，必须写四个非负数且不能全为 0，此时没有 CR 可检查。
+角色模板在启动时缓存，修改后需重启后端。
 
 ---
 
@@ -219,11 +234,14 @@ uv run --project backend python scripts/check_rules.py
 
 这几条不是缺陷，是 T3 边界之外的活，写在这里只为不丢：
 
-- [ ] **`EvalResult.topsis` 现在恒为 `null`**。排序是 `/api/projects/{id}/rank` 的事。
-- [ ] **`severity=error` 的不通过项目前只标记、不剔除**。
-      `EvalResult.has_blocking_failure` 已经算好了，"默认不参与排名"要在 `/rank` 里落实。
-- [ ] **`rules/weights.yaml` 还没建**（AHP 四个角色的两两比较矩阵模板）。
-      引擎和 `check_rules` 已经会跳过这个文件名，建了不会被误当规则列表。
+- [ ] **报告如何读取排序结果**：T4 `/rank` 已返回完整排序响应，读取评估结果但不改写它；
+      `EvalResult.topsis` 仍为 `null`。报告模块需使用当前权重下的排序响应。
+- [x] **`severity=error` 的不通过项默认剔除**：T4 `/rank` 已落实，
+      在 `excluded` 列出原因；可用 `include_noncompliant=true` 覆盖。
+      见 [T4 PR 描述](../.github/PR_T4_mcdm.md)。
+- [x] **`rules/weights.yaml` 占位模板已建立**：T4 提供四个一致性合格矩阵，
+      `check_rules` 专门校验矩阵与 CR；专业核定仍待完成，见 1.10。
+      见 [T4 PR 描述](../.github/PR_T4_mcdm.md)。
 
 ### 2.4 设计取舍：缺数据判定是保守的
 
