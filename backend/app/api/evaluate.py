@@ -82,7 +82,10 @@ def evaluate_project(
         # 规则写错了是规则作者的问题，不是调用方的问题，用 500 并把中文原因带出来。
         raise HTTPException(
             status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={"message": "规则加载失败，请跑 scripts/check_rules.py 修正", "problems": exc.problems},
+            detail={
+                "message": "规则加载失败，请跑 scripts/check_rules.py 修正",
+                "problems": exc.problems,
+            },
         ) from exc
 
     project_params = ProjectParams.model_validate(project.params or {})
@@ -112,9 +115,14 @@ def evaluate_project(
         )
     session.commit()
 
-    return EvaluateResponse(
+    response = EvaluateResponse(
         project_id=project_id, rule_count=len(ruleset.rules), results=results
     )
+    # T8 保存最近一次工具证据；REST 评估也必须使旧排名失效。
+    from app.agents.tools import record_evaluation
+
+    record_evaluation(session, project_id, response.model_dump(mode="json"), include_whatif)
+    return response
 
 
 @router.get(
