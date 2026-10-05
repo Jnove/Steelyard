@@ -4,6 +4,8 @@ T1 阶段只搭建可运行骨架：路由前缀 /api，提供 /api/health。
 T2 阶段接入项目 / 方案 CRUD 与字段 Schema 查询。
 T3 阶段接入确定性引擎：启动时加载 rules/*.yaml，提供 /api/projects/{id}/evaluate
 与 /api/rules[/reload]。
+T4 阶段接入多准则决策：启动时加载 rules/weights.yaml 的角色模板，
+提供 /api/projects/{id}/rank（TOPSIS + 敏感性 + 帕累托 + 名次概率）。
 """
 
 from collections.abc import AsyncIterator
@@ -14,12 +16,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import evaluate as evaluate_api
 from app.api import projects as projects_api
+from app.api import rank as rank_api
 from app.api import rules as rules_api
 from app.api import schema as schema_api
 from app.api import schemes as schemes_api
 from app.config import get_settings
 from app.db import init_db
 from app.engine.rules import RuleLoadError, get_ruleset
+from app.engine.weights import WeightsLoadError, get_role_templates
 
 
 @asynccontextmanager
@@ -35,6 +39,13 @@ async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         print("⚠️ 规则加载失败，涉及规则的接口会返回错误。请跑 scripts/check_rules.py：")
         for problem in exc.problems:
             print(f"   - {problem}")
+    # 角色权重模板同理：加载失败只警告，不阻断启动。
+    try:
+        get_role_templates()
+    except WeightsLoadError as exc:
+        print("⚠️ 角色权重模板加载失败，按角色排序会返回错误。请跑 scripts/check_rules.py：")
+        for problem in exc.problems:
+            print(f"   - {problem.message}")
     yield
 
 
@@ -63,6 +74,7 @@ def create_app() -> FastAPI:
     app.include_router(schema_api.router, prefix="/api")
     app.include_router(evaluate_api.router, prefix="/api")
     app.include_router(rules_api.router, prefix="/api")
+    app.include_router(rank_api.router, prefix="/api")
 
     @app.get("/api/health")
     def health() -> dict[str, str]:
