@@ -90,11 +90,22 @@ handle /steelyard/* {
 
 Caddy 与 `steelyard-frontend` 服务共享 `jnoves-blog_default`，以同名的唯一 DNS alias 访问本应用。使用 `handle` 保留 `/steelyard` 前缀。前端 Nginx 将 `/steelyard/api/` 转到私有网络 `steelyard-backend:8000/api/`；对 SSE 关闭缓冲、缓存，并保留长连接超时。Caddy 对 `/steelyard` 跳转到 `/steelyard/`；直连本机 Nginx 时也使用相对跳转，并通过 `absolute_redirect off` 保留访问域名与端口。SPA 深链接回退到本应用 `index.html`，不存在的脚本仍返回 404。
 
+Git 更新可能替换宿主 Caddyfile 的 inode，而运行中容器的单文件 bind mount 仍指向旧文件。博客部署工作流与手工操作应从宿主最新文件读取配置；在 `/home/jnove/jnoves-blog` 执行：
+
+```bash
+docker exec -i blog-caddy caddy validate --config - --adapter caddyfile < Caddyfile
+docker exec -i blog-caddy caddy reload --config - --adapter caddyfile < Caddyfile
+```
+
+以公开路径的跳转和实际响应验证生效。仅查看容器内文件或从挂载文件重载，可能仍读到旧配置。
+
 开发模式默认 `VITE_BASE_PATH=/`，React Router、REST 和 SSE 继续使用根路径。设置 `VITE_BASE_PATH=/steelyard/` 时，Vite 资源、Router basename、默认 API 地址同步为此子路径；显式设置 `VITE_API_BASE` 可覆盖默认 API 地址。每次修改公开 base 后必须重新构建前端镜像。
 
 ## 验收、回滚与维护
 
 `scripts/deploy_smoke.py` 检查 base 跳转、SPA 深链接、每个入口资源、缺失脚本 404、`release.json` 的精确 SHA、health/rules/schema/projects，以及 POST SSE 的首帧与最终 `done`。完整 SSE 验收创建一个 `__deployment_smoke__<SHA>` 临时项目，用仓库的两套虚构 fixture 运行真实后端链路，结束或失败时重试删除该项目及其子数据。此检查确认应用协议与部署可用性，不能作为真实工程规则、规范出处或评价结论的验证。
+
+公网入口会被 Cloudflare 注入动态脚本，首页与深链接的 HTML 不保证字节相同。公开验收比较 HTML 类型、应用标题、React 挂载点及相同的入口脚本和样式资源，并继续严格检查资源可访问性与发布 SHA。CI 和 VM 本机直连使用 `--strict-html`，另外要求深链接与首页的 HTML 完全相同。
 
 所有冒烟请求使用明确的 `User-Agent: SteelyardDeployment/1.0`，避免入口将默认 Python 客户端 UA 误拒绝；服务器实际运行的公开验收仍是最终依据。
 

@@ -137,7 +137,7 @@ jobs:
           frontend_id=$("${compose[@]}" ps -q steelyard-frontend)
           docker inspect --format '{{json .NetworkSettings.Networks}}' "$frontend_id" \
             | python3 -c 'import json,sys; aliases=json.load(sys.stdin)["steelyard-ci-proxy"]["Aliases"]; assert "steelyard-frontend" in aliases and "frontend" not in aliases, aliases; print("Proxy DNS alias check passed")'
-          python3 scripts/deploy_smoke.py --url http://127.0.0.1:18081/steelyard --sha "$RELEASE_SHA"
+          python3 scripts/deploy_smoke.py --url http://127.0.0.1:18081/steelyard --sha "$RELEASE_SHA" --strict-html
 
       - name: 归档镜像、源码与校验和
         env:

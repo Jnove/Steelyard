@@ -85,7 +85,7 @@ fi
 armed=true
 compose_for "$sha" up -d --remove-orphans --force-recreate --no-build --pull never --wait --wait-timeout 180
 port=$(compose_for "$sha" port steelyard-frontend 8080)
-python3 "$release/scripts/deploy_smoke.py" --url "http://$port/steelyard" --sha "$sha" --skip-sse
+python3 "$release/scripts/deploy_smoke.py" --url "http://$port/steelyard" --sha "$sha" --skip-sse --strict-html
 python3 "$release/scripts/deploy_smoke.py" --url "$public_url" --sha "$sha"
 
 # 只有容器健康、子路径、公开 SHA、API 与完整 SSE 均通过，才推进 current。
