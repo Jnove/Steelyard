@@ -1,6 +1,7 @@
 /** 统一 HTTP 请求；业务模块按开关动态加载离线适配器。 */
+import { API_BASE } from './base'
+
 export const USE_MOCK = import.meta.env?.VITE_USE_MOCK === 'true'
-const API_BASE = (import.meta.env?.VITE_API_BASE ?? '/api').replace(/\/$/, '')
 export class ApiError extends Error {
   constructor(public readonly status: number, public readonly body?: unknown) {
     const detail = body && typeof body === 'object' && 'detail' in body ? body.detail : body

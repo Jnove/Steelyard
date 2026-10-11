@@ -1,6 +1,6 @@
-# T7 前端 MVP 使用与联调
+# 前端使用与联调
 
-T7 最初在 `feat/frontend-mvp` 上基于规则引擎开发。2026-10-05 的 T1–T9 集成已接入 T4 排序与 T8 智能体；原分支截图保留为历史素材，当前联调结果见 [集成记录](integration-t1-t9.md)。
+前端提供真实后端模式与离线演示模式。历史截图和 2026-10-05 验收结果见 [T7 验收归档](archive/frontend-t7-acceptance.md)；当前待确认事项见 [待办清单](open-items.md)。
 
 ## 启动
 
@@ -14,7 +14,12 @@ npm run dev:mock -- --host 127.0.0.1 --port 5177
 
 访问 `http://127.0.0.1:5177/projects`。`dev:mock` 通过 `.env.mock` 设置 `VITE_USE_MOCK=true`；默认 `npm run dev` 使用真实接口。离线数据保存在当前浏览器源的 localStorage 中，页尾的“恢复样例并刷新”会清除该演示存储并恢复初始项目。
 
-接真实后端时，在仓库根 `.env` 中设置 `VITE_BACKEND_URL=http://127.0.0.1:8000`，启动后端，再运行 `npm run dev`。请求默认使用 `/api`，由 Vite 转发；部署时由 Nginx 代理。若需要直接指定 API 前缀，可设置前端环境变量 `VITE_API_BASE`。更改模式或环境变量后需重启开发服务器。
+接真实后端时，在仓库根 `.env` 中设置 `VITE_BACKEND_URL=http://127.0.0.1:8000`，启动后端，再运行 `npm run dev`。更改模式或环境变量后需重启开发服务器。
+
+`VITE_BASE_PATH` 决定静态资源与页面路由的公共前缀，开发默认 `/`，生产镜像默认 `/steelyard/`。
+未显式设置 `VITE_API_BASE` 时，REST 与 SSE 使用公共前缀加 `api`：开发为 `/api`，生产为 `/steelyard/api`。
+Vite 开发代理跟随公共前缀；生产由 Nginx 去掉前缀后转发到后端。
+`VITE_API_BASE` 可显式覆盖接口前缀。生产配置、Caddy 路径转发与验收步骤见 [部署指南](deployment.md)。
 
 ## 演示流程
 
@@ -79,28 +84,3 @@ npm run test:integration
 ```
 
 `T7_URL` 可覆盖离线浏览器测试地址，`T7_BROWSER` 可覆盖浏览器通道，`T7_OUTPUT` 可将本次素材写到指定目录。真实集成地址由 `INTEGRATION_URL` 覆盖，默认 `http://127.0.0.1:5178`；脚本只应对新建虚构数据库运行，使用样例项目 1 / 方案 3 并创建推演副本。测试使用独立浏览器上下文，不操作个人 Chrome 标签。
-
-2026-10-05 集成验证结果：
-
-| 项目 | 结果 |
-| --- | --- |
-| 前端单元与数据层测试 | 49 通过，0 失败、0 跳过 |
-| TypeScript 严格检查 / lint | 通过 |
-| 真实模式与离线模式构建 | 均通过；Vite 提示部分包超过 500 kB |
-| 后端完整 pytest | 443 通过，1 条依赖弃用警告 |
-| 后端与本次 Python 脚本 Ruff 检查、修改文件格式检查 | 通过 |
-| 浏览器完整离线流程 | 通过；页面运行时异常为 0 |
-| 布局 | 1366×768、1920×1080 截图；看板在 320/375/414/768 宽度无页面横向溢出 |
-| 真实后端评估、排序 | 独立数据库联调通过：5 个评估、4 个参与排名 |
-| 真实对话、报告 | FakeLLM + 实际 REST / SSE 联调：报告下载、缓存、历史追问、What-if；取消和校验耗尽通过受控响应验证 |
-
-后端测试运行于工作树虚拟环境，在 `backend` 目录使用 `python -m pytest --basetemp=data/pytest-integration -q` 指定可写临时目录；设置 `PYTHONUTF8=1`。证据与复跑方法见 [集成记录](integration-t1-t9.md)。
-
-## 交付素材
-
-- [项目总览](screenshots/t7/projects-1366.png)、[方案录入](screenshots/t7/schemes-1366.png)
-- [对比看板 1366](screenshots/t7/dashboard-1366.png)、[对比看板 1920](screenshots/t7/dashboard-1920.png)
-- [评分溯源](screenshots/t7/trace-1366.png)、[对话](screenshots/t7/chat-1366.png)
-- [报告页面](screenshots/t7/chat-1920.png)、[真实后端看板](screenshots/t7/dashboard-real.png)
-- [角色切换与滑杆换位录屏](screenshots/t7/roles-and-weights.webm)、[下载的报告](screenshots/t7/demo-report.md)
-- [浏览器验收记录](screenshots/t7/verification.json)

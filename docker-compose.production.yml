@@ -1,0 +1,61 @@
+# 镜像由 GitHub Actions 构建；VM 不运行 npm/uv，也不挂载源码。
+services:
+  backend:
+    image: steelyard-backend:${STEELYARD_RELEASE:?commit SHA is required}
+    restart: unless-stopped
+    env_file:
+      - ${STEELYARD_ROOT:?deployment root is required}/shared/runtime.env
+    environment:
+      APP_ENV: prod
+      DATABASE_URL: sqlite:////app/data/zhuheng.db
+      CORS_ORIGINS: ${STEELYARD_PUBLIC_ORIGIN:-https://project.jnove.dpdns.org}
+      PYTHONDONTWRITEBYTECODE: "1"
+    volumes:
+      - ${STEELYARD_ROOT}/shared/data:/app/data
+      - ./rules:/app/rules:ro
+    networks:
+      application:
+        aliases:
+          - steelyard-backend
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    healthcheck:
+      test: ["CMD", "python", "-c", "import json,urllib.request; assert json.load(urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5))['status'] == 'ok'"]
+      interval: 10s
+      timeout: 6s
+      retries: 6
+      start_period: 30s
+    labels:
+      org.opencontainers.image.revision: ${STEELYARD_RELEASE}
+
+  frontend:
+    image: steelyard-frontend:${STEELYARD_RELEASE:?commit SHA is required}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:${STEELYARD_HTTP_PORT:-18081}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      application:
+      proxy:
+        aliases:
+          - steelyard-frontend
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/healthz"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    labels:
+      org.opencontainers.image.revision: ${STEELYARD_RELEASE}
+
+networks:
+  application:
+  proxy:
+    external: true
+    name: ${STEELYARD_PROXY_NETWORK:-jnoves-blog_default}
