@@ -43,9 +43,13 @@ LLM_PROVIDER=fake
 STEELYARD_PROXY_NETWORK=jnoves-blog_default
 STEELYARD_HTTP_PORT=18081
 STEELYARD_PUBLIC_ORIGIN=https://project.jnove.dpdns.org
+STEELYARD_UID=1000
+STEELYARD_GID=1000
 ```
 
-Compose 固定 `APP_ENV=prod`、数据库 `sqlite:////app/data/zhuheng.db`，并按公开 origin 设置 CORS。`prod` 关闭开发规则热重载入口。数据库目录独立于 release；规则从该 release 的 `rules/` 只读挂载。backend 只在本应用网络内可见，frontend 同时连接本应用与 Caddy 网络，并仅向宿主 `127.0.0.1:18081` 暴露本机验收端口。
+Compose 固定 `APP_ENV=prod`、数据库 `sqlite:////app/data/zhuheng.db`，并按公开 origin 设置 CORS。`prod` 关闭开发规则热重载入口。数据库目录独立于 release；规则从该 release 的 `rules/` 只读挂载。`backend` 只在本应用网络内可见，`steelyard-frontend` 同时连接本应用与 Caddy 网络，并仅向宿主 `127.0.0.1:18081` 暴露本机验收端口。Compose 会自动把服务名注册为 Docker DNS alias，因此生产服务名也采用 `steelyard-frontend`，避免与博客的 `frontend` 冲突；runner 在发布前检查实际网络 aliases。
+
+生产 backend 使用宿主部署用户的 UID:GID（默认 `1000:1000`，由 `STEELYARD_UID/GID` 覆盖），并保留 `cap_drop: ALL`。`shared/data` 必须归属此 UID:GID，目录可设为 `0700`；已有 SQLite 文件及备份也需由该用户读写。确认宿主 `id -u`、`id -g` 后填写配置，勿依赖 root 绕过数据目录权限。镜像里的应用、虚拟环境与 release 的规则需要对该用户可读。CI 使用 runner 的实际 UID:GID，并在启动前以同一用户检查模块导入、只读规则加载与数据卷写入；失败时先打印仅含 fake 配置的 CI 容器日志再清理。
 
 `fake` 使用真实后端评估、排序和 SSE 链路，报告文本由确定性桩生成。要启用真实模型，直接修改服务器 `runtime.env`，增加 `LLM_PROVIDER`、`LLM_BASE_URL`、`LLM_API_KEY`、`LLM_MODEL`，随后重新部署。密钥不写入源码、artifact 或前端构建。部署的公开 SSE 验收会调用当前配置的模型；真实模式下需要可用的模型服务，失败会阻止发布并触发容器回滚。
 
@@ -84,7 +88,7 @@ handle /steelyard/* {
 }
 ```
 
-Caddy 与 frontend 共享 `jnoves-blog_default`，以独立 alias `steelyard-frontend` 访问本应用。使用 `handle` 保留 `/steelyard` 前缀。frontend Nginx 将 `/steelyard/api/` 转到私有网络 `steelyard-backend:8000/api/`；对 SSE 关闭缓冲、缓存，并保留长连接超时。Caddy 对 `/steelyard` 跳转到 `/steelyard/`；直连本机 Nginx 时也使用相对跳转，并通过 `absolute_redirect off` 保留访问域名与端口。SPA 深链接回退到本应用 `index.html`，不存在的脚本仍返回 404。
+Caddy 与 `steelyard-frontend` 服务共享 `jnoves-blog_default`，以同名的唯一 DNS alias 访问本应用。使用 `handle` 保留 `/steelyard` 前缀。前端 Nginx 将 `/steelyard/api/` 转到私有网络 `steelyard-backend:8000/api/`；对 SSE 关闭缓冲、缓存，并保留长连接超时。Caddy 对 `/steelyard` 跳转到 `/steelyard/`；直连本机 Nginx 时也使用相对跳转，并通过 `absolute_redirect off` 保留访问域名与端口。SPA 深链接回退到本应用 `index.html`，不存在的脚本仍返回 404。
 
 开发模式默认 `VITE_BASE_PATH=/`，React Router、REST 和 SSE 继续使用根路径。设置 `VITE_BASE_PATH=/steelyard/` 时，Vite 资源、Router basename、默认 API 地址同步为此子路径；显式设置 `VITE_API_BASE` 可覆盖默认 API 地址。每次修改公开 base 后必须重新构建前端镜像。
 
@@ -116,7 +120,7 @@ bash "$root/releases/$sha/scripts/deploy.sh" "$root" "$sha" \
   https://project.jnove.dpdns.org/steelyard
 ```
 
-每次替换前对当前 SQLite 做在线备份，存于 `shared/data/backups/`。正常部署和回滚均强制重建 frontend 与 backend，使 Nginx 在 backend 地址变更后重新解析 Docker DNS；同 SHA 重新部署也可更新 runtime 配置。自动回滚只恢复容器与规则版本，保留用户数据库及当前 runtime 配置。当前启动仅建表；未来增加不兼容数据库迁移时，须单独设计迁移与数据恢复策略，不能假定旧镜像仍可读取新 Schema。
+每次替换前对当前 SQLite 做在线备份，存于 `shared/data/backups/`。正常部署和回滚均强制重建 `steelyard-frontend` 与 `backend`，使 Nginx 在 backend 地址变更后重新解析 Docker DNS；同 SHA 重新部署也可更新 runtime 配置。`--remove-orphans` 仅清理 `steelyard` 项目内被改名或移除的服务，不会清理博客容器。自动回滚只恢复容器与规则版本，保留用户数据库及当前 runtime 配置。当前启动仅建表；未来增加不兼容数据库迁移时，须单独设计迁移与数据恢复策略，不能假定旧镜像仍可读取新 Schema。
 
 发布包在加载后删除；中途中断可能留下 `incoming/` 文件。旧 release、旧镜像标签与数据库备份会保留，需要按磁盘空间定期清理，并保留 `current` 与至少一个已验收回滚版本。只清理明确属于 Steelyard 的旧文件和镜像，避免影响本机其他站点。
 

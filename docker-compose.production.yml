@@ -2,6 +2,8 @@
 services:
   backend:
     image: steelyard-backend:${STEELYARD_RELEASE:?commit SHA is required}
+    # 与 shared/data 的宿主属主一致，丢弃 capabilities 后仍可写 SQLite。
+    user: "${STEELYARD_UID:-1000}:${STEELYARD_GID:-1000}"
     restart: unless-stopped
     env_file:
       - ${STEELYARD_ROOT:?deployment root is required}/shared/runtime.env
@@ -30,7 +32,8 @@ services:
     labels:
       org.opencontainers.image.revision: ${STEELYARD_RELEASE}
 
-  frontend:
+  # Compose 会把服务键注册为 DNS alias；共享代理网络须使用唯一服务名。
+  steelyard-frontend:
     image: steelyard-frontend:${STEELYARD_RELEASE:?commit SHA is required}
     restart: unless-stopped
     ports:
