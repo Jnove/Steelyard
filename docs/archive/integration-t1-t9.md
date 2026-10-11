@@ -1,5 +1,7 @@
 # T1–T9 集成记录
 
+> 2026-10-05 历史验收记录。当前使用说明见 [文档入口](../README.md)。
+
 2026-10-05。任务范围为合并已经完成的 T1–T9，协调接口与运行问题；T10 尚未开始。
 
 ## 分支关系与合并方式
@@ -27,13 +29,13 @@
 
 | 检查 | 结果 |
 | --- | --- |
-| 后端完整 pytest | 443 通过，1 条 HTTP 状态常量弃用警告；[日志](evidence/integration-pytest.txt) |
+| 后端完整 pytest | 443 通过，1 条 HTTP 状态常量弃用警告；[日志](../evidence/integration-pytest.txt) |
 | 前端单元、离线数据与流协议测试 | 49 通过，0 失败 |
 | TypeScript / 真实模式与离线模式构建 | 通过；已有的大包体积提示保留 |
 | 后端与 scripts/ Ruff；修改的 Python 文件格式 | 通过 |
 | 规则与字段对照表 | 0 错误、16 条专业 TODO 提醒；字段表无漂移 |
 | T7 完整离线浏览器流程 | 通过：CRUD、Excel 成功 / 错误、评估、角色、权重、溯源、对话、下载、响应式布局 |
-| 真实 REST / SSE + FakeLLM 浏览器流程 | 通过；[验收记录](evidence/integration-ui.json)、[完整报告事件流](evidence/integration-report.sse.txt) |
+| 真实 REST / SSE + FakeLLM 浏览器流程 | 通过；[验收记录](../evidence/integration-ui.json)、[完整报告事件流](../evidence/integration-report.sse.txt) |
 
 真实浏览器流程使用新建的虚构数据库：五个正式方案评估后四个进入排名，不合规方案单列；核对敏感性索引、权重翻转、报告下载与缓存、历史追问、What-if 副本。取消和校验耗尽通过受控延迟 / SSE 响应验证，另有后端生命周期测试。浏览器没有页面运行时异常。
 

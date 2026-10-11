@@ -1,8 +1,0 @@
-# 规则与指标定义（T3 起由土木、建筑同学在此维护）
-
-- compliance.yaml    硬约束（不通过即标红）
-- quality.yaml       居住品质评分指标
-- structure.yaml     结构安全评分指标
-- construction.yaml  施工友好与工友安全评分指标
-- green.yaml         绿色低碳评分指标
-- weights.yaml       角色权重模板（政府 / 保障房平台 / 开发企业 / 施工总包 / 住户）

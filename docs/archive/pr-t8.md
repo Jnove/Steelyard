@@ -1,5 +1,7 @@
 # T8：智能体图、报告对话与引用校验
 
+> 2026-10-05 PR 描述归档，含当时的环境路径与验收结果。当前协议见 [SSE 协议](../sse-events.md)，运行方法见 [仓库 README](../../README.md)。
+
 基于 `feat/mcdm` 的 `a958830`，分支为 `feat/agents`。根目录实际指引是 `Agent.md`，已完整阅读并按其技术栈、目录与智能体图实现。本 PR 不修改规则、专业阈值、行业因子或 T3/T4 算法。
 
 ## 做了什么
@@ -9,7 +11,7 @@
 - 工具复用 T3 evaluate 与 T4 rank，不交给模型计算专业数值。What-if 校验字段、比例、嵌套值和项目归属后创建副本，保留原方案；报告对比指标原值/新值、评分、修改前排名和加入副本后的排名，区分候选集合变化与指标变化。
 - reweight 仅重新 rank 后进入 reporter，不重跑 evaluate；解释读取最新结果与真实规则定义。普通 REST `/evaluate`、`/rank` 也同步最新证据，避免追问读取旧权重；T4 的原有完整请求耗时测试仍通过。
 - 数字校验覆盖整数、小数、负数、千位分隔、科学记数与百分数；支持原值及 0–2 位舍入、比例转换、实际规则常数/编号和任务规定白名单。失败重写最多两次，仍失败返回 unverified_numbers 的最终位置。
-- 新增 POST report/chat 的 sse-starlette 流，事件为 node_start / tool_call / tool_result / token / citation_warning / done / error。报告重写会替换草稿，断流会取消图并关闭模型客户端。协议见 [docs/sse-events.md](https://github.com/Jnove/Steelyard/blob/feat/agents/docs/sse-events.md)。
+- 新增 POST report/chat 的 sse-starlette 流，事件为 node_start / tool_call / tool_result / token / citation_warning / done / error。报告重写会替换草稿，断流会取消图并关闭模型客户端。协议见 [docs/sse-events.md](../sse-events.md)。
 - 标准报告缓存持久化到 SQLite，键覆盖项目数据、候选集合、规则、归一化权重及角色来源、角色模板、模型标识、提示词与版本；缓存命中无需构造模型客户端。失败报告不入缓存。
 - 基线对话页接入 POST SSE、历史消息、错误与取消；最终未核实数字标红。前端继续使用 TypeScript 严格模式，模型正文按纯文本渲染。
 
@@ -65,13 +67,13 @@ npm run build
 | Vite 生产构建 | **通过**（现有包体积告警，见遗留问题） |
 | Git diff --check | **通过** |
 
-所有智能体验收使用 FakeLLM，包括新评估全链路、What-if 原方案内容不变、改权重跳过评估、引用失败重写成功、连续失败后标记。API 缓存测试会将模型工厂替换为不可用状态，验证断网时仍返回已验证的缓存。SDK 测试使用 httpx.MockTransport，不调用真实模型。[完整 pytest 输出](https://github.com/Jnove/Steelyard/blob/feat/agents/docs/evidence/t8-pytest.txt)。
+所有智能体验收使用 FakeLLM，包括新评估全链路、What-if 原方案内容不变、改权重跳过评估、引用失败重写成功、连续失败后标记。API 缓存测试会将模型工厂替换为不可用状态，验证断网时仍返回已验证的缓存。SDK 测试使用 httpx.MockTransport，不调用真实模型。[完整 pytest 输出](../evidence/t8-pytest.txt)。
 
 ### curl 实际输出
 
 首次 `/report` 得到 **80 帧**：11 个 node_start、3 个 tool_call、3 个 tool_result、62 个 token、1 个 done；最终 cached=false、unverified_numbers=[]。四维评语完成顺序可交错。
 
-以下帧摘自原始输出，省略中间的完整工具 JSON 与 token；[完整事件流](https://github.com/Jnove/Steelyard/blob/feat/agents/docs/evidence/t8-report.sse.txt)已保存。
+以下帧摘自原始输出，省略中间的完整工具 JSON 与 token；[完整事件流](../evidence/t8-report.sse.txt)已保存。
 
 ```text
 event: node_start
@@ -110,7 +112,7 @@ A 高品质：名次 4，贴近度 0.00。
 B 不合规：C-01，层高 2.9 m 低于示例阈值 3.0 m；source：TODO(专业组)：示例数值，正式条文号待补。
 ```
 
-[完整 FakeLLM 报告](https://github.com/Jnove/Steelyard/blob/feat/agents/docs/evidence/t8-fake-report.md)含全部固定章节与规则 source。再次调用得到 token + done，cached=true，且正文与首次报告一致：[缓存命中事件流](https://github.com/Jnove/Steelyard/blob/feat/agents/docs/evidence/t8-report-cache.sse.txt)。
+[完整 FakeLLM 报告](../evidence/t8-fake-report.md)含全部固定章节与规则 source。再次调用得到 token + done，cached=true，且正文与首次报告一致：[缓存命中事件流](../evidence/t8-report-cache.sse.txt)。
 
 ## 遗留问题
 

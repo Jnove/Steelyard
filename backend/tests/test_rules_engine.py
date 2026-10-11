@@ -11,6 +11,7 @@ import pytest
 from app.engine.rules import (
     RuleDef,
     RuleLoadError,
+    RuleSet,
     SchemeInput,
     analyze_expression,
     build_namespace,
@@ -72,7 +73,9 @@ def ruleset() -> object:
 
 def _evaluate_one(scheme: SchemeParams, ruleset: object, project: ProjectParams | None = None):
     results = evaluate(
-        project or _project(), [SchemeInput("1", "测试方案", scheme)], ruleset  # type: ignore[arg-type]
+        project or _project(),
+        [SchemeInput("1", "测试方案", scheme)],
+        ruleset,  # type: ignore[arg-type]
     )
     return results[0]
 
@@ -297,7 +300,7 @@ def test_reports_disallowed_function() -> None:
     "expression",
     [
         "floor_height.real >= 3.0",  # 属性访问
-        "window_wall_ratio['南'] <= 0.4",  # 下标取值
+        "risk_features[0] == '深基坑'",  # 非字典字段下标
         "[f for f in risk_features]",  # 推导式
     ],
 )
@@ -309,6 +312,151 @@ def test_collects_referenced_names() -> None:
     analyzed = analyze_expression("far <= far_max and floors > 3", "check")
     assert analyzed.names == {"far", "far_max", "floors"}
     assert "min" not in analyzed.names, "函数名不应被当成字段名"
+
+
+def test_accepts_constant_dictionary_keys() -> None:
+    analyzed = analyze_expression(
+        "window_wall_ratio['南'] <= 0.4 and unit_mix['两室'] >= 10", "check"
+    )
+    assert analyzed.ok
+    assert analyzed.names == {"window_wall_ratio", "unit_mix"}
+    assert analyzed.dictionary_keys == (("unit_mix", "两室"), ("window_wall_ratio", "南"))
+
+
+def test_loads_rule_with_constant_dictionary_keys(tmp_path: Path) -> None:
+    import yaml
+
+    (tmp_path / "compliance.yaml").write_text(
+        yaml.safe_dump(
+            [_hard(check="window_wall_ratio['南'] <= 0.4", when="unit_mix['两室'] > 0")],
+            allow_unicode=True,
+        ),
+        encoding="utf-8",
+    )
+    result = _evaluate_one(
+        _scheme(window_wall_ratio={"南": 0.5}, unit_mix={"两室": 288}),
+        load_rules_from_dir(tmp_path),
+    )
+    assert _compliance(result, "C-01").status == "failed"
+
+
+def test_dictionary_key_is_not_an_attribute_fallback() -> None:
+    rules = RuleSet(
+        rules=(RuleDef.model_validate(_hard(check="unit_mix['__class__'] == 0")),),
+        origins={},
+    )
+    result = _evaluate_one(_scheme(unit_mix={"两室": 288}), rules)
+    assert _compliance(result, "C-01").status == "insufficient_data"
+    assert _compliance(result, "C-01").missing_fields == ["unit_mix['__class__']"]
+
+
+@pytest.mark.parametrize(
+    "expression",
+    [
+        "window_wall_ratio[structure_type]",
+        "window_wall_ratio[1]",
+        "window_wall_ratio[True]",
+        "window_wall_ratio[None]",
+        "window_wall_ratio['南':'北']",
+        "window_wall_ratio['南']['北']",
+        "window_wall_ratio['南'].real",
+        "window_wall_ratio.get('南')",
+        "min(window_wall_ratio)['南']",
+        "['南'][0]",
+        "structure_type['南']",
+        "unknown_dictionary['南']",
+        "window_wall_ratio['南' + '北']",
+    ],
+)
+def test_rejects_unsafe_dictionary_access_at_load(tmp_path: Path, expression: str) -> None:
+    import yaml
+
+    assert not analyze_expression(expression, "check").ok
+    (tmp_path / "compliance.yaml").write_text(
+        yaml.safe_dump([_hard(check=expression)], allow_unicode=True), encoding="utf-8"
+    )
+    with pytest.raises(RuleLoadError):
+        load_rules_from_dir(tmp_path)
+
+
+def _dictionary_rules() -> RuleSet:
+    return RuleSet(
+        rules=(
+            RuleDef.model_validate(_hard(check="window_wall_ratio['南'] <= 0.4")),
+            RuleDef.model_validate(_hard(id="C-02", when="unit_mix['两室'] > 0")),
+            RuleDef.model_validate(
+                _metric(
+                    value="window_wall_ratio['南']",
+                    scoring={"kind": "piecewise", "points": [[0, 0], [1, 100]]},
+                )
+            ),
+        ),
+        origins={},
+    )
+
+
+def test_evaluates_dictionary_keys_in_check_when_and_value() -> None:
+    result = _evaluate_one(
+        _scheme(window_wall_ratio={"南": 0.3}, unit_mix={"两室": 288}), _dictionary_rules()
+    )
+    assert _compliance(result, "C-01").status == "passed"
+    assert _compliance(result, "C-02").status == "passed"
+    assert result.metrics["K-01"].value == pytest.approx(0.3)
+    assert result.metrics["K-01"].score == pytest.approx(30)
+
+
+@pytest.mark.parametrize(
+    "container, expected",
+    [
+        (None, "window_wall_ratio"),
+        ({}, "window_wall_ratio['南']"),
+        ({"北": 0.2}, "window_wall_ratio['南']"),
+    ],
+)
+def test_missing_dictionary_or_key_is_insufficient_data(container: object, expected: str) -> None:
+    result = _evaluate_one(_scheme(window_wall_ratio=container), _dictionary_rules())
+    for item in (_compliance(result, "C-01"), result.metrics["K-01"]):
+        assert item.status == "insufficient_data"
+        assert item.missing_fields == [expected]
+    assert result.metrics["K-01"].score is None
+    assert _compliance(result, "C-02").status == "insufficient_data"
+    assert _compliance(result, "C-02").missing_fields == ["unit_mix"]
+
+
+def test_missing_when_dictionary_key_is_insufficient_data() -> None:
+    result = _evaluate_one(
+        _scheme(window_wall_ratio={"南": 0.3}, unit_mix={"三室": 288}), _dictionary_rules()
+    )
+    assert _compliance(result, "C-02").status == "insufficient_data"
+    assert _compliance(result, "C-02").missing_fields == ["unit_mix['两室']"]
+
+
+def test_dictionary_when_false_skips_rule() -> None:
+    result = _evaluate_one(
+        _scheme(window_wall_ratio={"南": 0.3}, unit_mix={"两室": 0, "三室": 288}),
+        _dictionary_rules(),
+    )
+    assert _compliance(result, "C-02").status == "not_applicable"
+
+
+def test_missing_dictionary_key_in_short_circuit_remains_insufficient_data() -> None:
+    rules = RuleSet(
+        rules=(
+            RuleDef.model_validate(_hard(check="floors < 7 and window_wall_ratio['南'] <= 0.4")),
+        ),
+        origins={},
+    )
+    result = _evaluate_one(_scheme(floors=18, window_wall_ratio={"北": 0.2}), rules)
+    assert _compliance(result, "C-01").status == "insufficient_data"
+    assert _compliance(result, "C-01").missing_fields == ["window_wall_ratio['南']"]
+
+
+def test_direct_ruleset_cannot_bypass_dictionary_access_restrictions() -> None:
+    rules = RuleSet(
+        rules=(RuleDef.model_validate(_hard(check="window_wall_ratio.values()")),), origins={}
+    )
+    result = _evaluate_one(_scheme(window_wall_ratio={"南": 0.3}), rules)
+    assert _compliance(result, "C-01").status == "insufficient_data"
 
 
 # —— 加载 —— #
@@ -374,12 +522,16 @@ def test_bad_rule_files_are_rejected(
     with pytest.raises(RuleLoadError) as excinfo:
         load_rules_from_dir(tmp_path)
     combined = "\n".join(excinfo.value.problems)
-    assert expected_in_message in combined, f"{filename} 的报错里没提到 {expected_in_message}：\n{combined}"
+    assert expected_in_message in combined, (
+        f"{filename} 的报错里没提到 {expected_in_message}：\n{combined}"
+    )
 
 
 def test_duplicate_id_across_files_is_rejected(tmp_path: Path) -> None:
     """ID 唯一性是全局的，跨文件也要查。"""
-    body = '- id: C-01\n  name: 层高\n  type: hard\n  check: "floor_height >= 3.0"\n  source: "测试"\n'
+    body = (
+        '- id: C-01\n  name: 层高\n  type: hard\n  check: "floor_height >= 3.0"\n  source: "测试"\n'
+    )
     (tmp_path / "compliance.yaml").write_text(body, encoding="utf-8")
     (tmp_path / "quality.yaml").write_text(body, encoding="utf-8")
     with pytest.raises(RuleLoadError, match="重复"):
@@ -476,9 +628,7 @@ def test_when_false_marks_not_applicable(ruleset: object) -> None:
 
 
 def test_when_true_evaluates_check(ruleset: object) -> None:
-    passing = _evaluate_one(
-        _scheme(structure_type="钢结构", risk_features=["超限构件"]), ruleset
-    )
+    passing = _evaluate_one(_scheme(structure_type="钢结构", risk_features=["超限构件"]), ruleset)
     assert _compliance(passing, "C-04").status == "passed"
 
     failing = _evaluate_one(_scheme(structure_type="钢结构", risk_features=["深基坑"]), ruleset)
@@ -552,9 +702,7 @@ def test_coverage_drops_when_data_missing(ruleset: object) -> None:
     result = _evaluate_one(_scheme(std_floor_repeat=None), ruleset)
     assert result.dimension_coverage.construction == pytest.approx(0.25)
     # 维度得分只由有数据的 K-02 决定。
-    assert result.dimension_scores.construction == pytest.approx(
-        result.metrics["K-02"].score
-    )
+    assert result.dimension_scores.construction == pytest.approx(result.metrics["K-02"].score)
 
 
 def test_not_applicable_metric_excluded_from_coverage(ruleset: object) -> None:
@@ -601,7 +749,8 @@ def test_evaluate_covers_every_rule(ruleset: object) -> None:
     """每条规则都要在结果里出现——不能因为缺数据就悄悄漏掉一条。"""
     result = _evaluate_one(_scheme(), ruleset)
     assert {c.rule_id for c in result.compliance} == {
-        r.id for r in ruleset.hard_rules  # type: ignore[attr-defined]
+        r.id
+        for r in ruleset.hard_rules  # type: ignore[attr-defined]
     }
     assert set(result.metrics) == {r.id for r in ruleset.metric_rules}  # type: ignore[attr-defined]
 

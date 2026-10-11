@@ -10,6 +10,8 @@
 from __future__ import annotations
 
 from fastapi.testclient import TestClient
+from sqlalchemy.engine import Engine
+from sqlmodel import Session, select
 
 
 def _create_project(client: TestClient, name: str = "杭州项目") -> dict:
@@ -96,6 +98,61 @@ class TestProjectCRUD:
         resp = client.get(f"/api/projects/{project['id']}/schemes")
         assert resp.status_code == 404
 
+    def test_delete_project_cleans_results_caches_and_whatif_without_touching_other_project(
+        self, client: TestClient, engine: Engine
+    ) -> None:
+        from app.agents.storage import AgentResultRow, ReportCacheRow
+        from app.models.orm import EvalResultRow, Project, Scheme
+
+        projects = [_create_project(client, name) for name in ("待删除", "保留")]
+        for project in projects:
+            parent = _create_scheme(client, project["id"], "原方案")
+            _create_scheme(
+                client, project["id"], "推演副本", is_whatif=True, parent_id=parent["id"]
+            )
+            with Session(engine) as session:
+                session.add(
+                    EvalResultRow(
+                        project_id=project["id"], scheme_id=parent["id"], result={"tested": True}
+                    )
+                )
+                session.add(
+                    AgentResultRow(
+                        project_id=project["id"], fingerprint="测试", evaluation={"tested": True}
+                    )
+                )
+                for version in ("a", "b"):
+                    session.add(
+                        ReportCacheRow(
+                            key=f"{project['id']}-{version}",
+                            project_id=project["id"],
+                            output={"report": "测试"},
+                        )
+                    )
+                session.commit()
+
+        removed, retained = (project["id"] for project in projects)
+        # 开启外键约束，确保评估先于方案删除，带 parent_id 的副本也能完整删除。
+        with engine.connect() as connection:
+            connection.exec_driver_sql("PRAGMA foreign_keys=ON")
+        assert client.delete(f"/api/projects/{removed}").status_code == 204
+        assert client.get(f"/api/projects/{removed}").status_code == 404
+        assert client.get(f"/api/projects/{retained}").status_code == 200
+        assert client.delete(f"/api/projects/{removed}").status_code == 404
+        with Session(engine) as session:
+            assert session.get(Project, removed) is None
+            for table, expected_retained in (
+                (Scheme, 2),
+                (EvalResultRow, 1),
+                (AgentResultRow, 1),
+                (ReportCacheRow, 2),
+            ):
+                assert session.exec(select(table).where(table.project_id == removed)).all() == []
+                assert (
+                    len(session.exec(select(table).where(table.project_id == retained)).all())
+                    == expected_retained
+                )
+
 
 class TestSchemeCRUD:
     def test_create_scheme(self, client: TestClient) -> None:
@@ -161,9 +218,7 @@ class TestSchemeCRUD:
     def test_delete_scheme(self, client: TestClient) -> None:
         project = _create_project(client)
         scheme = _create_scheme(client, project["id"], "A")
-        resp = client.delete(
-            f"/api/projects/{project['id']}/schemes/{scheme['id']}"
-        )
+        resp = client.delete(f"/api/projects/{project['id']}/schemes/{scheme['id']}")
         assert resp.status_code == 204
 
         resp = client.get(f"/api/projects/{project['id']}/schemes/{scheme['id']}")
@@ -181,9 +236,7 @@ class TestFullCRUDFlow:
         # 2. 在项目下建 3 个方案
         s_a = _create_scheme(client, pid, "高层 A", {"gfa": 12000, "floors": 18})
         s_b = _create_scheme(client, pid, "小高层 B", {"gfa": 9000, "floors": 12})
-        s_c = _create_scheme(
-            client, pid, "MiC 方案 C", {"gfa": 14000, "floors": 20}
-        )
+        s_c = _create_scheme(client, pid, "MiC 方案 C", {"gfa": 14000, "floors": 20})
 
         # 3. 列表应为 3 个
         resp = client.get(f"/api/projects/{pid}/schemes")

@@ -10,7 +10,7 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, ConfigDict, Field
-from sqlmodel import Session, select
+from sqlmodel import Session, delete, select
 
 from app.db import get_session
 from app.models import Project, ProjectParams
@@ -109,20 +109,17 @@ def update_project(
 @router.delete(
     "/{project_id}",
     status_code=status.HTTP_204_NO_CONTENT,
-    summary="删除项目（含其下所有方案与评估结果）",
+    summary="删除项目（含方案、评估与报告缓存）",
 )
 def delete_project(project_id: int, session: SessionDep) -> None:
     project = session.get(Project, project_id)
     if project is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"项目 {project_id} 不存在")
-    # SQLite 没有级联删除，手动清掉子表
+    # 同一事务内先清缓存与评估，再删方案和项目；避免项目 id 复用读到旧结果。
+    from app.agents.storage import AgentResultRow, ReportCacheRow
     from app.models.orm import EvalResultRow, Scheme
 
-    for scheme in session.exec(select(Scheme).where(Scheme.project_id == project_id)).all():
-        for ev in session.exec(
-            select(EvalResultRow).where(EvalResultRow.scheme_id == scheme.id)
-        ).all():
-            session.delete(ev)
-        session.delete(scheme)
+    for table in (ReportCacheRow, AgentResultRow, EvalResultRow, Scheme):
+        session.exec(delete(table).where(table.project_id == project_id))
     session.delete(project)
     session.commit()

@@ -2,11 +2,11 @@
 
 > **谁看哪部分**：土木 / 建筑同学看[第一部分](#一留给专业组土木--建筑)，开发同学看[第二部分](#二留给开发组)。
 >
-> **怎么维护**：做完一条就把 `[ ]` 改成 `[x]`，并在后面注明落在哪个 PR；
+> **怎么维护**：完成的事项从活跃清单移除，必要时在归档记录中保留修复原因；
 > 新发现的未决事项往对应小节追加。这份文档是"还没定下来的事"的唯一入口，
 > 不要把结论只写在聊天记录或 PR 评论里。
 >
-> **最后更新**：2026-10-05（T1–T9 分支集成，见 [集成记录](integration-t1-t9.md)）
+> **最后更新**：2026-10-11；历史集成见 [归档记录](archive/integration-t1-t9.md)
 
 ---
 
@@ -34,7 +34,7 @@ T3 把规则引擎搭好了：`rules/*.yaml` 能被加载、校验、跑出分�
 - 字段名、单位、派生量：[fields.generated.md](fields.generated.md)
 - 空白模板与字段说明：[`rules/_template.yaml`](../rules/_template.yaml)
 
-改完**一定要跑一遍校验**，它会用中文告我你哪一行错了、怎么改：
+改完**一定要跑一遍校验**，它会用中文告诉你哪一行错了、怎么改：
 
 ```bash
 uv run --project backend python scripts/check_rules.py
@@ -113,8 +113,9 @@ uv run --project backend python scripts/check_rules.py
 - **方案 A**：按朝向分别定，比如"南向窗墙比 ≤ 0.40，北向 ≤ 0.30"；
 - **方案 B**：只看一个汇总值，比如所有朝向的最大值或面积加权平均。
 
-这个决定直接影响开发要做的事（见 [2.2](#22-字典字段在表达式里取不了下标)），
-所以**先要这个结论**。
+引擎已支持 `window_wall_ratio['南']` 这种固定字符串键取值，技术限制已解除。
+按朝向还是汇总评价、阈值与依据仍由专业组确定；汇总评价如需面积权重，还需明确输入字段。
+`unit_mix` 也支持固定字符串键，但户型分类与评价方法尚未核定。
 
 - [ ] 定方案 A 还是 B（A 的话请给出要管哪几个朝向）
 
@@ -161,115 +162,22 @@ T4 已提供 [weights.yaml](../rules/weights.yaml) 的四个占位矩阵。
 
 ## 二、留给开发组
 
-分四类：**需要单独开 PR 修的**、**等专业组结论才能动的**、**后续任务会做的**、
-**设计取舍（用起来不舒服再改）**。
+### 2.1 T10 条文结构化与检索
 
-### 2.1 集成时处理的遗留问题
+- [ ] 接收有完整来源的规范 PDF / 原文，确认版本、完整性与授权范围。
+- [ ] 完成条文切分、来源元数据、索引与检索，并由专业组复核条文含义与规则映射。
 
-以下前两项已在 T1–T9 集成中解决；原问题保留供排查旧分支。
+当前 `data/clauses/` 没有规范原文，`search_clause` 返回空列表。不得把搜索桩视为可用检索，
+不得凭空补条文号、阈值、因子或专业依据。
 
-#### (1) `make seed` 和 `make dev-backend` 读写的不是同一个数据库
+### 2.2 真实模型验收
 
-**现象**：`make seed` 灌完数据，起服务却查不到项目，`POST /api/projects/3/evaluate`
-返回 404「项目 3 不存在」。很容易被当成接口 bug 排查半天。
+- [ ] 在配置 `LLM_PROVIDER=openai`、`LLM_BASE_URL`、`LLM_API_KEY`、`LLM_MODEL` 的环境中，
+      验证工具调用、报告引用、改权重、What-if 和流式取消。
 
-**旧分支原因**：`DATABASE_URL` 默认是**相对路径** `sqlite:///./data/zhuheng.db`
-（[config.py](../backend/app/config.py)），而两个 Makefile 目标的工作目录不同——
-`seed` 从仓库根跑，写 `data/zhuheng.db`；`dev-backend` 先 `cd backend`，
-读 `backend/data/zhuheng.db`。于是磁盘上有两个库。
+FakeLLM 与本地 HTTP 假响应只能验证确定性工具和协议；真实模型输出仍需单独验收。
+密钥不能写入仓库、报告或 SSE 事件。部署运行与运维步骤见 [部署指南](deployment.md)。
 
-**为什么 T3 没修**：改它要动 `config.py` 的默认值或 Makefile 的 CWD，
-会牵到 `docker-compose.yml` 的卷挂载和部署脚本，超出 T3 范围。
-
-**集成修复**：默认数据库固定为本工作树 `backend/data/zhuheng.db` 的绝对路径；
-根目录与 `backend/.env` 从固定位置加载，显式数据库配置保留。
-配置测试覆盖工作目录切换；实际从根目录播种并启动后端的联调可读取同一项目。
-容器另显式使用 `/app/data/zhuheng.db` 挂载卷，不共用宿主机绝对路径。
-
-- [x] 修数据库路径（属 T1/T6 遗留，T1–T9 集成）
-
-#### (2) `scripts/` 目录从来没进过 lint 范围
-
-**旧分支现象**：`make lint` 和 CI 都只跑 `cd backend && ruff check .`，
-`scripts/` 下 8 个脚本一次都没被检查过。
-
-**用项目配置扫一遍**（`ruff check --config backend/pyproject.toml scripts/`）**有 3 处**：
-`export_schemes.py` 与 `import_schemes.py` 的 import 排序，以及 `import_schemes.py`
-里一个没用到的 `get_settings`。
-
-**为什么 T3 没修**：T3 只保证自己改的两个脚本（`check_rules.py`、`gen_field_table.py`）干净，
-没动别人的文件，也没擅自扩大 lint 范围。
-
-**集成修复**：Makefile 与 CI 使用 `backend/pyproject.toml` 的配置检查 `scripts/`，
-并修正导入排序及未使用导入，完整检查已通过。
-
-- [x] 把 `scripts/` 纳入 lint（T1–T9 集成）
-
-#### (3) 两个 `.gitkeep` 可以删了
-
-`rules/.gitkeep` 和 `scripts/.gitkeep` 早就有真文件了，占位文件没用了。纯清理，不急。
-
-- [ ] 删 `rules/.gitkeep` 与 `scripts/.gitkeep`
-
-### 2.2 字典字段在表达式里取不了下标
-
-**现象**：写不出「南向窗墙比 ≤ 0.4」这种规则。
-
-**原因**：`window_wall_ratio`（各朝向窗墙比）和 `unit_mix`（户型配比）是字典，
-取值要写 `window_wall_ratio['南']`，但规则表达式的 AST 白名单**禁止 `Subscript`**
-（见 [rules.py](../backend/app/engine/rules.py) 的 `_ALLOWED_NODES`）。白名单是有意收紧的，
-放开下标要单独想清楚安全边界。
-
-**两个方向**：
-
-- **A**：把常用朝向做成派生量（`window_wall_ratio_south` 等），表达式里当普通字段用。
-  实现简单、对规则作者最友好，但每加一个朝向都要改代码。
-- **B**：在白名单里开放**受限的常量下标**（只允许字符串常量做下标，不允许变量）。
-  一次做完通用，但要补安全测试。
-
-**阻塞在**：[1.7](#17-待定窗墙比要不要按朝向分别定规则)——专业组先定要不要按朝向分别定规则。
-如果结论是"只看汇总值"，那加一个派生量就够了，方案 A/B 都不用做。
-
-- [ ] 等 1.7 的结论后实现
-
-### 2.3 后续任务会做的（列出来防遗漏）
-
-这几条不是缺陷，是 T3 边界之外的活，写在这里只为不丢：
-
-- [x] **报告如何读取排序结果**：T8 工具读取 T4 当前角色 / 权重的完整排序响应，
-      报告与对话使用实际 REST / SSE 联调通过；`EvalResult.topsis` 仍为 `null`。
-      数字校验以工具结果与规则出处为依据，详见 [SSE 协议](sse-events.md)。
-- [x] **`severity=error` 的不通过项默认剔除**：T4 `/rank` 已落实，
-      在 `excluded` 列出原因；可用 `include_noncompliant=true` 覆盖。
-      见 [T4 PR 描述](../.github/PR_T4_mcdm.md)。
-
-- [ ] **T10 条文结构化与检索**：当前 `search_clause` 返回空列表，需提供真实条文后接入。
-- [ ] **真实模型与容器运行验收**：本次使用 FakeLLM 与本地服务；未配置真实模型 Key，
-      集成环境未安装 Docker。已修正规则目录与卷路径，仍需在对应环境验证。
-- [x] **`rules/weights.yaml` 占位模板已建立**：T4 提供四个一致性合格矩阵，
-      `check_rules` 专门校验矩阵与 CR；专业核定仍待完成，见 1.10。
-      见 [T4 PR 描述](../.github/PR_T4_mcdm.md)。
-
-### 2.4 设计取舍：缺数据判定是保守的
-
-**现在的语义**：按"表达式**引用**到的字段有没有值"判定，不看 Python 的短路求值。
-所以 `floors > 10 and elevators_per_unit >= 2` 在 `floors == 5` 时，
-虽然按短路语义根本不需要电梯数，仍然会判成 `insufficient_data`。
-
-**为什么这么选**：结果可解释，且与求值顺序无关。对规则作者来说
-"你没填 elevators_per_unit，所以这条判不了"比"这条有时判得了有时判不了"容易接受得多。
-
-**代价**：偶尔会把本可判定的规则记成数据不足，合规清单上会多几条"数据不足"。
-
-**如果实际用起来嫌吵**，可以改成"先试着求值，抛 `TypeError` 才算数据不足"。
-改动集中在 [rules.py](../backend/app/engine/rules.py) 的 `Namespace.missing_for` 调用处，
-测试里已有对应用例可以直接改断言。**先攒够抱怨再改，不要预先优化。**
-
-- [ ] （可选）等实际使用反馈
-
----
-
-## 附：这份清单的来源
-
-建立于 T3（规则引擎与规则校验），详见 [PR_T3_rules_engine.md](../.github/PR_T3_rules_engine.md)。
-后续任务发现的未决事项请直接往上面对应小节追加，不要新建文档。
+当前数据库路径、scripts lint 范围、rules/scripts 占位文件与固定字符串字典键取值问题已处理，
+不再作为活跃待办。缺数据仍按表达式引用到的全部字段与字典键判定，短路分支也不例外；
+字典本身未填报字段名，缺键报形如 `window_wall_ratio['南']` 的路径。写法见 [规则指南](rules-guide.md)。

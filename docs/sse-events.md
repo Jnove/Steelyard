@@ -60,17 +60,21 @@ done 的 traces 含每个节点的 `node, elapsed_ms, tool_calls`；具体调用
 
 缓存命中仅发送一次 `token(replace=true)` 和 `done(cached=true)`，无需构造模型客户端或联网；traces 是缓存报告生成时的历史耗时。标准报告生成期间数据变更会返回 error，避免将旧报告标记为当前结果。未命中过缓存的 openai 请求失败会返回 error；不会切换 FakeLLM。REST `/evaluate` 与 `/rank` 也同步最近一次结果，重新评估会清空旧排名。
 
+删除项目会在同一事务中删除其全部报告缓存、智能体工具结果、评估、正式方案与 What-if 副本。
+其他项目的结果与缓存保留。
+
 ## 联调
 
 在仓库根目录统一数据库路径，避免 seed 与后端 CWD 不同而连接不同数据库：
 
 ```powershell
 $env:LLM_PROVIDER='fake'
-$env:DATABASE_URL='sqlite:///D:/大学/海之子/.worktrees/agents/backend/data/t8-demo.db'
-uv sync --project backend --all-extras
+# 只对本次联调的新建数据库运行；seed 会清空该数据库
+$sseDemoDb = Join-Path (Get-Location) 'backend/data/sse-demo.db'
+$env:DATABASE_URL='sqlite:///' + $sseDemoDb.Replace('\', '/')
+uv sync --project backend --all-extras --frozen
 uv run --project backend python scripts/seed_mock.py
-Set-Location backend
-uv run uvicorn app.main:app --host 127.0.0.1 --port 8008
+uv run --project backend uvicorn app.main:app --app-dir backend --host 127.0.0.1 --port 8008
 ```
 
 另开终端；id 以 seed 输出为准：

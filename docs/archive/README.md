@@ -1,0 +1,10 @@
+# 历史归档
+
+这些记录对应 2026-10-05 的分支与验收环境；当前入口为 [docs/README.md](../README.md)。
+
+- [T1–T9 集成记录](integration-t1-t9.md)：合并关系、接口修复、验收与复跑方法。
+- [T7 前端验收](frontend-t7-acceptance.md)：当时的测试结果、截图、录屏与报告。
+- [T8 PR 描述](pr-t8.md)：当时的实现范围、报告流、工具与引用校验说明。
+
+日志、事件样本与图片继续位于 [evidence/](../evidence/) 和 [screenshots/t7/](../screenshots/t7/)，
+保留测试与既有引用路径。新结果应明确记录日期和环境，不以旧记录替代当前验收。
