@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import argparse
 import json
-import re
 import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from dataclasses import dataclass
+from html.parser import HTMLParser
 from pathlib import Path
 
 
@@ -27,22 +28,91 @@ def read_json(url: str, method: str = "GET", body: dict | None = None):
         return json.load(response)
 
 
-def check_site(url: str, sha: str) -> None:
-    with request(url) as response:
-        assert response.url == f"{url}/", "App base redirect changed origin or lost prefix"
-    with request(f"{url}/") as response:
-        html = response.read().decode()
-        assert "text/html" in response.headers.get("Content-Type", ""), "SPA MIME type"
-    with request(f"{url}/projects/999999/schemes") as response:
-        assert response.read().decode() == html, "SPA deep link does not return index.html"
-    assets = re.findall(r'(?:src|href)="([^\"]+/assets/[^\"]+)"', html)
-    assert assets, "No prefixed Vite assets in index.html"
+@dataclass(frozen=True)
+class SPAShell:
+    title: str
+    scripts: tuple[str, ...]
+    stylesheets: tuple[str, ...]
+
+
+class SPAShellParser(HTMLParser):
+    """只取应用入口；CDN 的动态 script type、注入脚本与统计标记不参与比较。"""
+
+    def __init__(self) -> None:
+        super().__init__()
+        self.title_parts: list[str] = []
+        self.in_title = False
+        self.root_count = 0
+        self.scripts: list[str] = []
+        self.stylesheets: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        values = dict(attrs)
+        if tag == "title":
+            self.in_title = True
+        if tag == "div" and values.get("id") == "root":
+            self.root_count += 1
+        if tag == "script":
+            source = values.get("src")
+            if source and "/assets/" in urllib.parse.urlsplit(source).path:
+                self.scripts.append(source)
+        if tag == "link" and "stylesheet" in (values.get("rel") or "").lower().split():
+            source = values.get("href")
+            if source and "/assets/" in urllib.parse.urlsplit(source).path:
+                self.stylesheets.append(source)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag == "title":
+            self.in_title = False
+
+    def handle_data(self, data: str) -> None:
+        if self.in_title:
+            self.title_parts.append(data)
+
+
+def parse_spa_shell(html: str, prefix: str) -> SPAShell:
+    parser = SPAShellParser()
+    parser.feed(html)
+    parser.close()
+    title = "".join(parser.title_parts).strip()
+    assert title, "SPA title is missing"
+    assert parser.root_count == 1, "SPA root mount is missing or duplicated"
+    assert parser.scripts, "No Vite entry scripts in index.html"
+    assert parser.stylesheets, "No Vite entry stylesheets in index.html"
+    for asset in (*parser.scripts, *parser.stylesheets):
+        assert asset.startswith(prefix), f"Asset escaped app base: {asset}"
+    return SPAShell(title, tuple(parser.scripts), tuple(parser.stylesheets))
+
+
+def check_site(url: str, sha: str, *, strict_html: bool = False) -> None:
     origin = urllib.parse.urlsplit(url)
     prefix = origin.path.rstrip("/") + "/assets/"
-    for asset in assets:
-        assert asset.startswith(prefix), f"Asset escaped app base: {asset}"
-        with request(f"{origin.scheme}://{origin.netloc}{asset}") as response:
+    index_url = f"{url}/"
+    deep_url = f"{url}/projects/999999/schemes"
+    with request(url) as response:
+        assert response.url == index_url, "App base redirect changed origin or lost prefix"
+    with request(index_url) as response:
+        assert response.url == index_url, "SPA index redirected away from its canonical URL"
+        html = response.read().decode()
+        assert response.headers.get("Content-Type", "").split(";")[0] == "text/html", "SPA MIME type"
+    with request(deep_url) as response:
+        assert response.url == deep_url, "SPA deep link redirected away from its requested route"
+        deep_html = response.read().decode()
+        assert response.headers.get("Content-Type", "").split(";")[0] == "text/html", "SPA deep link MIME type"
+    shell = parse_spa_shell(html, prefix)
+    assert parse_spa_shell(deep_html, prefix) == shell, "SPA deep link returned a different app shell"
+    if strict_html:
+        assert deep_html == html, "SPA deep link does not return identical origin index.html"
+    for asset in (*shell.scripts, *shell.stylesheets):
+        asset_url = f"{origin.scheme}://{origin.netloc}{asset}"
+        with request(asset_url) as response:
             assert response.status == 200, f"Missing asset: {asset}"
+            assert response.url == asset_url, f"Asset redirected away from its real URL: {asset}"
+            media_type = response.headers.get("Content-Type", "").split(";")[0]
+            expected_types = ("text/css",) if asset in shell.stylesheets else (
+                "text/javascript", "application/javascript", "application/x-javascript"
+            )
+            assert media_type in expected_types, f"Wrong asset MIME type: {asset}: {media_type}"
     try:
         with request(f"{url}/assets/__missing_deployment_probe__.js"):
             raise AssertionError("Missing script returned success instead of 404")
@@ -116,9 +186,10 @@ def main() -> None:
     parser.add_argument("--url", required=True)
     parser.add_argument("--sha", required=True)
     parser.add_argument("--skip-sse", action="store_true")
+    parser.add_argument("--strict-html", action="store_true", help="Require identical origin HTML; omit behind a CDN")
     args = parser.parse_args()
     url = args.url.rstrip("/")
-    check_site(url, args.sha)
+    check_site(url, args.sha, strict_html=args.strict_html)
     if not args.skip_sse:
         check_sse(url, args.sha)
     print(f"Verified {args.sha}: SPA/assets/API" + ("/POST SSE done" if not args.skip_sse else ""))
