@@ -115,17 +115,28 @@ jobs:
           export STEELYARD_RELEASE="$RELEASE_SHA"
           mkdir -p "$STEELYARD_ROOT/shared/data"
           printf 'LLM_PROVIDER=fake\n' > "$STEELYARD_ROOT/shared/runtime.env"
-          printf 'STEELYARD_PROXY_NETWORK=steelyard-ci-proxy\nSTEELYARD_HTTP_PORT=18081\n' \
+          printf 'STEELYARD_PROXY_NETWORK=steelyard-ci-proxy\nSTEELYARD_HTTP_PORT=18081\nSTEELYARD_UID=%s\nSTEELYARD_GID=%s\n' "$(id -u)" "$(id -g)" \
             > "$STEELYARD_ROOT/shared/deploy.env"
           docker network create steelyard-ci-proxy
           compose=(docker compose --project-name steelyard-ci \
             --env-file "$STEELYARD_ROOT/shared/deploy.env" -f docker-compose.production.yml)
           cleanup() {
-            "${compose[@]}" down
-            docker network rm steelyard-ci-proxy
+            status=$?
+            if [[ "$status" != 0 ]]; then
+              "${compose[@]}" ps --all || true
+              "${compose[@]}" logs --no-color --tail 100 || true
+            fi
+            "${compose[@]}" down || true
+            docker network rm steelyard-ci-proxy || true
+            return "$status"
           }
           trap cleanup EXIT
+          # 以生产用户验证镜像依赖可读、只读规则可加载、数据卷可写。
+          "${compose[@]}" run --rm --no-deps backend python -c 'import app.main; from pathlib import Path; from app.engine.rules import get_ruleset; assert get_ruleset().rules; target=Path("/app/data/.permission-check"); target.write_text("ok"); target.unlink(); print("Backend runtime files and data permissions passed")'
           "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 180
+          frontend_id=$("${compose[@]}" ps -q steelyard-frontend)
+          docker inspect --format '{{json .NetworkSettings.Networks}}' "$frontend_id" \
+            | python3 -c 'import json,sys; aliases=json.load(sys.stdin)["steelyard-ci-proxy"]["Aliases"]; assert "steelyard-frontend" in aliases and "frontend" not in aliases, aliases; print("Proxy DNS alias check passed")'
           python3 scripts/deploy_smoke.py --url http://127.0.0.1:18081/steelyard --sha "$RELEASE_SHA"
 
       - name: 归档镜像、源码与校验和

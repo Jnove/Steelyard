@@ -42,7 +42,7 @@ rollback() {
   if [[ "$armed" == true ]]; then
     if [[ -n "$previous" ]]; then
       echo "Deployment failed; restoring containers for $previous." >&2
-      if compose_for "$previous" up -d --force-recreate --no-build --pull never --wait --wait-timeout 180; then
+      if compose_for "$previous" up -d --remove-orphans --force-recreate --no-build --pull never --wait --wait-timeout 180; then
         if ! python3 "$root/releases/$previous/scripts/deploy_smoke.py" \
           --url "$public_url" --sha "$previous" --skip-sse; then
           echo "Previous containers restarted, but public rollback verification failed." >&2
@@ -83,8 +83,8 @@ PY
 fi
 
 armed=true
-compose_for "$sha" up -d --force-recreate --no-build --pull never --wait --wait-timeout 180
-port=$(compose_for "$sha" port frontend 8080)
+compose_for "$sha" up -d --remove-orphans --force-recreate --no-build --pull never --wait --wait-timeout 180
+port=$(compose_for "$sha" port steelyard-frontend 8080)
 python3 "$release/scripts/deploy_smoke.py" --url "http://$port/steelyard" --sha "$sha" --skip-sse
 python3 "$release/scripts/deploy_smoke.py" --url "$public_url" --sha "$sha"
 
