@@ -13,6 +13,6 @@ installTheme()
 const client = new QueryClient({ defaultOptions: { queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false } } })
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode><ConfigProvider theme={theme} locale={zhCN}><AntApp>
-    <QueryClientProvider client={client}><BrowserRouter><App /></BrowserRouter></QueryClientProvider>
+    <QueryClientProvider client={client}><BrowserRouter basename={import.meta.env.BASE_URL}><App /></BrowserRouter></QueryClientProvider>
   </AntApp></ConfigProvider></React.StrictMode>,
 )

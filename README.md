@@ -2,7 +2,7 @@
 
 > 面向“好房子”建设的建筑方案智能比选智能体：大模型负责理解需求、规划任务和解释结果；数值由确定性工具计算，合规由规则引擎判定。
 
-详细技术方案见 [Agent.md](./Agent.md)。
+详细技术方案见 [Agent.md](./Agent.md)，使用、协议、规则与运维文档见 [文档入口](./docs/README.md)。
 
 ---
 
@@ -36,7 +36,7 @@ npm --prefix frontend run dev
 
 `npm --prefix frontend run dev:mock` 可启动离线演示。真实模式通过后端计算，接口失败会显示错误。FakeLLM 走真实评估、排序与 SSE 链路，文本由确定性桩生成。当前规则、角色权重与方案均含示例或专业待确认项，结果仅用于开发联调，详见 [未决事项](docs/open-items.md)。
 
-### 方式二：Docker Compose（演示或云服务器）
+### 方式二：Docker Compose（本地演示）
 
 需要本机已安装 Docker 与 Docker Compose v2。
 
@@ -45,7 +45,17 @@ docker compose up --build
 # 浏览器打开 http://localhost:8080 ，即可看到 "后端状态：ok"
 ```
 
-容器数据库使用 `/app/data/zhuheng.db`，挂载到宿主机 `./data/`；规则挂载到 `/app/rules`。覆盖 `DATABASE_URL` 时必须使用容器内路径。当前集成环境未安装 Docker，本次只核对了容器目录、规则路径与卷配置，容器运行仍需验收。
+容器数据库使用 `/app/data/zhuheng.db`，挂载到宿主机 `./data/`；规则挂载到 `/app/rules`。覆盖 `DATABASE_URL` 时必须使用容器内路径。
+
+### 云服务器发布
+
+访问地址：[Steelyard · 筑衡](https://project.jnove.dpdns.org/steelyard/)。
+
+`main` 的 push 通过后端与前端检查后，GitHub Actions 构建对应提交的镜像并发布到 jnove.vm。
+生产编排使用 `docker-compose.production.yml`，数据库保存在服务器的 `shared/data/`，发布不执行样例播种。
+服务器配置、SSH Secrets、子路径代理、验收和回滚步骤见 [部署指南](./docs/deployment.md)。
+
+当前部署默认使用 FakeLLM；专业规则、角色权重与 T10 检索仍需完成专业验收。
 
 ---
 
@@ -71,9 +81,10 @@ make down         # docker compose 关闭
 ├── frontend/          Vite + React + TypeScript 前端
 ├── rules/             土木 / 建筑同学维护的 YAML 规则
 ├── data/              Schema、虚构方案、Excel 模板；容器 SQLite 卷
-├── docs/              规则编写指南、字段对照表、未决事项清单
+├── docs/              使用、规则、协议、部署指南与历史归档
 ├── scripts/           工程脚本（check_rules.py 等）
-├── docker-compose.yml 一键启动
+├── docker-compose.yml 本地演示
+├── docker-compose.production.yml 服务器发布编排
 └── Makefile           常用命令
 ```
 
@@ -92,7 +103,7 @@ make down         # docker compose 关闭
 - [x] **T9**：规则编写指南与校验工具
 - [ ] **T10**：规范条文结构化与检索
 
-任务编号按项目任务提示词对齐。T1–T9 的集成经过完整后端、前端与浏览器联调，见 [集成记录](docs/integration-t1-t9.md)。条文搜索当前仍为空结果桩，待 T10 接入。
+任务编号按项目任务提示词对齐。T1–T9 的历史集成与联调见 [集成归档](docs/archive/integration-t1-t9.md)。条文搜索当前仍为空结果桩，待 T10 接入。
 
 **还没定下来的事**都记在 [docs/open-items.md](./docs/open-items.md)：
 专业组待定的规则阈值与权重在第一部分，开发侧待修项在第二部分。

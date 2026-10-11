@@ -97,6 +97,9 @@ ALLOWED_FUNCTIONS: dict[str, Any] = {
     "len": len,
 }
 
+#: 只有这两个明确的字典字段允许用固定字符串键取值；其他对象不开放下标。
+DICTIONARY_FIELDS = frozenset({"window_wall_ratio", "unit_mix"})
+
 #: 四个评估维度，与 ``app/models/eval.py`` 的 ``DimensionKey`` 保持一致。
 DIMENSION_KEYS: tuple[DimensionKey, ...] = ("quality", "structure", "construction", "green")
 
@@ -134,10 +137,7 @@ class _Token:
 
 
 def _tokenize(expr: str) -> list[_Token]:
-    return [
-        _Token(kind=m.lastgroup or "other", text=m.group())
-        for m in _TOKEN_RE.finditer(expr)
-    ]
+    return [_Token(kind=m.lastgroup or "other", text=m.group()) for m in _TOKEN_RE.finditer(expr)]
 
 
 def _operand_bounds(tokens: Sequence[_Token], pivot: int, direction: int) -> tuple[int, int]:
@@ -249,6 +249,7 @@ _ALLOWED_NODES: tuple[type[ast.AST], ...] = (
     ast.Call,
     ast.List,
     ast.Tuple,
+    ast.Subscript,
 )
 
 #: AST 节点 → 中文说明，用于"不允许的写法"报错。
@@ -288,6 +289,7 @@ class AnalyzedExpression:
 
     names: frozenset[str]
     problems: tuple[ExpressionProblem, ...]
+    dictionary_keys: tuple[tuple[str, str], ...] = ()
 
     @property
     def ok(self) -> bool:
@@ -319,6 +321,19 @@ def _suggest(name: str, candidates: Iterable[str]) -> str:
         quoted = "、".join(f"`{m}`" for m in matches)
         return f"是不是想写 {quoted}？完整字段表见 docs/fields.generated.md"
     return "请对照 docs/fields.generated.md 的字段对照表确认字段名"
+
+
+def _dictionary_access(node: ast.AST) -> tuple[str, str] | None:
+    """识别 ``已知字典字段['固定键']``，不接受变量、嵌套或其他对象。"""
+    if (
+        isinstance(node, ast.Subscript)
+        and isinstance(node.value, ast.Name)
+        and node.value.id in DICTIONARY_FIELDS
+        and isinstance(node.slice, ast.Constant)
+        and isinstance(node.slice.value, str)
+    ):
+        return node.value.id, node.slice.value
+    return None
 
 
 def analyze_expression(
@@ -359,6 +374,7 @@ def analyze_expression(
 
     problems: list[ExpressionProblem] = []
     names: set[str] = set()
+    dictionary_keys: set[tuple[str, str]] = set()
     # 被当成函数调用的名字。先收一遍，免得 ``sum(...)`` 既报"函数不允许"
     # 又报"不是已知字段"——同一处失误报两遍只是噪音。
     called: set[str] = {
@@ -384,7 +400,24 @@ def analyze_expression(
             )
             continue
 
-        if isinstance(node, ast.Call):
+        if isinstance(node, ast.Subscript):
+            access = _dictionary_access(node)
+            if access is None:
+                problems.append(
+                    ExpressionProblem(
+                        field=field_name,
+                        expression=expression,
+                        message=f"{field_name} 表达式里用了不允许的下标取值",
+                        fix=(
+                            "只支持 window_wall_ratio['南']、unit_mix['两室'] 这样的"
+                            "已知字典字段与固定字符串键；不能用变量键、数字、切片、"
+                            "嵌套下标、属性或函数返回值取下标"
+                        ),
+                    )
+                )
+            else:
+                dictionary_keys.add(access)
+        elif isinstance(node, ast.Call):
             if not isinstance(node.func, ast.Name):
                 problems.append(
                     ExpressionProblem(
@@ -427,7 +460,11 @@ def analyze_expression(
                     )
                 )
 
-    return AnalyzedExpression(names=frozenset(names), problems=tuple(problems))
+    return AnalyzedExpression(
+        names=frozenset(names),
+        problems=tuple(problems),
+        dictionary_keys=tuple(sorted(dictionary_keys)),
+    )
 
 
 def _make_evaluator(namespace: Mapping[str, Any]) -> SimpleEval:
@@ -436,7 +473,7 @@ def _make_evaluator(namespace: Mapping[str, Any]) -> SimpleEval:
     用 ``simpleeval`` 而不是内置 ``eval``：它只实现了一个受限的表达式子集，
     拿不到 ``__builtins__``，也无法 import 或访问属性。
     """
-    return SimpleEval(functions=dict(ALLOWED_FUNCTIONS), names=dict(namespace))
+    return SimpleEval(functions=dict(ALLOWED_FUNCTIONS), names=dict(namespace), allowed_attrs={})
 
 
 # —— 规则定义 —— #
@@ -521,9 +558,7 @@ class RuleDef(BaseModel):
     dimension: DimensionKey | None = Field(None, description="metric 所属维度")
     value: str | None = Field(None, description="metric 的取值：字段名或表达式")
     scoring: ScoringDef | None = Field(None, description="metric 的评分定义")
-    weight_in_dimension: float = Field(
-        1.0, gt=0, description="同维度内的相对权重，正数，默认 1"
-    )
+    weight_in_dimension: float = Field(1.0, gt=0, description="同维度内的相对权重，正数，默认 1")
 
     @model_validator(mode="after")
     def _check_type_specific_fields(self) -> RuleDef:
@@ -535,9 +570,7 @@ class RuleDef(BaseModel):
                     '例如 check: "floor_height >= 3.0"'
                 )
             wrong = [
-                key
-                for key in ("dimension", "value", "scoring")
-                if getattr(self, key) is not None
+                key for key in ("dimension", "value", "scoring") if getattr(self, key) is not None
             ]
             if wrong:
                 raise ValueError(
@@ -546,9 +579,7 @@ class RuleDef(BaseModel):
                 )
         else:  # metric
             missing = [
-                key
-                for key in ("dimension", "value", "scoring")
-                if getattr(self, key) is None
+                key for key in ("dimension", "value", "scoring") if getattr(self, key) is None
             ]
             if missing:
                 raise ValueError(
@@ -557,7 +588,9 @@ class RuleDef(BaseModel):
                     "value 写字段名或表达式，scoring 写 kind: piecewise 与 points"
                 )
             if not (self.value or "").strip():
-                raise ValueError('metric 规则的 value 不能是空字符串，例如 value: "std_floor_repeat"')
+                raise ValueError(
+                    'metric 规则的 value 不能是空字符串，例如 value: "std_floor_repeat"'
+                )
             if self.check is not None or self.message is not None:
                 raise ValueError(
                     "metric 规则不应该有 check / message 字段（那是 hard 规则的）；"
@@ -701,7 +734,9 @@ def load_rules_from_dir(rules_dir: Path) -> RuleSet:
         for index, item in enumerate(raw, start=1):
             label = f"第 {index} 条"
             if not isinstance(item, dict):
-                problems.append(f"{path.name} {label} 不是一条规则（应当是 `- id: ...` 这样的对象）")
+                problems.append(
+                    f"{path.name} {label} 不是一条规则（应当是 `- id: ...` 这样的对象）"
+                )
                 continue
             rule_id = str(item.get("id", label))
             try:
@@ -720,8 +755,7 @@ def load_rules_from_dir(rules_dir: Path) -> RuleSet:
             for field_name, expression in rule.expressions():
                 analyzed = analyze_expression(expression, field_name, known)
                 problems.extend(
-                    f"{path.name} 规则 {rule.id}：{p.message}（{p.fix}）"
-                    for p in analyzed.problems
+                    f"{path.name} 规则 {rule.id}：{p.message}（{p.fix}）" for p in analyzed.problems
                 )
 
             rules.append(rule)
@@ -789,7 +823,9 @@ class Namespace:
     values: Mapping[str, Any]
     derived: Mapping[str, DerivedValue]
 
-    def missing_for(self, names: Iterable[str]) -> tuple[str, ...]:
+    def missing_for(
+        self, names: Iterable[str], dictionary_keys: Iterable[tuple[str, str]] = ()
+    ) -> tuple[str, ...]:
         """给定表达式引用到的名字，返回"缺哪些原始字段"。
 
         派生量会被展开成它依赖的原始字段——对规则作者来说，"缺 volume"
@@ -804,6 +840,13 @@ class Namespace:
                 continue
             if self.values.get(name) is None and name not in missing:
                 missing.append(name)
+        # 与普通字段一样，检查所有引用的键，即使它位于不会执行的短路分支。
+        for name, key in sorted(dictionary_keys):
+            if name in missing:
+                continue
+            container = self.values.get(name)
+            if not isinstance(container, dict) or container.get(key) is None:
+                missing.append(f"{name}[{key!r}]")
         return tuple(missing)
 
 
@@ -820,6 +863,10 @@ def build_namespace(project: ProjectParams, scheme: SchemeParams) -> Namespace:
 
 def _eval_expression(expression: str, namespace: Namespace) -> Any:
     """求值一个表达式。调用方负责先判缺数据，所以这里不处理 ``None`` 参与运算的情况。"""
+    # 求值入口也检查白名单，防止直接构造 RuleSet 绕过文件加载时的静态检查。
+    analyzed = analyze_expression(expression, "expression")
+    if not analyzed.ok:
+        raise InvalidExpression("；".join(problem.message for problem in analyzed.problems))
     evaluator = _make_evaluator(namespace.values)
     return evaluator.eval(rewrite_contains(expression))
 
@@ -896,7 +943,7 @@ def _applicability(
     if rule.when is None:
         return "yes", ()
     analyzed = analyze_expression(rule.when, "when", known)
-    missing = namespace.missing_for(analyzed.names)
+    missing = namespace.missing_for(analyzed.names, analyzed.dictionary_keys)
     if missing:
         return "unknown", missing
     try:
@@ -906,9 +953,7 @@ def _applicability(
         return "unknown", ()
 
 
-def _evaluate_hard(
-    rule: RuleDef, namespace: Namespace, known: frozenset[str]
-) -> ComplianceItem:
+def _evaluate_hard(rule: RuleDef, namespace: Namespace, known: frozenset[str]) -> ComplianceItem:
     """判定一条硬约束。"""
     limit, value_field = _extract_limit(rule.check or "")
     raw_value = namespace.values.get(value_field) if value_field else None
@@ -944,7 +989,7 @@ def _evaluate_hard(
         )
 
     analyzed = analyze_expression(rule.check or "", "check", known)
-    missing = namespace.missing_for(analyzed.names)
+    missing = namespace.missing_for(analyzed.names, analyzed.dictionary_keys)
     if missing:
         return ComplianceItem(
             **common,
@@ -990,9 +1035,7 @@ def _insufficient_message(missing: Sequence[str], suffix: str = "，无法判定
     return f"缺少字段 {'、'.join(missing)}{suffix}"
 
 
-def _evaluate_metric(
-    rule: RuleDef, namespace: Namespace, known: frozenset[str]
-) -> MetricResult:
+def _evaluate_metric(rule: RuleDef, namespace: Namespace, known: frozenset[str]) -> MetricResult:
     """计算一条评分指标。"""
     assert rule.dimension is not None and rule.scoring is not None and rule.value is not None
 
@@ -1019,7 +1062,7 @@ def _evaluate_metric(
         )
 
     analyzed = analyze_expression(rule.value, "value", known)
-    missing = namespace.missing_for(analyzed.names)
+    missing = namespace.missing_for(analyzed.names, analyzed.dictionary_keys)
     if missing:
         return MetricResult(
             **common,
@@ -1112,12 +1155,8 @@ def evaluate(
     for scheme in schemes:
         namespace = build_namespace(project, scheme.params)
 
-        compliance = [
-            _evaluate_hard(rule, namespace, known) for rule in rules.hard_rules
-        ]
-        metrics = {
-            rule.id: _evaluate_metric(rule, namespace, known) for rule in rules.metric_rules
-        }
+        compliance = [_evaluate_hard(rule, namespace, known) for rule in rules.hard_rules]
+        metrics = {rule.id: _evaluate_metric(rule, namespace, known) for rule in rules.metric_rules}
         dimension_scores, dimension_coverage = _aggregate_dimensions(metrics)
 
         results.append(

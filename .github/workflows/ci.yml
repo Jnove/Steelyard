@@ -1,10 +1,14 @@
-name: CI
+name: CI and Deploy
 
 on:
   push:
     branches: [main, feat/**, codex/**]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   backend:
@@ -76,3 +80,164 @@ jobs:
 
       - name: 构建
         run: npm run build
+
+  package:
+    name: 构建生产镜像与发布包
+    needs: [backend, frontend]
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+
+      - name: 构建精确 SHA 的镜像（VM 不构建）
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          docker build --label "org.opencontainers.image.revision=$RELEASE_SHA" \
+            -t "steelyard-backend:$RELEASE_SHA" backend
+          docker build --label "org.opencontainers.image.revision=$RELEASE_SHA" \
+            --build-arg VITE_BASE_PATH=/steelyard/ --build-arg "RELEASE_SHA=$RELEASE_SHA" \
+            --build-arg BACKEND_HOST=steelyard-backend \
+            -t "steelyard-frontend:$RELEASE_SHA" frontend
+
+      - name: 验收生产容器与子路径（临时数据库）
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          export STEELYARD_ROOT="$RUNNER_TEMP/steelyard"
+          export STEELYARD_RELEASE="$RELEASE_SHA"
+          mkdir -p "$STEELYARD_ROOT/shared/data"
+          printf 'LLM_PROVIDER=fake\n' > "$STEELYARD_ROOT/shared/runtime.env"
+          printf 'STEELYARD_PROXY_NETWORK=steelyard-ci-proxy\nSTEELYARD_HTTP_PORT=18081\n' \
+            > "$STEELYARD_ROOT/shared/deploy.env"
+          docker network create steelyard-ci-proxy
+          compose=(docker compose --project-name steelyard-ci \
+            --env-file "$STEELYARD_ROOT/shared/deploy.env" -f docker-compose.production.yml)
+          cleanup() {
+            "${compose[@]}" down
+            docker network rm steelyard-ci-proxy
+          }
+          trap cleanup EXIT
+          "${compose[@]}" up -d --no-build --pull never --wait --wait-timeout 180
+          python3 scripts/deploy_smoke.py --url http://127.0.0.1:18081/steelyard --sha "$RELEASE_SHA"
+
+      - name: 归档镜像、源码与校验和
+        env:
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          mkdir package
+          git archive --format=tar.gz --output=package/source.tar.gz "$RELEASE_SHA"
+          docker save "steelyard-backend:$RELEASE_SHA" "steelyard-frontend:$RELEASE_SHA" \
+            | gzip -1 > package/images.tar.gz
+          printf '%s\n' "$RELEASE_SHA" > package/commit.txt
+          cd package
+          sha256sum source.tar.gz images.tar.gz commit.txt > SHA256SUMS
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: steelyard-${{ github.sha }}
+          path: package/
+          retention-days: 7
+          compression-level: 0
+          if-no-files-found: error
+
+  deploy:
+    name: 部署 jnove.vm 并验收
+    needs: [package]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production
+      url: https://project.jnove.dpdns.org/steelyard
+    concurrency:
+      group: steelyard-production
+      cancel-in-progress: false
+    steps:
+      # 等待队列不保证顺序；获得部署锁后，过时提交只能跳过。
+      - name: 确认仍是 main 当前提交
+        id: latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          latest=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)
+          if [[ "$latest" == "$RELEASE_SHA" ]]; then
+            echo 'deploy=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'deploy=false' >> "$GITHUB_OUTPUT"
+            echo "Skipped superseded commit $RELEASE_SHA; main is $latest." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - uses: actions/download-artifact@v4
+        if: steps.latest.outputs.deploy == 'true'
+        with:
+          name: steelyard-${{ github.sha }}
+          path: package
+
+      - name: 使用固定 host key 建立 SSH
+        if: steps.latest.outputs.deploy == 'true'
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.STEELYARD_SSH_KEY }}
+          SSH_KNOWN_HOSTS: ${{ secrets.STEELYARD_SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test -n "$SSH_PRIVATE_KEY"
+          test -n "$SSH_KNOWN_HOSTS"
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$SSH_PRIVATE_KEY" > "$HOME/.ssh/steelyard_key"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/steelyard_known_hosts"
+          chmod 600 "$HOME/.ssh/steelyard_key" "$HOME/.ssh/steelyard_known_hosts"
+
+      - name: 上传、加载与部署
+        if: steps.latest.outputs.deploy == 'true'
+        env:
+          SSH_HOST: ${{ vars.STEELYARD_SSH_HOST }}
+          SSH_USER: ${{ vars.STEELYARD_SSH_USER }}
+          DEPLOY_ROOT: ${{ vars.STEELYARD_DEPLOY_ROOT }}
+          PUBLIC_URL: ${{ vars.STEELYARD_PUBLIC_URL }}
+          RELEASE_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          [[ "$SSH_HOST" =~ ^[a-zA-Z0-9.-]+$ ]]
+          [[ "$SSH_USER" =~ ^[a-zA-Z0-9_-]+$ ]]
+          [[ "$DEPLOY_ROOT" =~ ^/[a-zA-Z0-9_./-]+$ && "$DEPLOY_ROOT" != / ]]
+          [[ "$PUBLIC_URL" =~ ^https://[a-zA-Z0-9./:_-]+$ ]]
+          packet="$DEPLOY_ROOT/incoming/$RELEASE_SHA-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          ssh_options=(-i "$HOME/.ssh/steelyard_key" -o IdentitiesOnly=yes -o BatchMode=yes
+            -o StrictHostKeyChecking=yes -o "UserKnownHostsFile=$HOME/.ssh/steelyard_known_hosts"
+            -o ConnectTimeout=15 -o ServerAliveInterval=15 -o ServerAliveCountMax=4)
+          ssh "${ssh_options[@]}" "$SSH_USER@$SSH_HOST" "mkdir -p '$packet'"
+          scp "${ssh_options[@]}" package/* "$SSH_USER@$SSH_HOST:$packet/"
+          ssh "${ssh_options[@]}" "$SSH_USER@$SSH_HOST" \
+            "bash -s -- '$DEPLOY_ROOT' '$RELEASE_SHA' '$PUBLIC_URL' '$packet'" <<'REMOTE'
+          set -euo pipefail
+          root=$1
+          sha=$2
+          public_url=$3
+          packet=$4
+          cd "$packet"
+          sha256sum -c SHA256SUMS
+          test "$(cat commit.txt)" = "$sha"
+          mkdir -p "$root/releases/$sha"
+          tar -xzf source.tar.gz -C "$root/releases/$sha"
+          gzip -dc images.tar.gz | docker load
+          # 释放上传包空间；源码和镜像仍保留用于回滚。
+          rm -f -- source.tar.gz images.tar.gz commit.txt SHA256SUMS
+          cd "$root"
+          rmdir "$packet"
+          bash "$root/releases/$sha/scripts/deploy.sh" "$root" "$sha" "$public_url"
+          REMOTE
+          echo "Verified deployment: $RELEASE_SHA at $PUBLIC_URL" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 清理 runner 上的 SSH 凭据
+        if: always()
+        run: rm -f "$HOME/.ssh/steelyard_key" "$HOME/.ssh/steelyard_known_hosts"

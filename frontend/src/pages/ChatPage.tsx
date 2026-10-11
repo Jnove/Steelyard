@@ -9,6 +9,7 @@ import { rules } from '../api/rules'
 import type { EvalResult } from '../api/types'
 import type { SchemeChange } from '../api/generated/AgentRequest'
 import { mockSSE, postSSE, streamDelay } from '../api/sse'
+import { API_BASE } from '../api/base'
 import { applyAgentEvent, numberSegments, type StreamContent, type ToolCall } from '../api/agent-state'
 import TraceDrawer from '../components/TraceDrawer'
 
@@ -234,7 +235,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
         : previous.map((item) => item.id === messageId ? apply(item) : item))
     }
     try {
-      const base = (import.meta.env.VITE_API_BASE ?? '/api').replace(/\/$/, '')
+      const base = API_BASE
       const events = isMock
         ? mockSSE(mockNarrative(kind, message, results, ranks, rulesQuery.data, schemeId),
           { mock: true, evaluation_count: results.length, ranking: ranks, note: '读取查询结果，未执行新的评估或写入' }, controller.signal)
