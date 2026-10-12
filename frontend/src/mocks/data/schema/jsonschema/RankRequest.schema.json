@@ -12,7 +12,7 @@
         }
       ],
       "default": null,
-      "description": "角色键，先查 rules/weights.yaml（government / developer / contractor / resident），再查运行期自定义的权重模板（可用 custom:<id> 或模板名）",
+      "description": "角色键，查 rules/weights.yaml，如 government / developer / contractor / resident",
       "title": "Role"
     },
     "weights": {

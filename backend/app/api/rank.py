@@ -7,8 +7,8 @@
 前端的权重滑杆会频繁调这条接口，所以整条链路都走 :mod:`app.engine.mcdm` 的批量路径，
 5 个方案时远快于 100 ms 的预算（见 ``tests/test_rank_endpoint.py`` 的计时断言）。
 
-权重三选一：``role``（先查 ``rules/weights.yaml`` 的角色模板，再查运行期自定义的角色模板）、
-``weights``（直接给四个数）、``pairwise_matrix``（现场给一个 4×4 两两比较矩阵，走 AHP 解）。
+权重三选一：``role``（查 ``rules/weights.yaml`` 的角色模板）、``weights``（直接给四个数）、
+``pairwise_matrix``（现场给一个 4×4 两两比较矩阵，走 AHP 解）。
 """
 
 from __future__ import annotations
@@ -20,8 +20,6 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlmodel import Session, select
 
-from app.custom.errors import CustomAddError
-from app.custom.templates import list_templates, resolve_template, to_engine_template
 from app.db import get_session
 from app.engine.mcdm import (
     CRITERION_ORDER,
@@ -70,10 +68,7 @@ class RankRequest(BaseModel):
 
     role: str | None = Field(
         None,
-        description=(
-            "角色键，先查 rules/weights.yaml（government / developer / contractor / resident），"
-            "再查运行期自定义的权重模板（可用 custom:<id> 或模板名）"
-        ),
+        description="角色键，查 rules/weights.yaml，如 government / developer / contractor / resident",
     )
     weights: list[float] | None = Field(
         None,
@@ -128,13 +123,6 @@ class WeightsUsed(BaseModel):
     weights: list[float] = Field(description="归一化后的权重，和为 1")
     role: str | None = Field(None, description="来源是 role 时的角色键")
     role_name: str | None = Field(None, description="来源是 role 时的角色中文名")
-    is_custom: bool = Field(
-        False,
-        description=(
-            "该角色模板是否来自运行期自定义（未进入 git、不参与 CI 校验）；"
-            "报告里应据此提示读者"
-        ),
-    )
     note: str = Field("", description="角色模板的说明；自定义权重时为空")
     ahp: AhpResult | None = Field(
         None, description="有两两比较矩阵时的一致性检验结果；直接给权重时为 null"
@@ -245,11 +233,10 @@ def _load_latest_results(
     return out
 
 
-def _resolve_weights(payload: RankRequest, session: Session) -> WeightsUsed:
+def _resolve_weights(payload: RankRequest) -> WeightsUsed:
     """把三种入参解析成一份归一化权重。
 
     调用方必须明确提供一种来源，避免无意采用某个角色的立场。
-    ``role`` 的解析顺序：先内建（``rules/weights.yaml``），再运行期自定义模板（覆盖层）。
     """
     n = len(CRITERION_ORDER)
 
@@ -288,10 +275,6 @@ def _resolve_weights(payload: RankRequest, session: Session) -> WeightsUsed:
         )
 
     role_key = payload.role
-    if role_key is None:  # 到不了这里：RankRequest 已保证三选一
-        raise HTTPException(
-            status.HTTP_400_BAD_REQUEST, detail="请提供 role / weights / pairwise_matrix 之一"
-        )
     try:
         templates = get_role_templates()
     except WeightsLoadError as exc:
@@ -303,47 +286,22 @@ def _resolve_weights(payload: RankRequest, session: Session) -> WeightsUsed:
             },
         ) from exc
     template = templates.get(role_key)
-    if template is not None:
-        return _weights_from_template(template)
-
-    # 内建里没有，再看运行期添加的自定义模板（覆盖层）。
-    try:
-        custom = resolve_template(session, role_key)
-    except CustomAddError as exc:
+    if template is None:
         raise HTTPException(
-            status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail={
-                "message": f"自定义权重模板「{role_key}」校验失败",
-                "problems": [
-                    {"code": p.code, "message": p.message, "fix": p.fix} for p in exc.problems
-                ],
-            },
-        ) from exc
-    if custom is not None:
-        return _weights_from_template(custom, is_custom=True)
-
-    known = sorted(templates) + [f"{row.name}（自定义）" for row in list_templates(session)]
-    raise HTTPException(
-        status.HTTP_400_BAD_REQUEST,
-        detail=f"没有角色 {role_key!r}，可选：{'、'.join(known)}",
-    )
+            status.HTTP_400_BAD_REQUEST,
+            detail=f"没有角色 {role_key!r}，可选：{'、'.join(sorted(templates))}",
+        )
+    return _weights_from_template(template)
 
 
-def _weights_from_template(
-    template: RoleWeightTemplate, *, is_custom: bool = False
-) -> WeightsUsed:
-    note = template.note
-    if is_custom:
-        marker = "自定义权重模板（运行期添加，未进入 git、不参与 CI 校验）"
-        note = f"{marker}：{note}" if note else marker
+def _weights_from_template(template: RoleWeightTemplate) -> WeightsUsed:
     return WeightsUsed(
         source="role",
         criteria=list(CRITERION_ORDER),
         weights=template.weights,
         role=template.key,
         role_name=template.name,
-        is_custom=is_custom,
-        note=note,
+        note=template.note,
         ahp=template.ahp,
         consistency_warning=_consistency_warning(template.ahp),
     )
@@ -392,7 +350,7 @@ def rank_project(
 
     _require_project(session, project_id)
     pairs = _load_latest_results(session, project_id, payload.include_whatif)
-    weights_used = _resolve_weights(payload, session)
+    weights_used = _resolve_weights(payload)
 
     participants: list[tuple[Scheme, EvalResult]] = []
     excluded: list[ExcludedScheme] = []
@@ -496,11 +454,9 @@ def _build_ranking(
     summary="可用的角色权重模板",
 )
 def list_roles(project_id: int, session: SessionDep) -> dict[str, Any]:
-    """列出可用的角色权重模板，供前端下拉框展示。
+    """列出 ``rules/weights.yaml`` 里的角色模板，供前端下拉框展示。
 
-    ``roles`` 是 ``rules/weights.yaml`` 的内建四个角色；``custom_roles`` 是运行期
-    添加的自定义模板（见 ``app/custom/``），两者并列可选。``project_id`` 只用于
-    校验项目存在，模板本身是全局的。
+    ``project_id`` 只用于校验项目存在，模板本身是全局的。
     """
     _require_project(session, project_id)
     try:
@@ -513,28 +469,8 @@ def list_roles(project_id: int, session: SessionDep) -> dict[str, Any]:
                 "problems": [p.message for p in exc.problems],
             },
         ) from exc
-    custom_roles: list[dict[str, Any]] = []
-    for row in list_templates(session):
-        try:
-            custom_roles.append(
-                _weights_from_template(to_engine_template(row), is_custom=True).model_dump()
-            )
-        except CustomAddError:
-            # 存量模板校验不过：不静默丢弃，标出来让使用者去删。
-            custom_roles.append(
-                {
-                    "source": "role",
-                    "criteria": list(CRITERION_ORDER),
-                    "weights": [],
-                    "role": f"custom:{row.id}",
-                    "role_name": row.name,
-                    "is_custom": True,
-                    "note": "该自定义模板未通过引擎校验，请删除后重建",
-                }
-            )
     return {
         "criteria": list(CRITERION_ORDER),
         "roles": [_weights_from_template(t).model_dump() for t in templates.values()],
-        "custom_roles": custom_roles,
         "needs_review": [key for key, t in templates.items() if t.needs_review],
     }

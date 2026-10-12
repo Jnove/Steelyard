@@ -545,12 +545,6 @@
           "description": "来源是 role 时的角色中文名",
           "title": "Role Name"
         },
-        "is_custom": {
-          "default": false,
-          "description": "该角色模板是否来自运行期自定义（未进入 git、不参与 CI 校验）；报告里应据此提示读者",
-          "title": "Is Custom",
-          "type": "boolean"
-        },
         "note": {
           "default": "",
           "description": "角色模板的说明；自定义权重时为空",
@@ -589,7 +583,6 @@
         "weights",
         "role",
         "role_name",
-        "is_custom",
         "note",
         "ahp",
         "consistency_warning"
