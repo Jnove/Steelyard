@@ -109,6 +109,26 @@
       "constraints": {}
     },
     {
+      "name": "daylight_factor",
+      "label": "采光系数",
+      "description": "卧室、起居室的采光系数（小数，0.022 即 2.2%）",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "sunlight_hours",
+      "label": "日照时数",
+      "description": "日照标准日的日照时数（杭州为大寒日）",
+      "unit": "h",
+      "group": "居住品质",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "gfa",
       "label": "总建筑面积",
       "description": "总建筑面积",
@@ -171,6 +191,26 @@
       "constraints": {}
     },
     {
+      "name": "slab_thickness",
+      "label": "楼板厚度",
+      "description": "钢筋混凝土结构实心楼板厚度",
+      "unit": "mm",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "design_working_life",
+      "label": "结构设计工作年限",
+      "description": "结构设计工作年限",
+      "unit": "年",
+      "group": "结构与造价",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "std_floor_repeat",
       "label": "标准层重复率",
       "description": "标准层重复率",
@@ -214,6 +254,16 @@
       "name": "prefab_ratio_est",
       "label": "预估装配率",
       "description": "预估装配率",
+      "unit": "—",
+      "group": "绿色低碳",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "green_ratio",
+      "label": "绿地率",
+      "description": "绿地率（绿地面积 / 用地面积）",
       "unit": "—",
       "group": "绿色低碳",
       "type": "number",

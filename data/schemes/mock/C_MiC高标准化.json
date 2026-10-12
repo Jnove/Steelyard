@@ -20,13 +20,18 @@
     "std_floor_repeat": 0.95,
     "component_types": 8,
     "risk_features": [],
-    "prefab_ratio_est": 0.75
+    "prefab_ratio_est": 0.75,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "daylight_factor": 0.024,
+    "sunlight_hours": 2.2,
+    "green_ratio": 0.36
   },
   "_design_notes": {
     "intent": "演示 MiC 高标准化路线：标准层重复率 0.95、构件种类仅 8 种、装配率 0.75，几乎没有风险特征。",
     "tradeoff": "高标准化换来得房率与南向比例中等（牺牲定制化），换来施工友好与绿色低碳两个维度的明显优势。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 18 = 43,200 m²，与 gfa 一致；总高 18 × 3.0 = 54.0 m ≤ 54 m。",
-    "far_check": "gfa / site_area = 43,200 / 18,000 = 2.40 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。",
+    "far_check": "gfa / site_area = 43,200 / 18,000 = 2.40 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。",
     "what_if": "对应的现浇对照方案见 C_现浇.json，通过 what-if 字段演示'改用现浇会怎样'。"
   }
 }

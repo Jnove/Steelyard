@@ -20,13 +20,18 @@
     "std_floor_repeat": 0.80,
     "component_types": 18,
     "risk_features": ["大悬挑"],
-    "prefab_ratio_est": 0.30
+    "prefab_ratio_est": 0.30,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "daylight_factor": 0.025,
+    "sunlight_hours": 2.2,
+    "green_ratio": 0.37
   },
   "_design_notes": {
     "intent": "C 方案改为现浇剪力墙后的对照版，用于演示'改用 MiC 会怎样'。",
     "tradeoff": "保留 C 的体量与户数，但结构改回现浇剪力墙：标准层重复率从 0.95 降到 0.80，构件种类从 8 升到 18，装配率从 0.75 降到 0.30，并加入'大悬挑'风险特征。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 18 = 43,200 m²，与 gfa 一致；总高 18 × 3.0 = 54.0 m ≤ 54 m。",
-    "far_check": "gfa / site_area = 43,200 / 18,000 = 2.40 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。",
+    "far_check": "gfa / site_area = 43,200 / 18,000 = 2.40 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。",
     "what_if_link": "本方案在 seed_mock.py 中以 is_whatif=True、parent_id=<C MiC 高标准化方案 id> 写入，用于 T8 假设推演。"
   }
 }

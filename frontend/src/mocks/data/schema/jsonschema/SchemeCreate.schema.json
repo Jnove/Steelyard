@@ -185,6 +185,41 @@
           "title": "Elevators Per Unit",
           "unit": "台"
         },
+        "daylight_factor": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "卧室、起居室的采光系数（小数，0.022 即 2.2%）",
+          "group": "居住品质",
+          "label": "采光系数",
+          "title": "Daylight Factor",
+          "unit": "—"
+        },
+        "sunlight_hours": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "日照标准日的日照时数（杭州为大寒日）",
+          "group": "居住品质",
+          "label": "日照时数",
+          "title": "Sunlight Hours",
+          "unit": "h"
+        },
         "gfa": {
           "anyOf": [
             {
@@ -289,6 +324,40 @@
           "title": "Volume",
           "unit": "m³"
         },
+        "slab_thickness": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "钢筋混凝土结构实心楼板厚度",
+          "group": "结构与造价",
+          "label": "楼板厚度",
+          "title": "Slab Thickness",
+          "unit": "mm"
+        },
+        "design_working_life": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "结构设计工作年限",
+          "group": "结构与造价",
+          "label": "结构设计工作年限",
+          "title": "Design Working Life",
+          "unit": "年"
+        },
         "std_floor_repeat": {
           "anyOf": [
             {
@@ -361,6 +430,24 @@
           "group": "绿色低碳",
           "label": "预估装配率",
           "title": "Prefab Ratio Est",
+          "unit": "—"
+        },
+        "green_ratio": {
+          "anyOf": [
+            {
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "绿地率（绿地面积 / 用地面积）",
+          "group": "绿色低碳",
+          "label": "绿地率",
+          "title": "Green Ratio",
           "unit": "—"
         }
       },

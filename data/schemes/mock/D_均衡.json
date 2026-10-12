@@ -20,13 +20,18 @@
     "std_floor_repeat": 0.85,
     "component_types": 12,
     "risk_features": [],
-    "prefab_ratio_est": 0.50
+    "prefab_ratio_est": 0.50,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "daylight_factor": 0.028,
+    "sunlight_hours": 2.8,
+    "green_ratio": 0.40
   },
   "_design_notes": {
     "intent": "中庸偏上：四个维度均衡得分，作为比选的对照基准。",
     "tradeoff": "各方面都到中上水平，没有极端取舍；和 E 方案配对可以演示帕累托筛选。",
     "code_check": "东西向窗墙比 0.25 压在 DB33/1015—2021 第4.2.1条的限值上（≤0.25）；层高 3.0 m 满足 GB 55038—2025 第4.1.2条；17 层每单元 2 台电梯满足第4.2.4条（12 层及以上不少于 2 台）。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 17 = 40,800 m²，与 gfa 一致；总高 17 × 3.0 = 51.0 m < 54 m。",
-    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。"
+    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。"
   }
 }

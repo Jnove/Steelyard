@@ -46,6 +46,14 @@ export type WindowWallRatio = {
  */
 export type ElevatorsPerUnit = number | null;
 /**
+ * 卧室、起居室的采光系数（小数，0.022 即 2.2%）
+ */
+export type DaylightFactor = number | null;
+/**
+ * 日照标准日的日照时数（杭州为大寒日）
+ */
+export type SunlightHours = number | null;
+/**
  * 总建筑面积
  */
 export type Gfa = number | null;
@@ -70,6 +78,14 @@ export type EnvelopeArea = number | null;
  */
 export type Volume = number | null;
 /**
+ * 钢筋混凝土结构实心楼板厚度
+ */
+export type SlabThickness = number | null;
+/**
+ * 结构设计工作年限
+ */
+export type DesignWorkingLife = number | null;
+/**
  * 标准层重复率
  */
 export type StdFloorRepeat = number | null;
@@ -85,6 +101,10 @@ export type RiskFeatures = string[];
  * 预估装配率
  */
 export type PrefabRatioEst = number | null;
+/**
+ * 绿地率（绿地面积 / 用地面积）
+ */
+export type GreenRatio = number | null;
 /**
  * 是否为假设推演副本（T8 用）
  */
@@ -116,14 +136,19 @@ export interface SchemeParams {
   window_floor_ratio?: WindowFloorRatio;
   window_wall_ratio?: WindowWallRatio;
   elevators_per_unit?: ElevatorsPerUnit;
+  daylight_factor?: DaylightFactor;
+  sunlight_hours?: SunlightHours;
   gfa?: Gfa;
   footprint?: Footprint;
   buildings?: Buildings;
   floors?: Floors;
   envelope_area?: EnvelopeArea;
   volume?: Volume;
+  slab_thickness?: SlabThickness;
+  design_working_life?: DesignWorkingLife;
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;
   risk_features?: RiskFeatures;
   prefab_ratio_est?: PrefabRatioEst;
+  green_ratio?: GreenRatio;
 }

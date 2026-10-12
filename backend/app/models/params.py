@@ -25,6 +25,15 @@ STRUCTURE_TYPES: tuple[str, ...] = ("剪力墙", "框架-剪力墙", "框架", "
 ClimateZone = Literal["严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和"]
 CLIMATE_ZONES: tuple[str, ...] = ("严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和")
 
+SeismicIntensity = Literal["6度(0.05g)", "7度(0.10g)"]
+"""抗震设防烈度。
+
+只保留这两档，是为了**保证每个取值都有对应的规则**：浙江全省最高设防烈度为
+7 度（0.10g）（浙江省《超限高层建筑工程抗震设计导则》条文说明），
+所以这两档已覆盖浙江全部地块。将来若服务省外项目，再一起补规则。
+"""
+SEISMIC_INTENSITIES: tuple[str, ...] = ("6度(0.05g)", "7度(0.10g)")
+
 # 风险特征预设选项（用户可自由补充自定义项）
 RISK_FEATURE_OPTIONS: list[str] = [
     "大悬挑",
@@ -104,6 +113,13 @@ class ProjectParams(BaseModel):
         None,
         description="建筑气候分区",
         json_schema_extra=_meta("—", "基本信息", "气候分区", enum=list(CLIMATE_ZONES)),
+    )
+    seismic_intensity: SeismicIntensity | None = Field(
+        None,
+        description="抗震设防烈度（浙江全省最高为 7 度 0.10g）",
+        json_schema_extra=_meta(
+            "—", "基本信息", "抗震设防烈度", enum=list(SEISMIC_INTENSITIES)
+        ),
     )
 
     @field_validator("density_max", mode="before")
@@ -186,6 +202,19 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("台", "居住品质", "电梯数/单元"),
     )
+    daylight_factor: float | None = Field(
+        None,
+        description="卧室、起居室的采光系数（小数，0.022 即 2.2%）",
+        ge=0,
+        le=1,
+        json_schema_extra=_meta("—", "居住品质", "采光系数"),
+    )
+    sunlight_hours: float | None = Field(
+        None,
+        description="日照标准日的日照时数（杭州为大寒日）",
+        gt=0,
+        json_schema_extra=_meta("h", "居住品质", "日照时数"),
+    )
 
     # —— 结构与造价 —— #
     gfa: float | None = Field(
@@ -224,6 +253,18 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("m³", "结构与造价", "建筑体积"),
     )
+    slab_thickness: float | None = Field(
+        None,
+        description="钢筋混凝土结构实心楼板厚度",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "楼板厚度"),
+    )
+    design_working_life: int | None = Field(
+        None,
+        description="结构设计工作年限",
+        gt=0,
+        json_schema_extra=_meta("年", "结构与造价", "结构设计工作年限"),
+    )
 
     # —— 施工与安全 —— #
     std_floor_repeat: float | None = Field(
@@ -258,6 +299,13 @@ class SchemeParams(BaseModel):
         le=1,
         json_schema_extra=_meta("—", "绿色低碳", "预估装配率"),
     )
+    green_ratio: float | None = Field(
+        None,
+        description="绿地率（绿地面积 / 用地面积）",
+        ge=0,
+        le=1,
+        json_schema_extra=_meta("—", "绿色低碳", "绿地率"),
+    )
 
     @field_validator(
         "inner_area_ratio",
@@ -265,6 +313,8 @@ class SchemeParams(BaseModel):
         "window_floor_ratio",
         "std_floor_repeat",
         "prefab_ratio_est",
+        "daylight_factor",
+        "green_ratio",
         mode="before",
     )
     @classmethod

@@ -20,13 +20,18 @@
     "std_floor_repeat": 0.75,
     "component_types": 15,
     "risk_features": ["大悬挑", "复杂地质"],
-    "prefab_ratio_est": 0.30
+    "prefab_ratio_est": 0.30,
+    "slab_thickness": 110,
+    "design_working_life": 50,
+    "daylight_factor": 0.023,
+    "sunlight_hours": 2.1,
+    "green_ratio": 0.35
   },
   "_design_notes": {
     "intent": "演示帕累托支配：构造每个数值字段都朝'更差'的方向偏离 D，使 E 在所有维度都不如 D。",
     "tradeoff": "比 D 选更弱的结构（框架 < 框架-剪力墙）、更低的得房率与南向比例、更低的标准层重复率与装配率，同时塞入风险特征。电梯数按 GB 55038—2025 第4.2.4条补到 2 台：17 层只配 1 台会直接触发硬约束被踢出排名，那样就演示不出帕累托支配了。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 17 = 40,800 m²，与 gfa 一致；总高 17 × 3.0 = 51.0 m < 54 m。",
-    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。",
+    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。",
     "dominance": "相对于 D：inner_area_ratio 0.72<0.78、south_room_ratio 0.68<0.78、prefab 0.30<0.50、std_repeat 0.75<0.85、component_types 15>12（更多种类更差）、结构体系更弱、风险特征非空。电梯数与 D 持平（均 2 台，为满足 12 层及以上的强制要求），支配关系只由上面这些字段决定。预期 E 在四个维度上都不优于 D，被 D 完全支配。"
   }
 }

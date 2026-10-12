@@ -22,6 +22,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `density_max` | 建筑密度上限 | — | number | 否 | — |
 | `height_max` | 限高上限 | m | number | 否 | — |
 | `climate_zone` | 气候分区 | — | string | 否 | 取值：严寒 / 寒冷 / 夏热冬冷 / 夏热冬暖 / 温和；— |
+| `seismic_intensity` | 抗震设防烈度 | — | string | 否 | 取值：6度(0.05g) / 7度(0.10g)；— |
 
 ## 二、方案参数（SchemeParams）
 
@@ -47,6 +48,8 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `window_floor_ratio` | 窗地比 | — | number | 否 | — |
 | `window_wall_ratio` | 窗墙比 | — | object<number> | 否 | — |
 | `elevators_per_unit` | 电梯数/单元 | 台 | integer | 否 | — |
+| `daylight_factor` | 采光系数 | — | number | 否 | — |
+| `sunlight_hours` | 日照时数 | h | number | 否 | — |
 
 #### 结构与造价
 
@@ -58,6 +61,8 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `floors` | 层数 | 层 | integer | 否 · 必录 | — |
 | `envelope_area` | 外表面积 | m² | number | 否 | — |
 | `volume` | 建筑体积 | m³ | number | 否 | — |
+| `slab_thickness` | 楼板厚度 | mm | number | 否 | — |
+| `design_working_life` | 结构设计工作年限 | 年 | integer | 否 | — |
 
 #### 施工与安全
 
@@ -72,6 +77,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | 字段名 | 中文名 | 单位 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- | --- | --- |
 | `prefab_ratio_est` | 预估装配率 | — | number | 否 | — |
+| `green_ratio` | 绿地率 | — | number | 否 | — |
 
 ## 三、评估结果（EvalResult）
 

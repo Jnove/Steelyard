@@ -107,6 +107,30 @@
       "label": "气候分区",
       "title": "Climate Zone",
       "unit": "—"
+    },
+    "seismic_intensity": {
+      "anyOf": [
+        {
+          "enum": [
+            "6度(0.05g)",
+            "7度(0.10g)"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "抗震设防烈度（浙江全省最高为 7 度 0.10g）",
+      "enum": [
+        "6度(0.05g)",
+        "7度(0.10g)"
+      ],
+      "group": "基本信息",
+      "label": "抗震设防烈度",
+      "title": "Seismic Intensity",
+      "unit": "—"
     }
   },
   "title": "ProjectParams",

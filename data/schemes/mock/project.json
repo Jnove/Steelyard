@@ -6,7 +6,8 @@
     "far_max": 2.5,
     "density_max": 0.22,
     "height_max": 54,
-    "climate_zone": "夏热冬冷"
+    "climate_zone": "夏热冬冷",
+    "seismic_intensity": "6度(0.05g)"
   },
   "_design_notes": {
     "site_area": "杭州钱塘区某保障房地块，用地约 1.8 ha。",

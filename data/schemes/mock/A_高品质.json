@@ -20,13 +20,18 @@
     "std_floor_repeat": 0.65,
     "component_types": 20,
     "risk_features": ["大悬挑", "高支模"],
-    "prefab_ratio_est": 0.25
+    "prefab_ratio_est": 0.25,
+    "slab_thickness": 120,
+    "design_working_life": 70,
+    "daylight_factor": 0.032,
+    "sunlight_hours": 2.5,
+    "green_ratio": 0.38
   },
   "_design_notes": {
     "intent": "高品质定位：层高 3.3 m、得房率 0.82、南向比例 0.85，走现浇剪力墙路线，户型与立面定制化程度高。",
     "tradeoff": "高定制换来的代价是标准层重复率仅 0.65、构件种类多达 20 种、装配率 0.25；现场存在大悬挑与高支模两类风险特征。",
     "code_check": "东西向窗墙比 0.25 压在 DB33/1015—2021 第4.2.1条的限值上（≤0.25），南向 0.45 同样压在限值上（≤0.45）；层高 3.3 m 满足 GB 55038—2025 第4.1.2条的 3.00 m；16 层每单元 2 台电梯满足第4.2.4条。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 16 = 38,400 m²，与 gfa 一致；总高 16 × 3.3 = 52.8 m < 54 m。",
-    "far_check": "gfa / site_area = 38,400 / 18,000 ≈ 2.13 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。"
+    "far_check": "gfa / site_area = 38,400 / 18,000 ≈ 2.13 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。"
   }
 }
