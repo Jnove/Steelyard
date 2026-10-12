@@ -1,51 +1,88 @@
-# 居住品质评分指标（metric，dimension: quality）。规则 ID 用 Q-XX。
-#
-# ⚠️ 本文件当前只有**格式示例**：分段点都是随手取的，仅用于演示写法与引擎行为。
-#    专业组定稿后请去掉 name 的「【示例】」前缀，并把 source 换成真实依据。
+# 居住品质评分指标
+# 所有 points 均为示例评分口径，不代表规范强制限值；正式项目需由专业组确认。
 
 - id: Q-01
-  name: 【示例】主要房间南向比例（适中最好）
-  type: metric
-  dimension: quality
-  value: "south_room_ratio"
-  scoring:
-    kind: piecewise
-    # 「适中最好」= 分数先升后降。指标值仍然必须从小到大严格递增。
-    points:
-      - [0.20, 0]
-      - [0.55, 100]
-      - [0.90, 0]
-  weight_in_dimension: 2
-  source: "TODO(专业组)：示例数值，正式依据待补"
-
-- id: Q-02
-  name: 【示例】得房率（越大越好）
+  name: 得房率
   type: metric
   dimension: quality
   value: "inner_area_ratio"
   scoring:
     kind: piecewise
     points:
-      - [0.65, 0]
-      - [0.78, 70]
-      - [0.88, 100]
-  weight_in_dimension: 1
-  source: "TODO(专业组)：示例数值，正式依据待补"
+      - [0.70, 0]
+      - [0.76, 60]
+      - [0.82, 100]
+  weight_in_dimension: 2
+  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；专业判断第6条：住宅建筑应同时满足安全性、适用性和耐久性。评分点为项目偏好口径，非规范强制限值。"
 
-- id: Q-03
-  name: 【示例】单栋户数（越小越好，仅高层适用）
+- id: Q-02
+  name: 南向房间比例
   type: metric
   dimension: quality
-  # units_per_building 是派生量（units / buildings）。
-  value: "units_per_building"
-  # when 为假时这条指标对该方案记为「不适用」，不计入维度得分，也不拉低覆盖率。
-  when: "floors >= 7"
+  value: "south_room_ratio"
   scoring:
     kind: piecewise
-    # 「越小越好」：指标值从小到大，分数递减。
+    points:
+      - [0.40, 0]
+      - [0.70, 70]
+      - [0.85, 100]
+  weight_in_dimension: 2
+  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第33条）：每套住宅至少应有一个卧室或起居室满足日照标准。比例评分是品质偏好指标，不替代日照核验。"
+
+- id: Q-03
+  name: 窗地比
+  type: metric
+  dimension: quality
+  value: "window_floor_ratio"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.15, 0]
+      - [0.20, 70]
+      - [0.28, 100]
+  weight_in_dimension: 1
+  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第33-35条）：住宅应具备直接采光条件，自然通风开口面积应按房间和阳台关系计算。评分点为项目偏好口径。"
+
+- id: Q-04
+  name: 每单元电梯数
+  type: metric
+  dimension: quality
+  value: "elevators_per_unit"
+  scoring:
+    kind: piecewise
+    points:
+      - [1, 0]
+      - [2, 80]
+      - [3, 100]
+  weight_in_dimension: 1
+  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第26条）：住宅电梯配置与建筑高度、入户层数直接挂钩。硬性最低配置另见 C-05。"
+
+- id: Q-05
+  name: 单栋户数
+  type: metric
+  dimension: quality
+  value: "units_per_building"
+  scoring:
+    kind: piecewise
     points:
       - [60, 100]
       - [120, 70]
       - [200, 0]
   weight_in_dimension: 1
-  source: "TODO(专业组)：示例数值，正式依据待补"
+  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。"
+
+- id: Q-06
+  name: 标准层交通规模
+  type: metric
+  dimension: quality
+  value: "units_per_floor"
+  scoring:
+    kind: piecewise
+    points:
+      - [2, 100]
+      - [4, 70]
+      - [8, 0]
+  weight_in_dimension: 1
+  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。"
+
+
