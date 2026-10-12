@@ -234,3 +234,34 @@ export function IconLayers({ size = 18, className, ...props }: IconProps) {
     </svg>
   )
 }
+
+/** 新增 / 加号 */
+export function IconPlus({ size = 18, className, ...props }: IconProps) {
+  return (
+    <svg {...baseProps(size, className)} {...props}>
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  )
+}
+
+/** 导入 / 上传 */
+export function IconUpload({ size = 18, className, ...props }: IconProps) {
+  return (
+    <svg {...baseProps(size, className)} {...props}>
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="17 8 12 3 7 8" />
+      <line x1="12" y1="3" x2="12" y2="15" />
+    </svg>
+  )
+}
+
+/** 运行 / 评估 */
+export function IconPlay({ size = 18, className, ...props }: IconProps) {
+  return (
+    <svg {...baseProps(size, className)} {...props}>
+      <polygon points="5 3 19 12 5 21 5 3" />
+    </svg>
+  )
+}
+
