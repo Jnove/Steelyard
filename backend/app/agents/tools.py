@@ -17,7 +17,6 @@ from app.agents.storage import AgentResultRow
 from app.api.evaluate import evaluate_project, get_last_evaluation
 from app.api.rank import RankRequest, _resolve_weights, rank_project
 from app.config import get_settings
-from app.custom.templates import list_templates
 from app.engine.rules import get_ruleset
 from app.engine.weights import get_role_templates
 from app.models import EvalResult, Project, ProjectParams, Scheme, SchemeParams
@@ -146,17 +145,11 @@ class AgentTools:
             p.name: p.read_text(encoding="utf-8")
             for p in (Path(__file__).parent / "prompts").glob("*.md")
         }
-        with Session(self.engine) as session:
-            weights = _resolve_weights(request, session).model_dump(mode="json")
-            # 运行期自定义的角色模板同样进缓存键：它一改，权重就变、结论也可能变；
-            # 不带上它会出现"模板改了但报告还是旧结论"。
-            custom_templates = [row.model_dump(mode="json") for row in list_templates(session)]
         return digest(
             {
                 "version": "T8-v1",
                 "data": self.fingerprint(request.include_whatif),
-                "weights": weights,
-                "custom_templates": custom_templates,
+                "weights": _resolve_weights(request).model_dump(mode="json"),
                 "provider": get_settings().llm_provider,
                 "model": get_settings().llm_model,
                 "templates": templates,

@@ -335,8 +335,6 @@ class SchemeParams(BaseModel):
             "结构与造价",
             "超限不规则项",
             options=IRREGULARITY_OPTIONS,
-            # 开放枚举：使用者可在界面上追加候选值（见 app/custom/）。
-            extensible=True,
         ),
     )
 
@@ -362,8 +360,6 @@ class SchemeParams(BaseModel):
             "施工与安全",
             "风险特征",
             options=RISK_FEATURE_OPTIONS,
-            # 开放枚举：使用者可在界面上追加候选值（见 app/custom/）。
-            extensible=True,
         ),
     )
 
