@@ -30,6 +30,7 @@ FULL_INPUT: dict[str, float] = {
     "envelope_area": 26_000.0,
     "volume": 140_000.0,
     "units": 288.0,
+    "min_plan_width": 15.0,
 }
 
 

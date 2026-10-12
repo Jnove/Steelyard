@@ -63,6 +63,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `volume` | 建筑体积 | m³ | number | 否 | — |
 | `slab_thickness` | 楼板厚度 | mm | number | 否 | — |
 | `design_working_life` | 结构设计工作年限 | 年 | integer | 否 | — |
+| `min_plan_width` | 最小平面宽度 | m | number | 否 | — |
 
 #### 施工与安全
 
@@ -110,3 +111,4 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `units_per_building` | 单栋户数 | 户/栋 | `units / buildings` | 疏散与电梯服务的关键指标。 |
 | `units_per_floor` | 每层户数 | 户/层 | `units / (floors * buildings)` | 决定标准层交通核大小。 |
 | `floor_efficiency` | 楼层效率 | — | `footprint * floors / gfa` | 基底与层数对总建筑面积的利用率，越接近 1 越理想。 |
+| `height_width_ratio` | 高宽比 | — | `floors * floor_height / min_plan_width` | 建筑总高与最小平面宽度之比；JGJ 3—2010 第3.3.2条 表3.3.2 给出上限，用词为「不宜」。 |

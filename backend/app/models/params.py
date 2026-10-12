@@ -265,6 +265,12 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("年", "结构与造价", "结构设计工作年限"),
     )
+    min_plan_width: float | None = Field(
+        None,
+        description="楼栋最小平面宽度（用于算高宽比；一般取进深方向的最小宽度）",
+        gt=0,
+        json_schema_extra=_meta("m", "结构与造价", "最小平面宽度"),
+    )
 
     # —— 施工与安全 —— #
     std_floor_repeat: float | None = Field(

@@ -358,6 +358,23 @@
           "title": "Design Working Life",
           "unit": "年"
         },
+        "min_plan_width": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "楼栋最小平面宽度（用于算高宽比；一般取进深方向的最小宽度）",
+          "group": "结构与造价",
+          "label": "最小平面宽度",
+          "title": "Min Plan Width",
+          "unit": "m"
+        },
         "std_floor_repeat": {
           "anyOf": [
             {

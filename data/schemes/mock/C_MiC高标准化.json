@@ -23,6 +23,7 @@
     "prefab_ratio_est": 0.75,
     "slab_thickness": 120,
     "design_working_life": 50,
+    "min_plan_width": 16,
     "daylight_factor": 0.024,
     "sunlight_hours": 2.2,
     "green_ratio": 0.36
