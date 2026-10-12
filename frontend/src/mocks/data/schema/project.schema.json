@@ -66,6 +66,20 @@
         "夏热冬暖",
         "温和"
       ]
+    },
+    {
+      "name": "seismic_intensity",
+      "label": "抗震设防烈度",
+      "description": "抗震设防烈度（浙江全省最高为 7 度 0.10g）",
+      "unit": "—",
+      "group": "基本信息",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "6度(0.05g)",
+        "7度(0.10g)"
+      ]
     }
   ]
 }

@@ -21,6 +21,10 @@ export type HeightMax = number | null;
  */
 export type ClimateZone = (("严寒" | "寒冷" | "夏热冬冷" | "夏热冬暖" | "温和") | null) &
   ("严寒" | "寒冷" | "夏热冬冷" | "夏热冬暖" | "温和");
+/**
+ * 抗震设防烈度（浙江全省最高为 7 度 0.10g）
+ */
+export type SeismicIntensity = (("6度(0.05g)" | "7度(0.10g)") | null) & ("6度(0.05g)" | "7度(0.10g)");
 
 /**
  * 项目层（地块条件）参数，对所有候选方案相同
@@ -31,4 +35,5 @@ export interface ProjectParams {
   density_max?: DensityMax;
   height_max?: HeightMax;
   climate_zone?: ClimateZone;
+  seismic_intensity?: SeismicIntensity;
 }

@@ -1,32 +1,62 @@
-# 规范硬约束（hard）——违反即标红、默认踢出排名。规则 ID 用 C-XX。
-#
-# ⚠️ 本文件当前只有**格式示例**：阈值和判断条件都是随手取的，仅用于演示 YAML 怎么写、
-#    引擎怎么跑。name 前缀「【示例】」和 source 里的 TODO 就是这个意思。
-#    专业组核对规范原文后，请把 name 前缀去掉、把 source 换成真实条文号。
-#
-# 写法教程见 docs/rules-guide.md，字段名与单位见 docs/fields.generated.md。
+# 规范合规硬约束
+# 说明：专业判断 Markdown 未提供正式条文号。source 中保留规范全称、标准编号、
+# 专业判断序号和原文依据；提交正式项目前必须按正式单行本补录条文号并复核适用范围。
 
 - id: C-01
-  name: 【示例】住宅层高下限
+  name: 建筑总高不超过项目限高
   type: hard
-  check: "floor_height >= 3.0"
-  message: "层高 {floor_height} m 低于示例阈值 3.0 m"
-  source: "TODO(专业组)：示例数值，正式条文号待补"
+  check: "height <= height_max"
+  message: "建筑总高 {height} m 超过项目限高 {height_max} m"
+  source: "项目参数（height_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第8、39条）：住宅必须满足安全疏散、防火蔓延控制和灭火救援条件。"
 
 - id: C-02
-  name: 【示例】容积率不超地块上限
+  name: 项目容积率不超过上限
   type: hard
-  # far 是派生量（gfa / site_area），far_max 是项目层填的地块上限。
   check: "far <= far_max"
-  message: "容积率 {far} 超过地块上限 {far_max}"
-  source: "TODO(专业组)：示例数值，正式条文号待补"
+  message: "容积率 {far} 超过项目上限 {far_max}"
+  source: "项目参数（far_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第1、2条）：住宅项目总图应落实完整建设体系，项目规模应经过调查研究和科学预测确定。"
 
 - id: C-03
-  name: 【示例】建筑总高不超限高
+  name: 建筑密度不超过上限
   type: hard
-  # height 是派生量（floors * floor_height）。
-  # severity 写 warning：只提示不踢出排名，用于演示两种严重程度的差别。
-  check: "height <= height_max"
-  message: "建筑总高 {height} m 超过限高 {height_max} m"
-  severity: warning
-  source: "TODO(专业组)：示例数值，正式条文号待补"
+  check: "density <= density_max"
+  message: "建筑密度 {density} 超过项目上限 {density_max}"
+  source: "项目参数（density_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第11、28条）：集中绿地是住宅项目必要公共环境要素，节地与土地利用应以集约、高效和减少生态扰动为目标。"
+
+- id: C-04
+  name: 新建住宅层高下限
+  type: hard
+  check: "floor_height >= 3.0"
+  message: "住宅层高 {floor_height} m 低于 3.00 m"
+  source: "《住宅项目规范》GB 55038-2025，第4.1.2条；原文依据：新建住宅建筑的层高不应低于3.00m。专业判断对应第17条。"
+
+- id: C-05
+  name: 十二层及以上或入户楼面超过33m的住宅每单元至少两台电梯
+  type: hard
+  when: "highest_occupied_floor >= 12 or highest_occupied_floor_height > 33"
+  check: "elevators_per_unit >= 2"
+  message: "最高入户层为 {highest_occupied_floor} 层、楼面高度为 {highest_occupied_floor_height} m 时，每单元电梯数 {elevators_per_unit} 少于 2 台"
+  source: "《住宅项目规范》GB 55038-2025，第4.2.4条第2、3款；原文依据：最高入户层为十二层及十二层以上，或最高入户层楼面距室外设计地面高度超过33m的住宅建筑，每个住宅单元应至少设置2台电梯；设有电梯的住宅单元，应至少有1台电梯满足规定尺寸要求。专业判断对应第26条。"
+
+- id: C-06
+  name: 住宅结构体系取值合法
+  type: hard
+  check: "structure_type == '剪力墙' or structure_type == '框架-剪力墙' or structure_type == '框架' or structure_type == '钢结构' or structure_type == 'MiC'"
+  message: "结构体系 {structure_type} 不在系统支持的结构体系范围内"
+  source: "《工程结构通用规范》GB 55001-2021 与《建筑与市政工程抗震通用规范》GB 55002-2021；条文号：待按正式文本核对；原文依据（专业判断第2、19、40条）：结构体系必须具有清晰、连续、可靠的传力路径，抗震体系应具有明确的抗侧力体系。"
+
+- id: C-07
+  name: MiC 方案装配率基本门槛
+  type: hard
+  when: "structure_type == 'MiC'"
+  check: "prefab_ratio_est >= 0.50"
+  message: "MiC 方案预估装配率 {prefab_ratio_est} 低于 50% 基本门槛"
+  source: "《装配式建筑评价标准》GB/T 51129-2017，第3.0.3条第1-4项；原文依据：装配式建筑应同时满足主体结构部分评价分值不低于20分、围护墙和内隔墙部分评价分值不低于10分、采用全装修、装配率不低于50%。系统当前仅能自动校验装配率，其他三项需人工复核。"
+
+- id: C-08
+  name: 四层及以上或入户楼面超过9m的住宅每单元至少一台电梯
+  type: hard
+  when: "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9"
+  check: "elevators_per_unit >= 1"
+  message: "最高入户层为 {highest_occupied_floor} 层、楼面高度为 {highest_occupied_floor_height} m 时，每单元电梯数 {elevators_per_unit} 少于 1 台"
+  source: "《住宅项目规范》GB 55038-2025，第4.2.4条第1款；按最高入户层层序或楼面实际高度判断，数据不足时不得判为通过。官方摘录：https://ghzrzyw.beijing.gov.cn/biaozhunguanli/bzzl/202506/P020250609570099619169.pdf 第9页。"

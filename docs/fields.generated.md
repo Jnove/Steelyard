@@ -22,6 +22,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `density_max` | 建筑密度上限 | — | number | 否 | — |
 | `height_max` | 限高上限 | m | number | 否 | — |
 | `climate_zone` | 气候分区 | — | string | 否 | 取值：严寒 / 寒冷 / 夏热冬冷 / 夏热冬暖 / 温和；— |
+| `seismic_intensity` | 抗震设防烈度 | — | string | 否 | 取值：6度(0.05g) / 7度(0.10g)；— |
 
 ## 二、方案参数（SchemeParams）
 
@@ -34,6 +35,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | 字段名 | 中文名 | 单位 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- | --- | --- |
 | `structure_type` | 结构体系 | — | string | 否 · 必录 | 取值：剪力墙 / 框架-剪力墙 / 框架 / 钢结构 / MiC；— |
+| `mic_system` | MiC 体系类型 | — | string | 否 | 取值：模块化框架结构 / 模块化全预制剪力墙结构 / 模块化叠合剪力墙结构 / 模块化箱模框架结构 / 模块化箱模框架-剪力墙结构 / 模块化箱模剪力墙结构；— |
 | `units` | 总户数 | 户 | integer | 否 · 必录 | — |
 | `unit_mix` | 户型配比 | 户 | object<integer> | 否 | — |
 
@@ -47,6 +49,10 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `window_floor_ratio` | 窗地比 | — | number | 否 | — |
 | `window_wall_ratio` | 窗墙比 | — | object<number> | 否 | — |
 | `elevators_per_unit` | 电梯数/单元 | 台 | integer | 否 | — |
+| `highest_occupied_floor` | 最高住宅入户层 | 层 | integer | 否 | — |
+| `highest_occupied_floor_height` | 最高入户层楼面高度 | m | number | 否 | — |
+| `daylight_factor` | 采光系数 | — | number | 否 | — |
+| `sunlight_hours` | 日照时数 | h | number | 否 | — |
 
 #### 结构与造价
 
@@ -58,6 +64,11 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `floors` | 层数 | 层 | integer | 否 · 必录 | — |
 | `envelope_area` | 外表面积 | m² | number | 否 | — |
 | `volume` | 建筑体积 | m³ | number | 否 | — |
+| `slab_thickness` | 楼板厚度 | mm | number | 否 | — |
+| `design_working_life` | 结构设计工作年限 | 年 | integer | 否 | — |
+| `min_plan_width` | 最小平面宽度 | m | number | 否 | — |
+| `concrete_grade` | 混凝土强度等级 | MPa | number | 否 | — |
+| `irregularity_items` | 超限不规则项 | — | array<string> | 否 | 预设：扭转不规则 / 凹凸不规则 / 楼板不连续 / 刚度突变 / 尺寸突变 / 构件间断 / 承载力突变 / 局部不规则 / 高位转换 / 厚板转换 / 复杂连接 / 多重复杂；— |
 
 #### 施工与安全
 
@@ -72,6 +83,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | 字段名 | 中文名 | 单位 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- | --- | --- |
 | `prefab_ratio_est` | 预估装配率 | — | number | 否 | — |
+| `green_ratio` | 绿地率 | — | number | 否 | — |
 
 ## 三、评估结果（EvalResult）
 
@@ -104,3 +116,4 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `units_per_building` | 单栋户数 | 户/栋 | `units / buildings` | 疏散与电梯服务的关键指标。 |
 | `units_per_floor` | 每层户数 | 户/层 | `units / (floors * buildings)` | 决定标准层交通核大小。 |
 | `floor_efficiency` | 楼层效率 | — | `footprint * floors / gfa` | 基底与层数对总建筑面积的利用率，越接近 1 越理想。 |
+| `height_width_ratio` | 高宽比 | — | `floors * floor_height / min_plan_width` | 建筑总高与最小平面宽度之比；JGJ 3—2010 第3.3.2条 表3.3.2 给出上限，用词为「不宜」。 |

@@ -118,12 +118,11 @@ export default function DashboardPage() {
   const topSummary = topEval ? evaluationSummary(topEval) : undefined
   const participating = results.filter(e => result?.ranking.some(r => r.scheme_id === e.scheme_id))
 
+  const roleOptions = (roles.data?.roles ?? []).map(template => ({
+    label: template.role_name ?? template.role ?? '角色模板', value: template.role ?? '',
+  }))
   const roleNameMap: Record<string, string> = {
-    government: '政府 / 保障房平台',
-    developer: '开发企业',
-    contractor: '施工总包 / 工友安全',
-    resident: '业主 / 住户',
-    custom: '自定义权重',
+    ...Object.fromEntries(roleOptions.map(option => [option.value, option.label])), custom: '自定义权重',
   }
 
   return <>
@@ -156,7 +155,7 @@ export default function DashboardPage() {
               </div>
               <h2>{topScheme.scheme_name}</h2>
               <div className="executive-submeta">
-                <Tag color="blue">结果视角：{roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role}</Tag>
+                <Tag color="blue">结果视角：{roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role_name ?? result.weights_used.role}</Tag>
                 <Tag color="green">综合排名第 {topScheme.rank} 名</Tag>
                 <span className="executive-metric">TOPSIS 贴近度：<strong>{topScheme.closeness.toFixed(4)}</strong></span>
               </div>
@@ -213,13 +212,7 @@ export default function DashboardPage() {
           <IconUser size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
           <strong>决策视角</strong>
         </span>
-        <Segmented value={role} onChange={roleChange} options={[
-          { label: '政府', value: 'government' },
-          { label: '开发企业', value: 'developer' },
-          { label: '施工总包', value: 'contractor' },
-          { label: '住户', value: 'resident' },
-          { label: '自定义', value: 'custom' },
-        ]} />
+        <Segmented value={role} onChange={roleChange} options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
         <span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span>
       </div>
 
@@ -227,7 +220,7 @@ export default function DashboardPage() {
         <section className="panel weights-panel">
           <div className="section-heading">
             <h2>评价权重</h2>
-            <Tooltip title="层次分析法（AHP）基于各维度两两对比矩阵计算权重，自定义视角则直接配置滑杆。">
+            <Tooltip title="角色模板可以直接给出权重，也可以由层次分析法（AHP）的两两比较矩阵计算；只有矩阵有一致性 CR。">
               <span className="help-icon-wrap"><IconHelpCircle size={15} /></span>
             </Tooltip>
           </div>
@@ -245,7 +238,7 @@ export default function DashboardPage() {
               </Tooltip>
             </span>
             <strong>{role === 'custom' ? '—' : ahp?.cr.toFixed(4) ?? '—'}</strong>
-            <p>{role === 'custom' ? '直接赋权，无两两比较矩阵' : ahp ? ahp.consistent ? '一致性检验通过（判断自洽）' : '模板需复核' : '等待角色模板'}</p>
+            <p>{role === 'custom' || (result && !ahp) ? '直接赋权，无两两比较矩阵' : ahp ? ahp.consistent ? '一致性检验通过（判断自洽）' : '模板需复核' : '等待角色模板'}</p>
           </div>
           {result?.weights_used.consistency_warning && <Alert type="warning" message={result.weights_used.consistency_warning} />}
           {result?.weights_used.note && <p className="muted caption">{result.weights_used.note}</p>}

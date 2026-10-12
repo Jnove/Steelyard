@@ -3,13 +3,23 @@
   "name": "C MiC 高标准化",
   "params": {
     "structure_type": "MiC",
+    "mic_system": "模块化叠合剪力墙结构",
     "units": 432,
-    "unit_mix": {"一室": 144, "两室": 192, "三室": 96},
+    "unit_mix": {
+      "一室": 144,
+      "两室": 192,
+      "三室": 96
+    },
     "floor_height": 3.0,
     "inner_area_ratio": 0.76,
     "south_room_ratio": 0.72,
     "window_floor_ratio": 0.22,
-    "window_wall_ratio": {"南": 0.40, "北": 0.25, "东": 0.25, "西": 0.25},
+    "window_wall_ratio": {
+      "南": 0.4,
+      "北": 0.25,
+      "东": 0.25,
+      "西": 0.25
+    },
     "elevators_per_unit": 2,
     "gfa": 43200,
     "footprint": 2400,
@@ -20,13 +30,24 @@
     "std_floor_repeat": 0.95,
     "component_types": 8,
     "risk_features": [],
-    "prefab_ratio_est": 0.75
+    "prefab_ratio_est": 0.75,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "min_plan_width": 16,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "daylight_factor": 0.024,
+    "sunlight_hours": 2.2,
+    "green_ratio": 0.36,
+    "highest_occupied_floor": 18,
+    "highest_occupied_floor_height": 51.0
   },
   "_design_notes": {
     "intent": "演示 MiC 高标准化路线：标准层重复率 0.95、构件种类仅 8 种、装配率 0.75，几乎没有风险特征。",
     "tradeoff": "高标准化换来得房率与南向比例中等（牺牲定制化），换来施工友好与绿色低碳两个维度的明显优势。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 18 = 43,200 m²，与 gfa 一致；总高 18 × 3.0 = 54.0 m ≤ 54 m。",
-    "far_check": "gfa / site_area = 43,200 / 18,000 = 2.40 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.28。",
-    "what_if": "对应的现浇对照方案见 C_现浇.json，通过 what-if 字段演示'改用现浇会怎样'。"
+    "far_check": "gfa / site_area = 43,200 / 18,000 = 2.40 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。",
+    "what_if": "对应的现浇对照方案见 C_现浇.json，通过 what-if 字段演示'改用现浇会怎样'。",
+    "lift_input": "虚构样例假设首层入户楼面与室外设计地面齐平，最高入户层为总层数，楼面高度按 (floors - 1) × floor_height 填写；实际项目必须填实测或图纸数据，不得套用此假设。"
   }
 }

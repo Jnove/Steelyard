@@ -11,7 +11,16 @@ from typing import Any
 
 from pydantic import BaseModel
 
-_META_KEYS = ("unit", "group", "label", "enum", "options", "essential")
+_META_KEYS = (
+    "unit",
+    "group",
+    "label",
+    "enum",
+    "options",
+    "essential",
+    "allow_custom_options",
+    "empty_means_unknown",
+)
 
 
 def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
@@ -57,6 +66,9 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
             field_info["options"] = prop["options"]
         if prop.get("essential"):
             field_info["essential"] = True
+        for key in ("allow_custom_options", "empty_means_unknown"):
+            if key in prop:
+                field_info[key] = prop[key]
         fields.append(field_info)
 
     return {
@@ -80,6 +92,8 @@ def _simplify_type(prop: dict[str, Any]) -> str:
         non_null = [x for x in prop["anyOf"] if x.get("type") != "null"]
         if non_null:
             sub = non_null[0]
+            if sub.get("type") == "array":
+                return f"array<{sub.get('items', {}).get('type', 'string')}>"
             if sub.get("type") == "object":
                 value_type = sub.get("additionalProperties", {}).get("type", "string")
                 return f"object<{value_type}>"

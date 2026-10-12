@@ -42,8 +42,15 @@ class TestTemplateGeneration:
             for r in range(2, ws.max_row + 1)
             if ws.cell(row=r, column=name_col).value
         }
-        # 5 个项目字段全部出现
-        assert names == {"site_area", "far_max", "density_max", "height_max", "climate_zone"}
+        # 6 个项目字段全部出现（新增字段时这里要一起更新）
+        assert names == {
+            "site_area",
+            "far_max",
+            "density_max",
+            "height_max",
+            "climate_zone",
+            "seismic_intensity",
+        }
 
     def test_scheme_sheet_has_six_columns_and_all_fields(self, tmp_path) -> None:
         path = write_template(tmp_path / "tpl.xlsx")
@@ -71,7 +78,7 @@ class TestTemplateGeneration:
             for r in range(2, ws.max_row + 1)
             if ws.cell(row=r, column=name_col).value
         }
-        # SchemeParams 全部 19 个字段都出现在模板里
+        # SchemeParams 的全部字段都出现在模板里（新增字段时补一条断言即可）
         assert "structure_type" in names
         assert "gfa" in names
         assert "risk_features" in names

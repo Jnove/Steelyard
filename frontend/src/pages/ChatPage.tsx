@@ -261,10 +261,10 @@ function ProjectChat({ projectId }: { projectId: number }) {
             pendingText = ''
             update(item => applyAgentEvent(item, { ...event, text: '' }))
           }
-          // 真实流跟随后端 token 刷新；逐字计时只用于本地演示，避免长回复排队数十秒。
+          // 真实流跟随后端 token 刷新；演示按小批刷新，规则扩充后长报告仍能及时完成。
           for (const character of event.text) {
             pendingText += character
-            if (pendingText.length >= (isMock ? kind === 'report' ? 12 : 1 : 64)) await flushText()
+            if (pendingText.length >= (isMock ? kind === 'report' ? 128 : 16 : 64)) await flushText()
           }
           if (!isMock) await flushText()
         } else if (event.type === 'tool_start' || event.type === 'tool_end') {
