@@ -7,7 +7,7 @@ import { tokens } from '../theme'
 
 interface Controller { update: (model: BuildingModel) => void; reset: () => void; dispose: () => void }
 
-/** 仅在更新、拖动或短过渡时绘制；没有后台自动旋转。 */
+/** 可见时缓慢环绕；拖动、减少动态效果与不可见状态下暂停自动旋转。 */
 function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: () => void): Controller {
   let disposed = false, frame = 0
   let allocatedRenderer: THREE.WebGLRenderer | undefined
@@ -41,6 +41,8 @@ function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: (
   renderer.toneMappingExposure = .98
   renderer.shadowMap.enabled = true
   renderer.shadowMap.type = THREE.PCFSoftShadowMap
+  renderer.shadowMap.autoUpdate = false
+  renderer.shadowMap.needsUpdate = true
   const canvas = renderer.domElement
   canvas.tabIndex = 0
   canvas.setAttribute('role', 'img')
@@ -110,12 +112,31 @@ function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: (
   world.add(volumes)
   let failed = false, visible = true, ready = false
   let yaw = 0, targetYaw = yaw, pitch = 0, targetPitch = 0
+  let pointer: { id: number; x: number; y: number; yaw: number; pitch: number } | undefined
+  let lastTick = 0, lastDraw = 0, pauseUntil = 0
+  let resumeTimer: ReturnType<typeof setTimeout> | undefined
+  cleanups.push(() => clearTimeout(resumeTimer))
+  const turn = Math.PI * 2
+  const pauseAuto = () => {
+    pauseUntil = performance.now() + 2200
+    clearTimeout(resumeTimer)
+    resumeTimer = setTimeout(() => { resumeTimer = undefined; lastTick = 0; lastDraw = 0; requestRender() }, 2200)
+  }
   const reduce = matchMedia('(prefers-reduced-motion: reduce)')
   const matrix = new THREE.Matrix4()
   const fail = () => { if (!failed && !disposed) { failed = true; cancelAnimationFrame(frame); frame = 0; onUnavailable() } }
-  const render = () => {
+  const render = (now: number) => {
     frame = 0
-    if (disposed || failed || !visible || document.hidden) return
+    if (disposed || failed || !visible || document.hidden) { lastTick = 0; lastDraw = 0; return }
+    const spinning = !reduce.matches && !pointer && now >= pauseUntil
+    // 慢转按经过时间计算，并将连续 GPU 绘制限制在约 30fps。
+    if (spinning && lastDraw && now - lastDraw < 1000 / 30 - .5) { requestRender(); return }
+    const elapsed = lastTick ? Math.min((now - lastTick) / 1000, .08) : 0
+    lastTick = now; lastDraw = now
+    if (spinning) {
+      targetYaw += elapsed * turn / 120
+      if (Math.abs(targetYaw) > turn) { const offset = Math.trunc(targetYaw / turn) * turn; targetYaw -= offset; yaw -= offset }
+    }
     const ease = reduce.matches ? 1 : .18
     yaw += (targetYaw - yaw) * ease
     pitch += (targetPitch - pitch) * ease
@@ -135,7 +156,7 @@ function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: (
       camera.updateProjectionMatrix()
     }
     try { renderer.render(scene, camera); if (!ready) { ready = true; onReady() } } catch { fail(); return }
-    if (Math.abs(targetYaw - yaw) > .001 || Math.abs(targetPitch - pitch) > .001) requestRender()
+    if (spinning || Math.abs(targetYaw - yaw) > .001 || Math.abs(targetPitch - pitch) > .001) requestRender()
   }
   const requestRender = () => { if (!frame && !disposed && !failed && visible && !document.hidden) frame = requestAnimationFrame(render) }
   const resize = () => {
@@ -241,18 +262,19 @@ function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: (
     rim.scale.set(plate.scale.x, 1, plate.scale.z)
     focus.y = Math.max(.7, ...model.volumes.map(v => v.height * .42))
     bounds.setFromObject(world)
+    renderer.shadowMap.needsUpdate = true
     requestRender()
   }
-  let pointer: { id: number; x: number; y: number; yaw: number; pitch: number } | undefined
   const down = (event: PointerEvent) => {
     if (event.button !== 0) return
+    targetYaw = yaw; targetPitch = pitch
     pointer = { id: event.pointerId, x: event.clientX, y: event.clientY, yaw: targetYaw, pitch: targetPitch }
     canvas.setPointerCapture(event.pointerId)
     canvas.classList.add('is-dragging')
   }
   const move = (event: PointerEvent) => {
     if (event.pointerId !== pointer?.id) return
-    targetYaw = THREE.MathUtils.clamp(pointer.yaw + (event.clientX - pointer.x) * .0045, -.78, .65)
+    targetYaw = pointer.yaw + (event.clientX - pointer.x) * .0045
     targetPitch = THREE.MathUtils.clamp(pointer.pitch + (event.clientY - pointer.y) * .0015, -.12, .16)
     requestRender()
   }
@@ -260,21 +282,24 @@ function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: (
     if (event.pointerId !== pointer?.id) return
     if (canvas.hasPointerCapture(event.pointerId)) canvas.releasePointerCapture(event.pointerId)
     pointer = undefined; canvas.classList.remove('is-dragging')
+    lastTick = 0; lastDraw = 0; requestRender()
   }
-  const reset = () => { targetYaw = 0; targetPitch = 0; requestRender() }
+  const reset = () => { pauseAuto(); targetYaw = yaw + Math.atan2(Math.sin(-yaw), Math.cos(-yaw)); targetPitch = 0; requestRender() }
   const key = (event: KeyboardEvent) => {
     if (!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home'].includes(event.key)) return
     event.preventDefault()
+    pauseAuto()
     if (event.key === 'Home') reset()
-    else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') targetYaw = THREE.MathUtils.clamp(targetYaw + (event.key === 'ArrowLeft' ? -.12 : .12), -.78, .65)
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') targetYaw += event.key === 'ArrowLeft' ? -.12 : .12
     else targetPitch = THREE.MathUtils.clamp(targetPitch + (event.key === 'ArrowUp' ? -.04 : .04), -.10, .14)
     requestRender()
   }
   const contextLost = (event: Event) => { event.preventDefault(); fail() }
   const visibility = () => {
+    lastTick = 0; lastDraw = 0
     if (document.hidden) { cancelAnimationFrame(frame); frame = 0 } else requestRender()
   }
-  const motionChange = () => requestRender()
+  const motionChange = () => { lastTick = 0; lastDraw = 0; requestRender() }
   cleanups.push(() => {
     canvas.removeEventListener('pointerdown', down); canvas.removeEventListener('pointermove', move)
     canvas.removeEventListener('pointerup', up); canvas.removeEventListener('pointercancel', up)
@@ -296,8 +321,9 @@ function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: (
   observer.observe(host)
   const intersection = new IntersectionObserver(entries => {
     visible = entries[0]?.isIntersecting ?? true
+    lastTick = 0; lastDraw = 0
     if (!visible) { cancelAnimationFrame(frame); frame = 0 } else requestRender()
-  }, { rootMargin: '30px' })
+  })
   cleanups.push(() => intersection.disconnect())
   intersection.observe(host)
   resize()
