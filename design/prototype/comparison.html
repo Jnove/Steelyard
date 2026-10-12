@@ -13,12 +13,12 @@
     <a class="nav-link" href="index.html"><span>01</span>项目与方案</a>
     <div class="nav-link active"><span>02</span>多方案对比<i>↗</i></div>
     <a class="nav-link" href="index.html"><span>03</span>推演与报告</a>
-    <div class="side-foot"><span class="status-dot"></span> 展示设计 · V2<small>从数据差异，看清决策取舍。</small></div>
+    <div class="side-foot"><span class="status-dot"></span> 展示设计 · V3<small>看整体 → 比两套 → 查全表</small></div>
   </aside>
   <main>
     <header class="topbar"><span>杭州钱塘 · 保障性租赁住房 <b>/</b> 多方案比选</span><span class="sample-tag">虚构示例 · 设计讨论</span></header>
     <div class="workspace">
-      <div class="page-heading"><div><div class="eyebrow">COMPARISON AT A GLANCE / 02</div><h1>把方案放在同一张图里。</h1><p>横向看方案差异，纵向看各自的长处与短板。</p></div><button class="export-button" id="export-button">↓ 导出对比图 <span>SVG</span></button></div>
+      <div class="page-heading"><div><h1>看清方案之间的取舍</h1><p>先找优势组合，再比较具体差值，最后追溯评分依据。</p></div><button class="export-button" id="export-button">导出当前图 <span>SVG</span></button></div>
       <section class="decision-strip" aria-label="当前比较摘要">
         <div class="decision-lead"><div class="tiny">当前视角下领先</div><div><span class="lead-letter">C</span><strong>MiC 高标准化</strong><span class="badge blue">第 1 名</span></div></div>
         <div class="decision-stat"><span>参与排名</span><b>4 <small>/ 5 套方案</small></b></div>
@@ -26,21 +26,28 @@
         <div class="decision-stat"><span>当前决策视角</span><b id="role-summary">政府 / 平台</b></div>
       </section>
       <section class="comparison-panel">
-        <div class="panel-toolbar"><div class="view-tabs" role="tablist" aria-label="对比图类型"><button class="view-tab active" id="tab-matrix" role="tab" aria-selected="true" aria-controls="view-matrix">▦ 维度矩阵</button><button class="view-tab" id="tab-map" role="tab" aria-selected="false" aria-controls="view-map">⊞ 二维取舍图</button></div><div class="role-picker" id="role-picker" aria-label="决策角色"></div></div>
-        <div class="panel-explainer"><div><h2 id="view-title">5 套方案 × 4 个评价维度</h2><p id="view-description">每格是一项维度得分。颜色越深，得分越高；点击格子可看评分依据。</p></div><div class="scale" id="heat-scale"><span>0</span><i></i><span>100 分</span></div></div>
-        <div id="view-matrix" role="tabpanel" aria-labelledby="tab-matrix">
+        <div class="panel-toolbar"><div class="view-tabs" role="tablist" aria-label="对比步骤"><button class="view-tab active" id="tab-map" role="tab" aria-selected="true" aria-controls="view-map">1. 看整体</button><button class="view-tab" id="tab-pair" role="tab" aria-selected="false" aria-controls="view-pair">2. 比两套</button><button class="view-tab" id="tab-matrix" role="tab" aria-selected="false" aria-controls="view-matrix">3. 查全表</button></div><div class="role-picker" id="role-picker" aria-label="决策角色"></div></div>
+        <div class="panel-explainer"><div><h2 id="view-title">把两项关注点，变成一张取舍地图</h2><p id="view-description">每个点是一套方案。右上方表示两项得分都较高，点击方案查看它的优势组合。</p></div><div class="scale" id="heat-scale" hidden><span>0</span><i></i><span>100 分</span></div></div>
+        <div id="view-matrix" role="tabpanel" aria-labelledby="tab-matrix" hidden>
           <div class="matrix-tools"><span><i class="mini-dot"></i> 蓝色标记当前第 1 名</span><span id="baseline-note">点击列标题“设为基准”，查看逐项分差。</span><button id="clear-baseline" hidden>清除基准 ×</button></div>
           <div class="matrix-scroll"><table class="matrix" id="matrix" aria-label="方案维度分数对比"></table></div>
         </div>
-        <div id="view-map" role="tabpanel" aria-labelledby="tab-map" hidden>
-          <div class="map-controls"><label>横轴 <select id="axis-x"></select></label><label>纵轴 <select id="axis-y"></select></label><label class="include-check"><input type="checkbox" id="include-b">显示 B（未通过硬约束）</label><span>右上方表示两项得分都较高</span></div>
-          <div class="map-layout"><div class="plot-wrap" id="plot-wrap"></div><div class="map-schemes" id="map-schemes"></div></div>
+        <div id="view-map" role="tabpanel" aria-labelledby="tab-map">
+          <div class="map-controls"><label>横轴 <select id="axis-x"></select></label><label>纵轴 <select id="axis-y"></select></label><label class="include-check"><input type="checkbox" id="include-b">显示 B（硬约束未通过）</label></div>
+          <div class="map-layout"><div><div class="plot-wrap" id="plot-wrap"></div><div class="map-legend"><span class="legend-ring"></span> 双环标记：四维非劣方案 <button class="text-button" id="pareto-explanation" aria-expanded="false">什么意思？</button><span id="map-missing"></span></div><p id="pareto-help" class="pareto-help" hidden>四维非劣：没有另一套合规方案在四个维度上都不差于它，并且至少一项更好。标记来自四维计算；二维位置不能代替四维排名。</p></div><div class="map-focus" id="map-focus" aria-live="polite"></div></div>
+          <div class="map-schemes" id="map-schemes" aria-label="选择方案"></div>
+        </div>
+        <div id="view-pair" role="tabpanel" aria-labelledby="tab-pair" hidden>
+          <div class="pair-controls"><label>方案一 <select id="pair-a"></select></label><button id="swap-pair" class="swap-button" aria-label="交换两个方案">⇄</button><label>方案二 <select id="pair-b"></select></label><div id="pair-key" class="pair-key"></div></div>
+          <div class="pair-warning" id="pair-warning" hidden></div>
+          <div class="pair-layout"><div class="pair-plot" id="pair-plot"></div><div class="pair-story" id="pair-story" aria-live="polite"></div></div>
+          <div class="pair-footnote">每行两个端点代表两套方案的分数，连线长度表示差距；端点重合表示得分相同。</div>
         </div>
         <div class="panel-bottom"><span>角色改变权重和贴近度，四维得分保持不变。</span><span>统一评分刻度 <b>0–100</b> · 示例规则</span></div>
       </section>
       <div class="lower-grid">
-        <section class="detail-panel"><div class="section-caption"><span class="caption-number">01</span><h2>点一个格子，看看分数背后</h2><span class="live-chip">可追溯</span></div><div id="cell-detail" aria-live="polite"></div></section>
-        <section class="reading-panel"><div class="section-caption"><span class="caption-number">02</span><h2>读出取舍</h2></div><div id="reading-insight"></div><div class="constraint-note"><span>!</span><p><b>B 的分数仍可查看，排名单独排除。</b><small>层高 2.9 m，低于示例阈值 3.0 m · C-01<br>评分数据与合规状态分别呈现。</small></p></div></section>
+        <details class="detail-panel" id="detail-panel"><summary class="section-caption"><h2>查看当前评分依据</h2><span class="live-chip">点击展开</span></summary><div id="cell-detail" aria-live="polite"></div></details>
+        <section class="reading-panel"><div class="section-caption"><h2>当前结论与合规提醒</h2></div><div id="reading-insight"></div><div class="constraint-note"><span>!</span><p><b>B 的分数可供参考，但不参与默认排名。</b><small>层高 2.9 m，低于示例阈值 3.0 m · C-01</small></p></div></section>
       </div>
       <footer>虚构样例，仅供开发与设计讨论，不得作为工程验证或答辩结论。专业规则、权重及正式条文出处仍待确认。</footer>
     </div>
