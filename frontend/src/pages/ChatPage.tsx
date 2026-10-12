@@ -322,7 +322,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
       <div>
         <p className="eyebrow">筑衡 · 智能体决策解释</p>
         <h1>把结论追问到底</h1>
-        <p className="muted">大模型理解需求并组织解释，所有数字与合规判定严格受限于确定性引擎工具，点击规则编号即可追溯规范出处。</p>
+        <p className="muted">大模型组织解释，数字来自工具结果。点击规则编号查看参数、公式与当前来源，待核定条目会如实标出。</p>
       </div>
       <div className="action-row">
         <Tag>{isMock ? '本地 Mock 演示' : '真实接口'}</Tag>
@@ -341,7 +341,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
             <h2>对话追问与解释</h2>
             <p className="section-subtext">选择预设决策问题，或输入任意技术指标疑问</p>
           </div>
-          <span className="muted" role="status">{busy ? '正在生成…' : '可追问 · 可溯源 · 防幻觉'}</span>
+          <span className="muted" role="status">{busy ? '正在生成…' : '可追问 · 可溯源'}</span>
         </div>
         <div className="action-row" aria-label="快捷问题">
           {quickQuestions.map((question) => <Button key={question} disabled={!canStart}

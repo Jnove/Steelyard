@@ -9,6 +9,7 @@ import type { EvalResult, RankResponse } from '../api/types'
 import { dimensions, type DimensionKey, isMock } from '../constants/dimensions'
 import { tokens } from '../theme'
 import { redistributeWeights } from '../utils/weights'
+import { evaluationSummary, scoreTradeoff } from '../utils/scheme-presentation'
 import Chart from '../components/Chart'
 import TraceDrawer from '../components/TraceDrawer'
 import {
@@ -23,25 +24,6 @@ import {
 } from '../components/Icons'
 
 type RankInput = { role: string } | { weights: number[] }
-
-function getSchemePersona(name: string): { title: string; desc: string } {
-  if (name.includes('A') || name.includes('高品质')) {
-    return { title: '品质旗舰', desc: '大层高·高得房率·工友施工难度大' }
-  }
-  if (name.includes('B') || name.includes('不合规')) {
-    return { title: '红线拦截', desc: '层高<3.0m·违反好房子建设硬指标' }
-  }
-  if (name.includes('C') || name.includes('MiC')) {
-    return { title: 'MiC 装配典范', desc: '装配率75%·极致标准化·工友施工最安全' }
-  }
-  if (name.includes('D') || name.includes('均衡')) {
-    return { title: '稳妥均衡型', desc: '常规现浇框剪·各项指标中规中矩' }
-  }
-  if (name.includes('E') || name.includes('被支配')) {
-    return { title: '劣势淘汰', desc: '各维度均落后于主流方案·无帕累托优势' }
-  }
-  return { title: '候选方案', desc: '多准则综合评价比选对象' }
-}
 
 function RankingList({ result }: { result: RankResponse }) {
   const container = useRef<HTMLDivElement>(null)
@@ -61,7 +43,6 @@ function RankingList({ result }: { result: RankResponse }) {
   }, [result])
   return <div ref={container} className="ranking-list" aria-label="方案排名">
     {result.ranking.map(s => {
-      const persona = getSchemePersona(s.scheme_name)
       return (
         <div className={'ranking-row ' + (s.rank === 1 ? 'ranking-first' : '')} key={s.scheme_id} data-scheme={s.scheme_id}>
           <span className="rank-number">{String(s.rank).padStart(2, '0')}</span>
@@ -69,7 +50,6 @@ function RankingList({ result }: { result: RankResponse }) {
             <div className="rank-line">
               <span>
                 <strong>{s.scheme_name}</strong>
-                <small className="persona-inline-tag">{persona.title}</small>
               </span>
               <span className="numeric">{s.closeness.toFixed(3)}</span>
             </div>
@@ -81,7 +61,7 @@ function RankingList({ result }: { result: RankResponse }) {
     {result.excluded.map(s => <div key={s.scheme_id} className="excluded-row">
       <div className="excluded-header">
         <IconBan size={15} style={{ color: 'var(--color-danger)' }} />
-        <strong>{s.scheme_name} · 未参与排名（红线排除）</strong>
+        <strong>{s.scheme_name} · 未参与排名</strong>
       </div>
       <p>{s.failed_rules.length ? '硬约束未通过：'+s.failed_rules.join('、') : s.reason}</p>
     </div>)}
@@ -135,13 +115,15 @@ export default function DashboardPage() {
   const topScheme = result?.ranking?.[0]
   const topEval = results.find(e => e.scheme_id === topScheme?.scheme_id)
   const excludedCount = result?.excluded?.length ?? 0
+  const topSummary = topEval ? evaluationSummary(topEval) : undefined
+  const participating = results.filter(e => result?.ranking.some(r => r.scheme_id === e.scheme_id))
 
   const roleNameMap: Record<string, string> = {
     government: '政府 / 保障房平台',
     developer: '开发企业',
     contractor: '施工总包 / 工友安全',
     resident: '业主 / 住户',
-    custom: '自定义专家权重',
+    custom: '自定义权重',
   }
 
   return <>
@@ -170,12 +152,12 @@ export default function DashboardPage() {
             <div className="executive-lead-title">
               <div className="executive-badge">
                 <IconAward size={16} />
-                <span>优先推荐方案</span>
+                <span>当前权重下的优先方案</span>
               </div>
               <h2>{topScheme.scheme_name}</h2>
               <div className="executive-submeta">
-                <Tag color="blue">当前视角：{roleNameMap[role] ?? role}</Tag>
-                <Tag color="green">综合排名第 01 名</Tag>
+                <Tag color="blue">结果视角：{roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role}</Tag>
+                <Tag color="green">综合排名第 {topScheme.rank} 名</Tag>
                 <span className="executive-metric">TOPSIS 贴近度：<strong>{topScheme.closeness.toFixed(4)}</strong></span>
               </div>
             </div>
@@ -193,13 +175,9 @@ export default function DashboardPage() {
             <div className="executive-point positive">
               <div className="point-icon"><IconCheck size={16} /></div>
               <div>
-                <strong>推荐主要优势</strong>
+                <strong>当前得分表现</strong>
                 <p>
-                  {topEval?.dimension_scores?.construction && topEval.dimension_scores.construction > 70
-                    ? `施工友好与工友安全突出（${topEval.dimension_scores.construction.toFixed(1)}分），得益于高标准化重复率与装配化设计，大幅减少现场高空危大工程。`
-                    : topEval?.dimension_scores?.quality && topEval.dimension_scores.quality > 80
-                    ? `居住品质表现优异（${topEval.dimension_scores.quality.toFixed(1)}分），层高与采光达标，保障居民得房率与居住舒适度。`
-                    : `在当前多准则权重设定下，各项指标均好性最强，整体逼近正理想解程度最高。`}
+                  {topSummary?.desc ?? '在当前候选集合与权重下，综合贴近度排名靠前。请结合参数与规则依据复核。'}
                 </p>
               </div>
             </div>
@@ -209,11 +187,7 @@ export default function DashboardPage() {
               <div>
                 <strong>需要接受的取舍</strong>
                 <p>
-                  {topScheme.scheme_name.includes('MiC') || topScheme.scheme_name.includes('C')
-                    ? '标准化模块套型使套内得房率（76%）略低于现浇剪力墙方案（82%），设计阶段需严格把控构件开模规格。'
-                    : topScheme.scheme_name.includes('A')
-                    ? '大悬挑与舒适空间带来更高的施工安全隐患与现场作业量，施工友好度得分有所牺牲。'
-                    : '该方案属于平衡折衷选型，未在单一维度达到极致峰值，需综合权衡各项投入。'}
+                  {scoreTradeoff(topEval, participating)}
                 </p>
               </div>
             </div>
@@ -222,9 +196,9 @@ export default function DashboardPage() {
               <div className="executive-point caution">
                 <div className="point-icon"><IconBan size={16} /></div>
                 <div>
-                  <strong>红线规则拦截提醒</strong>
+                  <strong>当前规则排除提醒</strong>
                   <p>
-                    {result.excluded.map(ex => `${ex.scheme_name}（${ex.failed_rules.length ? ex.failed_rules.join('、') : ex.reason}）`).join('；')} 已在规范合规初筛阶段被红线拦截，不参与综合选优。
+                    {result.excluded.map(ex => `${ex.scheme_name}（${ex.failed_rules.length ? ex.failed_rules.join('、') : ex.reason}）`).join('；')} 未参与此次排名。规则与专业出处仍需核定。
                   </p>
                 </div>
               </div>
@@ -266,7 +240,7 @@ export default function DashboardPage() {
           <div className="consistency">
             <span className="consistency-title">
               一致性 CR
-              <Tooltip title="一致性比率 CR < 0.1 表示专家的重要性判断矩阵自洽、无逻辑矛盾。">
+              <Tooltip title="一致性比率用于检查两两比较矩阵的一致程度，不验证角色偏好或专业规则的正确性。">
                 <IconHelpCircle size={13} style={{ marginLeft: 4, verticalAlign: 'middle' }} />
               </Tooltip>
             </span>
@@ -291,7 +265,7 @@ export default function DashboardPage() {
               lineStyle:{type: (e.compliance ?? []).some(c=>c.status==='failed' && c.severity==='error') ? 'dashed' : 'solid',width:2},
               itemStyle:{color:tokens.chart[i % tokens.chart.length]}, areaStyle:{opacity:.04}, symbolSize:4,
             })) }],
-          }} /><p className="chart-note">点击图例隐藏方案 · 不合规方案用虚线显示</p>
+          }} /><p className="chart-note">点击图例隐藏方案 · 硬约束未通过的方案用虚线显示</p>
         </section>
 
         <section className="panel rank-panel">
@@ -317,7 +291,7 @@ export default function DashboardPage() {
         const hardFailures = (e.compliance ?? []).filter(c=>c.status==='failed' && c.severity==='error')
         const incomplete = (e.compliance ?? []).some(c=>c.status==='insufficient_data')
         const entry = result?.ranking.find(r=>r.scheme_id===e.scheme_id)
-        const persona = getSchemePersona(e.scheme_name || e.scheme_id)
+        const persona = evaluationSummary(e)
         return <article className="panel scheme-card" key={e.scheme_id} style={{borderTopColor:tokens.chart[i%tokens.chart.length]}}>
           <div className="scheme-card-top">
             <h3>{e.scheme_name}</h3>
@@ -326,7 +300,7 @@ export default function DashboardPage() {
           <p className="scheme-persona-desc">{persona.desc}</p>
           <div className="scheme-badges">
             <Tag color={hardFailures.length ? 'error' : incomplete ? 'warning' : 'success'}>
-              {hardFailures.length ? '硬约束未通过' : incomplete ? '合规待补充' : '合规检查通过'}
+              {hardFailures.length ? '硬约束未通过' : incomplete ? '规则待补充' : '当前规则检查通过'}
             </Tag>
             {entry?.is_non_dominated && <Tag color="blue">非劣方案</Tag>}
           </div>
@@ -342,7 +316,7 @@ export default function DashboardPage() {
         <section className="panel">
           <div className="section-heading">
             <h2>权重敏感性分析</h2>
-            <Tooltip title="测试当某维度权重向上或向下变动 10%~20% 时，第一名是否保持稳定。若不变，说明推荐方案非常稳健。">
+            <Tooltip title="查看给定扰动范围内第一名是否变化。结果反映当前评分与权重假设，不证明方案的工程可靠性。">
               <span className="muted">扰动测试 · 格内为第一名 <IconHelpCircle size={14} style={{ verticalAlign: 'middle' }} /></span>
             </Tooltip>
           </div>
@@ -377,7 +351,7 @@ export default function DashboardPage() {
         </section>
       </div>}
 
-      {isMock && <p className="demo-note">【示例】仅用于交互开发。规则、角色矩阵与方案数据仍需专业组确认。</p>}
+      <p className="demo-note">{isMock ? '【示例】仅用于交互开发。' : ''}规则、角色矩阵与专业出处仍需核定；当前评分不作为工程安全或合规证明。</p>
     </>}
     <TraceDrawer open={!!trace} evaluation={trace?.evaluation} dimension={trace?.dimension} onClose={()=>setTrace(undefined)} />
   </>

@@ -5,7 +5,7 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = fileURLToPath(new URL('../../', import.meta.url))
-const output = process.env.T7_OUTPUT ?? path.join(root, 'docs/screenshots/t7')
+const output = process.env.T7_OUTPUT ?? path.join(root, 'backend/data/t7-ui')
 await mkdir(output, { recursive: true })
 const browser = await chromium.launch({ channel: process.env.T7_BROWSER ?? 'chrome', headless: true })
 const context = await browser.newContext({ viewport: { width:1366,height:768 },
@@ -80,7 +80,7 @@ try {
   await download.saveAs(path.join(output,'demo-report.md'))
   await page.setViewportSize({width:1920,height:1080})
   await capture('chat-1920')
-  await page.getByRole('link',{name:'项目总览',exact:false}).click()
+  await page.getByRole('navigation',{name:'主导航'}).getByRole('link',{name:'项目总览',exact:true}).click()
   await page.getByRole('button',{name:'新建项目',exact:true}).click()
   await page.getByRole('textbox',{name:'项目名称'}).fill('T7 新建导入验收')
   await page.getByRole('button',{name:'保存项目',exact:true}).click()

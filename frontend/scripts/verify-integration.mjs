@@ -105,12 +105,12 @@ try {
     const match = wire.match(/event: done\r?\ndata: (.+)/)
     assert.ok(match)
     finalReports.push(JSON.parse(match[1]))
-    if (request === 0) await writeFile(new URL('../../docs/evidence/integration-report.sse.txt', import.meta.url), wire)
+    if (request === 0) await writeFile(new URL('integration-report.sse.txt', output), wire)
   }
   assert.ok(finalReports.some(item => item.cached))
   assert.ok(finalReports.every(item => item.unverified_numbers.length === 0))
   assert.deepEqual(errors, [])
-  await writeFile(new URL('../../docs/evidence/integration-ui.json', import.meta.url), JSON.stringify({
+  await writeFile(new URL('integration-ui.json', output), JSON.stringify({
     mode: '真实 REST / SSE + FakeLLM，独立虚构数据库',
     flows: ['录入后评估', '不合规排除', 'scheme_order 敏感性映射', '滑杆排序', '评分溯源',
       '报告与下载', '缓存命中', '带历史的追问', 'What-if 新副本与原方案不变', '正式排序缓存隔离', '取消', '校验耗尽标红与 HTML 转义'],

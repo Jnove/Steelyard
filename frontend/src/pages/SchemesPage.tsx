@@ -10,25 +10,12 @@ import { schema } from '../api/schema'
 import type { FieldMetadata, Scheme, SchemeParams } from '../api/types'
 import SchemaForm, { orderedFields, RequestErrors } from '../components/SchemaForm'
 import type { SchemaFormValues } from '../components/SchemaForm'
-import { IconPlay, IconPlus, IconUpload, IconAlertTriangle, IconCheck } from '../components/Icons'
+import { IconPlay, IconPlus, IconUpload } from '../components/Icons'
+import { parameterSummary } from '../utils/scheme-presentation'
+import { tokens } from '../theme'
 
-function getSchemePersona(name: string): { title: string; color: string; desc: string } {
-  if (name.includes('A') || name.includes('高品质')) {
-    return { title: '品质旗舰', color: '#2563eb', desc: '大层高·高得房率·工友施工难度大' }
-  }
-  if (name.includes('B') || name.includes('不合规')) {
-    return { title: '红线待改', color: '#dc2626', desc: '层高2.9m低于国家好房子硬性标准' }
-  }
-  if (name.includes('C') || name.includes('MiC')) {
-    return { title: 'MiC 标杆', color: '#d97706', desc: '装配率75%·极致标准化·工友施工最安全' }
-  }
-  if (name.includes('D') || name.includes('均衡')) {
-    return { title: '综合均衡', color: '#059669', desc: '常规现浇框剪·各项指标中规中矩' }
-  }
-  if (name.includes('E') || name.includes('被支配')) {
-    return { title: '劣势方案', color: '#64748b', desc: '各维度均落后于主流方案·帕累托淘汰' }
-  }
-  return { title: '候选方案', color: 'var(--color-primary)', desc: '多准则方案比选对象' }
+function getSchemePresentation(scheme: Scheme) {
+  return { ...parameterSummary(scheme.params), color: tokens.chart[Math.abs(scheme.id - 1) % tokens.chart.length] }
 }
 
 function getGroupTag(group?: string) {
@@ -45,31 +32,12 @@ function displayValue(value: unknown, fieldName?: string) {
     return <Typography.Text type="secondary" aria-label="未填写">—</Typography.Text>
   }
   if (fieldName === 'floor_height' && typeof value === 'number') {
-    if (value < 3.0) {
-      return (
-        <span className="spec-val-danger">
-          <IconAlertTriangle size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />
-          {value.toFixed(1)} m (低于3.0m标准)
-        </span>
-      )
-    }
     return <span className="spec-val-good">{value.toFixed(1)} m</span>
   }
   if (fieldName === 'prefab_ratio_est' && typeof value === 'number') {
-    if (value >= 0.7) {
-      return (
-        <span className="spec-val-success">
-          <IconCheck size={13} style={{ verticalAlign: 'middle', marginRight: 4 }} />
-          {(value * 100).toFixed(0)}% (MiC极高装配)
-        </span>
-      )
-    }
     return `${(value * 100).toFixed(0)}%`
   }
   if (fieldName === 'std_floor_repeat' && typeof value === 'number') {
-    if (value >= 0.9) {
-      return <span className="spec-val-success">{(value * 100).toFixed(0)}% (极高重复率)</span>
-    }
     return `${(value * 100).toFixed(0)}%`
   }
   if (Array.isArray(value)) return value.map(String).join('、')
@@ -163,7 +131,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       ),
     },
     ...(schemeQuery.data ?? []).map((scheme) => {
-      const persona = getSchemePersona(scheme.name)
+      const persona = getSchemePresentation(scheme)
       return {
         title: () => (
           <div className="scheme-col-header" style={{ borderTopColor: persona.color }}>
@@ -183,12 +151,12 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       title: '方案名称',
       dataIndex: 'name',
       key: 'name',
-      render: (name: string) => {
-        const persona = getSchemePersona(name)
+      render: (name: string, scheme) => {
+        const persona = getSchemePresentation(scheme)
         return (
           <div className="scheme-name-cell">
             <strong style={{ color: persona.color }}>{name}</strong>
-            <Tag color={name.includes('B') ? 'error' : name.includes('C') ? 'gold' : 'blue'}>{persona.title}</Tag>
+            <Tag>{persona.title}</Tag>
           </div>
         )
       },
@@ -266,13 +234,13 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
           <div className="section-heading">
             <div>
               <h2>候选方案画像一览</h2>
-              <p className="section-subtext">5 套方案设计参数各有侧重，点击下方【开始评估】由确定性引擎计算四维得分与 TOPSIS 优选结果</p>
+              <p className="section-subtext">候选方案使用同一组参数；开始评估后，由引擎计算四维得分与排名。</p>
             </div>
             <span className="muted">共 {schemeQuery.data.length} 个候选方案</span>
           </div>
           <div className="schemes-gallery-grid">
             {schemeQuery.data.map((scheme) => {
-              const persona = getSchemePersona(scheme.name)
+              const persona = getSchemePresentation(scheme)
               const p = scheme.params
               return (
                 <div key={scheme.id} className="scheme-overview-card" style={{ borderTopColor: persona.color }}>
@@ -281,7 +249,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
                       <span className="persona-tag" style={{ color: persona.color, background: `${persona.color}15` }}>{persona.title}</span>
                       <h4>{scheme.name}</h4>
                     </div>
-                    <Button size="small" onClick={() => openEditor(scheme)}>编辑</Button>
+                    <Button size="small" disabled={!canEdit} onClick={() => openEditor(scheme)}>编辑</Button>
                   </div>
                   <p className="scheme-overview-desc">{persona.desc}</p>
                   <div className="scheme-spec-pills">
@@ -289,7 +257,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
                       <span>结构</span>
                       <strong>{p.structure_type || '—'}</strong>
                     </div>
-                    <div className={`spec-pill ${p.floor_height && p.floor_height < 3.0 ? 'danger-pill' : ''}`}>
+                    <div className="spec-pill">
                       <span>层高</span>
                       <strong>{p.floor_height ? `${p.floor_height}m` : '—'}</strong>
                     </div>
@@ -327,7 +295,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
         <div className="section-heading">
           <div>
             <h2 id="comparison-title">参数横向对照</h2>
-            <p className="section-subtext">每列代表一个方案 · 颜色药丸标识优势指标与合规隐患项</p>
+            <p className="section-subtext">每列代表一个方案 · 颜色区分参数分组，规则判定见评估看板。</p>
           </div>
           <span className="muted">同一尺度 · 精细对比</span>
         </div>
