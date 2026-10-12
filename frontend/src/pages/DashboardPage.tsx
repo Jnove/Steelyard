@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import { Alert, Button, Empty, Segmented, Skeleton, Slider, Tag } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
@@ -51,10 +51,27 @@ export default function DashboardPage() {
   const evaluated = useQuery({ queryKey: ['evaluation',id], queryFn: () => evaluation.get(id) })
   const roles = useQuery({ queryKey: ['roles',id], queryFn: () => ranking.roles(id) })
   useEffect(() => { const timer = setTimeout(() => setDebounced(request), 150); return () => clearTimeout(timer) }, [request])
+  // 内建四个角色 + 运行期自定义的权重模板（覆盖层）并列，两者都来自 /rank/roles。
+  const rolePresets = useMemo(
+    () => [...(roles.data?.roles ?? []), ...(roles.data?.custom_roles ?? [])],
+    [roles.data],
+  )
+  const roleOptions = useMemo(() => {
+    const fallback = [
+      { label:'政府',value:'government' },{ label:'开发企业',value:'developer' },
+      { label:'施工总包',value:'contractor' },{ label:'住户',value:'resident' },
+    ]
+    const presets = rolePresets.length
+      ? rolePresets
+          .filter(r => r.role)
+          .map(r => ({ label: (r.is_custom ? `${r.role_name}（自定义）` : r.role_name) ?? r.role ?? '', value: r.role as string }))
+      : fallback
+    return [...presets, { label:'自定义', value:'custom' }]
+  }, [rolePresets])
   useEffect(() => {
-    const preset = roles.data?.roles.find(r => r.role === role)
+    const preset = rolePresets.find(r => r.role === role)
     if (preset) setWeights(preset.weights)
-  }, [roles.data,role])
+  }, [rolePresets,role])
   useEffect(() => {
     setRole('government'); setRequest({ role: 'government' }); setDebounced({role:'government'})
     setTrace(undefined)
@@ -81,6 +98,9 @@ export default function DashboardPage() {
     results.find(e => e.scheme_id === inputOrder[index])?.scheme_name ?? '—'
   const error = evaluated.error ?? roles.error ?? ranked.error
   const ahp = result?.weights_used.ahp
+  const currentPreset = rolePresets.find(r => r.role === role)
+  // 拖滑杆直接赋权、或选中的是"只给权重"的模板时，没有一致性比率可查。
+  const directWeights = role === 'custom' || (currentPreset != null && currentPreset.ahp == null)
   return <>
     <div className="page-heading"><div><p className="eyebrow">02 / 多维决策</p><h1>方案对比看板</h1><p className="page-description">{project.data?.name ?? '正在加载项目'} · 调整关注重点，观察方案间的取舍</p></div>
       <div className="action-row"><Link to={'/projects/'+id+'/schemes'}><Button>编辑方案</Button></Link><Link to={'/projects/'+id+'/chat'}><Button type="primary">讨论与报告 →</Button></Link></div>
@@ -90,10 +110,7 @@ export default function DashboardPage() {
     {evaluated.isLoading && <Skeleton active paragraph={{ rows: 9 }} />}
     {evaluated.isSuccess && !results.length && <div className="panel"><Empty description="还没有评估结果，请先录入方案并开始评估"><Link to={'/projects/'+id+'/schemes'}><Button type="primary">去录入方案</Button></Link></Empty></div>}
     {!!results.length && <>
-      <div className="role-bar"><span className="muted">决策视角</span><Segmented value={role} onChange={roleChange} options={[
-        { label:'政府',value:'government' },{ label:'开发企业',value:'developer' },
-        { label:'施工总包',value:'contractor' },{ label:'住户',value:'resident' },{ label:'自定义',value:'custom' },
-      ]} /><span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span></div>
+      <div className="role-bar"><span className="muted">决策视角</span><Segmented value={role} onChange={roleChange} options={roleOptions} /><span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span></div>
       <div className="dashboard-top">
         <section className="panel weights-panel"><div className="section-heading"><h2>评价权重</h2><span className="muted">四维度</span></div>
           <p className="muted">拖动一个维度，其余按比例调整。</p>
@@ -102,8 +119,8 @@ export default function DashboardPage() {
             <Slider min={0} max={100} step={1} value={weights[i]*100} onChange={v => changeWeight(i,v)} ariaLabelForHandle={d.label+'权重'}
               tooltip={{ formatter: v => v?.toFixed(1)+'%' }} />
           </div>)}
-          <div className="consistency"><span>一致性 CR</span><strong>{role === 'custom' ? '—' : ahp?.cr.toFixed(4) ?? '—'}</strong>
-            <p>{role === 'custom' ? '直接赋权，无两两比较矩阵' : ahp ? ahp.consistent ? '一致性检验通过' : '模板需复核' : '等待角色模板'}</p></div>
+          <div className="consistency"><span>一致性 CR</span><strong>{directWeights ? '—' : ahp?.cr.toFixed(4) ?? '—'}</strong>
+            <p>{directWeights ? '直接赋权，无两两比较矩阵' : ahp ? ahp.consistent ? '一致性检验通过' : '模板需复核' : '等待角色模板'}</p></div>
           {result?.weights_used.consistency_warning && <Alert type="warning" message={result.weights_used.consistency_warning} />}
           {result?.weights_used.note && <p className="muted caption">{result.weights_used.note}</p>}
         </section>

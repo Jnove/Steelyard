@@ -11,7 +11,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-_META_KEYS = ("unit", "group", "label", "enum", "options", "essential")
+_META_KEYS = ("unit", "group", "label", "enum", "options", "essential", "extensible")
 
 
 def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
@@ -57,6 +57,11 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
             field_info["options"] = prop["options"]
         if prop.get("essential"):
             field_info["essential"] = True
+        if prop.get("extensible"):
+            # 开放枚举：允许使用者在界面上追加候选值（见 app/custom/options.py）。
+            # 只有显式声明 extensible 的字段才放行——像 structure_type 这样的封闭枚举
+            # 一旦多出规则不认识的取值，依赖它的规则会静默失效。
+            field_info["extensible"] = True
         fields.append(field_info)
 
     return {
