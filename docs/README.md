@@ -7,6 +7,7 @@
 | [规则编写指南](rules-guide.md) | 专业组编写、校验和提交 hard / metric 规则 |
 | [字段对照表](fields.generated.md) | 从元数据生成的输入字段、单位与派生量参考；不要手改 |
 | [活跃待办](open-items.md) | 专业规则、角色权重、T10 和真实模型的未决事项 |
+| [main 规则合并评审](main-yaml-merge-review.md) | GitHub main 的 `feat:更新四个yaml` 与专业规则分支的 weights / 编号冲突对照与处置建议 |
 | [前端使用与联调](frontend-mvp.md) | 真实 / 离线模式、数据边界、类型生成与浏览器验证 |
 | [SSE 协议](sse-events.md) | 报告与对话请求、工具事件、替换、缓存、取消和数字校验 |
 | [部署指南](deployment.md) | 服务器配置、发布、验收、回滚与运维 |

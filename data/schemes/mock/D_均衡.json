@@ -25,6 +25,7 @@
     "design_working_life": 50,
     "min_plan_width": 16,
     "concrete_grade": 30,
+    "irregularity_items": [],
     "daylight_factor": 0.028,
     "sunlight_hours": 2.8,
     "green_ratio": 0.40

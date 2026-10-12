@@ -70,6 +70,27 @@ RISK_FEATURE_OPTIONS: list[str] = [
     "复杂地质",
 ]
 
+#: 超限高层「不规则项」预设（建质〔2015〕67号 附件1）。
+#:
+#: 前 8 项对应表2（同时具有三项及以上即属规则性超限），后 4 项对应表4
+#: （具有任一项即属超限）。这些项本来就是**由结构计算判定的结果**（例如
+#: 扭转位移比 > 1.2 才算"扭转不规则"），所以做成声明式清单，而不是让使用者
+#: 去填十几个原始比值。表3 的"显著不规则"项另需核定，暂未纳入。
+IRREGULARITY_OPTIONS: list[str] = [
+    "扭转不规则",
+    "凹凸不规则",
+    "楼板不连续",
+    "刚度突变",
+    "尺寸突变",
+    "构件间断",
+    "承载力突变",
+    "局部不规则",
+    "高位转换",
+    "厚板转换",
+    "复杂连接",
+    "多重复杂",
+]
+
 # 表单分组顺序，前端按这个顺序展示 tab
 GROUP_ORDER: tuple[str, ...] = (
     "基本信息",
@@ -305,6 +326,16 @@ class SchemeParams(BaseModel):
         description="结构混凝土强度等级（填 C 后的数值，如 C30 填 30）",
         gt=0,
         json_schema_extra=_meta("MPa", "结构与造价", "混凝土强度等级"),
+    )
+    irregularity_items: list[str] = Field(
+        default_factory=list,
+        description="超限高层不规则项（结构计算判定后勾选，见建质〔2015〕67号 附件1）",
+        json_schema_extra=_meta(
+            "—",
+            "结构与造价",
+            "超限不规则项",
+            options=IRREGULARITY_OPTIONS,
+        ),
     )
 
     # —— 施工与安全 —— #

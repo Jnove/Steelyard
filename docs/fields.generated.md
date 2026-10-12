@@ -66,6 +66,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `design_working_life` | 结构设计工作年限 | 年 | integer | 否 | — |
 | `min_plan_width` | 最小平面宽度 | m | number | 否 | — |
 | `concrete_grade` | 混凝土强度等级 | MPa | number | 否 | — |
+| `irregularity_items` | 超限不规则项 | — | array<string> | 否 | 预设：扭转不规则 / 凹凸不规则 / 楼板不连续 / 刚度突变 / 尺寸突变 / 构件间断 / 承载力突变 / 局部不规则 / 高位转换 / 厚板转换 / 复杂连接 / 多重复杂；— |
 
 #### 施工与安全
 

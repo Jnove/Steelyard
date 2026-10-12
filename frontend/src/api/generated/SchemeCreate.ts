@@ -116,6 +116,10 @@ export type MinPlanWidth = number | null;
  */
 export type ConcreteGrade = number | null;
 /**
+ * 超限高层不规则项（结构计算判定后勾选，见建质〔2015〕67号 附件1）
+ */
+export type IrregularityItems = string[];
+/**
  * 标准层重复率
  */
 export type StdFloorRepeat = number | null;
@@ -179,6 +183,7 @@ export interface SchemeParams {
   design_working_life?: DesignWorkingLife;
   min_plan_width?: MinPlanWidth;
   concrete_grade?: ConcreteGrade;
+  irregularity_items?: IrregularityItems;
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;
   risk_features?: RiskFeatures;
