@@ -92,3 +92,26 @@
 截图：[桌面首屏](screenshots/liquid-glass-20261012/overview-1280.png)、[375px 首屏](screenshots/liquid-glass-20261012/overview-375.png)、[静态降级](screenshots/liquid-glass-20261012/static-fallback.png)。原始测试产物留在本工作树忽略的 `backend/data/liquid-glass-qa-549ab4a9/`；历史 `docs/evidence` 与 `screenshots/t7` 未被覆盖。
 
 本轮验证使用 Chrome 与 FakeLLM，没有验证 Safari / Firefox、真实大模型或专业规则的有效性。展台是概念体量；跨页面角色上下文和非专业用户独立体验仍见[活跃待办](open-items.md)。本轮交付到本地 main，暂不 push 或部署。
+
+## 第二轮细化：透明材质与方案特征
+
+2026-10-12，基于 `460bc4f` 继续细化用户提出的两项问题：
+
+- 玻璃基础白色填充从 30% 降至 12%，blur 从 22px 降至 12px；通过轻渐变反光、窄边缘高光和原有浮层投影保持轮廓，导航选中态与控制按钮同步减轻白底。表格、表单和报告的阅读面仍保留较厚材质。
+- 建筑上下观察改成相机绕竖直 Y 轴移动，不再旋转整个楼体，也不再通过压缩楼体高度做入场。自动取景覆盖底座和屋顶，SVG 降级同步使用动态 viewBox。
+- 增加独立四面窗洞、结构分格、屋面边缘、小体块和入口；用 Three.js 内置 RoomEnvironment / PMREM 生成本地摄影棚反射，没有下载 HDR 或建筑模型。初始化中途失败和路由退出都会释放环境纹理、渲染目标与实例缓冲。
+- 造型特征来自实际结构类型、窗墙比与已录入的“大悬挑”特征，不按 A～E 名称硬编码。分格节奏、屋顶细节与外挑尺寸仅用于概念表达，不反推真实户型、工程设计或安全结论；浮层明确标为“概念造型”。
+
+当前示例方案的展示特征：
+
+| 方案 | 造型依据与表达 |
+| --- | --- |
+| A 高品质 | 剪力墙窗洞立面；较大的南向窗面与外挑层带。 |
+| B 不合规 | 剪力墙窗洞立面；使用自己的窗墙比、17 层与 2.9m 层高，保持简洁楼体。 |
+| C MiC 高标准化 | 规则模块分格与拼接线，表达 MiC 的重复单元节奏。 |
+| D 均衡 | 框架-剪力墙对应较突出的竖向构架与层间分格。 |
+| E 被支配 | 框架网格与已录入的外挑层带，窗面使用自己的窗墙比。 |
+
+第二轮验收：57 项测试、类型检查及 `/steelyard/` 生产构建通过；Chrome 的生产文件验收确认五个实际渲染画面不同、拖动 / Home 复位正常、静置无持续绘制，320 / 375 / 414 / 768px 无页面横向溢出或浮层遮挡。WebGL context loss 可降级并继续切换；离线完整功能流程通过。只读复审检查了 12 栋 × 48 层的 SVG 边界、南 / 东窗面独立缺参，以及重复切换和路由退出的 GPU 资源回收。
+
+更新后的首屏截图仍见上方链接；五个方案的展台截图：[A](screenshots/liquid-glass-20261012/scheme-a.png)、[B](screenshots/liquid-glass-20261012/scheme-b.png)、[C](screenshots/liquid-glass-20261012/scheme-c.png)、[D](screenshots/liquid-glass-20261012/scheme-d.png)、[E](screenshots/liquid-glass-20261012/scheme-e.png)。第二轮原始记录为忽略目录内的 `refinement-qa.json` 与 `mock-refined/`。本轮没有重跑真实大模型或专业规则核定。

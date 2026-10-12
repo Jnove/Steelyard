@@ -43,6 +43,7 @@ export default function BuildingShowcase({ schemes, pending, failed, onRetry }: 
     {selected && <div className="stage-float glass-surface" aria-live="polite">
       <div className="stage-float-label">当前展示 <span>{params?.structure_type || '结构待录入'}</span></div>
       <strong title={selected.name}>{selected.name}</strong>
+      <p className="stage-character">{model.character}</p>
       <dl className="stage-specs"><div><dt>楼栋</dt><dd>{params?.buildings ?? '—'}<small> 栋</small></dd></div><div><dt>层数</dt><dd>{params?.floors ?? '—'}<small> 层</small></dd></div><div><dt>层高</dt><dd>{params?.floor_height ?? '—'}<small> m</small></dd></div></dl>
     </div>}
     {!!schemes.length && <div className="stage-switcher glass-surface" role="group" aria-label="切换展示方案">{schemes.map((scheme, index) => <button type="button" key={scheme.id} aria-pressed={scheme.id === selected?.id} aria-label={`展示方案 ${scheme.name}`} title={scheme.name} onClick={() => setSelectedId(scheme.id)}><span>{String(index + 1).padStart(2, '0')}</span><span>{scheme.name}</span></button>)}</div>}
