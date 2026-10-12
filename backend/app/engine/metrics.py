@@ -169,6 +169,18 @@ DERIVED_QUANTITIES: tuple[DerivedQuantity, ...] = (
         compute=lambda ns: _div(_mul(ns.get("footprint"), ns.get("floors")), ns.get("gfa")),
         note="基底与层数对总建筑面积的利用率，越接近 1 越理想。",
     ),
+    DerivedQuantity(
+        name="height_width_ratio",
+        label="高宽比",
+        unit="—",
+        formula="floors * floor_height / min_plan_width",
+        deps=("floors", "floor_height", "min_plan_width"),
+        # 直接用原始字段算，不依赖同为派生量的 height，避免派生量之间的顺序耦合。
+        compute=lambda ns: _div(
+            _mul(ns.get("floors"), ns.get("floor_height")), ns.get("min_plan_width")
+        ),
+        note="建筑总高与最小平面宽度之比；JGJ 3—2010 第3.3.2条 表3.3.2 给出上限，用词为「不宜」。",
+    ),
 )
 
 #: 按名字索引，方便按字段名取中文名与公式。

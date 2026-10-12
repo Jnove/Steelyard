@@ -102,11 +102,12 @@ class TestSchemeJson:
         assert payload["params"]["floor_height"] == 2.9
         assert payload["params"]["floor_height"] < 3.0
 
-    def test_e_worse_than_d_on_every_numeric(self) -> None:
-        """E 方案的数值字段都朝"更差"方向偏离 D，演示帕累托支配。
+    def test_e_not_better_than_d_on_every_numeric(self) -> None:
+        """E 方案的数值字段都不优于 D，演示帕累托支配。
 
-        对每对 (D, E) 的同名字段，给出预期的"更差"含义；构造性反例无法用
-        通用公式表达，所以在脚本里硬编码约定。
+        对每对 (D, E) 的同名字段，给出预期的"不更优"含义；构造性反例无法用
+        通用公式表达，所以在脚本里硬编码约定。帕累托支配只要求 E 在各个维度上
+        不优于 D、且至少一项严格更差，所以这里用 ``<=`` 而不是 ``<``。
         """
         d = json.loads((MOCK_DIR / "D_均衡.json").read_text(encoding="utf-8"))["params"]
         e = json.loads((MOCK_DIR / "E_被支配.json").read_text(encoding="utf-8"))["params"]
@@ -118,7 +119,10 @@ class TestSchemeJson:
         assert e["window_wall_ratio"]["南"] < d["window_wall_ratio"]["南"]
         assert e["std_floor_repeat"] < d["std_floor_repeat"]
         assert e["prefab_ratio_est"] < d["prefab_ratio_est"]
-        assert e["elevators_per_unit"] < d["elevators_per_unit"]
+        # 电梯数：E 与 D 持平。12 层及以上每单元至少 2 台是 GB 55038—2025
+        # 第4.2.4条的强制下限，不能再拿来当"更差"的区分项（少一台会被硬约束
+        # 直接踢出排名，就演示不出支配关系了）。
+        assert e["elevators_per_unit"] <= d["elevators_per_unit"]
 
         # 构件种类：种类越多越不利（更非标），所以 E 应该 > D
         assert e["component_types"] > d["component_types"]

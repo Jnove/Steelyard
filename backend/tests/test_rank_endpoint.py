@@ -109,10 +109,14 @@ def test_weight_sources_and_index_mapping(
     assert len(body["sensitivity"]["cells"]) == 16
     assert len(body["sensitivity"]["flip_points"]) == 4
     assert sum(body["weights_used"]["weights"]) == pytest.approx(1)
-    if "weights" in payload:
-        assert body["weights_used"]["ahp"] is None
+    ahp = body["weights_used"]["ahp"]
+    if "pairwise_matrix" in payload:
+        assert ahp is not None and ahp["cr"] < 0.1
+    elif "weights" in payload:
+        assert ahp is None
     else:
-        assert body["weights_used"]["ahp"]["cr"] < 0.1
+        # 角色模板：矩阵写法才有 CR；weights 写法（rules-guide 认可的另一种写法）为 None。
+        assert ahp is None or ahp["cr"] < 0.1
 
 
 def test_compliance_filter_and_override(client: TestClient, engine: Engine) -> None:

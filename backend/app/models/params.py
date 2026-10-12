@@ -25,6 +25,39 @@ STRUCTURE_TYPES: tuple[str, ...] = ("剪力墙", "框架-剪力墙", "框架", "
 ClimateZone = Literal["严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和"]
 CLIMATE_ZONES: tuple[str, ...] = ("严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和")
 
+SeismicIntensity = Literal["6度(0.05g)", "7度(0.10g)"]
+"""抗震设防烈度。
+
+只保留这两档，是为了**保证每个取值都有对应的规则**：浙江全省最高设防烈度为
+7 度（0.10g）（浙江省《超限高层建筑工程抗震设计导则》条文说明），
+所以这两档已覆盖浙江全部地块。将来若服务省外项目，再一起补规则。
+"""
+SEISMIC_INTENSITIES: tuple[str, ...] = ("6度(0.05g)", "7度(0.10g)")
+
+MiCSystem = Literal[
+    "模块化框架结构",
+    "模块化全预制剪力墙结构",
+    "模块化叠合剪力墙结构",
+    "模块化箱模框架结构",
+    "模块化箱模框架-剪力墙结构",
+    "模块化箱模剪力墙结构",
+]
+"""MiC（混凝土模块化建筑）的体系类型。
+
+取值直接对应浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）
+第6.1.8条 表6.1.8「模块化建筑的最大适用高度」的行：MiC 的最大适用高度按
+体系类型分档，所以不区分体系就没法判。表中另有「部分框支剪力墙」两行，
+需要框支层信息，暂未纳入。
+"""
+MIC_SYSTEMS: tuple[str, ...] = (
+    "模块化框架结构",
+    "模块化全预制剪力墙结构",
+    "模块化叠合剪力墙结构",
+    "模块化箱模框架结构",
+    "模块化箱模框架-剪力墙结构",
+    "模块化箱模剪力墙结构",
+)
+
 # 风险特征预设选项（用户可自由补充自定义项）
 RISK_FEATURE_OPTIONS: list[str] = [
     "大悬挑",
@@ -35,6 +68,27 @@ RISK_FEATURE_OPTIONS: list[str] = [
     "不规则建筑",
     "超限构件",
     "复杂地质",
+]
+
+#: 超限高层「不规则项」预设（建质〔2015〕67号 附件1）。
+#:
+#: 前 8 项对应表2（同时具有三项及以上即属规则性超限），后 4 项对应表4
+#: （具有任一项即属超限）。这些项本来就是**由结构计算判定的结果**（例如
+#: 扭转位移比 > 1.2 才算"扭转不规则"），所以做成声明式清单，而不是让使用者
+#: 去填十几个原始比值。表3 的"显著不规则"项另需核定，暂未纳入。
+IRREGULARITY_OPTIONS: list[str] = [
+    "扭转不规则",
+    "凹凸不规则",
+    "楼板不连续",
+    "刚度突变",
+    "尺寸突变",
+    "构件间断",
+    "承载力突变",
+    "局部不规则",
+    "高位转换",
+    "厚板转换",
+    "复杂连接",
+    "多重复杂",
 ]
 
 # 表单分组顺序，前端按这个顺序展示 tab
@@ -105,6 +159,11 @@ class ProjectParams(BaseModel):
         description="建筑气候分区",
         json_schema_extra=_meta("—", "基本信息", "气候分区", enum=list(CLIMATE_ZONES)),
     )
+    seismic_intensity: SeismicIntensity | None = Field(
+        None,
+        description="抗震设防烈度（浙江全省最高为 7 度 0.10g）",
+        json_schema_extra=_meta("—", "基本信息", "抗震设防烈度", enum=list(SEISMIC_INTENSITIES)),
+    )
 
     @field_validator("density_max", mode="before")
     @classmethod
@@ -134,6 +193,11 @@ class SchemeParams(BaseModel):
         json_schema_extra=_meta(
             "—", "基本信息", "结构体系", enum=list(STRUCTURE_TYPES), essential=True
         ),
+    )
+    mic_system: MiCSystem | None = Field(
+        None,
+        description="MiC 体系类型（结构体系选 MiC 时填写）",
+        json_schema_extra=_meta("—", "基本信息", "MiC 体系类型", enum=list(MIC_SYSTEMS)),
     )
     units: int | None = Field(
         None,
@@ -183,8 +247,33 @@ class SchemeParams(BaseModel):
     elevators_per_unit: int | None = Field(
         None,
         description="每单元电梯数",
-        gt=0,
+        ge=0,
         json_schema_extra=_meta("台", "居住品质", "电梯数/单元"),
+    )
+    highest_occupied_floor: int | None = Field(
+        None,
+        ge=1,
+        description="最高住宅入户层的层序，不得用含非住宅层的总层数代替",
+        json_schema_extra=_meta("层", "居住品质", "最高住宅入户层"),
+    )
+    highest_occupied_floor_height: float | None = Field(
+        None,
+        ge=0,
+        description="最高住宅入户层楼面距室外设计地面的实际高度，不是建筑总高",
+        json_schema_extra=_meta("m", "居住品质", "最高入户层楼面高度"),
+    )
+    daylight_factor: float | None = Field(
+        None,
+        description="卧室、起居室的采光系数（小数，0.022 即 2.2%）",
+        ge=0,
+        le=1,
+        json_schema_extra=_meta("—", "居住品质", "采光系数"),
+    )
+    sunlight_hours: float | None = Field(
+        None,
+        description="日照标准日的日照时数（杭州为大寒日）",
+        gt=0,
+        json_schema_extra=_meta("h", "居住品质", "日照时数"),
     )
 
     # —— 结构与造价 —— #
@@ -224,6 +313,42 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("m³", "结构与造价", "建筑体积"),
     )
+    slab_thickness: float | None = Field(
+        None,
+        description="钢筋混凝土结构实心楼板厚度",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "楼板厚度"),
+    )
+    design_working_life: int | None = Field(
+        None,
+        description="结构设计工作年限",
+        gt=0,
+        json_schema_extra=_meta("年", "结构与造价", "结构设计工作年限"),
+    )
+    min_plan_width: float | None = Field(
+        None,
+        description="楼栋最小平面宽度（用于算高宽比；一般取进深方向的最小宽度）",
+        gt=0,
+        json_schema_extra=_meta("m", "结构与造价", "最小平面宽度"),
+    )
+    concrete_grade: float | None = Field(
+        None,
+        description="结构混凝土强度等级（填 C 后的数值，如 C30 填 30）",
+        gt=0,
+        json_schema_extra=_meta("MPa", "结构与造价", "混凝土强度等级"),
+    )
+    irregularity_items: list[str] | None = Field(
+        None,
+        description="超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
+        json_schema_extra=_meta(
+            "—",
+            "结构与造价",
+            "超限不规则项",
+            options=IRREGULARITY_OPTIONS,
+            allow_custom_options=False,
+            empty_means_unknown=True,
+        ),
+    )
 
     # —— 施工与安全 —— #
     std_floor_repeat: float | None = Field(
@@ -258,6 +383,23 @@ class SchemeParams(BaseModel):
         le=1,
         json_schema_extra=_meta("—", "绿色低碳", "预估装配率"),
     )
+    green_ratio: float | None = Field(
+        None,
+        description="绿地率（绿地面积 / 用地面积）",
+        ge=0,
+        le=1,
+        json_schema_extra=_meta("—", "绿色低碳", "绿地率"),
+    )
+
+    @field_validator("irregularity_items")
+    @classmethod
+    def _validate_irregularity_items(cls, value: list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        unknown = sorted(set(value) - set(IRREGULARITY_OPTIONS))
+        if unknown:
+            raise ValueError(f"超限不规则项含未支持的选项：{'、'.join(unknown)}；请选择预设项")
+        return list(dict.fromkeys(value))
 
     @field_validator(
         "inner_area_ratio",
@@ -265,6 +407,8 @@ class SchemeParams(BaseModel):
         "window_floor_ratio",
         "std_floor_repeat",
         "prefab_ratio_est",
+        "daylight_factor",
+        "green_ratio",
         mode="before",
     )
     @classmethod
@@ -290,7 +434,5 @@ class SchemeParams(BaseModel):
         if self.units is not None and self.unit_mix:
             total = sum(self.unit_mix.values())
             if total != self.units:
-                raise ValueError(
-                    f"户型配比合计 {total} 户与总户数 {self.units} 不一致"
-                )
+                raise ValueError(f"户型配比合计 {total} 户与总户数 {self.units} 不一致")
         return self

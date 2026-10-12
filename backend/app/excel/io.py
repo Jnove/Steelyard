@@ -295,6 +295,8 @@ def _value_to_cell(value: Any) -> Any:
     if isinstance(value, dict):
         return ",".join(f"{k}: {_fmt_scalar(v)}" for k, v in value.items())
     if isinstance(value, list):
+        if not value:
+            return "[]"  # 与空单元格（未填写）区分，支持声明已核对无不规则项。
         return ",".join(_fmt_scalar(v) for v in value)
     return value
 
@@ -539,6 +541,8 @@ def _parse_list(value: Any, label: str) -> list[str]:
     if not isinstance(value, str):
         raise ValueError(f"【{label}】应为逗号分隔的列表，实际为 {type(value).__name__}")
     text = value.strip()
+    if text == "[]":
+        return []
     if not text:
         return []
     parts = re.split(r"[，,；;]", text)

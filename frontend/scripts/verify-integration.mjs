@@ -26,6 +26,10 @@ try {
   await page.getByRole('button', { name: '开始评估', exact: true }).click()
   await expect(page.locator('.ranking-row')).toHaveCount(4)
   await expect(page.locator('.excluded-row')).toContainText('B 不合规')
+  await page.getByText('设计单位', { exact: true }).click()
+  await expect(page.locator('.weight-label').first()).toContainText('28.6')
+  await expect(page.getByText('直接赋权，无两两比较矩阵', { exact: true })).toBeVisible()
+  await page.getByText('政府', { exact: true }).click()
   const response = await page.request.post(base + '/api/projects/1/rank', { data: { role: 'government' } })
   assert.equal(response.status(), 200)
   const rank = await response.json()
@@ -34,7 +38,7 @@ try {
   await expect(page.locator('.sensitivity-table tbody tr').first().locator('td').first()).toContainText(leaderName)
   await page.getByRole('slider', { name: '居住品质权重' }).focus()
   await page.keyboard.press('End')
-  await expect(page.locator('.ranking-row').first()).toContainText('E 被支配')
+  await expect(page.locator('.ranking-row').first()).toContainText('A 高品质')
   await page.getByText('政府', { exact: true }).click()
   await expect(page.locator('.ranking-row').first()).toContainText('C MiC 高标准化')
   await page.locator('.score-button').first().click()
@@ -105,12 +109,12 @@ try {
     const match = wire.match(/event: done\r?\ndata: (.+)/)
     assert.ok(match)
     finalReports.push(JSON.parse(match[1]))
-    if (request === 0) await writeFile(new URL('../../docs/evidence/integration-report.sse.txt', import.meta.url), wire)
+    if (request === 0) await writeFile(new URL('integration-report.sse.txt', output), wire)
   }
   assert.ok(finalReports.some(item => item.cached))
   assert.ok(finalReports.every(item => item.unverified_numbers.length === 0))
   assert.deepEqual(errors, [])
-  await writeFile(new URL('../../docs/evidence/integration-ui.json', import.meta.url), JSON.stringify({
+  await writeFile(new URL('integration-ui.json', output), JSON.stringify({
     mode: '真实 REST / SSE + FakeLLM，独立虚构数据库',
     flows: ['录入后评估', '不合规排除', 'scheme_order 敏感性映射', '滑杆排序', '评分溯源',
       '报告与下载', '缓存命中', '带历史的追问', 'What-if 新副本与原方案不变', '正式排序缓存隔离', '取消', '校验耗尽标红与 HTML 转义'],

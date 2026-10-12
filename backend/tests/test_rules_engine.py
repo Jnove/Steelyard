@@ -474,8 +474,21 @@ def test_loads_repo_seed_rules() -> None:
 
     loaded = load_rules_from_dir(default_rules_dir())
     assert loaded.rules, "rules/ 下应当有种子规则"
-    # 种子规则的 source 全是 TODO，加载允许通过但必须被标出来。
-    assert len(loaded.todo_source_ids) == len(loaded.rules)
+
+
+def test_todo_source_ids_are_reported(tmp_path: Path) -> None:
+    """``source`` 里挂着 TODO 的规则必须被标出来（加载允许，但上层要能提示）。
+
+    2026-10 专业组核定后种子规则已无 TODO，所以用合成规则覆盖这个机制，
+    免得测试和种子规则的占位状态绑死。
+    """
+    (tmp_path / "compliance.yaml").write_text(
+        '- id: C-01\n  name: 占位规则\n  type: hard\n'
+        '  check: "floor_height >= 3.0"\n  source: "TODO(专业组)：待补"\n',
+        encoding="utf-8",
+    )
+    loaded = load_rules_from_dir(tmp_path)
+    assert loaded.todo_source_ids == ("C-01",)
 
 
 def test_skips_underscore_and_weights_files(tmp_path: Path) -> None:

@@ -189,8 +189,18 @@ def test_render_format_matches_spec() -> None:
     assert " — 怎么改：" in rendered
 
 
-def test_warning_rendered_as_warning() -> None:
-    path = REPO_RULES / "compliance.yaml"
+def test_warning_rendered_as_warning(tmp_path: Path) -> None:
+    """警告要渲染成「警告」而不是「错误」。
+
+    用合成文件而不是 ``rules/compliance.yaml``：种子规则的 source 已在 2026-10
+    由专业组核定完毕，里面不再有 TODO 可供断言。
+    """
+    path = tmp_path / "compliance.yaml"
+    path.write_text(
+        '- id: C-01\n  name: 占位规则\n  type: hard\n'
+        '  check: "floor_height >= 3.0"\n  source: "TODO(专业组)：待补"\n',
+        encoding="utf-8",
+    )
     todo = [i for i in check_rules.check_file(path).issues if i.code == "SOURCE_TODO"][0]
     assert todo.render(path).startswith("警告  ")
 

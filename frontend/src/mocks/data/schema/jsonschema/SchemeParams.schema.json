@@ -39,6 +39,38 @@
       "title": "Structure Type",
       "unit": "—"
     },
+    "mic_system": {
+      "anyOf": [
+        {
+          "enum": [
+            "模块化框架结构",
+            "模块化全预制剪力墙结构",
+            "模块化叠合剪力墙结构",
+            "模块化箱模框架结构",
+            "模块化箱模框架-剪力墙结构",
+            "模块化箱模剪力墙结构"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "MiC 体系类型（结构体系选 MiC 时填写）",
+      "enum": [
+        "模块化框架结构",
+        "模块化全预制剪力墙结构",
+        "模块化叠合剪力墙结构",
+        "模块化箱模框架结构",
+        "模块化箱模框架-剪力墙结构",
+        "模块化箱模剪力墙结构"
+      ],
+      "group": "基本信息",
+      "label": "MiC 体系类型",
+      "title": "Mic System",
+      "unit": "—"
+    },
     "units": {
       "anyOf": [
         {
@@ -169,7 +201,7 @@
     "elevators_per_unit": {
       "anyOf": [
         {
-          "exclusiveMinimum": 0,
+          "minimum": 0,
           "type": "integer"
         },
         {
@@ -182,6 +214,75 @@
       "label": "电梯数/单元",
       "title": "Elevators Per Unit",
       "unit": "台"
+    },
+    "highest_occupied_floor": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "最高住宅入户层的层序，不得用含非住宅层的总层数代替",
+      "group": "居住品质",
+      "label": "最高住宅入户层",
+      "title": "Highest Occupied Floor",
+      "unit": "层"
+    },
+    "highest_occupied_floor_height": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "最高住宅入户层楼面距室外设计地面的实际高度，不是建筑总高",
+      "group": "居住品质",
+      "label": "最高入户层楼面高度",
+      "title": "Highest Occupied Floor Height",
+      "unit": "m"
+    },
+    "daylight_factor": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "卧室、起居室的采光系数（小数，0.022 即 2.2%）",
+      "group": "居住品质",
+      "label": "采光系数",
+      "title": "Daylight Factor",
+      "unit": "—"
+    },
+    "sunlight_hours": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "日照标准日的日照时数（杭州为大寒日）",
+      "group": "居住品质",
+      "label": "日照时数",
+      "title": "Sunlight Hours",
+      "unit": "h"
     },
     "gfa": {
       "anyOf": [
@@ -287,6 +388,109 @@
       "title": "Volume",
       "unit": "m³"
     },
+    "slab_thickness": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "钢筋混凝土结构实心楼板厚度",
+      "group": "结构与造价",
+      "label": "楼板厚度",
+      "title": "Slab Thickness",
+      "unit": "mm"
+    },
+    "design_working_life": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "结构设计工作年限",
+      "group": "结构与造价",
+      "label": "结构设计工作年限",
+      "title": "Design Working Life",
+      "unit": "年"
+    },
+    "min_plan_width": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "楼栋最小平面宽度（用于算高宽比；一般取进深方向的最小宽度）",
+      "group": "结构与造价",
+      "label": "最小平面宽度",
+      "title": "Min Plan Width",
+      "unit": "m"
+    },
+    "concrete_grade": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "结构混凝土强度等级（填 C 后的数值，如 C30 填 30）",
+      "group": "结构与造价",
+      "label": "混凝土强度等级",
+      "title": "Concrete Grade",
+      "unit": "MPa"
+    },
+    "irregularity_items": {
+      "allow_custom_options": false,
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
+      "empty_means_unknown": true,
+      "group": "结构与造价",
+      "label": "超限不规则项",
+      "options": [
+        "扭转不规则",
+        "凹凸不规则",
+        "楼板不连续",
+        "刚度突变",
+        "尺寸突变",
+        "构件间断",
+        "承载力突变",
+        "局部不规则",
+        "高位转换",
+        "厚板转换",
+        "复杂连接",
+        "多重复杂"
+      ],
+      "title": "Irregularity Items",
+      "unit": "—"
+    },
     "std_floor_repeat": {
       "anyOf": [
         {
@@ -359,6 +563,24 @@
       "group": "绿色低碳",
       "label": "预估装配率",
       "title": "Prefab Ratio Est",
+      "unit": "—"
+    },
+    "green_ratio": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "绿地率（绿地面积 / 用地面积）",
+      "group": "绿色低碳",
+      "label": "绿地率",
+      "title": "Green Ratio",
       "unit": "—"
     }
   },

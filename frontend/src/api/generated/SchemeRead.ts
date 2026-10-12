@@ -9,6 +9,28 @@ export type Name = string;
 export type StructureType = (("剪力墙" | "框架-剪力墙" | "框架" | "钢结构" | "MiC") | null) &
   ("剪力墙" | "框架-剪力墙" | "框架" | "钢结构" | "MiC");
 /**
+ * MiC 体系类型（结构体系选 MiC 时填写）
+ */
+export type MicSystem = (
+  | (
+      | "模块化框架结构"
+      | "模块化全预制剪力墙结构"
+      | "模块化叠合剪力墙结构"
+      | "模块化箱模框架结构"
+      | "模块化箱模框架-剪力墙结构"
+      | "模块化箱模剪力墙结构"
+    )
+  | null
+) &
+  (
+    | "模块化框架结构"
+    | "模块化全预制剪力墙结构"
+    | "模块化叠合剪力墙结构"
+    | "模块化箱模框架结构"
+    | "模块化箱模框架-剪力墙结构"
+    | "模块化箱模剪力墙结构"
+  );
+/**
  * 总户数
  */
 export type Units = number | null;
@@ -45,6 +67,22 @@ export type WindowWallRatio = {
  */
 export type ElevatorsPerUnit = number | null;
 /**
+ * 最高住宅入户层的层序，不得用含非住宅层的总层数代替
+ */
+export type HighestOccupiedFloor = number | null;
+/**
+ * 最高住宅入户层楼面距室外设计地面的实际高度，不是建筑总高
+ */
+export type HighestOccupiedFloorHeight = number | null;
+/**
+ * 卧室、起居室的采光系数（小数，0.022 即 2.2%）
+ */
+export type DaylightFactor = number | null;
+/**
+ * 日照标准日的日照时数（杭州为大寒日）
+ */
+export type SunlightHours = number | null;
+/**
  * 总建筑面积
  */
 export type Gfa = number | null;
@@ -69,6 +107,26 @@ export type EnvelopeArea = number | null;
  */
 export type Volume = number | null;
 /**
+ * 钢筋混凝土结构实心楼板厚度
+ */
+export type SlabThickness = number | null;
+/**
+ * 结构设计工作年限
+ */
+export type DesignWorkingLife = number | null;
+/**
+ * 楼栋最小平面宽度（用于算高宽比；一般取进深方向的最小宽度）
+ */
+export type MinPlanWidth = number | null;
+/**
+ * 结构混凝土强度等级（填 C 后的数值，如 C30 填 30）
+ */
+export type ConcreteGrade = number | null;
+/**
+ * 超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）
+ */
+export type IrregularityItems = string[] | null;
+/**
  * 标准层重复率
  */
 export type StdFloorRepeat = number | null;
@@ -84,6 +142,10 @@ export type RiskFeatures = string[];
  * 预估装配率
  */
 export type PrefabRatioEst = number | null;
+/**
+ * 绿地率（绿地面积 / 用地面积）
+ */
+export type GreenRatio = number | null;
 export type IsWhatif = boolean;
 export type ParentId = number | null;
 export type CreatedAt = string;
@@ -107,6 +169,7 @@ export interface SchemeRead {
  */
 export interface SchemeParams {
   structure_type?: StructureType;
+  mic_system?: MicSystem;
   units?: Units;
   unit_mix?: UnitMix;
   floor_height?: FloorHeight;
@@ -115,14 +178,24 @@ export interface SchemeParams {
   window_floor_ratio?: WindowFloorRatio;
   window_wall_ratio?: WindowWallRatio;
   elevators_per_unit?: ElevatorsPerUnit;
+  highest_occupied_floor?: HighestOccupiedFloor;
+  highest_occupied_floor_height?: HighestOccupiedFloorHeight;
+  daylight_factor?: DaylightFactor;
+  sunlight_hours?: SunlightHours;
   gfa?: Gfa;
   footprint?: Footprint;
   buildings?: Buildings;
   floors?: Floors;
   envelope_area?: EnvelopeArea;
   volume?: Volume;
+  slab_thickness?: SlabThickness;
+  design_working_life?: DesignWorkingLife;
+  min_plan_width?: MinPlanWidth;
+  concrete_grade?: ConcreteGrade;
+  irregularity_items?: IrregularityItems;
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;
   risk_features?: RiskFeatures;
   prefab_ratio_est?: PrefabRatioEst;
+  green_ratio?: GreenRatio;
 }
