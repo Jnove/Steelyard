@@ -6,6 +6,7 @@
 2. 给每个点标出方案名称；使用双环表达四维非劣结果，避免单靠颜色区分。
 3. 双方案比较使用一致刻度、两个端点及带符号的分差，并配一段只复述已计算结果的短解释。
 4. 放大正文与关键数字，减少装饰眉题；完整公式放入可展开区域，保留查看证据的入口。
+5. 按 Hallmark 的交互参考重做查询组件：在当前区域查看依据、保持选择和滚动位置、提供键盘及触摸等效操作；改变状态时给出就地反馈。
 
 ## 来源与适用范围
 
@@ -18,6 +19,7 @@
 | [AntV Chart Visualization Skills](https://github.com/antvis/chart-visualization-skills) | 按数据关系选择图表 | 使用它的图表选择思路；不调用该集合中 `chart-visualization` 的外部图片 API |
 | [AntV S2](https://github.com/antvis/S2) | 交叉表的信息结构与交互 | 当前仅五套方案、四个维度，保留轻量矩阵即可；指标扩充后再评估 |
 | [React Compare Slider](https://github.com/nerdyman/react-compare-slider) | 双图拖动比较 | 适合以后已有图纸或效果图时使用，当前指标数据展示不引入 |
+| [Hallmark](https://github.com/Nutlope/hallmark/blob/main/skills/hallmark/SKILL.md)、[交互与状态](https://github.com/Nutlope/hallmark/blob/main/skills/hallmark/references/interaction-and-states.md)、[微交互](https://github.com/Nutlope/hallmark/blob/main/skills/hallmark/references/microinteractions.md) | 清楚的触发与反馈、稳定几何、键盘焦点、44px 触摸目标、减少动态效果 | 参考交互章节优化现有工作台，不安装外部包或运行其脚本。查询反馈直接更新表内结果；导出发生在浏览器下载记录中，提供就地状态提示 |
 
 ## 数值和视觉语义
 
@@ -28,4 +30,4 @@
 - 不设没有专业依据的“50 分好坏分界线”，不把图表坐标网格线说成合规阈值。
 - 违规状态通过文字、斜纹、空心点和排名排除表达；缺值不绘制散点，矩阵显示“缺数据”，不填为 0。
 
-本目录实现为原创页面代码，以上链接作为布局、交互和图形类型参考。未安装或调用外部 Skill，也未引入新的图表运行依赖。
+本目录实现为原创页面代码，以上链接作为布局、交互和图形类型参考。Hallmark 按用户指定读取并参考其交互部分；未安装外部 Skill 包或引入新的图表运行依赖。

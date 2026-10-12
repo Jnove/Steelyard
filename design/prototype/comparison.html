@@ -13,7 +13,7 @@
     <a class="nav-link" href="index.html"><span>01</span>项目与方案</a>
     <div class="nav-link active"><span>02</span>多方案对比<i>↗</i></div>
     <a class="nav-link" href="index.html"><span>03</span>推演与报告</a>
-    <div class="side-foot"><span class="status-dot"></span> 展示设计 · V3<small>看整体 → 比两套 → 查全表</small></div>
+    <div class="side-foot"><span class="status-dot"></span> 展示设计 · V4<small>看整体 → 比两套 → 查全表</small></div>
   </aside>
   <main>
     <header class="topbar"><span>杭州钱塘 · 保障性租赁住房 <b>/</b> 多方案比选</span><span class="sample-tag">虚构示例 · 设计讨论</span></header>
@@ -27,10 +27,21 @@
       </section>
       <section class="comparison-panel">
         <div class="panel-toolbar"><div class="view-tabs" role="tablist" aria-label="对比步骤"><button class="view-tab active" id="tab-map" role="tab" aria-selected="true" aria-controls="view-map">1. 看整体</button><button class="view-tab" id="tab-pair" role="tab" aria-selected="false" aria-controls="view-pair">2. 比两套</button><button class="view-tab" id="tab-matrix" role="tab" aria-selected="false" aria-controls="view-matrix">3. 查全表</button></div><div class="role-picker" id="role-picker" aria-label="决策角色"></div></div>
-        <div class="panel-explainer"><div><h2 id="view-title">把两项关注点，变成一张取舍地图</h2><p id="view-description">每个点是一套方案。右上方表示两项得分都较高，点击方案查看它的优势组合。</p></div><div class="scale" id="heat-scale" hidden><span>0</span><i></i><span>100 分</span></div></div>
+        <div class="panel-explainer"><div><h2 id="view-title">把两项关注点，变成一张取舍地图</h2><p id="view-description">每个点是一套方案。右上方表示两项得分都较高，点击方案查看它的优势组合。</p></div></div>
         <div id="view-matrix" role="tabpanel" aria-labelledby="tab-matrix" hidden>
-          <div class="matrix-tools"><span><i class="mini-dot"></i> 蓝色标记当前第 1 名</span><span id="baseline-note">点击列标题“设为基准”，查看逐项分差。</span><button id="clear-baseline" hidden>清除基准 ×</button></div>
-          <div class="matrix-scroll"><table class="matrix" id="matrix" aria-label="方案维度分数对比"></table></div>
+          <div class="matrix-top-controls">
+            <div class="matrix-datasets" role="group" aria-label="查询内容"><button data-dataset="scores" aria-pressed="true">指标评分 <span>8</span></button><button data-dataset="compliance" aria-pressed="false">合规检查 <span>4</span></button></div>
+            <label class="matrix-search"><span>搜索指标或规则</span><div class="search-field"><input type="search" id="matrix-search" placeholder="如：得房率、K-01" autocomplete="off"><button id="clear-search" aria-label="清空搜索" disabled>×</button></div></label>
+            <label class="matrix-order"><span>方案排列</span><select id="matrix-order"><option value="rank">按当前排名</option><option value="name">按方案编号</option></select></label>
+          </div>
+          <div class="scheme-filter-line"><span>比较方案</span><div id="matrix-scheme-filters" class="matrix-scheme-filters"></div><button id="reset-matrix" class="text-button">恢复默认</button></div>
+          <div class="matrix-filter-line"><div id="matrix-dimension-filters" class="matrix-dimension-filters" role="group" aria-label="维度筛选"></div><div id="matrix-expansion"><button id="expand-metrics" class="text-button">展开全部指标</button><button id="collapse-metrics" class="text-button">收起</button></div></div>
+          <div class="matrix-display-line"><div class="matrix-display" id="matrix-display" role="group" aria-label="分数显示方式"><button data-score-mode="score" aria-pressed="true">看得分</button><button data-score-mode="difference" aria-pressed="false">看与基准的差距</button></div><label id="matrix-baseline-label">比较基准 <select id="matrix-baseline"></select></label><span id="matrix-result-count" role="status"></span></div>
+          <div class="matrix-workspace">
+            <div class="matrix-table-area"><div class="matrix-scroll"><table class="matrix" id="matrix" aria-label="方案指标与依据查询"></table></div><div class="matrix-empty" id="matrix-empty" hidden><strong>没有匹配的指标</strong><p>换一个关键词，或恢复默认显示全部内容。</p><button id="empty-reset" class="outline-action">恢复默认</button></div><div id="matrix-context" class="matrix-context"></div></div>
+            <aside id="matrix-inspector" class="matrix-inspector" aria-label="当前指标的计算依据"></aside>
+          </div>
+          <div class="matrix-help">点分数查看右侧依据；键盘方向键可在格子间移动，Enter 查看详情。低分、缺数据和违规状态分别呈现。</div>
         </div>
         <div id="view-map" role="tabpanel" aria-labelledby="tab-map">
           <div class="map-controls"><label>横轴 <select id="axis-x"></select></label><label>纵轴 <select id="axis-y"></select></label><label class="include-check"><input type="checkbox" id="include-b">显示 B（硬约束未通过）</label></div>
@@ -45,14 +56,17 @@
         </div>
         <div class="panel-bottom"><span>角色改变权重和贴近度，四维得分保持不变。</span><span>统一评分刻度 <b>0–100</b> · 示例规则</span></div>
       </section>
-      <div class="lower-grid">
+      <div class="lower-grid" id="lower-grid">
         <details class="detail-panel" id="detail-panel"><summary class="section-caption"><h2>查看当前评分依据</h2><span class="live-chip">点击展开</span></summary><div id="cell-detail" aria-live="polite"></div></details>
         <section class="reading-panel"><div class="section-caption"><h2>当前结论与合规提醒</h2></div><div id="reading-insight"></div><div class="constraint-note"><span>!</span><p><b>B 的分数可供参考，但不参与默认排名。</b><small>层高 2.9 m，低于示例阈值 3.0 m · C-01</small></p></div></section>
       </div>
       <footer>虚构样例，仅供开发与设计讨论，不得作为工程验证或答辩结论。专业规则、权重及正式条文出处仍待确认。</footer>
+      <div id="export-status" class="export-status" role="status" aria-live="polite"></div>
     </div>
+    <dialog id="matrix-detail-dialog" aria-labelledby="matrix-dialog-title"><div class="matrix-dialog-head"><h2 id="matrix-dialog-title">计算依据</h2><button id="close-matrix-dialog" aria-label="关闭计算依据">×</button></div><div id="matrix-dialog-body"></div></dialog>
   </main>
   <script src="comparison-data.js"></script>
+  <script src="comparison-table.js"></script>
   <script src="comparison.js"></script>
 </body>
 </html>

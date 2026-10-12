@@ -6,6 +6,7 @@ const snapshot = {
   fixture_id: fixture.fixture_id,
   project: fixture.projects[0],
   evaluation: fixture.evaluation.results,
+  rules: fixture.rules.rules.map(rule => rule.definition),
   schemes: fixture.schemes.filter(s => !s.parent_id),
   roles: Object.fromEntries(Object.entries(fixture.ranks).map(([key, rank]) => [key, {
     label: rank.weights_used.role_name,

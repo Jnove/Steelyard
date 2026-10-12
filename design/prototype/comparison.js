@@ -9,7 +9,12 @@ const dimensions = [
 ];
 const roleLabels = { government: '政府 / 平台', developer: '开发企业', contractor: '施工总包', resident: '住户' };
 const schemes = data.schemes.map(scheme => ({ ...scheme, letter: scheme.name.split(' ')[0], title: scheme.name.substring(scheme.name.indexOf(' ') + 1) }));
-const state = { role: 'government', view: 'map', baseline: null, selected: '3', dimension: 2, x: 0, y: 2, includeB: false, pairA: '3', pairB: '4' };
+const state = { role: 'government', view: 'map', selected: '3', dimension: 2, x: 0, y: 2, includeB: false, pairA: '3', pairB: '4' };
+Object.assign(state, {
+  matrixDataset: 'scores', matrixMode: 'score', matrixBaseline: '3', matrixDimension: 'all', matrixSearch: '', matrixOrder: 'rank',
+  matrixShown: new Set(schemes.map(s => String(s.id))), matrixOpen: new Set(['quality']),
+  matrixActive: { scheme: '3', row: 'dim-construction' },
+});
 const pointColors = { '1': '#7994b2', '2': '#b78778', '3': '#2676b8', '4': '#3e9e94', '5': '#ad965e' };
 const $ = id => document.getElementById(id);
 const escapeText = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -31,32 +36,6 @@ function heat(value) {
   const low = [245, 249, 252], high = [43, 105, 155];
   const t = Math.max(0, Math.min(100, value)) / 100;
   return { bg: `rgb(${low.map((v, i) => Math.round(v + (high[i] - v) * t)).join(',')})`, ink: t > .64 ? '#ffffff' : '#2c587b' };
-}
-
-function renderMatrix() {
-  const first = current().ranking[0].scheme_id;
-  const header = schemes.map(s => {
-    const id = String(s.id), isExcluded = excluded(id);
-    return `<th scope="col" class="${id === first ? 'winner-header' : ''} ${isExcluded ? 'excluded-header' : ''}"><div class="scheme-header"><span class="letter">${s.letter}</span><strong>${escapeText(s.title)}</strong>${isExcluded ? '<span class="scheme-status">硬约束未通过</span>' : `<button class="baseline-button" data-baseline="${id}" aria-pressed="${state.baseline === id}">${state.baseline === id ? '当前基准 ✓' : '设为基准'}</button><span class="scheme-status">${id === first ? '当前第 1 名' : '参与排名'}</span>`}</div></th>`;
-  }).join('');
-  const rows = dimensions.map((dim, index) => {
-    const max = Math.max(...schemes.filter(s => !excluded(s.id)).map(s => score(s.id, index)).filter(valid));
-    const cells = schemes.map(s => {
-      const id = String(s.id), value = score(id, index), color = heat(value), isExcluded = excluded(id);
-      const best = !isExcluded && valid(value) && Math.abs(value - max) < 1e-8;
-      const difference = state.baseline && valid(value) && valid(score(state.baseline, index)) ? value - score(state.baseline, index) : null;
-      const delta = difference === null ? '' : id === state.baseline ? '比较基准' : `${difference > 0 ? '+' : ''}${one(difference)} 分`;
-      return `<td><button class="heat-cell ${isExcluded ? 'excluded-cell' : ''} ${!valid(value) ? 'missing-cell' : ''} ${state.selected === id && state.dimension === index ? 'selected' : ''}" style="--cell-bg:${color.bg};--cell-ink:${color.ink}" data-cell="${id}:${index}" aria-label="${escapeText(s.name)}，${dim.name} ${valid(value) ? `${one(value)}分` : '缺数据'}，查看评分依据">${best ? '<span class="best-star" title="合规方案中本维度最高">◆</span>' : ''}<b>${one(value)}</b><span class="cell-note">${!valid(value) ? '缺数据' : best ? '维度领先' : isExcluded ? '仅供参考' : '维度得分'}</span><span class="delta">${delta}</span></button></td>`;
-    }).join('');
-    return `<tr><th scope="row" class="row-label"><strong>${dim.name}</strong><div class="weight-label">当前权重 <em>${one(current().weights[index] * 100)}%</em></div></th>${cells}</tr>`;
-  }).join('');
-  const rankings = schemes.map(s => {
-    const rank = ranked(s.id);
-    return rank ? `<td class="rank-cell ${rank.rank === 1 ? 'winner-rank' : ''}"><div class="rank-line"><b>#${rank.rank}</b><span class="rank-score">${rank.closeness.toFixed(3)}</span></div></td>` : '<td class="rank-cell"><span class="rank-muted">不参与排名</span></td>';
-  }).join('');
-  $('matrix').innerHTML = `<thead><tr><th class="corner" scope="col"><b>评价维度 ↓</b><small>候选方案 →</small></th>${header}</tr></thead><tbody>${rows}<tr><th class="ranking-label" scope="row">名次 / 贴近度</th>${rankings}</tr></tbody>`;
-  $('baseline-note').textContent = state.baseline ? `以 ${schemeById(state.baseline).name} 为基准，格内显示得分差。` : '点击列标题“设为基准”，查看逐项分差。';
-  $('clear-baseline').hidden = !state.baseline;
 }
 
 function renderDetail() {
@@ -137,7 +116,11 @@ function renderPair() {
   $('pair-story').innerHTML = `<h3>${a.letter} 和 ${b.letter}，差在哪里？</h3><p>${phrases.join('；')}。</p><div class="pair-delta-label">${largest ? `最大差距 · ${largest.name}` : '缺少可比较的数据'}</div><span class="pair-largest">${largest ? one(Math.abs(largest.delta)) : '—'} <small>分</small></span><p>${!largest ? '暂无法比较，请补齐评分数据。' : Math.abs(largest.delta) > 1e-8 ? `${largest.delta > 0 ? a.letter : b.letter} 得分更高。` : '两套方案的可比较得分一致。'}<br>点击任一行，可展开当前方案的计算依据。</p>`;
 }
 
+let lastRenderedView=null;
+let exportBusy=false;
 function render() {
+  const focus=document.activeElement;
+  const restore=focus?.dataset.role?`[data-role="${focus.dataset.role}"]`:focus?.dataset.point?`#scatter-svg [data-point="${focus.dataset.point}"]`:focus?.dataset.pairRow!==undefined?`#pair-svg [data-pair-row="${focus.dataset.pairRow}"]`:null;
   $('role-picker').innerHTML = Object.entries(roleLabels).map(([key, label]) => `<button class="role-button ${key === state.role ? 'active' : ''}" data-role="${key}" aria-pressed="${key === state.role}">${label}</button>`).join('');
   $('role-summary').textContent = roleLabels[state.role];
   for (const view of ['map', 'pair', 'matrix']) {
@@ -145,55 +128,28 @@ function render() {
     $(`tab-${view}`).classList.toggle('active', state.view === view);
     $(`tab-${view}`).setAttribute('aria-selected', String(state.view === view));
   }
-  $('heat-scale').hidden = state.view !== 'matrix';
+  $('lower-grid').hidden=state.view==='matrix';
   const copy = {
     map: ['把两项关注点，变成一张取舍地图', '每个点是一套方案。右上方表示两项得分都较高；点击方案，查看它的优势组合。'],
     pair: ['选两套方案，逐项看清差多少', '四个维度各用一条线连接两个分数；右侧差值以“方案一减方案二”计算。'],
-    matrix: ['5 套方案 × 4 个评价维度', '每格是一项维度得分。颜色越深，得分越高；点击格子可展开计算依据。'],
+    matrix: ['把比较落到每一项指标', '先筛选要比较的方案，再展开维度或搜索指标。点分数，直接查看输入、评分曲线和依据。'],
   };
   $('view-title').textContent = copy[state.view][0];
   $('view-description').textContent = copy[state.view][1];
   renderMatrix(); renderMap(); renderPair(); renderDetail();
+  $('export-button').disabled=exportBusy||(state.view==='matrix'&&(!tableSchemes().length||!tableRows().length));
+  if(restore)document.querySelector(restore)?.focus({preventScroll:true});
+  if(lastRenderedView&&lastRenderedView!==state.view&&!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
+    $(`view-${state.view}`).animate([{opacity:.55},{opacity:1}],{duration:250,easing:'cubic-bezier(0.16,1,0.3,1)'});
+  }
+  lastRenderedView=state.view;
 }
 
-function matrixSvg() {
-  const left = 44, top = 133, labelWidth = 160, cellWidth = 186, rowHeight = 93, headerHeight = 105;
-  let content = '';
-  const rect = (x,y,w,h,fill) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="#dfe7ee"/>`;
-  const text = (x,y,value,size=14,fill='#486b85',anchor='start',weight=400) => `<text x="${x}" y="${y}" font-size="${size}" fill="${fill}" text-anchor="${anchor}" font-weight="${weight}">${escapeText(value)}</text>`;
-  content += rect(left,top,labelWidth,headerHeight,'#f6f9fb') + text(left+18,top+49,'评价维度 ↓',14) + text(left+18,top+71,'候选方案 →',12,'#879ba9');
-  schemes.forEach((s,i) => {
-    const x = left+labelWidth+cellWidth*i, id=String(s.id);
-    content += rect(x,top,cellWidth,headerHeight,excluded(id)?'#faf4f1':ranked(id)?.rank===1?'#e7f1f8':'#f6f9fb');
-    content += text(x+cellWidth/2,top+36,s.letter,28,ranked(id)?.rank===1?'#246eaa':'#6f879b','middle',600);
-    content += text(x+cellWidth/2,top+59,s.title,13,'#4f6e86','middle');
-    content += text(x+cellWidth/2,top+82,excluded(id)?'硬约束未通过':state.baseline===id?'比较基准':`当前第 ${ranked(id).rank} 名`,11,'#8599aa','middle');
-  });
-  dimensions.forEach((dim,j) => {
-    const y=top+headerHeight+j*rowHeight;
-    const max=Math.max(...schemes.filter(s=>!excluded(s.id)).map(s=>score(s.id,j)).filter(valid));
-    content += rect(left,y,labelWidth,rowHeight,'#f6f9fb') + text(left+18,y+37,dim.name,14) + text(left+18,y+62,`权重 ${one(current().weights[j]*100)}%`,11,'#7e98ab');
-    schemes.forEach((s,i) => {
-      const id=String(s.id),x=left+labelWidth+cellWidth*i,value=score(id,j),color=heat(value),isExcluded=excluded(id);
-      content += rect(x,y,cellWidth,rowHeight,isExcluded?'#f5eeea':color.bg);
-      const ink=isExcluded?'#ab8b7c':color.ink;
-      content += text(x+cellWidth/2,y+41,one(value),28,ink,'middle',600);
-      let note=!valid(value)?'缺数据':isExcluded?'仅供参考':value===max?'维度领先':'维度得分';
-      if(state.baseline && valid(value) && valid(score(state.baseline,j))){const delta=value-score(state.baseline,j);note=id===state.baseline?'比较基准':`${delta>0?'+':''}${one(delta)} 分`;}
-      content += text(x+cellWidth/2,y+64,note,11,ink,'middle');
-    });
-  });
-  const rankY=top+headerHeight+4*rowHeight;
-  content += rect(left,rankY,labelWidth,60,'#f6f9fb')+text(left+18,rankY+34,'名次 / 贴近度',13);
-  schemes.forEach((s,i)=>{const rank=ranked(s.id),x=left+labelWidth+cellWidth*i;content+=rect(x,rankY,cellWidth,60,rank?.rank===1?'#e7f1f8':'#f9fbfc')+text(x+cellWidth/2,rankY+35,rank?`#${rank.rank}  /  ${rank.closeness.toFixed(3)}`:'不参与排名',14,rank?'#426e8e':'#ac8776','middle',500);});
-  content += text(44,39,'筑衡 · 多方案二维对比',24,'#203e57','start',600)+text(44,68,`当前视角：${roleLabels[state.role]}   |   统一评分刻度 0–100`,13,'#7791a3');
-  content += '<defs><linearGradient id="scale"><stop stop-color="#f5f9fc"/><stop offset="1" stop-color="#2b699b"/></linearGradient></defs><rect x="872" y="90" width="140" height="9" fill="url(#scale)"/>' + text(858,99,'0',10,'#8299aa','end') + text(1022,99,'100 分',10,'#8299aa');
-  content += text(44,709,'B 方案有硬约束未通过项，维度分数可参考，但默认不参与排名。',12,'#9e8274');
-  content += text(44,735,'虚构示例 · 仅供设计讨论，不得用于工程验证或答辩结论。',11,'#97a7b2');
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="1178" height="762" viewBox="0 0 1178 762" style="font-family:Segoe UI,Microsoft YaHei,sans-serif"><rect width="1178" height="762" fill="#ffffff"/>${content}</svg>`;
-}
-
-function exportSvg() {
+async function exportSvg() {
+  if(exportBusy)return;
+  const button=$('export-button'),status=$('export-status');exportBusy=true;button.disabled=true;button.setAttribute('aria-busy','true');button.dataset.state='loading';status.textContent='';
+  await new Promise(resolve=>requestAnimationFrame(resolve));
+  try {
   let svg=matrixSvg();
   if(state.view==='map' || state.view==='pair'){
     const isMap=state.view==='map', W=isMap?910:1010, H=isMap?690:710;
@@ -206,16 +162,20 @@ function exportSvg() {
     svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="font-family:Segoe UI,Microsoft YaHei,sans-serif"><rect width="${W}" height="${H}" fill="#fff"/><text x="35" y="37" font-size="25" fill="#203e57">筑衡 · ${title}</text><text x="35" y="68" font-size="14" fill="#7993a5">当前视角：${roleLabels[state.role]} · 统一评分刻度 0–100</text><g transform="translate(30 103)">${plot}</g>${legend}${annotation}<text x="35" y="${H-18}" font-size="12" fill="#8297a6">虚构示例 · 仅供设计讨论，不得用于工程验证或答辩结论。</text></svg>`;
   }
   const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
-  const names={matrix:'维度矩阵',map:'二维取舍图',pair:'双方案差值图'};
+  const names={matrix:'指标与依据查询',map:'二维取舍图',pair:'双方案差值图'};
   const a=document.createElement('a');a.href=url;a.download=`筑衡-${names[state.view]}-${roleLabels[state.role].replaceAll(' / ','-')}.svg`;a.click();setTimeout(()=>URL.revokeObjectURL(url),3000);
+  status.setAttribute('role','status');status.dataset.state='success';status.textContent='图已生成，请在浏览器下载记录中查看。';button.dataset.state='success';
+  } catch(error) {
+    status.setAttribute('role','alert');status.dataset.state='error';status.textContent='没有生成导出文件。请重试，或检查浏览器是否允许下载。';button.dataset.state='error';
+  } finally {
+    exportBusy=false;button.disabled=state.view==='matrix'&&(!tableRows().length||!tableSchemes().length);button.removeAttribute('aria-busy');
+  }
 }
 
 document.addEventListener('click', event => {
-  const button=event.target.closest('[data-role],[data-baseline],[data-cell],[data-point],[data-compare],[data-pair-row]');
+  const button=event.target.closest('[data-role],[data-point],[data-compare],[data-pair-row]');
   if(!button)return;
   if(button.dataset.role)state.role=button.dataset.role;
-  if(button.dataset.baseline)state.baseline=button.dataset.baseline;
-  if(button.dataset.cell){const [id,dimension]=button.dataset.cell.split(':');state.selected=id;state.dimension=Number(dimension);$('detail-panel').open=true;}
   if(button.dataset.point){state.selected=button.dataset.point;state.dimension=state.y;}
   if(button.dataset.compare){[state.pairA,state.pairB]=button.dataset.compare.split(':');state.view='pair';}
   if(button.dataset.pairRow !== undefined){state.selected=state.pairA;state.dimension=Number(button.dataset.pairRow);$('detail-panel').open=true;}
@@ -231,7 +191,6 @@ document.querySelector('.view-tabs').addEventListener('keydown',event=>{
   const next=event.key==='Home'?0:event.key==='End'?2:(index+(event.key==='ArrowRight'?1:2))%3;
   $(`tab-${views[next]}`).click();$(`tab-${views[next]}`).focus();
 });
-$('clear-baseline').addEventListener('click',()=>{state.baseline=null;render();});
 for(const axis of ['x','y']){
   $(`axis-${axis}`).innerHTML=dimensions.map((dim,i)=>`<option value="${i}">${dim.name}</option>`).join('');
   $(`axis-${axis}`).value=String(state[axis]);
@@ -250,4 +209,5 @@ for(const side of ['a','b']){
 $('swap-pair').addEventListener('click',()=>{[state.pairA,state.pairB]=[state.pairB,state.pairA];state.selected=state.pairA;render();});
 $('pareto-explanation').addEventListener('click',()=>{const open=$('pareto-help').hidden;$('pareto-help').hidden=!open;$('pareto-explanation').setAttribute('aria-expanded',String(open));});
 $('export-button').addEventListener('click',exportSvg);
+initMatrixControls();
 render();

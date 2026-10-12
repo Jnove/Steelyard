@@ -840,6 +840,304 @@ window.COMPARISON_DATA = {
       "topsis": null
     }
   ],
+  "rules": [
+    {
+      "id": "C-01",
+      "name": "【示例】住宅层高下限",
+      "type": "hard",
+      "source": "TODO(专业组)：示例数值，正式条文号待补",
+      "when": null,
+      "check": "floor_height >= 3.0",
+      "message": "层高 {floor_height} m 低于示例阈值 3.0 m",
+      "severity": "error",
+      "dimension": null,
+      "value": null,
+      "scoring": null,
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "C-02",
+      "name": "【示例】容积率不超地块上限",
+      "type": "hard",
+      "source": "TODO(专业组)：示例数值，正式条文号待补",
+      "when": null,
+      "check": "far <= far_max",
+      "message": "容积率 {far} 超过地块上限 {far_max}",
+      "severity": "error",
+      "dimension": null,
+      "value": null,
+      "scoring": null,
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "C-03",
+      "name": "【示例】建筑总高不超限高",
+      "type": "hard",
+      "source": "TODO(专业组)：示例数值，正式条文号待补",
+      "when": null,
+      "check": "height <= height_max",
+      "message": "建筑总高 {height} m 超过限高 {height_max} m",
+      "severity": "warning",
+      "dimension": null,
+      "value": null,
+      "scoring": null,
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "K-01",
+      "name": "【示例】标准层重复率（越大越好）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": null,
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "construction",
+      "value": "std_floor_repeat",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            0.5,
+            0
+          ],
+          [
+            0.8,
+            70
+          ],
+          [
+            0.95,
+            100
+          ]
+        ]
+      },
+      "weight_in_dimension": 2
+    },
+    {
+      "id": "K-02",
+      "name": "【示例】预制构件种类数（越少越好）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": null,
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "construction",
+      "value": "component_types",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            8,
+            100
+          ],
+          [
+            20,
+            60
+          ],
+          [
+            40,
+            0
+          ]
+        ]
+      },
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "G-01",
+      "name": "【示例】体形系数（越小越好）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": null,
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "green",
+      "value": "shape_coef",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            0.2,
+            100
+          ],
+          [
+            0.35,
+            70
+          ],
+          [
+            0.6,
+            0
+          ]
+        ]
+      },
+      "weight_in_dimension": 2
+    },
+    {
+      "id": "G-02",
+      "name": "【示例】预估装配率（越大越好）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": null,
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "green",
+      "value": "prefab_ratio_est",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            0.2,
+            0
+          ],
+          [
+            0.5,
+            70
+          ],
+          [
+            0.8,
+            100
+          ]
+        ]
+      },
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "Q-01",
+      "name": "【示例】主要房间南向比例（适中最好）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": null,
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "quality",
+      "value": "south_room_ratio",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            0.2,
+            0
+          ],
+          [
+            0.55,
+            100
+          ],
+          [
+            0.9,
+            0
+          ]
+        ]
+      },
+      "weight_in_dimension": 2
+    },
+    {
+      "id": "Q-02",
+      "name": "【示例】得房率（越大越好）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": null,
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "quality",
+      "value": "inner_area_ratio",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            0.65,
+            0
+          ],
+          [
+            0.78,
+            70
+          ],
+          [
+            0.88,
+            100
+          ]
+        ]
+      },
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "Q-03",
+      "name": "【示例】单栋户数（越小越好，仅高层适用）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": "floors >= 7",
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "quality",
+      "value": "units_per_building",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            60,
+            100
+          ],
+          [
+            120,
+            70
+          ],
+          [
+            200,
+            0
+          ]
+        ]
+      },
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "S-01",
+      "name": "【示例】风险特征数量（越少越好）",
+      "type": "metric",
+      "source": "TODO(专业组)：示例数值，正式依据待补",
+      "when": null,
+      "check": null,
+      "message": null,
+      "severity": "error",
+      "dimension": "structure",
+      "value": "len(risk_features)",
+      "scoring": {
+        "kind": "piecewise",
+        "points": [
+          [
+            0,
+            100
+          ],
+          [
+            2,
+            70
+          ],
+          [
+            5,
+            0
+          ]
+        ]
+      },
+      "weight_in_dimension": 1
+    },
+    {
+      "id": "S-02",
+      "name": "【示例】钢结构方案需人工复核防火（条件硬约束）",
+      "type": "hard",
+      "source": "TODO(专业组)：示例数值，正式条文号待补",
+      "when": "structure_type == '钢结构'",
+      "check": "risk_features contains '超限构件'",
+      "message": "钢结构方案请把需要人工复核的风险特征列入 risk_features",
+      "severity": "warning",
+      "dimension": null,
+      "value": null,
+      "scoring": null,
+      "weight_in_dimension": 1
+    }
+  ],
   "schemes": [
     {
       "id": 1,
