@@ -270,7 +270,8 @@
         "厚板转换",
         "复杂连接",
         "多重复杂"
-      ]
+      ],
+      "extensible": true
     },
     {
       "name": "std_floor_repeat",
@@ -310,7 +311,8 @@
         "不规则建筑",
         "超限构件",
         "复杂地质"
-      ]
+      ],
+      "extensible": true
     },
     {
       "name": "prefab_ratio_est",
