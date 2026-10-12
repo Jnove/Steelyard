@@ -23,18 +23,30 @@ def _write_roles(path: Path, government: dict[str, object]) -> Path:
     return path
 
 
-def test_example_roles_are_consistent_and_marked() -> None:
+def test_example_roles_are_consistent() -> None:
+    """仓库里四个角色模板：角色齐全、矩阵正互反、一致性合格、权重归一。"""
     roles = load_role_templates()
     assert list(roles) == list(ROLE_KEYS)
     for role in roles.values():
         assert role.ahp is not None
         assert role.ahp.consistent
         assert role.ahp.cr < 0.1
-        assert "TODO(专业组)" in role.source
-        assert role.needs_review
         assert sum(role.weights) == pytest.approx(1)
         a = np.asarray(role.matrix)
         np.testing.assert_allclose(a, 1 / a.T, atol=1e-6, rtol=0)
+
+
+def test_todo_source_is_marked_for_review(tmp_path: Path) -> None:
+    """``source`` 里挂着 TODO 的角色模板必须被标记为待复核。
+
+    2026-10 专业组核定后仓库里的模板已无 TODO，所以用合成文件覆盖这个机制，
+    免得测试和种子模板的占位状态绑死。
+    """
+    path = _write_roles(
+        tmp_path / "weights.yaml",
+        {"name": "占位角色", "weights": [1, 1, 1, 1], "source": "【示例】TODO(专业组)"},
+    )
+    assert load_role_templates(path)["government"].needs_review
 
 
 def test_direct_weights_and_fraction_matrix(tmp_path: Path) -> None:
@@ -85,7 +97,11 @@ def test_check_rules_includes_weights_for_all_entry_paths(
         assert "1 个文件，0 个错误，1 个警告" in output
         assert "顶层必须是一个规则列表" not in output
     assert check.main([]) == 0
-    assert "角色" in capsys.readouterr().out
+    default_output = capsys.readouterr().out
+    # 2026-10 专业组核定后，仓库的权重模板不再有占位警告；
+    # 这里只要求默认路径确实把 weights.yaml 纳入校验并且通过。
+    assert "weights.yaml" in default_output
+    assert "0 个错误，0 个警告" in default_output
     # 不互反属于错误，必须退出 1；不能把 developer 误报成缺少角色。
     a[0][1] = 3
     _write_roles(path, {"name": "互反错误", "matrix": a})

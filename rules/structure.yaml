@@ -1,30 +1,73 @@
 # 结构安全评分指标（metric，dimension: structure）与结构相关硬约束。规则 ID 用 S-XX。
 #
-# ⚠️ 本文件当前只有**格式示例**：阈值和分段点都是随手取的，仅用于演示写法。
-#    专业组定稿后请去掉 name 的「【示例】」前缀，并把 source 换成真实依据。
+# 已由专业组核定（2026-10）。本次解决了两件事：
+# 1. S-01 不再「数个数」：大悬挑和复杂地质的风险显然不等价，改为**按风险类型加权**；
+# 2. 补足结构维度的指标（原只有 S-01 一条，维度分被它独占）：新增 S-03 结构体系
+#    适用性（对应「结构选型」）与 S-04 建筑总高（对应「抗震/超限」）。
+#
+# ⚠️ 仍未覆盖：高宽比、抗震等级、楼板厚度、结构设计工作年限。前两项需要**新增字段**
+#    （现有字段算不出高宽比），后两项 GB 55038—2025 有强制要求但本系统没有对应字段，
+#    已记入 docs/open-items.md 交给开发组。
 
 - id: S-01
-  name: 【示例】风险特征数量（越少越好）
+  name: 结构风险特征加权指数（越少越好）
   type: metric
   dimension: structure
-  # len() 是允许的五个函数之一；risk_features 是方案填的风险特征列表。
-  value: "len(risk_features)"
+  # 不再用 len() 数个数，改为按风险类型对结构安全与专项论证的影响加权。
+  # 引擎支持比较与算术，布尔值可直接参与计算，故这种写法是合法的。
+  value: "3 * (risk_features contains '大悬挑') + 3 * (risk_features contains '深基坑') + 3 * (risk_features contains '超限构件') + 2 * (risk_features contains '高大空间') + 2 * (risk_features contains '高支模') + 1 * (risk_features contains '超长结构') + 1 * (risk_features contains '不规则建筑') + 1 * (risk_features contains '复杂地质')"
   scoring:
     kind: piecewise
+    # 满分为 16 分（3+3+3+2+2+1+1+1）。
     points:
       - [0, 100]
-      - [2, 70]
-      - [5, 0]
-  weight_in_dimension: 1
-  source: "TODO(专业组)：示例数值，正式依据待补"
+      - [5, 75]
+      - [10, 45]
+      - [16, 0]
+  weight_in_dimension: 2
+  source: "经验规则（结构组）：按风险类型对结构安全与专项论证的影响加权——大悬挑、深基坑、超限构件各 3 分（均直接触发专项论证或专门研究），高大空间、高支模各 2 分，超长结构、不规则建筑、复杂地质各 1 分，满分 16 分。权重与分段点为组内取值，非规范条文"
 
 - id: S-02
-  name: 【示例】钢结构方案需人工复核防火（条件硬约束）
+  name: 钢结构方案须申报人工复核事项（条件硬约束）
   type: hard
   # when 为假（不是钢结构）时，这条规则记为「不适用」，不影响该方案。
   when: "structure_type == '钢结构'"
-  # contains 判断列表里有没有某一项，等价于 Python 的 in，但语序更接近中文。
-  check: "risk_features contains '超限构件'"
-  message: "钢结构方案请把需要人工复核的风险特征列入 risk_features"
+  # 原写法借用「超限构件」这个预设项，但 GB 55006—2021 全文并无「超限构件」
+  # 这一表述，语义对不上。改为要求钢结构方案**显式申报**复核事项：
+  # 钢结构规范对新型结构/构件/连接节点与体形复杂的大跨结构都要求专项验证，
+  # 申报不出来就提示人工复核。严重程度保持 warning（提示，不踢出排名）。
+  check: "len(risk_features) >= 1"
+  message: "钢结构方案请在 risk_features 中列出需要人工复核的风险特征（如大悬挑、高大空间、复杂地质）"
   severity: warning
-  source: "TODO(专业组)：示例数值，正式条文号待补"
+  source: "GB 55006—2021 第4.6.4条：需调整构造措施时，或对于新型结构、构件、连接节点，应通过计算分析和试验验证保证安全要求；第5.3节：体形复杂的大跨度钢结构应采用整体模型计算，并作非线性整体稳定分析与时程分析。本条据此要求钢结构方案显式申报复核事项"
+
+- id: S-03
+  name: 结构体系适用性（越大越好）
+  type: metric
+  dimension: structure
+  # 用条件表达式把结构体系映射成 0–100 的适用性分。取值分档的依据见 source。
+  value: "100 if structure_type == '剪力墙' else (95 if structure_type == '框架-剪力墙' else (85 if structure_type == 'MiC' else (80 if structure_type == '钢结构' else 60)))"
+  scoring:
+    kind: piecewise
+    # 表达式本身已经给出 0–100 的分值，这里用恒等映射，不再二次折算。
+    points:
+      - [0, 0]
+      - [100, 100]
+  weight_in_dimension: 2
+  source: "经验规则（结构组）：住宅结构选型按适用性分档——剪力墙 100（高层住宅主流体系）、框架-剪力墙 95、MiC 85、钢结构 80（二者在住宅中需专项论证）、框架 60（不适用于 16~18 层住宅）。分档参照《超限高层建筑工程抗震设防专项审查技术要点》（建质〔2015〕67号）附件1 表1 的高度超限判定阈值：6 度区框架 60m、框架-抗震墙 130m、抗震墙 140m，框架体系的适用高度明显偏低。分档为组内取值，非规范条文"
+
+- id: S-04
+  name: 建筑总高（越小越好）
+  type: metric
+  dimension: structure
+  # height 是派生量（floors * floor_height）。
+  value: "height"
+  scoring:
+    kind: piecewise
+    points:
+      - [12, 100]
+      - [50, 75]
+      - [100, 30]
+      - [140, 0]
+  weight_in_dimension: 1
+  source: "经验规则（结构组）：结构风险、抗震要求与单位造价总体随高度上升，故越小越好。分段点以《超限高层建筑工程抗震设防专项审查技术要点》（建质〔2015〕67号）附件1 表1 的高度超限判定阈值为锚点（6 度区抗震墙 140m、框架 60m），140m 归零。分段点为组内取值，非规范条文"

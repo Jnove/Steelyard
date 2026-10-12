@@ -231,8 +231,11 @@ def test_reload_rules_in_dev(client: TestClient) -> None:
     response = client.post("/api/rules/reload")
     assert response.status_code == 200, response.text
     # 热重载读的是仓库里真实的 rules/，条数与种子规则一致。
-    assert response.json()["rule_count"] > 0
-    assert response.json()["todo_source_ids"], "种子规则的 source 仍是 TODO，应当被标出来"
+    body = response.json()
+    assert body["rule_count"] > 0
+    # 只校验字段形状：种子规则的 source 已在 2026-10 由专业组核定完毕，
+    # 不再有 TODO 可以在真实 rules/ 上断言。
+    assert isinstance(body["todo_source_ids"], list)
 
 
 def test_reload_rules_forbidden_in_prod(client: TestClient, monkeypatch: Any) -> None:
