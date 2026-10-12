@@ -34,7 +34,7 @@ def source_hashes(source: Path) -> dict[str, str]:
             hashes[path.relative_to(base).as_posix()] = hashlib.sha256(
                 path.read_text(encoding="utf-8").encode("utf-8")
             ).hexdigest()
-    for path in [*(ROOT / "data/schemes/mock").glob("*.json"), Path(__file__)]:
+    for path in [*(ROOT / "data/schemes/mock").glob("*.json"), Path(__file__).resolve()]:
         hashes[path.relative_to(ROOT).as_posix()] = hashlib.sha256(
             path.read_text(encoding="utf-8").encode("utf-8")
         ).hexdigest()

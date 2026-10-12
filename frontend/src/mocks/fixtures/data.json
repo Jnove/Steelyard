@@ -1,5 +1,5 @@
 {
-  "fixture_id": "5ca901940bee8d444f3219816bece7588539d0c0adec5f69d4cbafc88e7b0146",
+  "fixture_id": "c2e9b41b6d8d89adb508c12e6e50e3165f9d11fabb9f510a70b46b8944ddd3de",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -50,7 +50,7 @@
     "data/schemes/mock/D_均衡.json": "38e61d280fe84cecd0f3aa24167508cfa050dbb212f8e933d8f5bdb7eb947e40",
     "data/schemes/mock/E_被支配.json": "4defc2cf39ee4e24de45da4508889427c2628e4f78d5b5f0b5b30ea263c69e95",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
-    "scripts/export_frontend_fixtures.py": "9b5393a1b6d2c8818a4f2c00d34aff0f486562307a93cd1698d6e8dfea859fa1",
+    "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
     "data/schemes/方案录入模板.xlsx": "0734fdd9320505f5b33faf2699895e676722d64ace0e2db94e2a24c94aa58c32"
   },
   "grid_step": 10,
