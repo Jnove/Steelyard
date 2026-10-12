@@ -85,10 +85,7 @@ __all__ = [
 
 #: 规则 ID 格式：一个大写前缀字母 + 短横线 + 两位数字。
 #: 前缀对应 ``rules/`` 下的文件：C=compliance、Q=quality、S=structure、K=construction、G=green。
-#: **X 是运行期自定义规则的保留前缀**（见 ``app/custom/rules.py``）：它们不来自任何文件、
-#: 不进 git、不参与 CI 校验，用一个独立前缀才能在任何列表里一眼区分开。
-#: 文件里的规则请不要用 X——那是覆盖层的位置。
-RULE_ID_PATTERN = r"^[CQSKGX]-\d{2}$"
+RULE_ID_PATTERN = r"^[CQSKG]-\d{2}$"
 
 #: 表达式里允许调用的函数。**只有这五个**，其余一律报错。
 #: 不放 ``sum`` / ``sorted`` 之类是因为规则里用不到，而每多一个就多一份出错与滥用的可能。

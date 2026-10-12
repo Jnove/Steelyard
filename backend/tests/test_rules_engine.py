@@ -124,15 +124,14 @@ def test_minimal_metric_rule_defaults_weight_to_one() -> None:
     assert rule.weight_in_dimension == 1.0, "weight_in_dimension 默认应当是 1"
 
 
-@pytest.mark.parametrize("rule_id", ["C-01", "Q-99", "S-00", "K-12", "G-07", "X-01"])
+@pytest.mark.parametrize("rule_id", ["C-01", "Q-99", "S-00", "K-12", "G-07"])
 def test_accepts_valid_rule_ids(rule_id: str) -> None:
-    """X 是运行期自定义规则的保留前缀（见 app/custom/rules.py），同样是合法 ID。"""
     assert RuleDef.model_validate(_hard(id=rule_id)).id == rule_id
 
 
 @pytest.mark.parametrize(
     "rule_id",
-    ["C-1", "C-001", "C-SHAPE", "c-01", "C01", "C-01 ", "", "C-1a", "Y-01"],
+    ["C-1", "C-001", "C-SHAPE", "X-01", "c-01", "C01", "C-01 ", "", "C-1a"],
 )
 def test_rejects_invalid_rule_ids(rule_id: str) -> None:
     with pytest.raises(ValidationError):

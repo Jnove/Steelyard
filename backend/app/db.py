@@ -60,11 +60,7 @@ def register_table_models() -> None:
     根本不存在，报出来的是 "no such table"，而不是"忘了导入"。
     """
     from app.agents.storage import AgentResultRow, ReportCacheRow  # noqa: F401
-    from app.custom.models import (  # noqa: F401
-        CustomOption,
-        CustomRule,
-        CustomWeightTemplate,
-    )
+    from app.custom.models import CustomOption, CustomWeightTemplate  # noqa: F401
     from app.models.orm import EvalResultRow, Project, Scheme  # noqa: F401
 
 
