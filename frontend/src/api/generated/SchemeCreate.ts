@@ -10,6 +10,28 @@ export type Name = string;
 export type StructureType = (("剪力墙" | "框架-剪力墙" | "框架" | "钢结构" | "MiC") | null) &
   ("剪力墙" | "框架-剪力墙" | "框架" | "钢结构" | "MiC");
 /**
+ * MiC 体系类型（结构体系选 MiC 时填写）
+ */
+export type MicSystem = (
+  | (
+      | "模块化框架结构"
+      | "模块化全预制剪力墙结构"
+      | "模块化叠合剪力墙结构"
+      | "模块化箱模框架结构"
+      | "模块化箱模框架-剪力墙结构"
+      | "模块化箱模剪力墙结构"
+    )
+  | null
+) &
+  (
+    | "模块化框架结构"
+    | "模块化全预制剪力墙结构"
+    | "模块化叠合剪力墙结构"
+    | "模块化箱模框架结构"
+    | "模块化箱模框架-剪力墙结构"
+    | "模块化箱模剪力墙结构"
+  );
+/**
  * 总户数
  */
 export type Units = number | null;
@@ -90,6 +112,10 @@ export type DesignWorkingLife = number | null;
  */
 export type MinPlanWidth = number | null;
 /**
+ * 结构混凝土强度等级（填 C 后的数值，如 C30 填 30）
+ */
+export type ConcreteGrade = number | null;
+/**
  * 标准层重复率
  */
 export type StdFloorRepeat = number | null;
@@ -132,6 +158,7 @@ export interface SchemeCreate {
  */
 export interface SchemeParams {
   structure_type?: StructureType;
+  mic_system?: MicSystem;
   units?: Units;
   unit_mix?: UnitMix;
   floor_height?: FloorHeight;
@@ -151,6 +178,7 @@ export interface SchemeParams {
   slab_thickness?: SlabThickness;
   design_working_life?: DesignWorkingLife;
   min_plan_width?: MinPlanWidth;
+  concrete_grade?: ConcreteGrade;
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;
   risk_features?: RiskFeatures;

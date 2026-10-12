@@ -28,6 +28,24 @@
       "essential": true
     },
     {
+      "name": "mic_system",
+      "label": "MiC 体系类型",
+      "description": "MiC 体系类型（结构体系选 MiC 时填写）",
+      "unit": "—",
+      "group": "基本信息",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "模块化框架结构",
+        "模块化全预制剪力墙结构",
+        "模块化叠合剪力墙结构",
+        "模块化箱模框架结构",
+        "模块化箱模框架-剪力墙结构",
+        "模块化箱模剪力墙结构"
+      ]
+    },
+    {
       "name": "units",
       "label": "总户数",
       "description": "总户数",
@@ -215,6 +233,16 @@
       "label": "最小平面宽度",
       "description": "楼栋最小平面宽度（用于算高宽比；一般取进深方向的最小宽度）",
       "unit": "m",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "concrete_grade",
+      "label": "混凝土强度等级",
+      "description": "结构混凝土强度等级（填 C 后的数值，如 C30 填 30）",
+      "unit": "MPa",
       "group": "结构与造价",
       "type": "number",
       "required": false,

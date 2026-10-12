@@ -39,6 +39,38 @@
       "title": "Structure Type",
       "unit": "—"
     },
+    "mic_system": {
+      "anyOf": [
+        {
+          "enum": [
+            "模块化框架结构",
+            "模块化全预制剪力墙结构",
+            "模块化叠合剪力墙结构",
+            "模块化箱模框架结构",
+            "模块化箱模框架-剪力墙结构",
+            "模块化箱模剪力墙结构"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "MiC 体系类型（结构体系选 MiC 时填写）",
+      "enum": [
+        "模块化框架结构",
+        "模块化全预制剪力墙结构",
+        "模块化叠合剪力墙结构",
+        "模块化箱模框架结构",
+        "模块化箱模框架-剪力墙结构",
+        "模块化箱模剪力墙结构"
+      ],
+      "group": "基本信息",
+      "label": "MiC 体系类型",
+      "title": "Mic System",
+      "unit": "—"
+    },
     "units": {
       "anyOf": [
         {
@@ -372,6 +404,23 @@
       "label": "最小平面宽度",
       "title": "Min Plan Width",
       "unit": "m"
+    },
+    "concrete_grade": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "结构混凝土强度等级（填 C 后的数值，如 C30 填 30）",
+      "group": "结构与造价",
+      "label": "混凝土强度等级",
+      "title": "Concrete Grade",
+      "unit": "MPa"
     },
     "std_floor_repeat": {
       "anyOf": [

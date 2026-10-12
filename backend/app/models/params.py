@@ -34,6 +34,30 @@ SeismicIntensity = Literal["6度(0.05g)", "7度(0.10g)"]
 """
 SEISMIC_INTENSITIES: tuple[str, ...] = ("6度(0.05g)", "7度(0.10g)")
 
+MiCSystem = Literal[
+    "模块化框架结构",
+    "模块化全预制剪力墙结构",
+    "模块化叠合剪力墙结构",
+    "模块化箱模框架结构",
+    "模块化箱模框架-剪力墙结构",
+    "模块化箱模剪力墙结构",
+]
+"""MiC（混凝土模块化建筑）的体系类型。
+
+取值直接对应浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）
+第6.1.8条 表6.1.8「模块化建筑的最大适用高度」的行：MiC 的最大适用高度按
+体系类型分档，所以不区分体系就没法判。表中另有「部分框支剪力墙」两行，
+需要框支层信息，暂未纳入。
+"""
+MIC_SYSTEMS: tuple[str, ...] = (
+    "模块化框架结构",
+    "模块化全预制剪力墙结构",
+    "模块化叠合剪力墙结构",
+    "模块化箱模框架结构",
+    "模块化箱模框架-剪力墙结构",
+    "模块化箱模剪力墙结构",
+)
+
 # 风险特征预设选项（用户可自由补充自定义项）
 RISK_FEATURE_OPTIONS: list[str] = [
     "大悬挑",
@@ -150,6 +174,11 @@ class SchemeParams(BaseModel):
         json_schema_extra=_meta(
             "—", "基本信息", "结构体系", enum=list(STRUCTURE_TYPES), essential=True
         ),
+    )
+    mic_system: MiCSystem | None = Field(
+        None,
+        description="MiC 体系类型（结构体系选 MiC 时填写）",
+        json_schema_extra=_meta("—", "基本信息", "MiC 体系类型", enum=list(MIC_SYSTEMS)),
     )
     units: int | None = Field(
         None,
@@ -270,6 +299,12 @@ class SchemeParams(BaseModel):
         description="楼栋最小平面宽度（用于算高宽比；一般取进深方向的最小宽度）",
         gt=0,
         json_schema_extra=_meta("m", "结构与造价", "最小平面宽度"),
+    )
+    concrete_grade: float | None = Field(
+        None,
+        description="结构混凝土强度等级（填 C 后的数值，如 C30 填 30）",
+        gt=0,
+        json_schema_extra=_meta("MPa", "结构与造价", "混凝土强度等级"),
     )
 
     # —— 施工与安全 —— #

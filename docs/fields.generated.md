@@ -35,6 +35,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | 字段名 | 中文名 | 单位 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- | --- | --- |
 | `structure_type` | 结构体系 | — | string | 否 · 必录 | 取值：剪力墙 / 框架-剪力墙 / 框架 / 钢结构 / MiC；— |
+| `mic_system` | MiC 体系类型 | — | string | 否 | 取值：模块化框架结构 / 模块化全预制剪力墙结构 / 模块化叠合剪力墙结构 / 模块化箱模框架结构 / 模块化箱模框架-剪力墙结构 / 模块化箱模剪力墙结构；— |
 | `units` | 总户数 | 户 | integer | 否 · 必录 | — |
 | `unit_mix` | 户型配比 | 户 | object<integer> | 否 | — |
 
@@ -64,6 +65,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `slab_thickness` | 楼板厚度 | mm | number | 否 | — |
 | `design_working_life` | 结构设计工作年限 | 年 | integer | 否 | — |
 | `min_plan_width` | 最小平面宽度 | m | number | 否 | — |
+| `concrete_grade` | 混凝土强度等级 | MPa | number | 否 | — |
 
 #### 施工与安全
 

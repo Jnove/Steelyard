@@ -3,6 +3,7 @@
   "name": "C MiC 高标准化",
   "params": {
     "structure_type": "MiC",
+    "mic_system": "模块化叠合剪力墙结构",
     "units": 432,
     "unit_mix": {"一室": 144, "两室": 192, "三室": 96},
     "floor_height": 3.0,
@@ -24,6 +25,7 @@
     "slab_thickness": 120,
     "design_working_life": 50,
     "min_plan_width": 16,
+    "concrete_grade": 30,
     "daylight_factor": 0.024,
     "sunlight_hours": 2.2,
     "green_ratio": 0.36
