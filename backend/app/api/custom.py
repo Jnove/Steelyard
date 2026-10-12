@@ -23,9 +23,10 @@ from sqlmodel import Session
 
 from app.config import get_settings
 from app.custom import options as options_service
+from app.custom import rules as rules_service
 from app.custom import templates as templates_service
 from app.custom.errors import CustomAddError
-from app.custom.models import CustomOption, CustomWeightTemplate
+from app.custom.models import CustomOption, CustomRule, CustomWeightTemplate
 from app.db import get_session
 from app.engine.mcdm import AhpResult
 
@@ -156,6 +157,42 @@ class OptionsCreate(BaseModel):
 
     field: str = Field(description="开放枚举字段名，当前支持 risk_features / irregularity_items")
     value: str = Field(description="选项文本")
+
+
+class CustomRuleProblem(BaseModel):
+    """自定义规则的一条问题（中文说明 + 怎么改）。"""
+
+    model_config = ConfigDict(json_schema_extra={"title": "规则问题"})
+
+    code: str = Field(description="稳定的错误码，供程序化判别")
+    message: str = Field(description="错在哪")
+    fix: str = Field("", description="怎么改")
+
+
+class CustomRuleRead(BaseModel):
+    """一条自定义规则。"""
+
+    model_config = ConfigDict(json_schema_extra={"title": "自定义规则"})
+
+    id: int = Field(description="记录 id，删除时用")
+    rule_id: str = Field(description="规则 ID，如 X-01")
+    name: str = Field("", description="规则中文名；校验不过时可能为空")
+    type: str = Field("", description="hard（硬约束）或 metric（评分指标）")
+    dimension: str = Field("", description="metric 的所属维度；hard 为空")
+    severity: str = Field("", description="hard 的严重程度：error 会踢出排名，warning 只提示")
+    source: str = Field("", description="出处")
+    payload: dict[str, Any] = Field(description="规则定义原文，字段见 rules/_template.yaml")
+    is_valid: bool = Field(
+        description="现在是否仍能通过引擎校验；false 时 problems 里是原因（该规则不会参与评估）"
+    )
+    problems: list[CustomRuleProblem] = Field(
+        default_factory=list, description="校验不通过的原因；通过时为空"
+    )
+    origin: str = Field(
+        description='在 GET /api/rules 里显示的来源标识，固定为"（界面自定义）"'
+    )
+    created_at: datetime = Field(description="创建时间（UTC）")
+    created_by: str | None = Field(None, description="创建者标识")
 
 
 # —— 组装 —— #
@@ -303,6 +340,106 @@ def delete_custom_template(
 ) -> Response:
     try:
         templates_service.delete_template(session, template_id)
+    except CustomAddError as exc:
+        _raise_custom(exc)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# —— 自定义规则 —— #
+
+
+def _rule_read(row: CustomRule) -> CustomRuleRead:
+    """读出一条规则，并**重新过一遍校验器**。
+
+    校验器是唯一权威，存量数据也不例外：哪天规则模型加了新的必填项，老规则会在这里
+    变成 ``is_valid: false`` 并给出原因，而不是继续悄悄参与评估。
+    """
+    payload = row.payload if isinstance(row.payload, dict) else {}
+    common = {
+        "id": row.id or 0,
+        "rule_id": row.rule_id,
+        "payload": payload,
+        "origin": rules_service.CUSTOM_ORIGIN,
+        "created_at": row.created_at,
+        "created_by": row.created_by,
+    }
+    try:
+        rule = rules_service.row_to_rule(row)
+    except CustomAddError as exc:
+        return CustomRuleRead(
+            **common,
+            name=str(payload.get("name", "")),
+            type=str(payload.get("type", "")),
+            dimension=str(payload.get("dimension", "") or ""),
+            severity=str(payload.get("severity", "") or ""),
+            source=str(payload.get("source", "")),
+            is_valid=False,
+            problems=[
+                CustomRuleProblem(code=p.code, message=p.message, fix=p.fix) for p in exc.problems
+            ],
+        )
+    return CustomRuleRead(
+        **common,
+        name=rule.name,
+        type=rule.type,
+        dimension=rule.dimension or "",
+        severity=rule.severity,
+        source=rule.source,
+        is_valid=True,
+        problems=[],
+    )
+
+
+@router.get("/rules", response_model=list[CustomRuleRead], summary="自定义规则清单")
+def list_custom_rules(session: SessionDep) -> list[CustomRuleRead]:
+    """列出运行期添加的规则。
+
+    这些规则会接在内建规则**后面**一起参与评估，并出现在 ``GET /api/rules`` 里
+    （``source_file`` 为"（界面自定义）"，前端可据此打标：未进入 git、不参与 CI 校验）。
+    """
+    return [_rule_read(row) for row in rules_service.list_rules(session)]
+
+
+@router.post(
+    "/rules",
+    response_model=CustomRuleRead,
+    status_code=status.HTTP_201_CREATED,
+    summary="新增自定义规则（仅开发环境）",
+)
+def create_custom_rule(
+    payload: dict[str, Any],
+    session: SessionDep,
+    operator: OperatorDep = None,
+    _: None = Depends(_require_dev),
+) -> CustomRuleRead:
+    """新增一条硬约束（``type: hard``）或评分指标（``type: metric``）。
+
+    请求体就是规则本身，字段与 ``rules/_template.yaml`` 完全一致
+    （例如 ``{"id": "X-01", "name": "...", "type": "metric", ...}``）。
+    规则 ID 用 ``X`` 前缀表示"运行期新增"。
+
+    校验用的是 ``scripts/check_rules.py`` 的同一份校验器，报错措辞也一致；
+    比文件更严的一点：``source`` 必填且不允许挂 TODO。
+    """
+    try:
+        row = rules_service.add_rule(session, payload=payload, created_by=operator)
+    except CustomAddError as exc:
+        _raise_custom(exc)
+    return _rule_read(row)
+
+
+@router.delete(
+    "/rules/{rule_row_id}",
+    status_code=status.HTTP_204_NO_CONTENT,
+    summary="删除自定义规则（仅开发环境）",
+)
+def delete_custom_rule(
+    rule_row_id: int,
+    session: SessionDep,
+    _: None = Depends(_require_dev),
+) -> Response:
+    try:
+        rules_service.delete_rule(session, rule_row_id)
     except CustomAddError as exc:
         _raise_custom(exc)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

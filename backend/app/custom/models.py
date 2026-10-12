@@ -70,3 +70,28 @@ class CustomWeightTemplate(SQLModel, table=True):
     )
     created_at: datetime = Field(default_factory=_utcnow)
     created_by: str | None = Field(default=None, description="创建者标识；接入登录后替换")
+
+
+class CustomRule(SQLModel, table=True):
+    """自定义规则（硬约束或评分指标）：与 ``rules/*.yaml`` 的内建规则**并列**生效。
+
+    ``payload`` 原样存界面上提交的那份规则定义（结构同 ``rules/_template.yaml``），
+    读取时**重新过一遍引擎的校验器**——好处是校验器日后收紧时，存量规则不会
+    "看起来能用、实际已经不合格"（见 ``app/custom/rules.py``）。
+    """
+
+    __tablename__ = "custom_rules"
+
+    id: int | None = Field(default=None, primary_key=True)
+    rule_id: str = Field(
+        index=True,
+        unique=True,
+        description="规则 ID，如 X-01；不得与内建规则重复（全局唯一）",
+    )
+    payload: dict[str, Any] = Field(
+        default_factory=dict,
+        sa_column=Column(JSON),
+        description="规则定义原文，字段见 rules/_template.yaml",
+    )
+    created_at: datetime = Field(default_factory=_utcnow)
+    created_by: str | None = Field(default=None, description="创建者标识；接入登录后替换")
