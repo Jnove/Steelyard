@@ -24,14 +24,19 @@ def _write_roles(path: Path, government: dict[str, object]) -> Path:
 
 
 def test_example_roles_are_consistent() -> None:
-    """仓库里四个角色模板：角色齐全、矩阵正互反、一致性合格、权重归一。"""
+    """仓库里四个角色模板：角色齐全、权重归一；给了矩阵的还要正互反且 CR < 0.1。
+
+    仓库模板既可能是 AHP 矩阵写法，也可能是 ``weights:`` 直接给权重
+    （``rules-guide`` 认可的另一种写法，此时没有一致性比率可检验），两种都要能过。
+    """
     roles = load_role_templates()
     assert list(roles) == list(ROLE_KEYS)
     for role in roles.values():
-        assert role.ahp is not None
+        assert sum(role.weights) == pytest.approx(1)
+        if role.ahp is None:
+            continue
         assert role.ahp.consistent
         assert role.ahp.cr < 0.1
-        assert sum(role.weights) == pytest.approx(1)
         a = np.asarray(role.matrix)
         np.testing.assert_allclose(a, 1 / a.T, atol=1e-6, rtol=0)
 
@@ -54,8 +59,11 @@ def test_direct_weights_and_fraction_matrix(tmp_path: Path) -> None:
     template = load_role_templates(path)["government"]
     assert template.weights == pytest.approx([0.4, 0.2, 0.3, 0.1])
     assert template.ahp is None
+    # 仓库模板当前用 weights 写法直接给权重（见 rules/weights.yaml 顶部的格式适配说明），
+    # 因此没有矩阵；这里确认它能加载、角色齐全、权重归一。
     roles = load_role_templates(default_weights_path())
-    assert roles["resident"].matrix[1][0] == 0.5  # type: ignore[index]
+    assert list(roles) == list(ROLE_KEYS)
+    assert sum(roles["resident"].weights) == pytest.approx(1)
 
 
 @pytest.mark.parametrize(

@@ -1,43 +1,74 @@
-# 绿色低碳评分指标（metric，dimension: green）。规则 ID 用 G-XX。
-#
-# 已由专业组核定（2026-10）。这两条是本项目里**依据最硬**的两条：
-# 体形系数与装配率都有强制规范或国家标准的数值可锚定。
+# 绿色低碳与施工友好评分指标
+# points 是项目评分口径；规范控制项不能由评分项替代。
 
 - id: G-01
-  name: 体形系数（越小越好）
-  type: metric
-  dimension: green
-  # shape_coef 是派生量（envelope_area / volume）。
-  value: "shape_coef"
-  scoring:
-    kind: piecewise
-    # 分段点锚定强制限值：杭州属夏热冬冷 A 区，>3 层住宅体形系数不应大于 0.40，
-    # 所以 0.40 处仍合规但已无余量（记 60 分），0.55 视为明显超标归零。
-    points:
-      - [0.20, 100]
-      - [0.30, 85]
-      - [0.40, 60]
-      - [0.55, 0]
-  weight_in_dimension: 2
-  # 关于「要不要按气候区拆成几条」：**不拆**。本项目固定在杭州（夏热冬冷 A 区 /
-  # 浙江北区），拆条会让没填 climate_zone 的方案直接变成「不适用」而丢分；
-  # 适用气候区写在本条 source 里，将来真要做多气候区比选再拆。
-  source: "GB 55015—2021 第3.1.2条 表3.1.2：夏热冬冷 A 区居住建筑体形系数 ≤3层≤0.60、>3层≤0.40（全文强制）；DB33/1015—2021 第4.1.5条 表4.1.5：≥4层≤0.40（浙江省强制）。杭州按 GB 50176—2016 表A.0.1 属夏热冬冷 A 区（3A）。0.40 取强制限值，0.55 为组内认为的明显超标值"
-
-- id: G-02
-  name: 预估装配率（越大越好）
+  name: 预估装配率
   type: metric
   dimension: green
   value: "prefab_ratio_est"
   scoring:
     kind: piecewise
-    # 分段点直接取国家标准的等级下限：50% 是认定为装配式建筑的门槛，
-    # 60%/76%/91% 分别是 A 级/AA 级/AAA 级的装配率下限。
     points:
-      - [0.30, 0]
+      - [0.20, 0]
       - [0.50, 60]
-      - [0.60, 75]
-      - [0.76, 88]
-      - [0.91, 100]
+      - [0.75, 100]
+  weight_in_dimension: 2
+  source: "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。"
+
+- id: G-02
+  name: 标准层重复率
+  type: metric
+  dimension: construction
+  value: "std_floor_repeat"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.50, 0]
+      - [0.80, 70]
+      - [0.95, 100]
+  weight_in_dimension: 2
+  source: "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。"
+
+- id: G-03
+  name: 预制构件种类数
+  type: metric
+  dimension: construction
+  value: "component_types"
+  scoring:
+    kind: piecewise
+    points:
+      - [8, 100]
+      - [14, 60]
+      - [20, 0]
   weight_in_dimension: 1
-  source: "GB/T 51129—2017 第3.0.3条：装配率不低于50%等四项要求同时满足方可认定为装配式建筑；第5.0.2条：装配率60%~75%为A级、76%~90%为AA级、91%及以上为AAA级。浙江省《装配式建筑评价标准》DBJ33/T 1165—2024（2025-01-01 施行，代替 DB33/T 1165—2019）居住建筑装配率同样不低于50%。分段点取各等级下限"
+  source: "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。"
+
+- id: G-04
+  name: 体形系数
+  type: metric
+  dimension: green
+  value: "shape_coef"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.20, 100]
+      - [0.35, 70]
+      - [0.50, 0]
+  weight_in_dimension: 2
+  source: "《建筑节能与可再生能源利用通用规范》GB 55015-2021；条文号：待按正式文本核对；原文依据（专业判断第6-12条）：建筑体形和围护结构应作为首要节能控制对象。"
+
+- id: G-05
+  name: 楼层效率
+  type: metric
+  dimension: green
+  value: "floor_efficiency"
+  scoring:
+    kind: piecewise
+    points:
+      - [0.65, 0]
+      - [0.80, 70]
+      - [0.95, 100]
+  weight_in_dimension: 1
+  source: "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。"
+
+
