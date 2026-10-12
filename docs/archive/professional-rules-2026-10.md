@@ -13,8 +13,8 @@
 
 | 项目 | 核定前 | 核定后 |
 | --- | --- | --- |
-| 规则条数 | 12 条 | **37 条** |
-| 硬约束 | 4 条（C-01~C-03、S-02） | **26 条**（建筑/规划：C-01~C-12、C-15~C-17；结构：S-02、S-05~S-14） |
+| 规则条数 | 12 条 | **34 条**（与 main 合并之后，清单见 §8.10） |
+| 硬约束 | 4 条（C-01~C-03、S-02） | **18 条**（建筑/规划 7 条取自 main；结构 S-02、S-05~S-14 共 11 条） |
 | 评分指标 | 8 条 | **11 条**（新增 Q-04、S-03、S-04） |
 | `source` | 全部 `TODO(专业组)：示例数值` | 逐条写明规范编号 + 条号，或标注「经验规则（…组）」 |
 | `name` | 12 条全带「【示例】」 | 已全部去掉 |
@@ -416,3 +416,65 @@ main 上那次 `feat:更新四个yaml` 正是重写了这个文件。
 > 补充：本轮还把一个**误提交**的文件撤出了分支——`docs/main-yaml-merge-review.md`
 > 是工作区里别处生成的分析稿，被我上一条提交的 `git add -A` 一并收了进去。
 > 已用 `git rm --cached` 从版本控制移出，**文件本身仍留在工作区**，由它的作者决定怎么处理。
+
+### 8.10 第八轮：与 main 合并，建筑侧以 main 为准
+
+main 上的 `feat:更新四个yaml`（`9923b3b`）重写了 `compliance.yaml`、`green.yaml`、
+`quality.yaml`、`weights.yaml`，与本分支改了同样四个文件，PR #8 因此变成
+**CONFLICTING / DIRTY**。专业组的决定是：**建筑侧以 main 为准，土木侧保留本分支**。
+
+**§8.9 的改名正是这次合并能干净落地的前提**：土木硬约束已经从 `compliance.yaml`
+搬进 `structure.yaml`，所以"整个文件取 main 版本"不会连带删掉土木规则。
+冲突一律解为 `--theirs`（main）。
+
+**`weights.yaml` 的格式适配**（这是四个文件里唯一一个"取过来跑不起来"的）：
+main 用「5 个维度（compliance 是硬门槛）+ 5 个角色（含设计单位）」表达，
+而引擎只认 4 个固定角色键（`government`/`developer`/`contractor`/`resident`）
+与 4 个评分维度，直接加载会报 13 个错（UnknownRole）。适配**不改任何数值**：
+
+1. 键名映射：`residents` → `resident`、`construction` → `contractor`（施工单位对应引擎的"施工总包"）；
+2. 原文说明 compliance「不参与加权平均」，故只取其余四个维度的原始数值，由引擎归一化；
+3. 引擎读不了的 `dimensions`、`validation` 两节与**没有角色的「设计单位」**，
+   原样保留在文件末尾注释里。
+
+适配后四个角色权重（引擎归一化值，维度顺序 quality/structure/construction/green）：
+
+| 角色 | 归一后权重 | CR |
+| --- | --- | --- |
+| 政府 | 0.2308 / 0.3846 / 0.1538 / 0.2308 | 空（`weights` 写法无可检验的 CR） |
+| 开发企业 | 0.2667 / 0.2667 / 0.2667 / 0.2000 | 空 |
+| 施工单位 | 0.1429 / 0.3571 / 0.3571 / 0.1429 | 空 |
+| 住户 | 0.5625 / 0.1875 / 0.0625 / 0.1875 | 空 |
+
+**合并后的规则清单（34 条）**：
+
+| 文件 | 条数 | 来源 |
+| --- | --- | --- |
+| `compliance.yaml` | 7（C-01~C-07） | main（建筑 / 规划） |
+| `quality.yaml` | 6（Q-01~Q-06） | main（建筑） |
+| `green.yaml` | 5（G-01~G-05） | main（建筑） |
+| `construction.yaml` | 2（K-01~K-02） | 本分支 |
+| `structure.yaml` | 14（S-01~S-14） | 本分支（土木） |
+| `weights.yaml` | 4 个角色 | 数值取自 main，格式适配见上 |
+
+**跟着改的两处测试**（都是"格式假设"，不是新功能）：
+
+- `test_weights.py::test_example_roles_are_consistent`：原来要求每个角色模板都有 AHP 矩阵，
+  而仓库模板现在是 `weights` 写法（`ahp is None`），改为"有矩阵才查 CR 与正互反"。
+- `test_rank_endpoint.py::test_weight_sources_and_index_mapping`：原来无条件断言
+  `weights_used.ahp.cr < 0.1`，改为按来源分支（矩阵来源查 CR、直接给权重必为 None、
+  角色模板两者皆可）。**冠军断言没有动**——第 5 个种子方案在四个维度上都是 90 分、
+  绝对占优，任何非负权重下都该第一，合并不影响它。
+
+**⚠️ 合并的副作用（需建筑侧决定，已记入 open-items）**：本分支此前为建筑侧的
+采光系数（C-15）、日照时数（C-16）、绿地率（C-17）、窗地比（Q-04）新增了字段
+`daylight_factor`、`sunlight_hours`、`green_ratio`。建筑侧规则改取 main 版本后，
+**这三个字段暂时没有任何规则引用**。我没有删除（那属于建筑侧的决定），
+只在 open-items 里标注，请建筑同学决定：接上规则，或从模型中移除。
+
+**验证**：`check_rules` 0 错误 / 0 警告；`pytest` 484 通过（仅剩 2 个本机 `jiter`
+应用控制策略失败）；前端 `npm test` 52 通过、`tsc --noEmit` 通过；
+实测 evaluate 34 条规则，样例项目仍为 A/C/D/E 合规、B 唯一不合规
+（现在报 main 的 C-04 层高、C-05 电梯）；`rank[contractor]` 正常出结果
+（C 0.874 > D 0.704 > E 0.358 > A 0.214，B 被排除，E 仍被 C/D 支配）。
+合并后 PR #8 状态 **MERGEABLE / CLEAN**。
