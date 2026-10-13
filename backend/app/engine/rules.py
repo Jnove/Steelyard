@@ -85,7 +85,10 @@ __all__ = [
 
 #: 规则 ID 格式：一个大写前缀字母 + 短横线 + 两位数字。
 #: 前缀对应 ``rules/`` 下的文件：C=compliance、Q=quality、S=structure、K=construction、G=green。
-RULE_ID_PATTERN = r"^[CQSKG]-\d{2}$"
+#: **X 是运行期自定义规则的保留前缀**（见 ``app/custom/rules.py``）：它们不来自任何文件、
+#: 不进 git、不参与 CI 校验，用一个独立前缀才能在任何列表里一眼区分开。
+#: 文件里的规则请不要用 X——那是覆盖层的位置。
+RULE_ID_PATTERN = r"^[CQSKGX]-\d{2}$"
 
 #: 表达式里允许调用的函数。**只有这五个**，其余一律报错。
 #: 不放 ``sum`` / ``sorted`` 之类是因为规则里用不到，而每多一个就多一份出错与滥用的可能。
@@ -296,8 +299,13 @@ class AnalyzedExpression:
         return not self.problems
 
 
-def known_field_names() -> frozenset[str]:
-    """全部可在表达式里引用的名字：项目层字段 + 方案层字段 + 派生量。
+def known_field_names(extra: Iterable[str] = ()) -> frozenset[str]:
+    """全部可在表达式里引用的名字：项目层 + 方案层 + 派生量（+ 调用方补充的名字）。
+
+    Args:
+        extra: 额外允许引用的名字。**运行期自定义字段**从这里传进来
+            （见 ``app/custom/fields.py`` 的 ``known_names``）：内建规则不该引用它们
+            ——``check_rules`` 是纯文件校验、看不到覆盖层——但自定义规则可以。
 
     Raises:
         RuntimeError: 项目层与方案层出现同名字段。命名空间是直接合并的，
@@ -311,7 +319,7 @@ def known_field_names() -> frozenset[str]:
             f"项目层与方案层存在同名字段 {sorted(overlap)}，命名空间无法直接合并；"
             "请在 app/models/params.py 里给其中一个改名"
         )
-    return frozenset(project | scheme | derived_names())
+    return frozenset(project | scheme | derived_names() | set(extra))
 
 
 def _suggest(name: str, candidates: Iterable[str]) -> str:
@@ -851,11 +859,20 @@ class Namespace:
 
 
 def build_namespace(project: ProjectParams, scheme: SchemeParams) -> Namespace:
-    """合并项目层字段、方案层字段与派生量，构成表达式命名空间。
+    """合并项目层字段、方案层字段、派生量与自定义字段，构成表达式命名空间。
 
     字段名不重复（由 :func:`known_field_names` 在加载阶段保证），所以直接合并。
+
+    ``SchemeParams.custom`` 里的**自定义字段**（运行期覆盖层，见 ``app/custom/``）
+    在这里摊平到顶层：规则作者不必写 ``custom['my_field']``，直接写 ``my_field``。
+    用 ``setdefault`` 合并，所以**内建字段永远优先**，自定义字段不可能把它顶掉
+    （注册表写入时也已拒绝与内建重名，这里是第二道保险）。
     """
     values: dict[str, Any] = {**project.model_dump(), **scheme.model_dump()}
+    custom = values.get("custom")
+    if isinstance(custom, dict):
+        for key, value in custom.items():
+            values.setdefault(str(key), value)
     derived = compute_derived(values)
     values.update({name: dv.value for name, dv in derived.items()})
     return Namespace(values=values, derived=derived)

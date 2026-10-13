@@ -300,7 +300,9 @@ def import_schemes(
             detail="上传的文件为空",
         )
     try:
-        result = parse_workbook(content)
+        # 传 session：解析时按"内建 + 覆盖层"的字段表取值，
+        # 于是自定义字段的列会被写进 params["custom"]（见 app/excel/io.py）。
+        result = parse_workbook(content, session=session)
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,

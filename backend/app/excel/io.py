@@ -19,8 +19,9 @@ from openpyxl.workbook.workbook import Workbook as WB
 from openpyxl.worksheet.datavalidation import DataValidation
 from openpyxl.worksheet.worksheet import Worksheet
 
+from app.custom.fields import CUSTOM_CONTAINER
 from app.models import ProjectParams, SchemeParams
-from app.schemas.meta import enriched_schema
+from app.schemas.merged import merged_schema
 
 # —— 模板常量 —— #
 
@@ -81,9 +82,39 @@ class ParseResult:
 # —— 模板写入 —— #
 
 
-def _build_enriched() -> tuple[dict[str, Any], dict[str, Any]]:
-    """读取 ProjectParams / SchemeParams 的字段元信息。"""
-    return enriched_schema(ProjectParams), enriched_schema(SchemeParams)
+def _build_enriched(session: Any = None) -> tuple[dict[str, Any], dict[str, Any]]:
+    """读取 ProjectParams / SchemeParams 的字段元信息（含覆盖层）。
+
+    ``session`` 为 None 时只返回**内建基线**——CLI 脚本（生成提交进仓库的模板、
+    命令行导入导出）走这条路，保证构建产物永远只含内建字段；
+    HTTP 接口传 session，于是界面与 Excel 看到的字段完全一致（含自定义字段与自定义选项）。
+    """
+    return merged_schema(session, ProjectParams), merged_schema(session, SchemeParams)
+
+
+def _is_custom(field_info: dict[str, Any]) -> bool:
+    """该字段是不是运行期自定义字段（值存在方案参数的 ``custom`` 字典里）。"""
+    return bool(field_info.get("custom"))
+
+
+def _read_value(params: dict[str, Any], field_info: dict[str, Any]) -> Any:
+    """从参数里取一个字段的值；自定义字段去 ``custom`` 字典里取。"""
+    name = str(field_info["name"])
+    if _is_custom(field_info):
+        custom = params.get(CUSTOM_CONTAINER)
+        return custom.get(name) if isinstance(custom, dict) else None
+    return params.get(name)
+
+
+def _write_value(params: dict[str, Any], field_info: dict[str, Any], value: Any) -> None:
+    """把解析出来的值放回参数；自定义字段放进 ``custom`` 字典，而不是顶层。"""
+    name = str(field_info["name"])
+    if _is_custom(field_info):
+        custom = params.setdefault(CUSTOM_CONTAINER, {})
+        if isinstance(custom, dict):
+            custom[name] = value
+        return
+    params[name] = value
 
 
 def _fields_by_group(enriched: dict[str, Any]) -> list[tuple[str, list[dict[str, Any]]]]:
@@ -258,9 +289,13 @@ def _write_instructions_sheet(wb: WB) -> None:
     ws.row_dimensions[1].height = 360
 
 
-def write_template(path: str | Path) -> Path:
-    """生成空白录入模板。"""
-    project_meta, scheme_meta = _build_enriched()
+def write_template(path: str | Path, *, session: Any = None) -> Path:
+    """生成空白录入模板。
+
+    ``session`` 传入时会把覆盖层的自定义字段一并写入（HTTP 下载用）；
+    CLI 不传，生成的模板只含内建字段。
+    """
+    project_meta, scheme_meta = _build_enriched(session)
 
     wb = Workbook()
     # 默认第一张空白表删掉，换成"项目信息"
@@ -341,7 +376,7 @@ def _scheme_rows(
         for field_info in fields:
             row = [field_info["label"], field_info.get("unit", "—")]
             for scheme in schemes:
-                row.append(_value_to_cell(scheme["params"].get(field_info["name"])))
+                row.append(_value_to_cell(_read_value(scheme["params"], field_info)))
             # 填充未使用的方案列（保持行长度一致，便于正确写入列号）
             for _ in range(n_scheme_cols, MAX_SCHEMES):
                 row.append(None)
@@ -354,13 +389,16 @@ def write_export(
     path: str | Path,
     project_params: dict[str, Any],
     schemes: list[dict[str, Any]],
+    *,
+    session: Any = None,
 ) -> Path:
     """把数据库里的项目 + 方案导出为 xlsx。
 
     ``schemes`` 每项形如 ``{"name": "高层A", "params": {...}}``。方案数大于
     :data:`MAX_SCHEMES` 时，溢出的方案写到"方案参数_2"补充表，并在文件里多保留一份模板。
+    ``session`` 传入时包含覆盖层的自定义字段（自定义字段的值从 ``custom`` 字典里取）。
     """
-    project_meta, scheme_meta = _build_enriched()
+    project_meta, scheme_meta = _build_enriched(session)
 
     wb = Workbook()
     default = wb.active
@@ -594,13 +632,20 @@ def _scheme_field_parser(
     if raw is None or (isinstance(raw, str) and not raw.strip()):
         return None
     if typ == "number":
-        # 项目层的比例（density_max）有 constraints；方案层比例字段靠名字识别
-        is_ratio = field_name in (
-            "inner_area_ratio",
-            "south_room_ratio",
-            "window_floor_ratio",
-            "std_floor_repeat",
-            "prefab_ratio_est",
+        # 比例字段：覆盖层给的 kind=ratio 或 0–1 约束优先（自定义比例字段走这条）；
+        # 内建的比例字段历史上靠名字识别，名单保留兜底。
+        constraints = field_info.get("constraints") or {}
+        is_ratio = (
+            field_info.get("kind") == "ratio"
+            or (constraints.get("minimum") == 0 and constraints.get("maximum") == 1)
+            or field_name
+            in (
+                "inner_area_ratio",
+                "south_room_ratio",
+                "window_floor_ratio",
+                "std_floor_repeat",
+                "prefab_ratio_est",
+            )
         )
         if is_ratio:
             return _parse_ratio(raw, label)
@@ -721,7 +766,14 @@ def _parse_scheme_sheet(
                 errors.append(ParseError(scheme["name"], name, label, msg))
                 continue
             if value is not None:
-                scheme["params"][name] = value
+                # 自定义字段要放进 params["custom"]，不能落到顶层（否则会被模型丢掉）。
+                field_info = next(
+                    (f for f in scheme_meta["fields"] if f["name"] == name), None
+                )
+                if field_info is None:
+                    scheme["params"][name] = value
+                else:
+                    _write_value(scheme["params"], field_info, value)
 
     # 跳过空的默认列：用户没填任何字段、且没重命名（仍是"方案C"等默认名）。
     # 但有错误的方案要保留，方便上层把错误暴露给用户。
@@ -735,12 +787,12 @@ def _parse_scheme_sheet(
     return schemes, errors
 
 
-def parse_workbook(source: str | Path | bytes) -> ParseResult:
+def parse_workbook(source: str | Path | bytes, *, session: Any = None) -> ParseResult:
     """解析 xlsx 文件，返回项目参数、方案列表与全部错误。
 
     ``source`` 可以是路径，也可以是字节流（HTTP 上传场景）。
     """
-    project_meta, scheme_meta = _build_enriched()
+    project_meta, scheme_meta = _build_enriched(session)
 
     if isinstance(source, (str, Path)):
         wb = load_workbook(source, data_only=True)

@@ -22,7 +22,7 @@ export type WithDemo<T> = T & { demo?: DemoMetadata }
 import type { RankResponse as ServerRankResponse, RankedScheme as ServerRankedScheme } from './generated/RankResponse'
 export type { AhpResult, TopsisResult, SensitivityResult, ParetoResult, RankAcceptabilityResult } from './generated/RankResponse'
 export type WeightsUsed = ServerRankResponse['weights_used']
-export interface RolesResponse { criteria: string[]; roles: WeightsUsed[]; needs_review: string[] }
+export interface RolesResponse { criteria: string[]; roles: WeightsUsed[]; custom_roles?: WeightsUsed[]; needs_review: string[] }
 /** 只有离线自定义权重缺少完整快照时才允许稳健性与概率为 null。 */
 export type RankedScheme = Omit<ServerRankedScheme, 'first_place_probability'> & { first_place_probability: number | null }
 export type RankResponse = Omit<ServerRankResponse, 'ranking' | 'sensitivity' | 'rank_acceptability'> & {

@@ -11,7 +11,7 @@
 
 from __future__ import annotations
 
-from typing import Literal
+from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -335,6 +335,8 @@ class SchemeParams(BaseModel):
             "结构与造价",
             "超限不规则项",
             options=IRREGULARITY_OPTIONS,
+            # 开放枚举：使用者可在界面上追加候选值（见 app/custom/）。
+            extensible=True,
         ),
     )
 
@@ -360,7 +362,18 @@ class SchemeParams(BaseModel):
             "施工与安全",
             "风险特征",
             options=RISK_FEATURE_OPTIONS,
+            # 开放枚举：使用者可在界面上追加候选值（见 app/custom/）。
+            extensible=True,
         ),
+    )
+    custom: dict[str, Any] = Field(
+        default_factory=dict,
+        description=(
+            "自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。"
+            "界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示"
+            "（见 app/custom/fields.py 与 docs/design-custom-add.md）"
+        ),
+        json_schema_extra=_meta("—", "基本信息", "自定义字段", hidden=True),
     )
 
     # —— 绿色低碳 —— #
