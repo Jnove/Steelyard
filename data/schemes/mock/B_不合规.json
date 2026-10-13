@@ -4,12 +4,20 @@
   "params": {
     "structure_type": "剪力墙",
     "units": 340,
-    "unit_mix": {"两室": 170, "三室": 170},
+    "unit_mix": {
+      "两室": 170,
+      "三室": 170
+    },
     "floor_height": 2.9,
     "inner_area_ratio": 0.74,
-    "south_room_ratio": 0.70,
+    "south_room_ratio": 0.7,
     "window_floor_ratio": 0.22,
-    "window_wall_ratio": {"南": 0.40, "北": 0.25, "东": 0.25, "西": 0.25},
+    "window_wall_ratio": {
+      "南": 0.4,
+      "北": 0.25,
+      "东": 0.25,
+      "西": 0.25
+    },
     "elevators_per_unit": 1,
     "gfa": 40800,
     "footprint": 2400,
@@ -17,7 +25,7 @@
     "floors": 17,
     "envelope_area": 13200,
     "volume": 118320,
-    "std_floor_repeat": 0.80,
+    "std_floor_repeat": 0.8,
     "component_types": 14,
     "risk_features": [],
     "prefab_ratio_est": 0.45,
@@ -29,15 +37,18 @@
     "daylight_factor": 0.022,
     "sunlight_hours": 2.0,
     "green_ratio": 0.35,
+    "highest_occupied_floor": 17,
+    "highest_occupied_floor_height": 46.4,
     "excavation_depth": 4.5,
     "formwork_height": 4.5,
     "scaffold_type": "落地式钢管脚手架",
-    "scaffold_height": 49
+    "scaffold_height": 49.0
   },
   "_design_notes": {
     "intent": "演示硬约束标红（**故意不合规，不要修**）：层高 2.9 m 低于 GB 55038—2025 第4.1.2条的 3.00 m；17 层只配 1 台电梯，违反第4.2.4条（12 层及以上每单元至少 2 台）。其余指标中等。",
     "tradeoff": "压低层高把户数与得房率一并往上推，代价是触发 C-01 与 C-05 两条硬约束失败；前端看板会标红，参与排名时自动剔除。本方案是 5 个样例里**唯一保留的不合规样例**，用来演示合规引擎的拦截能力。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 17 = 40,800 m²，与 gfa 一致；总高 17 × 2.9 = 49.3 m < 54 m。",
-    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。"
+    "far_check": "gfa / site_area = 40,800 / 18,000 ≈ 2.27 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。",
+    "lift_input": "虚构样例假设首层入户楼面与室外设计地面齐平，最高入户层为总层数，楼面高度按 (floors - 1) × floor_height 填写；实际项目必须填实测或图纸数据，不得套用此假设。"
   }
 }

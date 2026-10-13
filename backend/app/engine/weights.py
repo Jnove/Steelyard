@@ -19,7 +19,7 @@ from __future__ import annotations
 import warnings
 from dataclasses import dataclass
 from fractions import Fraction
-from math import isfinite
+from math import isclose, isfinite
 from pathlib import Path
 from typing import Any
 
@@ -51,8 +51,10 @@ __all__ = [
 #: ``rules/`` 下的角色权重模板文件名。
 WEIGHTS_FILENAME = "weights.yaml"
 
-#: 四个角色的键。顺序即前端下拉框的展示顺序。
+#: 旧版本必须提供的四个角色；设计单位是可选的第五个角色。
 ROLE_KEYS: tuple[str, ...] = ("government", "developer", "contractor", "resident")
+OPTIONAL_ROLE_KEYS: tuple[str, ...] = ("design",)
+ROLE_ALIASES = {"residents": "resident", "construction": "contractor"}
 
 
 @dataclass(frozen=True)
@@ -148,14 +150,14 @@ def _check_one_role(key: str, raw: Any) -> tuple[RoleWeightTemplate | None, list
     problems: list[WeightsProblem] = []
     n = len(CRITERION_ORDER)
 
-    if key not in ROLE_KEYS:
+    if key not in (*ROLE_KEYS, *OPTIONAL_ROLE_KEYS):
         problems.append(
             WeightsProblem(
                 severity="error",
                 code="ROLE_UNKNOWN",
                 role=key,
                 message=f"未知角色 {key}",
-                fix=f"角色名只能是 {' / '.join(ROLE_KEYS)}",
+                fix=f"角色名只能是 {' / '.join((*ROLE_KEYS, *OPTIONAL_ROLE_KEYS))}",
             )
         )
 
@@ -376,6 +378,121 @@ def _parse_matrix(
     )
 
 
+def _role_configs(raw: dict[str, Any]) -> tuple[dict[str, Any], list[WeightsProblem]]:
+    """兼容旧的角色顶层写法与专业组的 dimensions / roles / validation 写法。
+
+    按字段名取四个评分权重，compliance 只保留为硬门槛；不依赖 YAML 键顺序。
+    新格式的原始数值与出处保留在 YAML 内，不删除设计单位或伪造 AHP 矩阵。
+    """
+    problems: list[WeightsProblem] = []
+
+    def error(code: str, message: str, fix: str) -> None:
+        problems.append(WeightsProblem("error", code, None, message, fix))
+
+    nested = "roles" in raw
+    entries = raw
+    source = ""
+    expected_sum: float | None = None
+    if nested:
+        if set(raw) - {"dimensions", "roles", "validation"}:
+            error(
+                "WEIGHTS_UNKNOWN_SECTION",
+                "权重文件含未知顶层字段",
+                "只保留 dimensions、roles、validation",
+            )
+        dimensions = raw.get("dimensions")
+        expected_dims = {"compliance", *CRITERION_ORDER}
+        if not isinstance(dimensions, dict) or set(dimensions) != expected_dims:
+            error(
+                "WEIGHTS_DIMENSIONS",
+                "维度必须包含 compliance 和四个评分维度",
+                "按 rules/weights.yaml 的维度名填写",
+            )
+        entries = raw["roles"]
+        if not isinstance(entries, dict):
+            error("WEIGHTS_ROLES", "roles 必须是角色配置对象", "在 roles 下面按角色名缩进填写")
+            return {}, problems
+        validation = raw.get("validation", {})
+        if not isinstance(validation, dict):
+            error(
+                "WEIGHTS_VALIDATION",
+                "validation 必须是对象",
+                "填写 weight_sum、compliance_behavior 和 source",
+            )
+            validation = {}
+        if set(validation) - {"weight_sum", "compliance_behavior", "source"}:
+            error(
+                "WEIGHTS_VALIDATION",
+                "validation 含未知字段",
+                "只支持 weight_sum、compliance_behavior 和 source",
+            )
+        source = str(validation.get("source", ""))
+        if "weight_sum" in validation:
+            try:
+                expected_sum = parse_matrix_entry(validation["weight_sum"])
+                if expected_sum <= 0:
+                    raise ValueError("合计须为正数")
+            except ValueError as exc:
+                error("WEIGHTS_SUM", f"weight_sum 无效：{exc}", "填写有限的正数，例如 1.0")
+        behavior = validation.get("compliance_behavior")
+        if behavior is not None and not isinstance(behavior, str):
+            error(
+                "WEIGHTS_VALIDATION",
+                "compliance_behavior 必须是文字说明",
+                "合规门槛与评分权重分别填写",
+            )
+
+    configs: dict[str, Any] = {}
+    for supplied_key, config in entries.items():
+        key = ROLE_ALIASES.get(str(supplied_key), str(supplied_key))
+        if key in configs:
+            error(
+                "WEIGHTS_DUPLICATE_ROLE",
+                f"角色 {key} 与其别名重复",
+                "resident / residents 和 contractor / construction 各只保留一个",
+            )
+            continue
+        if not nested or not isinstance(config, dict):
+            configs[key] = config
+            continue
+        if set(config) - {"label", "rationale", "source", "weights"}:
+            error(
+                "ROLE_UNKNOWN_FIELD",
+                f"角色 {key} 含未知字段",
+                "新格式每个角色只支持 label、rationale、source、weights",
+            )
+        weights = config.get("weights")
+        if not isinstance(weights, dict) or set(weights) != {"compliance", *CRITERION_ORDER}:
+            error(
+                "WEIGHTS_DIMENSIONS",
+                f"角色 {key} 必须按名称提供五个维度权重",
+                "填写 compliance、quality、structure、construction、green",
+            )
+            continue
+        try:
+            numbers = {dimension: parse_matrix_entry(value) for dimension, value in weights.items()}
+        except ValueError as exc:
+            error("WEIGHTS_NOT_NUMBER", f"角色 {key}：{exc}", "权重须为有限的非负数字")
+            continue
+        if any(value < 0 for value in numbers.values()):
+            error("WEIGHTS_NOT_POSITIVE", f"角色 {key} 含负权重", "每个维度权重须为非负数")
+        if expected_sum is not None and not isclose(
+            sum(numbers.values()), expected_sum, abs_tol=1e-6
+        ):
+            error(
+                "WEIGHTS_SUM",
+                f"角色 {key} 的五项权重合计与 weight_sum 不符",
+                "核对原始权重，合计须与 validation.weight_sum 一致",
+            )
+        configs[key] = {
+            "name": config.get("label"),
+            "note": config.get("rationale", ""),
+            "source": f"{config.get('source', source)}；compliance 原始权重 {numbers['compliance']:g}，作为独立硬门槛，不计入评分",
+            "weights": [numbers[dimension] for dimension in CRITERION_ORDER],
+        }
+    return configs, problems
+
+
 def check_weights_file(path: Path) -> tuple[dict[str, RoleWeightTemplate], list[WeightsProblem]]:
     """校验 ``weights.yaml``，返回 ``(可用的模板, 问题列表)``。
 
@@ -434,14 +551,23 @@ def check_weights_file(path: Path) -> tuple[dict[str, RoleWeightTemplate], list[
         )
         return {}, problems
 
+    configs, config_problems = _role_configs(raw)
+    problems.extend(config_problems)
     templates: dict[str, RoleWeightTemplate] = {}
-    for key, value in raw.items():
+    for key in (
+        *ROLE_KEYS,
+        *OPTIONAL_ROLE_KEYS,
+        *(key for key in configs if key not in (*ROLE_KEYS, *OPTIONAL_ROLE_KEYS)),
+    ):
+        if key not in configs:
+            continue
+        value = configs[key]
         template, role_problems = _check_one_role(str(key), value)
         problems.extend(role_problems)
         if template is not None:
             templates[str(key)] = template
 
-    missing = [key for key in ROLE_KEYS if key not in raw]
+    missing = [key for key in ROLE_KEYS if key not in configs]
     if missing:
         problems.append(
             WeightsProblem(

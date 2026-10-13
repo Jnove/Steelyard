@@ -12,6 +12,7 @@ import { mockSSE, postSSE, streamDelay } from '../api/sse'
 import { API_BASE } from '../api/base'
 import { applyAgentEvent, numberSegments, type StreamContent, type ToolCall } from '../api/agent-state'
 import TraceDrawer from '../components/TraceDrawer'
+import { IconFileText } from '../components/Icons'
 
 type DimensionKey = 'quality' | 'structure' | 'construction' | 'green'
 type Ranking = Awaited<ReturnType<typeof ranking.run>>['ranking']
@@ -260,10 +261,10 @@ function ProjectChat({ projectId }: { projectId: number }) {
             pendingText = ''
             update(item => applyAgentEvent(item, { ...event, text: '' }))
           }
-          // 真实流跟随后端 token 刷新；逐字计时只用于本地演示，避免长回复排队数十秒。
+          // 真实流跟随后端 token 刷新；演示按小批刷新，规则扩充后长报告仍能及时完成。
           for (const character of event.text) {
             pendingText += character
-            if (pendingText.length >= (isMock ? kind === 'report' ? 12 : 1 : 64)) await flushText()
+            if (pendingText.length >= (isMock ? kind === 'report' ? 128 : 16 : 64)) await flushText()
           }
           if (!isMock) await flushText()
         } else if (event.type === 'tool_start' || event.type === 'tool_end') {
@@ -318,27 +319,42 @@ function ProjectChat({ projectId }: { projectId: number }) {
 
   return <>
     <header className="page-heading">
-      <div><p className="eyebrow">方案比选 · 对话与报告</p><h1>把结论追问到底</h1>
-        <p className="muted">结合评估、排序与规则依据追问，点击规则编号查看来源。</p></div>
-      <div className="action-row"><Tag>{isMock ? '本地 Mock 演示' : '真实接口'}</Tag>
-        <Button onClick={() => void start('report')} disabled={!canStart}>生成 Markdown 报告</Button></div>
+      <div>
+        <p className="eyebrow">筑衡 · 智能体决策解释</p>
+        <h1>把结论追问到底</h1>
+        <p className="muted">大模型组织解释，数字来自工具结果。点击规则编号查看参数、公式与当前来源，待核定条目会如实标出。</p>
+      </div>
+      <div className="action-row">
+        <Tag>{isMock ? '本地 Mock 演示' : '真实接口'}</Tag>
+        <Button onClick={() => void start('report')} disabled={!canStart}>
+          <IconFileText size={15} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+          生成 Markdown 报告
+        </Button>
+      </div>
     </header>
     {isMock && <Alert showIcon type="info" message="本地 Mock 演示：回答与工具卡均为确定性演示"
       description="文字使用已返回的演示评分。What-if 仅作流程示意，不计算调整后结果，不修改方案。" />}
     <div className="chat-layout">
       <section className="chat-main panel" aria-label="方案对话">
-        <div className="section-heading"><h2>对话追问</h2>
-          <span className="muted" role="status">{busy ? '正在生成…' : '可追问 · 可溯源'}</span></div>
+        <div className="section-heading">
+          <div>
+            <h2>对话追问与解释</h2>
+            <p className="section-subtext">选择预设决策问题，或输入任意技术指标疑问</p>
+          </div>
+          <span className="muted" role="status">{busy ? '正在生成…' : '可追问 · 可溯源'}</span>
+        </div>
         <div className="action-row" aria-label="快捷问题">
           {quickQuestions.map((question) => <Button key={question} disabled={!canStart}
             onClick={() => void start('chat', question)}>{question}</Button>)}
         </div>
         <div className="chat-feed" ref={feed} role="log" aria-label="对话记录" aria-live="off"
           onScroll={() => { const node = feed.current; if (node) followStream.current = node.scrollHeight - node.scrollTop - node.clientHeight < 80 }}>
-          {!messages.length && <Empty description="从一个问题开始，或生成完整的 Markdown 比选报告。" />}
+          {!messages.length && <Empty description="从一个快捷问题开始，或点击右上角生成完整比选报告。" />}
           {messages.map((item) => <article key={item.id} className={`chat-message ${item.role}`} data-role={item.role}>
-            <div className="section-heading"><strong>{item.role === 'user' ? '你' : isMock ? '筑衡 · Mock 演示' : '筑衡'}</strong>
-              {item.role === 'assistant' && <Tag>{item.status === 'streaming' ? '生成中' : item.status === 'done' ? '已完成' : item.status === 'cancelled' ? '已停止 · 内容未完成' : '生成失败 · 内容未完成'}</Tag>}</div>
+            <div className="section-heading">
+              <strong>{item.role === 'user' ? '你' : isMock ? '筑衡 · Mock 演示' : '筑衡 · 决策智能体'}</strong>
+              {item.role === 'assistant' && <Tag>{item.status === 'streaming' ? '生成中' : item.status === 'done' ? '已完成' : item.status === 'cancelled' ? '已停止 · 内容未完成' : '生成失败 · 内容未完成'}</Tag>}
+            </div>
             {!!item.tools.length && <Collapse size="small" items={item.tools.map((tool) => ({ key: tool.id,
               label: `${tool.name} · ${tool.status === 'running' ? '计算中…' : tool.status === 'done' ? '已完成' : '未完成'}`,
               children: <pre>{tool.result === undefined ? (tool.status === 'running' ? '等待工具返回结果…' : '工具未返回详情') : toolResultText(tool.result)}</pre>,

@@ -8,6 +8,22 @@ const field = (type: string, overrides: Partial<FieldMetadata> = {}): FieldMetad
   type, required: false, constraints: {}, ...overrides,
 })
 
+test('声明式清单区分未核对和已核对无不规则项', () => {
+  const metadata = field('array<string>', { empty_means_unknown: true, allow_custom_options: false })
+  assert.equal(parseSchemaValue(metadata, undefined), null)
+  assert.equal(parseSchemaValue(metadata, ''), null)
+  assert.deepEqual(parseSchemaValue(metadata, []), [])
+  assert.deepEqual(parseSchemaValue(metadata, ['扭转不规则']), ['扭转不规则'])
+  assert.deepEqual(parseSchemaValue(field('array<string>'), ''), [])
+})
+
+test('已核定清单拒绝拼写错误，自由风险标签仍允许扩展', () => {
+  const metadata = field('array<string>', { allow_custom_options: false, options: ['扭转不规则'] })
+  assert.deepEqual(validateSchemaField(metadata, ['扭转不规则']), [])
+  assert.ok(validateSchemaField(metadata, ['扭转不规侧']).length > 0)
+  assert.deepEqual(validateSchemaField(field('array<string>', { options: ['大悬挑'] }), ['其他风险']), [])
+})
+
 test('可选对象允许留空或 null，但拒绝数组、字符串与单个数字', () => {
   const metadata = field('object<number>')
   for (const value of [undefined, null, '', '  ', 'null', '{}']) {

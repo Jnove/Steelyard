@@ -201,7 +201,7 @@
     "elevators_per_unit": {
       "anyOf": [
         {
-          "exclusiveMinimum": 0,
+          "minimum": 0,
           "type": "integer"
         },
         {
@@ -214,6 +214,40 @@
       "label": "电梯数/单元",
       "title": "Elevators Per Unit",
       "unit": "台"
+    },
+    "highest_occupied_floor": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "最高住宅入户层的层序，不得用含非住宅层的总层数代替",
+      "group": "居住品质",
+      "label": "最高住宅入户层",
+      "title": "Highest Occupied Floor",
+      "unit": "层"
+    },
+    "highest_occupied_floor_height": {
+      "anyOf": [
+        {
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "最高住宅入户层楼面距室外设计地面的实际高度，不是建筑总高",
+      "group": "居住品质",
+      "label": "最高入户层楼面高度",
+      "title": "Highest Occupied Floor Height",
+      "unit": "m"
     },
     "daylight_factor": {
       "anyOf": [
@@ -423,11 +457,22 @@
       "unit": "MPa"
     },
     "irregularity_items": {
-      "description": "超限高层不规则项（结构计算判定后勾选，见建质〔2015〕67号 附件1）",
+      "allow_custom_options": false,
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
+      "empty_means_unknown": true,
       "group": "结构与造价",
-      "items": {
-        "type": "string"
-      },
       "label": "超限不规则项",
       "options": [
         "扭转不规则",
@@ -444,7 +489,6 @@
         "多重复杂"
       ],
       "title": "Irregularity Items",
-      "type": "array",
       "unit": "—"
     },
     "std_floor_repeat": {

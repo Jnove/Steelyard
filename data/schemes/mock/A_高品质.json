@@ -4,12 +4,20 @@
   "params": {
     "structure_type": "剪力墙",
     "units": 320,
-    "unit_mix": {"三室": 160, "两室": 160},
+    "unit_mix": {
+      "三室": 160,
+      "两室": 160
+    },
     "floor_height": 3.3,
     "inner_area_ratio": 0.82,
     "south_room_ratio": 0.85,
     "window_floor_ratio": 0.28,
-    "window_wall_ratio": {"南": 0.45, "北": 0.30, "东": 0.25, "西": 0.25},
+    "window_wall_ratio": {
+      "南": 0.45,
+      "北": 0.3,
+      "东": 0.25,
+      "西": 0.25
+    },
     "elevators_per_unit": 2,
     "gfa": 38400,
     "footprint": 2400,
@@ -19,16 +27,24 @@
     "volume": 126720,
     "std_floor_repeat": 0.65,
     "component_types": 20,
-    "risk_features": ["大悬挑", "高支模"],
+    "risk_features": [
+      "大悬挑",
+      "高支模"
+    ],
     "prefab_ratio_est": 0.25,
     "slab_thickness": 120,
     "design_working_life": 70,
     "min_plan_width": 16,
     "concrete_grade": 30,
-    "irregularity_items": ["凹凸不规则", "局部不规则"],
+    "irregularity_items": [
+      "凹凸不规则",
+      "局部不规则"
+    ],
     "daylight_factor": 0.032,
     "sunlight_hours": 2.5,
     "green_ratio": 0.38,
+    "highest_occupied_floor": 16,
+    "highest_occupied_floor_height": 49.5,
     "excavation_depth": 4.5,
     "formwork_height": 4.5,
     "scaffold_type": "附着式升降脚手架",
@@ -39,6 +55,7 @@
     "tradeoff": "高定制换来的代价是标准层重复率仅 0.65、构件种类多达 20 种、装配率 0.25；现场存在大悬挑与高支模两类风险特征。",
     "code_check": "东西向窗墙比 0.25 压在 DB33/1015—2021 第4.2.1条的限值上（≤0.25），南向 0.45 同样压在限值上（≤0.45）；层高 3.3 m 满足 GB 55038—2025 第4.1.2条的 3.00 m；16 层每单元 2 台电梯满足第4.2.4条。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 16 = 38,400 m²，与 gfa 一致；总高 16 × 3.3 = 52.8 m < 54 m。",
-    "far_check": "gfa / site_area = 38,400 / 18,000 ≈ 2.13 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。"
+    "far_check": "gfa / site_area = 38,400 / 18,000 ≈ 2.13 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。",
+    "lift_input": "虚构样例假设首层入户楼面与室外设计地面齐平，最高入户层为总层数，楼面高度按 (floors - 1) × floor_height 填写；实际项目必须填实测或图纸数据，不得套用此假设。"
   }
 }

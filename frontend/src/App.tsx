@@ -5,28 +5,28 @@ import ProjectsPage from './pages/ProjectsPage'
 import SchemesPage from './pages/SchemesPage'
 import { isMock } from './constants/dimensions'
 import MockControls from './components/MockControls'
+import { IconLayers, IconMessage, IconScale, IconSliders } from './components/Icons'
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const ChatPage = lazy(() => import('./pages/ChatPage'))
 
 export default function App() {
   const location = useLocation()
   const projectId = location.pathname.match(/projects\/(\d+)/)?.[1]
-  return <div className="app-shell">
-    <aside className="app-rail">
-      <NavLink to="/projects" className="brand"><span className="brand-mark" aria-hidden="true">衡</span><span>筑衡<small>建筑方案智能比选</small></span></NavLink>
-      <div className="rail-label">工作空间</div>
+  return <div className={'app-shell ' + (projectId ? 'app-shell-project' : 'app-shell-overview')}>
+    <header className="app-rail glass-surface">
+      <NavLink to="/projects" className="brand" aria-label="筑衡 · 返回项目总览"><span className="brand-mark" aria-hidden="true"><IconScale size={23} /></span><span>筑衡<small>STEELYARD</small></span></NavLink>
       <nav aria-label="主导航">
-        <NavLink end to="/projects"><span aria-hidden="true">▦</span>项目总览</NavLink>
+        <NavLink end to="/projects"><IconLayers size={16} />项目总览</NavLink>
         {projectId && <>
-          <NavLink to={'/projects/' + projectId + '/schemes'}><span>01</span>方案录入</NavLink>
-          <NavLink to={'/projects/' + projectId + '/dashboard'}><span>02</span>对比看板</NavLink>
-          <NavLink to={'/projects/' + projectId + '/chat'}><span>03</span>对话与报告</NavLink>
+          <NavLink to={'/projects/' + projectId + '/schemes'}><IconLayers size={16} />方案录入</NavLink>
+          <NavLink to={'/projects/' + projectId + '/dashboard'}><IconSliders size={16} />对比看板</NavLink>
+          <NavLink to={'/projects/' + projectId + '/chat'}><IconMessage size={16} />对话与报告</NavLink>
         </>}
       </nav>
-      <div className="rail-bottom"><span className="status-dot" />{isMock ? '离线演示' : '后端服务'}<p>每一项比较，都有依据。</p></div>
-    </aside>
+      <span className="rail-status"><span className="status-dot" />{isMock ? '离线演示' : '方案决策工作台'}</span>
+    </header>
     <div className="app-body">
-      <header className="topbar"><span>方案决策工作台</span><span className="muted">{isMock ? '【示例】虚构数据 · 仅供开发调试' : '评分与排序由后端计算'}</span></header>
+      <div className="topbar"><span>{projectId ? '工作空间 / 方案比选' : '建筑方案智能比选'}</span><span className="muted">{isMock ? '【示例】虚构数据 · 仅供开发调试' : '评分与排序由后端计算'}</span></div>
       <main className="workspace"><Suspense fallback={<Skeleton active paragraph={{rows:8}} />}><Routes>
         <Route path="/" element={<Navigate to="/projects" replace />} />
         <Route path="/projects" element={<ProjectsPage />} />

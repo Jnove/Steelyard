@@ -3,6 +3,7 @@ import { ApiError } from '../api/client'
 export interface JsonSchema {
   type?: string; properties?: Record<string, JsonSchema>; required?: string[]
   enum?: unknown[]; anyOf?: JsonSchema[]; items?: JsonSchema
+  allow_custom_options?: boolean; options?: string[]
   additionalProperties?: JsonSchema | boolean
   minimum?: number; maximum?: number; exclusiveMinimum?: number; exclusiveMaximum?: number
   minLength?: number; maxLength?: number
@@ -11,6 +12,8 @@ export interface JsonSchema {
 /** 校验导出参数模型实际使用的 JSON Schema 子集。 */
 export function validate(value: unknown, schema: JsonSchema, path = 'params'): void {
   const fail = (message: string): never => { throw new ApiError(422, { detail: `${path}: ${message}` }) }
+  if (Array.isArray(value) && schema.allow_custom_options === false && schema.options
+    && value.some(item => !schema.options!.includes(String(item)))) fail('请选择已核定的列表选项')
   if (schema.anyOf) {
     for (const variant of schema.anyOf) {
       try {
