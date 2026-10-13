@@ -107,8 +107,10 @@ def test_select_packs_filters_without_mutating_the_original() -> None:
     assert gb_only.rules and not (zj_ids & {r.id for r in gb_only.rules})
     # 原件不受影响：全局缓存的那份永远含全部册
     assert zj_ids <= {r.id for r in full.rules}
-    # 全选时原样返回同一个对象（不必要地复制会浪费）
-    assert full.select_packs(["GB", "ZJ"]) is full
+    # 全选时原样返回同一个对象（不必要地复制会浪费）。
+    # 这里用 full.packs 而不是写死的 ["GB", "ZJ"]——每收一个新省册，
+    # 写死的列表就不再等于全集，测试会莫名其妙地变红。
+    assert full.select_packs(full.packs) is full
 
 
 def test_project_params_requires_gb_and_known_packs() -> None:
@@ -213,6 +215,9 @@ def test_packs_endpoint_lists_gb_and_every_province(client: TestClient) -> None:
     assert by_code["ZJ"]["gb_code"] == "330000"
     assert by_code["ZJ"]["rule_count"] == 4
     assert by_code["ZJ"]["hard_count"] == 4
+    # 宁夏册：住建厅印发的导则正文已逐字核对，绿地率一条可用现有字段判定
+    assert by_code["NX"]["rule_count"] == 1
+    assert by_code["NX"]["always_on"] is False
     # 还没有条文可收的省册：条数为 0，并写明原因（不凭记忆塞规则）
     assert by_code["JS"]["rule_count"] == 0
     assert by_code["JS"]["note"]

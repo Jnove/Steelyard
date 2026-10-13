@@ -1,5 +1,5 @@
 {
-  "fixture_id": "4f2b4847dc76ddceff2b984ce10d144addc8a1761bbe48f06293f687bf0648b5",
+  "fixture_id": "00255f55356fc28c81e8c8233025b3068a710b390fd952fe24f5c730bc299b0a",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -38,10 +38,12 @@
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
+    "rules/_province_template.yaml": "c4e15f94808d603565d69cc242dfa5f4467b527cd45da69e7dd4c5634145dfd8",
     "rules/_template.yaml": "5d7740c4a23a2e802808a2882b8d05428dd9b39fe40180fe800d7fee73667c4c",
     "rules/compliance.yaml": "d4d1ee2de2eeb7070e5e58aac9981997d0179bca1c23ac1f63c5c8cc08906953",
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
     "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
+    "rules/nx_green.yaml": "8c7f8c8583786c2fe48e3c15ad838ff2b7c75c8193bdc4d25a746d6f05484f96",
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
     "rules/structure.yaml": "3f56e9c0206b711e6b3fd97b63d56812da3145e60299c095153ef9fd558f6e63",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
@@ -6096,8 +6098,8 @@
     }
   },
   "rules": {
-    "rule_count": 37,
-    "hard_count": 21,
+    "rule_count": 38,
+    "hard_count": 22,
     "metric_count": 16,
     "rules": [
       {
@@ -6481,6 +6483,24 @@
           "weight_in_dimension": 1.0
         },
         "source_file": "green.yaml"
+      },
+      {
+        "definition": {
+          "id": "NX-G-01",
+          "pack": "NX",
+          "name": "宁夏高品质商品住宅绿地率下限",
+          "type": "hard",
+          "source": "《宁夏高品质商品住宅建设技术导则（试行）》（宁建发〔2024〕80号，宁夏回族自治区住房和城乡建设厅 2024-11-28 印发）第5.4节「绿地与活动场地」第1款：住宅绿地率不应小于35%，且满足当地标准（按住建厅官网发布的 DOCX 附件逐字核对，核对日期 2026-10-13）",
+          "when": null,
+          "check": "green_ratio >= 0.35",
+          "message": "住宅绿地率 {green_ratio} 低于宁夏导则要求的 35%",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "nx_green.yaml"
       },
       {
         "definition": {
