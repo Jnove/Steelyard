@@ -1,5 +1,5 @@
 {
-  "fixture_id": "565df4741f9b6e9225134521f2d67cf08a3fb6701d816757d2a6f22ad7524943",
+  "fixture_id": "06944bfe000ce202079ef3cab1119c8c762f59a2b26f7f4c60399127a85bc786",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -42,8 +42,7 @@
     "rules/construction_safety.yaml": "84b7d284d583b87624dc37fa52fb1effe68c4f264f80c76d2064b68cd8f446ec",
     "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
-    "rules/structure.yaml": "70434ee0111b8837025b065e81d08392054476f8c45a8dd1f3e8273492c11a7b",
-    "rules/structure_mic.yaml": "9d070e9a7d8da753f06a05d17bd38cd9164483178dfcee1522c9f9e7755a078a",
+    "rules/structure.yaml": "33bfd1961b8ef6d8dd4b6ddfc11244d1fcf44954e9a472bcb88cac29078a8280",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
     "data/schemes/mock/A_高品质.json": "b6cfa0bb19dee88cafd68d2cbaf95f4ced890bb0edb72873bda8c910817484ed",
     "data/schemes/mock/B_不合规.json": "7b042f9e6f17288d32db6e1d67dc2559fc2a58128bf53cfabefb02a7235497bd",
@@ -410,7 +409,7 @@
   ],
   "evaluation": {
     "project_id": 1,
-    "rule_count": 40,
+    "rule_count": 36,
     "results": [
       {
         "scheme_id": "1",
@@ -567,8 +566,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -579,10 +578,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -595,30 +594,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "高宽比不超过限值（提示） 通过"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -679,30 +654,6 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
-          },
-          {
-            "rule_id": "S-15",
-            "name": "MiC 混凝土强度等级下限",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": 30.0,
-            "limit": ">= 30",
-            "formula": "concrete_grade >= 30",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30。注意与 S-14 的区别：S-14 是国标对钢筋混凝土结构的通用下限（C25），本条是模块化建筑的更高要求，用词同为「不应低于」",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
-          },
-          {
-            "rule_id": "S-16",
-            "name": "MiC 最大高宽比（提示）",
-            "status": "not_applicable",
-            "severity": "warning",
-            "value": null,
-            "limit": null,
-            "formula": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
-            "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
           }
         ],
         "metrics": {
@@ -1068,8 +1019,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -1080,10 +1031,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -1096,30 +1047,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "高宽比不超过限值（提示） 通过"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -1180,30 +1107,6 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
-          },
-          {
-            "rule_id": "S-15",
-            "name": "MiC 混凝土强度等级下限",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": 25.0,
-            "limit": ">= 30",
-            "formula": "concrete_grade >= 30",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30。注意与 S-14 的区别：S-14 是国标对钢筋混凝土结构的通用下限（C25），本条是模块化建筑的更高要求，用词同为「不应低于」",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
-          },
-          {
-            "rule_id": "S-16",
-            "name": "MiC 最大高宽比（提示）",
-            "status": "not_applicable",
-            "severity": "warning",
-            "value": null,
-            "limit": null,
-            "formula": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
-            "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
           }
         ],
         "metrics": {
@@ -1569,10 +1472,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '6度(0.05g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '6度(0.05g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-06",
@@ -1581,10 +1484,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -1597,30 +1500,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙'）"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "passed",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "MiC 建筑最大适用高度（6 度区） 通过"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -1681,30 +1560,6 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
-          },
-          {
-            "rule_id": "S-15",
-            "name": "MiC 混凝土强度等级下限",
-            "status": "passed",
-            "severity": "error",
-            "value": 30.0,
-            "limit": ">= 30",
-            "formula": "concrete_grade >= 30",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30。注意与 S-14 的区别：S-14 是国标对钢筋混凝土结构的通用下限（C25），本条是模块化建筑的更高要求，用词同为「不应低于」",
-            "missing_fields": [],
-            "message": "MiC 混凝土强度等级下限 通过"
-          },
-          {
-            "rule_id": "S-16",
-            "name": "MiC 最大高宽比（提示）",
-            "status": "passed",
-            "severity": "warning",
-            "value": null,
-            "limit": null,
-            "formula": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
-            "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
-            "missing_fields": [],
-            "message": "MiC 最大高宽比（提示） 通过"
           }
         ],
         "metrics": {
@@ -2070,8 +1925,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -2082,10 +1937,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -2098,30 +1953,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "高宽比不超过限值（提示） 通过"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -2182,30 +2013,6 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
-          },
-          {
-            "rule_id": "S-15",
-            "name": "MiC 混凝土强度等级下限",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": 30.0,
-            "limit": ">= 30",
-            "formula": "concrete_grade >= 30",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30。注意与 S-14 的区别：S-14 是国标对钢筋混凝土结构的通用下限（C25），本条是模块化建筑的更高要求，用词同为「不应低于」",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
-          },
-          {
-            "rule_id": "S-16",
-            "name": "MiC 最大高宽比（提示）",
-            "status": "not_applicable",
-            "severity": "warning",
-            "value": null,
-            "limit": null,
-            "formula": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
-            "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
           }
         ],
         "metrics": {
@@ -2571,8 +2378,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -2583,10 +2390,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -2599,30 +2406,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "高宽比不超过限值（提示） 通过"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -2683,30 +2466,6 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
-          },
-          {
-            "rule_id": "S-15",
-            "name": "MiC 混凝土强度等级下限",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": 25.0,
-            "limit": ">= 30",
-            "formula": "concrete_grade >= 30",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30。注意与 S-14 的区别：S-14 是国标对钢筋混凝土结构的通用下限（C25），本条是模块化建筑的更高要求，用词同为「不应低于」",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
-          },
-          {
-            "rule_id": "S-16",
-            "name": "MiC 最大高宽比（提示）",
-            "status": "not_applicable",
-            "severity": "warning",
-            "value": null,
-            "limit": null,
-            "formula": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
-            "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC'）"
           }
         ],
         "metrics": {
@@ -6495,8 +6254,8 @@
     }
   },
   "rules": {
-    "rule_count": 40,
-    "hard_count": 24,
+    "rule_count": 36,
+    "hard_count": 20,
     "metric_count": 16,
     "rules": [
       {
@@ -7240,9 +6999,9 @@
           "id": "S-05",
           "name": "建筑高度不超结构体系最大适用高度（6 度区）",
           "type": "hard",
-          "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
-          "when": "seismic_intensity == '6度(0.05g)' and structure_type != 'MiC'",
-          "check": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
+          "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
+          "when": "seismic_intensity == '6度(0.05g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')",
+          "check": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
           "message": "建筑总高 {height} m 超过该结构体系在 6 度（0.05g）区的最大适用高度，须改结构体系或按超限高层做专项审查",
           "severity": "error",
           "dimension": null,
@@ -7257,9 +7016,9 @@
           "id": "S-06",
           "name": "建筑高度不超结构体系最大适用高度（7 度区）",
           "type": "hard",
-          "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
-          "when": "seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'",
-          "check": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
+          "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
+          "when": "seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')",
+          "check": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
           "message": "建筑总高 {height} m 超过该结构体系在 7 度（0.10g）区的最大适用高度，须改结构体系或按超限高层做专项审查",
           "severity": "error",
           "dimension": null,
@@ -7279,40 +7038,6 @@
           "check": "height_width_ratio <= (4 if structure_type == '框架' else 6)",
           "message": "高宽比 {height_width_ratio} 超过 JGJ 3—2010 表3.3.2 的限值（6 度、7 度区：框架 4、框架-剪力墙与剪力墙 6），请复核结构整体稳定与经济性",
           "severity": "warning",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "structure.yaml"
-      },
-      {
-        "definition": {
-          "id": "S-08",
-          "name": "MiC 建筑最大适用高度（6 度区）",
-          "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-          "when": "structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'",
-          "check": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-          "message": "建筑总高 {height} m 超过浙江省《混凝土模块化建筑技术导则》表6.1.8 对 6 度区该 MiC 体系的最大适用高度",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "structure.yaml"
-      },
-      {
-        "definition": {
-          "id": "S-09",
-          "name": "MiC 建筑最大适用高度（7 度区）",
-          "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-          "when": "structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'",
-          "check": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-          "message": "建筑总高 {height} m 超过浙江省《混凝土模块化建筑技术导则》表6.1.8 对 7 度区该 MiC 体系的最大适用高度",
-          "severity": "error",
           "dimension": null,
           "value": null,
           "scoring": null,
@@ -7404,40 +7129,6 @@
           "weight_in_dimension": 1.0
         },
         "source_file": "structure.yaml"
-      },
-      {
-        "definition": {
-          "id": "S-15",
-          "name": "MiC 混凝土强度等级下限",
-          "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30。注意与 S-14 的区别：S-14 是国标对钢筋混凝土结构的通用下限（C25），本条是模块化建筑的更高要求，用词同为「不应低于」",
-          "when": "structure_type == 'MiC'",
-          "check": "concrete_grade >= 30",
-          "message": "模块化建筑的混凝土强度等级 C{concrete_grade} 低于导则要求的 C30",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "structure_mic.yaml"
-      },
-      {
-        "definition": {
-          "id": "S-16",
-          "name": "MiC 最大高宽比（提示）",
-          "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
-          "when": "structure_type == 'MiC'",
-          "check": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
-          "message": "高宽比 {height_width_ratio} 超过导则表6.1.10 对该 MiC 体系的最大值（框架类 4、剪力墙与框架-剪力墙类 6）",
-          "severity": "warning",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "structure_mic.yaml"
       }
     ],
     "derived_quantities": [
