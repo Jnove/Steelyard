@@ -2,7 +2,7 @@
 
 ## 这次交付
 
-可点击的 [二维比较原型](prototype/comparison.html)、统一 [材质 CSS](prototype/comparison-glass.css)、更新的 [预览与独立 SVG](evidence/)。本轮改动在 design 目录，正式 React 前端尚未接入这套材质。
+可点击的 [二维比较原型](prototype/comparison.html)、统一 [材质 CSS](prototype/comparison-glass.css)、更新的 [预览与独立 SVG](evidence/)。本目录保留工业设计的 V6 交付；正式 React 看板的接入、数据与验证边界见 [前端接入说明](../docs/design-comparison-integration.md)。
 
 ## 视觉参数
 

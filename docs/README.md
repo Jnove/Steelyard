@@ -16,6 +16,7 @@
 | [前端使用与联调](frontend-mvp.md) | 真实 / 离线模式、数据边界、类型生成与浏览器验证 |
 | [界面改造简案](ui-redesign.md) | 面向初次访问与评审的页面调整、优先级和仍待完成的体验验收 |
 | [青绿与紫粉玻璃界面方案](liquid-glass-plan.md) | 漂浮展台、玻璃材质、Three.js 场景、参考素材与 Skill、实施分工与验收 |
+| [工业设计对比图接入](design-comparison-integration.md) | 取舍图、双方案差值、动态指标矩阵、真实结果关联与 SVG 导出 |
 | [SSE 协议](sse-events.md) | 报告与对话请求、工具事件、替换、缓存、取消和数字校验 |
 | [部署指南](deployment.md) | 服务器配置、发布、验收、回滚与运维 |
 | [历史归档](archive/README.md) | 2026-10-05 集成、前端验收与 T8 PR 描述 |

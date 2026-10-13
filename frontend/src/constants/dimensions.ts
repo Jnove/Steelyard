@@ -6,4 +6,4 @@ export const dimensions = [
   { key: 'green', label: '绿色低碳', short: '绿色', color: tokens.dimensions.green },
 ] as const
 export type DimensionKey = typeof dimensions[number]['key']
-export const isMock = import.meta.env.VITE_USE_MOCK === 'true'
+export const isMock = import.meta.env?.VITE_USE_MOCK === 'true'
