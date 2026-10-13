@@ -110,4 +110,4 @@ make down         # docker compose 关闭
 
 **还没定下来的事**都记在 [docs/open-items.md](./docs/open-items.md)：
 先看初筛 P0，专业组待定的规则阈值与权重在第一部分，开发侧事项在第二部分。
-T1–T9 集成完成不表示专业规则、真实模型或比赛材料已验收。首页入口、看板结论层与玻璃体量展台见[界面实施方案](docs/liquid-glass-plan.md)；跨页面上下文、非专业用户体验验收及完整 T10 仍是待办。
+T1–T9 集成完成不表示专业规则、真实模型或比赛材料已验收。首页入口、看板结论层与玻璃体量展台见[界面实施方案](docs/liquid-glass-plan.md)；工业设计的取舍图、双方案差值图与动态指标矩阵已[接入正式看板](docs/design-comparison-integration.md)。跨页面上下文、非专业用户体验验收及完整 T10 仍是待办。

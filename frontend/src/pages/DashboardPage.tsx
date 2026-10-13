@@ -12,6 +12,7 @@ import { redistributeWeights } from '../utils/weights'
 import { evaluationSummary, scoreTradeoff } from '../utils/scheme-presentation'
 import Chart from '../components/Chart'
 import TraceDrawer from '../components/TraceDrawer'
+import ComparisonWorkbench from '../components/comparison/ComparisonWorkbench'
 import {
   IconAlertTriangle,
   IconArrowRight,
@@ -75,7 +76,7 @@ export default function DashboardPage() {
   const [weights, setWeights] = useState([.25,.25,.25,.25])
   const [request, setRequest] = useState<RankInput>({ role: 'government' })
   const [debounced, setDebounced] = useState<RankInput>(request)
-  const [trace, setTrace] = useState<{ evaluation: EvalResult; dimension: DimensionKey }>()
+  const [trace, setTrace] = useState<{ evaluation: EvalResult; dimension?: DimensionKey; ruleId?: string }>()
   const project = useQuery({ queryKey: ['project',id], queryFn: () => projects.get(id) })
   const evaluated = useQuery({ queryKey: ['evaluation',id], queryFn: () => evaluation.get(id) })
   const roles = useQuery({ queryKey: ['roles',id], queryFn: () => ranking.roles(id) })
@@ -216,6 +217,9 @@ export default function DashboardPage() {
         <span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span>
       </div>
 
+      {result && <ComparisonWorkbench key={id} results={results} ranking={result} projectName={project.data?.name ?? '当前项目'}
+        roleName={roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role_name ?? '当前权重'} updating={ranked.isFetching} onTrace={setTrace} />}
+
       <div className="dashboard-top">
         <section className="panel weights-panel">
           <div className="section-heading">
@@ -272,6 +276,7 @@ export default function DashboardPage() {
         </section>
       </div>
 
+      <details className="dashboard-scheme-details"><summary>按方案查看完整得分摘要</summary>
       <div className="section-heading result-heading">
         <div>
           <h2>方案一览与依据溯源</h2>
@@ -302,6 +307,7 @@ export default function DashboardPage() {
             <small>覆盖 {((e.dimension_coverage?.[d.key] ?? 0)*100).toFixed(0)}%</small></button>)}</div>
         </article>
       })}</div>
+      </details>
 
       {result?.demo?.warnings.map((warning,i) => <Alert key={i} type="info" showIcon message={warning} />)}
 
@@ -346,6 +352,6 @@ export default function DashboardPage() {
 
       <p className="demo-note">{isMock ? '【示例】仅用于交互开发。' : ''}规则、角色矩阵与专业出处仍需核定；当前评分不作为工程安全或合规证明。</p>
     </>}
-    <TraceDrawer open={!!trace} evaluation={trace?.evaluation} dimension={trace?.dimension} onClose={()=>setTrace(undefined)} />
+    <TraceDrawer open={!!trace} evaluation={trace?.evaluation} dimension={trace?.dimension} ruleId={trace?.ruleId} onClose={()=>setTrace(undefined)} />
   </>
 }
