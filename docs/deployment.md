@@ -15,6 +15,10 @@
 
 VM 不安装 npm/uv、不构建镜像，也不保存 GitHub PAT。部署不运行 seed、不覆盖已有数据库、不操作其他 Compose 项目。容器替换期间可能出现短暂不可用；当前方案没有实现无中断切换。
 
+### 初筛版本冻结
+
+冻结节点与材料安排以 [交付计划](submission-plan.md) 为准。冻结后限制 `main` 的合并与 push，只处理阻断演示或影响事实准确性的必要修复；这由团队协作执行，CI 不会自动阻止发布。记录已验收的提交 SHA、公开部署版本和备用源码包，保留可回滚版本。必要修复发布后，重新验收受影响链路并同步视频、报告与技术说明，确保材料对应实际可访问的版本。
+
 ## 首次服务器配置
 
 当前约定：VM `20.46.166.104`，SSH 用户 `jnove`，部署根 `/home/jnove/steelyard`，Docker 外部网络 `jnoves-blog_default`。部署用户需要 Docker 权限、Bash、Python 3 标准库、`flock`、`tar`、`gzip`、`sha256sum` 与支持 `up --wait` 的 Docker Compose。

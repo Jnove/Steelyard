@@ -31,11 +31,11 @@
   source: "《住宅项目规范》GB 55038-2025，第4.1.2条；原文依据：新建住宅建筑的层高不应低于3.00m。专业判断对应第17条。"
 
 - id: C-05
-  name: 十二层及以上住宅每单元至少两台电梯
+  name: 十二层及以上或入户楼面超过33m的住宅每单元至少两台电梯
   type: hard
-  when: "floors >= 12"
+  when: "highest_occupied_floor >= 12 or highest_occupied_floor_height > 33"
   check: "elevators_per_unit >= 2"
-  message: "层数为 {floors} 层时，每单元电梯数 {elevators_per_unit} 少于 2 台"
+  message: "最高入户层为 {highest_occupied_floor} 层、楼面高度为 {highest_occupied_floor_height} m 时，每单元电梯数 {elevators_per_unit} 少于 2 台"
   source: "《住宅项目规范》GB 55038-2025，第4.2.4条第2、3款；原文依据：最高入户层为十二层及十二层以上，或最高入户层楼面距室外设计地面高度超过33m的住宅建筑，每个住宅单元应至少设置2台电梯；设有电梯的住宅单元，应至少有1台电梯满足规定尺寸要求。专业判断对应第26条。"
 
 - id: C-06
@@ -53,4 +53,10 @@
   message: "MiC 方案预估装配率 {prefab_ratio_est} 低于 50% 基本门槛"
   source: "《装配式建筑评价标准》GB/T 51129-2017，第3.0.3条第1-4项；原文依据：装配式建筑应同时满足主体结构部分评价分值不低于20分、围护墙和内隔墙部分评价分值不低于10分、采用全装修、装配率不低于50%。系统当前仅能自动校验装配率，其他三项需人工复核。"
 
-
+- id: C-08
+  name: 四层及以上或入户楼面超过9m的住宅每单元至少一台电梯
+  type: hard
+  when: "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9"
+  check: "elevators_per_unit >= 1"
+  message: "最高入户层为 {highest_occupied_floor} 层、楼面高度为 {highest_occupied_floor_height} m 时，每单元电梯数 {elevators_per_unit} 少于 1 台"
+  source: "《住宅项目规范》GB 55038-2025，第4.2.4条第1款；按最高入户层层序或楼面实际高度判断，数据不足时不得判为通过。官方摘录：https://ghzrzyw.beijing.gov.cn/biaozhunguanli/bzzl/202506/P020250609570099619169.pdf 第9页。"

@@ -67,6 +67,14 @@ export type WindowWallRatio = {
  */
 export type ElevatorsPerUnit = number | null;
 /**
+ * 最高住宅入户层的层序，不得用含非住宅层的总层数代替
+ */
+export type HighestOccupiedFloor = number | null;
+/**
+ * 最高住宅入户层楼面距室外设计地面的实际高度，不是建筑总高
+ */
+export type HighestOccupiedFloorHeight = number | null;
+/**
  * 卧室、起居室的采光系数（小数，0.022 即 2.2%）
  */
 export type DaylightFactor = number | null;
@@ -115,9 +123,9 @@ export type MinPlanWidth = number | null;
  */
 export type ConcreteGrade = number | null;
 /**
- * 超限高层不规则项（结构计算判定后勾选，见建质〔2015〕67号 附件1）
+ * 超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）
  */
-export type IrregularityItems = string[];
+export type IrregularityItems = string[] | null;
 /**
  * 标准层重复率
  */
@@ -170,6 +178,8 @@ export interface SchemeParams {
   window_floor_ratio?: WindowFloorRatio;
   window_wall_ratio?: WindowWallRatio;
   elevators_per_unit?: ElevatorsPerUnit;
+  highest_occupied_floor?: HighestOccupiedFloor;
+  highest_occupied_floor_height?: HighestOccupiedFloorHeight;
   daylight_factor?: DaylightFactor;
   sunlight_hours?: SunlightHours;
   gfa?: Gfa;

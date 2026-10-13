@@ -22,10 +22,39 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.dont_write_bytecode = True
 
 
+def source_hashes(source: Path) -> dict[str, str]:
+    """文本统一换行后计算指纹，让 Windows 导出与 Linux CI 的检查一致。"""
+    hashes: dict[str, str] = {}
+    for base in [source, ROOT]:
+        paths = [
+            *(base / "backend/app").rglob("*.py"),
+            *(base / "rules").glob("*.yaml"),
+        ]
+        for path in sorted(paths):
+            hashes[path.relative_to(base).as_posix()] = hashlib.sha256(
+                path.read_text(encoding="utf-8").encode("utf-8")
+            ).hexdigest()
+    for path in [*(ROOT / "data/schemes/mock").glob("*.json"), Path(__file__).resolve()]:
+        hashes[path.relative_to(ROOT).as_posix()] = hashlib.sha256(
+            path.read_text(encoding="utf-8").encode("utf-8")
+        ).hexdigest()
+    template = ROOT / "data/schemes/方案录入模板.xlsx"
+    hashes[template.relative_to(ROOT).as_posix()] = hashlib.sha256(
+        template.read_bytes()
+    ).hexdigest()
+    return hashes
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--mcdm-root", type=Path, default=ROOT, help="包含 T4 backend/app/api/rank.py 的只读仓库"
+        "--mcdm-root",
+        type=Path,
+        default=ROOT,
+        help="包含 T4 backend/app/api/rank.py 的只读仓库",
+    )
+    parser.add_argument(
+        "--check", action="store_true", help="只核对引擎、规则与样例指纹，不改文件"
     )
     parser.add_argument(
         "--grid-step",
@@ -39,6 +68,22 @@ def main() -> int:
     source = args.mcdm_root.resolve()
     if not (source / "backend/app/api/rank.py").is_file():
         parser.error("缺少 T4 rank.py，请通过 --mcdm-root 指定草案仓库")
+    hashes = source_hashes(source)
+    out = ROOT / "frontend/src/mocks/fixtures"
+    if args.check:
+        fixture = json.loads((out / "data.json").read_text(encoding="utf-8"))
+        recorded = fixture.get("source_hashes", {})
+        changed = sorted(
+            key
+            for key in hashes.keys() | recorded.keys()
+            if hashes.get(key) != recorded.get(key)
+        )
+        if changed or fixture.get("grid_step") != args.grid_step:
+            print("离线快照已过期，请运行 export_frontend_fixtures.py --grid-step 10：")
+            print("\n".join(changed) or "网格步长不一致")
+            return 1
+        print("离线评估、角色、字段与规则快照指纹一致")
+        return 0
     sys.path.insert(0, str(ROOT / "backend"))
     # 公共模型、评估与字段元数据使用当前工作树；仅 T4 缺失模块从只读目录加载。
     import app.api
@@ -47,18 +92,19 @@ def main() -> int:
     app.api.__path__.append(str(source / "backend/app/api"))
     app.engine.__path__.append(str(source / "backend/app/engine"))
 
+    # evaluate/rank 会落 Agent 缓存；建表前须注册该模型，避免第一次调用时才导入。
+    from app.agents.storage import AgentResultRow  # noqa: F401
     from app.api.evaluate import evaluate_project
     from app.api.projects import ProjectRead
     from app.api.rank import RankRequest, list_roles, rank_project
-    from app.api.rules import list_rules
-    from app.api.schema import get_all_schemas
+    from app.api.rules import build_rules_response
+    from app.api.schema import build_all_schemas
     from app.api.schemes import SchemeRead
     from app.excel import parse_workbook, write_export
     from app.models import Project, ProjectParams, Scheme, SchemeParams
     from openpyxl import load_workbook
     from sqlmodel import Session, SQLModel, create_engine
 
-    out = ROOT / "frontend/src/mocks/fixtures"
     out.mkdir(parents=True, exist_ok=True)
     mock_dir = ROOT / "data/schemes/mock"
     filenames = [
@@ -76,23 +122,6 @@ def main() -> int:
             raise ValueError(f"缺少虚构数据声明：{filename}")
         return value
 
-    hashes = {}
-    for base in [source, ROOT]:
-        for path in sorted((base / "backend/app").rglob("*.py")):
-            hashes[str(path.relative_to(base)).replace("\\", "/")] = hashlib.sha256(
-                path.read_bytes()
-            ).hexdigest()
-        for path in sorted((base / "rules").glob("*.yaml")):
-            hashes[str(path.relative_to(base)).replace("\\", "/")] = hashlib.sha256(
-                path.read_bytes()
-            ).hexdigest()
-    for filename in ["project.json", *filenames]:
-        hashes[f"data/schemes/mock/{filename}"] = hashlib.sha256(
-            (mock_dir / filename).read_bytes()
-        ).hexdigest()
-    hashes["scripts/export_frontend_fixtures.py"] = hashlib.sha256(
-        Path(__file__).read_bytes()
-    ).hexdigest()
     fixture_id = hashlib.sha256(json.dumps(hashes, sort_keys=True).encode()).hexdigest()
     stamp = datetime(2026, 1, 1, tzinfo=UTC)
     engine = create_engine("sqlite://")
@@ -123,15 +152,21 @@ def main() -> int:
             rows.append(row)
             session.add(row)
         session.commit()
-        evaluation = evaluate_project(1, session, include_whatif=False).model_dump(mode="json")
+        evaluation = evaluate_project(1, session, include_whatif=False).model_dump(
+            mode="json"
+        )
         roles = list_roles(1, session)
 
         def snapshot(request: RankRequest) -> dict:
             value = rank_project(1, request, session).model_dump(mode="json")
-            value["elapsed_ms"] = 0  # 离线快照，不把导出耗时冒充当前浏览器或服务器耗时。
+            value["elapsed_ms"] = (
+                0  # 离线快照，不把导出耗时冒充当前浏览器或服务器耗时。
+            )
             return value
 
-        ranks = {r["role"]: snapshot(RankRequest(role=r["role"])) for r in roles["roles"]}
+        ranks = {
+            r["role"]: snapshot(RankRequest(role=r["role"])) for r in roles["roles"]
+        }
         grid = []
         if args.grid_step:
             units = 100 // args.grid_step
@@ -142,7 +177,9 @@ def main() -> int:
                         grid.append(snapshot(RankRequest(weights=weights)))
 
         project_read = ProjectRead.model_validate(project).model_dump(mode="json")
-        scheme_reads = [SchemeRead.model_validate(row).model_dump(mode="json") for row in rows]
+        scheme_reads = [
+            SchemeRead.model_validate(row).model_dump(mode="json") for row in rows
+        ]
         # 导出时调用真实 Excel 解析器；浏览器只识别内容完全相同的文件。
         workbook = out / "demo-import.xlsx"
         write_export(
@@ -165,7 +202,10 @@ def main() -> int:
         # 固定压缩包和属性时间戳，重复导出的演示文件哈希保持稳定。
         for path in [workbook, invalid_workbook]:
             buffer = BytesIO()
-            with ZipFile(path) as source_zip, ZipFile(buffer, "w", ZIP_DEFLATED) as target_zip:
+            with (
+                ZipFile(path) as source_zip,
+                ZipFile(buffer, "w", ZIP_DEFLATED) as target_zip,
+            ):
                 for name in sorted(source_zip.namelist()):
                     content = source_zip.read(name)
                     if name == "docProps/core.xml":
@@ -179,7 +219,11 @@ def main() -> int:
                     target_zip.writestr(item, content)
             path.write_bytes(buffer.getvalue())
         imports = []
-        for path in [workbook, invalid_workbook, ROOT / "data/schemes/方案录入模板.xlsx"]:
+        for path in [
+            workbook,
+            invalid_workbook,
+            ROOT / "data/schemes/方案录入模板.xlsx",
+        ]:
             if not path.exists():
                 continue
             content = path.read_bytes()
@@ -211,8 +255,10 @@ def main() -> int:
             "evaluation": evaluation,
             "roles": roles,
             "ranks": ranks,
-            "schema": get_all_schemas(),
-            "rules": list_rules().model_dump(mode="json"),
+            # 不带 session：提交进仓库的前端产物必须只含**内建基线**，
+            # 使用者运行期加的自定义内容不能混进 git（见 app/api/schema.py 的说明）。
+            "schema": build_all_schemas(),
+            "rules": build_rules_response().model_dump(mode="json"),
             "imports": imports,
             "defaults": {
                 "project": ProjectParams().model_dump(),
@@ -228,7 +274,8 @@ def main() -> int:
             encoding="utf-8",
         )
         (out / "grid.json").write_text(
-            json.dumps(grid, ensure_ascii=False, separators=(",", ":"), allow_nan=False) + "\n",
+            json.dumps(grid, ensure_ascii=False, separators=(",", ":"), allow_nan=False)
+            + "\n",
             encoding="utf-8",
         )
     engine.dispose()

@@ -4,6 +4,8 @@
 
 详细技术方案见 [Agent.md](./Agent.md)，使用、协议、规则与运维文档见 [文档入口](./docs/README.md)。
 
+本轮线上初筛材料须在 **2026-10-15 24:00（UTC+8）前提交**。内部目标为 2026-10-14 12:00 冻结版本；四项材料、日程和分工见 [交付计划](./docs/submission-plan.md)，接手上下文见 [项目记忆](./memory/README.md)。原 2026-10-30 计划不再适用于本轮交付。
+
 ---
 
 ## 快速开始
@@ -82,6 +84,7 @@ make down         # docker compose 关闭
 ├── rules/             土木 / 建筑同学维护的 YAML 规则
 ├── data/              Schema、虚构方案、Excel 模板；容器 SQLite 卷
 ├── docs/              使用、规则、协议、部署指南与历史归档
+├── memory/            当前交付约束、团队分工与 Agent 接手入口
 ├── scripts/           工程脚本（check_rules.py 等）
 ├── docker-compose.yml 本地演示
 ├── docker-compose.production.yml 服务器发布编排
@@ -106,5 +109,5 @@ make down         # docker compose 关闭
 任务编号按项目任务提示词对齐。T1–T9 的历史集成与联调见 [集成归档](docs/archive/integration-t1-t9.md)。条文搜索当前仍为空结果桩，待 T10 接入。
 
 **还没定下来的事**都记在 [docs/open-items.md](./docs/open-items.md)：
-专业组待定的规则阈值与权重在第一部分，开发侧待修项在第二部分。
-接手前先过一遍这份清单。
+先看初筛 P0，专业组待定的规则阈值与权重在第一部分，开发侧事项在第二部分。
+T1–T9 集成完成不表示专业规则、真实模型或比赛材料已验收。首页入口、看板结论层与玻璃体量展台见[界面实施方案](docs/liquid-glass-plan.md)；工业设计的取舍图、双方案差值图与动态指标矩阵已[接入正式看板](docs/design-comparison-integration.md)。跨页面上下文、非专业用户体验验收及完整 T10 仍是待办。

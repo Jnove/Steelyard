@@ -1,77 +1,71 @@
-# 角色对四个评分维度的相对重视程度；规范合规是独立硬约束门槛。
-#
-# ⚠️ 本文件在 2026-10 合并 main（提交 "feat:更新四个yaml"）时做过一次**格式适配**。
-#    main 上的版本用「5 个维度（含 compliance 硬门槛）+ 5 个角色（含设计单位）」表达，
-#    而引擎只认 4 个固定角色键（government / developer / contractor / resident）
-#    与 4 个评分维度（quality / structure / construction / green）。适配只做了三件事，
-#    **没有改动任何数值**：
-#      1. 键名映射：`residents` → `resident`、`construction` → `contractor`
-#         （施工单位对应引擎里的"施工总包"）；
-#      2. 原文说明 compliance「不参与加权平均」，故只取其余四个维度的原始数值，
-#         由引擎自动归一化（所以下面每行的四个数不要求和为 1，
-#         原表是"compliance + 四个维度"合计为 1）；
-#      3. 原文的 dimensions / validation 两节、以及**引擎没有对应角色的「设计单位」**，
-#         原样保留在本文件末尾的注释里，避免丢失。
-#
-# 原文（main）对这套口径的说明：
-#   维度权重每行合计 1.0；compliance 是硬约束门槛，不参与加权平均。
-#   这些权重是基于专业判断文件的治理目标形成的初始专家口径，
-#   需通过项目访谈或 AHP 校准。
-#
-# 与 AHP 矩阵版的差别：用 `weights` 直接给权重时**没有一致性比率（CR）可检验**，
-# 引擎会把 CR 记为空。若专业组希望回到带 CR 检验的 AHP 矩阵写法，
-# 可用同一组权重反推互反矩阵（a[i][j] = wi / wj）。
+# 角色对四个评分维度的相对重视程度；规范合规是独立硬约束门槛
+# 维度权重每行合计 1.0；compliance 是硬约束门槛，不参与加权平均。
+# 这些权重是基于专业判断文件的治理目标形成的初始专家口径，需通过项目访谈或 AHP 校准。
 
-government:
-  name: 政府
-  note: "政府首先关注强制性规范和结构安全底线，同时兼顾居住品质、产业化实施与绿色目标。"
-  source: "经验规则（专业组，沿用 main 的初始专家口径）：综合《住宅项目规范》GB 55038—2025、《民用建筑通用规范》GB 55031—2022、《建筑与市政工程抗震通用规范》GB 55002—2021、《建筑节能与可再生能源利用通用规范》GB 55015—2021、《绿色建筑评价标准》GB/T 50378—2019、《装配式建筑评价标准》GB/T 51129—2017 及对应专业判断文件；需通过项目访谈或 AHP 校准。原表另计 compliance 0.35"
-  #          quality  structure  construction  green
-  weights: [0.15,    0.25,     0.10,         0.15]
+dimensions:
+  compliance:
+    label: 规范合规
+  quality:
+    label: 居住品质
+  structure:
+    label: 结构安全
+  construction:
+    label: 施工友好
+  green:
+    label: 绿色低碳
 
-developer:
-  name: 开发企业
-  note: "开发企业需要控制合规、结构和交付风险，同时平衡产品品质、建造可实施性、工期和绿色竞争力。"
-  source: "经验规则（专业组，沿用 main 的初始专家口径）：同上；需通过项目访谈或 AHP 校准。原表另计 compliance 0.25"
-  #          quality  structure  construction  green
-  weights: [0.20,    0.20,     0.20,         0.15]
+roles:
+  government:
+    label: 政府
+    weights:
+      compliance: 0.35
+      quality: 0.15
+      structure: 0.25
+      construction: 0.10
+      green: 0.15
+    rationale: "政府首先关注强制性规范和结构安全底线，同时兼顾居住品质、产业化实施与绿色目标。"
 
-contractor:
-  name: 施工单位
-  note: "施工单位最关注安全合规、结构实施风险、工艺可实施性、标准化、构件供应、吊装和现场湿作业控制。"
-  source: "经验规则（专业组，沿用 main 的初始专家口径）：同上；需通过项目访谈或 AHP 校准。原表 roles.construction 另计 compliance 0.30"
-  #          quality  structure  construction  green
-  weights: [0.10,    0.25,     0.25,         0.10]
+  residents:
+    label: 住户
+    weights:
+      compliance: 0.20
+      quality: 0.45
+      structure: 0.15
+      construction: 0.05
+      green: 0.15
+    rationale: "住户最直接感知居住舒适、安全、采光、通风、噪声和电梯服务；结构安全与绿色运行也会直接影响长期居住体验。"
 
-resident:
-  name: 住户
-  note: "住户最直接感知居住舒适、安全、采光、通风、噪声和电梯服务；结构安全与绿色运行也会直接影响长期居住体验。"
-  source: "经验规则（专业组，沿用 main 的初始专家口径）：同上；需通过项目访谈或 AHP 校准。原表 roles.residents 另计 compliance 0.20"
-  #          quality  structure  construction  green
-  weights: [0.45,    0.15,     0.05,         0.15]
+  developer:
+    label: 开发企业
+    weights:
+      compliance: 0.25
+      quality: 0.20
+      structure: 0.20
+      construction: 0.20
+      green: 0.15
+    rationale: "开发企业需要控制合规、结构和交付风险，同时平衡产品品质、建造可实施性、工期和绿色竞争力。"
 
-# ============================================================================
-# 以下为 main 版本中引擎暂不支持的内容，原样保留备查（不参与加载）
-# ============================================================================
-#
-# dimensions:
-#   compliance:   规范合规     ← 作为硬约束门槛使用，不参与加权平均
-#   quality:      居住品质
-#   structure:    结构安全
-#   construction: 施工友好
-#   green:        绿色低碳
-#
-# roles.design（设计单位）—— 引擎没有第五个角色的位置，故未纳入：
-#   weights: compliance 0.30 / quality 0.20 / structure 0.25 / construction 0.10 / green 0.15
-#   rationale: "设计单位需要先满足规范底线，再协调空间品质、结构安全、实施性以及节能低碳目标。"
-#
-# validation:
-#   weight_sum: 1.0
-#   compliance_behavior: "任何 hard 规则不通过时，方案应标红并从排名中剔除；
-#                        通过后再按角色权重计算 quality、structure、construction、green。"
-#   source: "综合《住宅项目规范》GB 55038-2025、《民用建筑通用规范》GB 55031-2022、
-#            《建筑与市政施工现场安全卫生与职业健康通用规范》GB 55034-2022、
-#            《工程结构通用规范》GB 55001-2021、《建筑与市政工程抗震通用规范》GB 55002-2021、
-#            《建筑节能与可再生能源利用通用规范》GB 55015-2021、
-#            《绿色建筑评价标准》GB/T 50378-2019、《装配式建筑评价标准》GB/T 51129-2017
-#            及对应专业判断 Markdown。"
+  construction:
+    label: 施工单位
+    weights:
+      compliance: 0.30
+      quality: 0.10
+      structure: 0.25
+      construction: 0.25
+      green: 0.10
+    rationale: "施工单位最关注安全合规、结构实施风险、工艺可实施性、标准化、构件供应、吊装和现场湿作业控制。"
+
+  design:
+    label: 设计单位
+    weights:
+      compliance: 0.30
+      quality: 0.20
+      structure: 0.25
+      construction: 0.10
+      green: 0.15
+    rationale: "设计单位需要先满足规范底线，再协调空间品质、结构安全、实施性以及节能低碳目标。"
+
+validation:
+  weight_sum: 1.0
+  compliance_behavior: "任何 hard 规则不通过时，方案应标红并从排名中剔除；通过后再按角色权重计算 quality、structure、construction、green。"
+  source: "综合《住宅项目规范》GB 55038-2025、《民用建筑通用规范》GB 55031-2022、《建筑与市政施工现场安全卫生与职业健康通用规范》GB 55034-2022、《工程结构通用规范》GB 55001-2021、《建筑与市政工程抗震通用规范》GB 55002-2021、《建筑节能与可再生能源利用通用规范》GB 55015-2021、《绿色建筑评价标准》GB/T 50378-2019、《装配式建筑评价标准》GB/T 51129-2017 及对应专业判断 Markdown。"

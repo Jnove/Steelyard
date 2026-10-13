@@ -137,7 +137,8 @@
   # **不论高度是否超过表1**，都属于规则性超限。这里按声明的不规则项计数，
   # 布尔值可直接参与算术（与 S-01 的写法同理）。
   # 严重程度是 warning：超限不等于方案不合理，而是必须走专项审查程序。
-  check: "(irregularity_items contains '扭转不规则') + (irregularity_items contains '凹凸不规则') + (irregularity_items contains '楼板不连续') + (irregularity_items contains '刚度突变') + (irregularity_items contains '尺寸突变') + (irregularity_items contains '构件间断') + (irregularity_items contains '承载力突变') + (irregularity_items contains '局部不规则') < 3"
+  # 表2 注：4a 刚度突变与 4b 尺寸突变属于同类，不重复计数。
+  check: "(irregularity_items contains '扭转不规则') + (irregularity_items contains '凹凸不规则') + (irregularity_items contains '楼板不连续') + ((irregularity_items contains '刚度突变') or (irregularity_items contains '尺寸突变')) + (irregularity_items contains '构件间断') + (irregularity_items contains '承载力突变') + (irregularity_items contains '局部不规则') < 3"
   message: "已声明三项及以上不规则项，按建质〔2015〕67号 属规则性超限高层，应进行抗震设防专项审查"
   severity: warning
   source: "《超限高层建筑工程抗震设防专项审查技术要点》建质〔2015〕67号 附件1 表2：同时具有下列三项及三项以上不规则的高层建筑工程（不论高度是否大于表1）——1a 扭转不规则（考虑偶然偏心的扭转位移比大于1.2）、2a 凹凸不规则（平面凹凸尺寸大于相应边长30%等）、3 楼板不连续（有效宽度小于50%、开洞面积大于30%、错层大于梁高）、4a 刚度突变（相邻层刚度变化大于70%，或连续三层变化大于80%）、4b 尺寸突变（竖向构件收进位置高于结构高度20%且收进大于25%，或外挑大于10%和4m）、5 构件间断、6 承载力突变（相邻层受剪承载力变化大于80%）、7 局部不规则。注：序号 a、b 不重复计算不规则项"

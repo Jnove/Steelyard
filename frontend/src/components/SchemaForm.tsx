@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Collapse, Form, Input, InputNumber, Select, Space, Tooltip } from 'antd'
+import { Alert, Button, Checkbox, Collapse, Form, Input, InputNumber, Select, Space, Tooltip } from 'antd'
 import type { FieldMetadata, FieldSchema } from '../api/types'
 
 export interface SchemaFormValues {
@@ -71,7 +71,7 @@ function isEmpty(value: unknown): boolean {
 
 export function parseSchemaValue(field: FieldMetadata, value: unknown): unknown {
   const type = fieldType(field)
-  if (isEmpty(value)) return type.startsWith('array') ? [] : null
+  if (isEmpty(value)) return type.startsWith('array') && !field.empty_means_unknown ? [] : null
   if (type.startsWith('object') && typeof value === 'string') return JSON.parse(value) as unknown
   if (type === 'boolean' && typeof value === 'string') return value === 'true'
   if (type.startsWith('array') && Array.isArray(value)) {
@@ -138,6 +138,9 @@ export function validateSchemaField(field: FieldMetadata, raw: unknown): string[
     if (typeof constraints.minItems === 'number' && value.length < constraints.minItems) errors.push(`至少选择 ${constraints.minItems} 项`)
     if (typeof constraints.maxItems === 'number' && value.length > constraints.maxItems) errors.push(`最多选择 ${constraints.maxItems} 项`)
     if (field.enum && value.some((item: unknown) => !field.enum?.some((option) => option === item))) errors.push('请选择列表中的有效选项')
+    const allowedOptions = field.options
+    if (field.allow_custom_options === false && Array.isArray(allowedOptions)
+      && value.some((item: unknown) => !allowedOptions.some(option => (typeof option === 'string' ? option : option.value) === item))) errors.push('请选择已核定的列表选项')
   } else if (!matchesType(value, type)) errors.push('输入值的类型不正确')
   if (!type.startsWith('array') && field.enum && !field.enum.some((option) => option === value)) errors.push('请选择列表中的有效选项')
   if (typeof value === 'string') {
@@ -145,6 +148,19 @@ export function validateSchemaField(field: FieldMetadata, raw: unknown): string[
     if (typeof constraints.maxLength === 'number' && value.length > constraints.maxLength) errors.push(`最多输入 ${constraints.maxLength} 个字符`)
   }
   return errors
+}
+
+function DeclaredListInput({ value, onChange, options }: {
+  value?: string[] | null; onChange?: (value: string[] | null) => void;
+  options: { label: string; value: string }[];
+}) {
+  return <Space direction="vertical" style={{ width: '100%' }}>
+    <Select mode="multiple" allowClear style={{ width: '100%' }} options={options}
+      value={value ?? undefined} placeholder="未核对；核对后选择不规则项"
+      onChange={(items: string[]) => onChange?.(items.length ? items : null)} />
+    <Checkbox checked={Array.isArray(value) && value.length === 0}
+      onChange={(event) => onChange?.(event.target.checked ? [] : null)}>已核对，无不规则项</Checkbox>
+  </Space>
 }
 
 function renderInput(field: FieldMetadata) {
@@ -157,7 +173,8 @@ function renderInput(field: FieldMetadata) {
     return [{ label: String(option), value: typeof option === 'boolean' ? String(option) : option }]
   })
   if (type === 'boolean') return <Select allowClear options={[{ label: '是', value: 'true' }, { label: '否', value: 'false' }]} placeholder="请选择" />
-  if (type.startsWith('array')) return <Select mode={field.enum ? 'multiple' : 'tags'} allowClear options={options} placeholder="选择预设项，或输入后按回车添加" />
+  if (type.startsWith('array') && field.empty_means_unknown) return <DeclaredListInput options={options.map(option => ({ label: String(option.label), value: String(option.value) }))} />
+  if (type.startsWith('array')) return <Select mode={field.enum || field.allow_custom_options === false ? 'multiple' : 'tags'} allowClear options={options} placeholder={field.allow_custom_options === false ? '请选择已核定的预设项' : '选择预设项，或输入后按回车添加'} />
   if (field.enum || field.options) return <Select allowClear showSearch optionFilterProp="label" options={options} placeholder="请选择" />
   if (type === 'number' || type === 'integer') return <InputNumber style={{ width: '100%' }} addonAfter={unit} step={type === 'integer' ? 1 : 0.01} placeholder="未填写" />
   if (type.startsWith('object')) return <Input.TextArea autoSize={{ minRows: 3, maxRows: 8 }} placeholder={type.includes('integer') ? '{"两居室": 80, "三居室": 40}' : '{"南": 0.4, "北": 0.3}'} />

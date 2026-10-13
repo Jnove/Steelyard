@@ -30,7 +30,7 @@ def test_example_roles_are_consistent() -> None:
     （``rules-guide`` 认可的另一种写法，此时没有一致性比率可检验），两种都要能过。
     """
     roles = load_role_templates()
-    assert list(roles) == list(ROLE_KEYS)
+    assert list(roles) == [*ROLE_KEYS, "design"]
     for role in roles.values():
         assert sum(role.weights) == pytest.approx(1)
         if role.ahp is None:
@@ -62,7 +62,7 @@ def test_direct_weights_and_fraction_matrix(tmp_path: Path) -> None:
     # 仓库模板当前用 weights 写法直接给权重（见 rules/weights.yaml 顶部的格式适配说明），
     # 因此没有矩阵；这里确认它能加载、角色齐全、权重归一。
     roles = load_role_templates(default_weights_path())
-    assert list(roles) == list(ROLE_KEYS)
+    assert list(roles) == [*ROLE_KEYS, "design"]
     assert sum(roles["resident"].weights) == pytest.approx(1)
 
 

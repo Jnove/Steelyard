@@ -11,7 +11,20 @@ from typing import Any
 
 from pydantic import BaseModel
 
-_META_KEYS = ("unit", "group", "label", "enum", "options", "essential", "extensible")
+_META_KEYS = (
+    "unit",
+    "group",
+    "label",
+    "enum",
+    "options",
+    "essential",
+    # 覆盖层（app/custom/）新增的两个元信息：
+    "extensible",
+    "hidden",
+    # main 侧的字段语义说明：
+    "allow_custom_options",
+    "empty_means_unknown",
+)
 
 
 def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
@@ -67,6 +80,9 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
             # 不该在表单里直接暴露，前端应按 hidden 跳过；
             # 自定义字段本身由 /api/schema 追加成独立条目（见 app/custom/fields.py）。
             field_info["hidden"] = True
+        for key in ("allow_custom_options", "empty_means_unknown"):
+            if key in prop:
+                field_info[key] = prop[key]
         fields.append(field_info)
 
     return {
@@ -101,6 +117,8 @@ def _simplify_type(prop: dict[str, Any]) -> str:
         non_null = [x for x in prop["anyOf"] if x.get("type") != "null"]
         if non_null:
             sub = non_null[0]
+            if sub.get("type") == "array":
+                return f"array<{sub.get('items', {}).get('type', 'string')}>"
             if sub.get("type") == "object":
                 return f"object<{_object_value_type(sub)}>"
             return sub.get("type", "string")

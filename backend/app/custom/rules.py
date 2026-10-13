@@ -226,11 +226,17 @@ def merge_ruleset(
     return RuleSet(rules=(*builtin.rules, *defs), origins=origins, todo_source_ids=todo)
 
 
-def ruleset_with_custom(session: Session, builtin: RuleSet | None = None) -> RuleSet:
+def ruleset_with_custom(session: Session | None, builtin: RuleSet | None = None) -> RuleSet:
     """当前生效的规则集 = 内建规则 + 覆盖层的自定义规则。
 
     没有自定义规则时原样返回内建集合（对象相同），所以清空覆盖层后行为与纯内建完全一致。
     校验时把**自定义字段**也算作已知字段，因此自定义规则可以引用它们。
+
+    ``session=None`` 表示**只要内建规则集**：提交进 git 的前端产物
+    （``scripts/export_frontend_fixtures.py``）走这条路——自定义规则是运行期草稿，
+    混进构建产物就会让 CI 的 ``git diff --exit-code`` 失去意义。
     """
+    if session is None:
+        return builtin if builtin is not None else get_ruleset()
     base = builtin if builtin is not None else get_ruleset()
     return merge_ruleset(base, list_rules(session), known=fields_service.known_names(session))

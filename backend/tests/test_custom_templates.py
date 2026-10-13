@@ -87,8 +87,9 @@ def test_weights_template_is_usable_by_key_and_by_name(
 
     listed = client.get(f"/api/projects/{project_id}/rank/roles").json()
     assert {role["role_name"] for role in listed["custom_roles"]} == {"代建单位（重工期）"}
-    # 内建四个角色照旧
-    assert len(listed["roles"]) == 4
+    # 内建角色照旧：main 侧新增了"设计单位"，现在是五个（government / developer /
+    # contractor / resident / design）。自定义模板不改变内建角色的数量与顺序。
+    assert len(listed["roles"]) == 5
 
     for role_ref in (body["key"], "代建单位（重工期）"):
         ranked = client.post(f"/api/projects/{project_id}/rank", json={"role": role_ref})

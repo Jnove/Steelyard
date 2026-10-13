@@ -44,6 +44,9 @@ jobs:
       - name: gen_field_table --check
         run: uv run python ../scripts/gen_field_table.py --check
 
+      - name: 离线前端快照与当前规则一致
+        run: uv run python ../scripts/export_frontend_fixtures.py --check --grid-step 10
+
       - name: 后端 Schema 与提交产物一致
         run: |
           uv run python ../scripts/export_schema.py
@@ -77,6 +80,11 @@ jobs:
 
       - name: 类型检查
         run: npx tsc --noEmit
+
+      - name: 前端字段与样例副本一致
+        run: |
+          npm run sync:mock
+          git diff --exit-code -- src/mocks/data
 
       - name: 构建
         run: npm run build

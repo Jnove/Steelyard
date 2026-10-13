@@ -71,7 +71,7 @@ class RulesResponse(BaseModel):
     )
 
 
-def _build_response(session: Session) -> RulesResponse:
+def _build_response(session: Session | None) -> RulesResponse:
     ruleset = ruleset_with_custom(session)
     return RulesResponse(
         rule_count=len(ruleset.rules),
@@ -96,10 +96,20 @@ def _build_response(session: Session) -> RulesResponse:
     )
 
 
+def build_rules_response(session: Session | None = None) -> RulesResponse:
+    """构造规则清单响应。
+
+    ``session=None`` 表示**只要内建规则**（不带运行期自定义规则）：构建产物脚本
+    （``scripts/export_frontend_fixtures.py``）走这条路，确保提交进 git 的前端快照
+    只含内建规则。HTTP 路由始终传真实 session 以合并使用者的自定义规则。
+    """
+    return _build_response(session)
+
+
 @router.get("", response_model=RulesResponse, summary="当前规则与派生量定义")
 def list_rules(session: SessionDep) -> RulesResponse:
     try:
-        return _build_response(session)
+        return build_rules_response(session)
     except RuleLoadError as exc:
         raise HTTPException(
             status.HTTP_500_INTERNAL_SERVER_ERROR,

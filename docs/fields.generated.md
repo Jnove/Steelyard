@@ -50,6 +50,8 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `window_floor_ratio` | 窗地比 | — | number | 否 | — |
 | `window_wall_ratio` | 窗墙比 | — | object<number> | 否 | — |
 | `elevators_per_unit` | 电梯数/单元 | 台 | integer | 否 | — |
+| `highest_occupied_floor` | 最高住宅入户层 | 层 | integer | 否 | — |
+| `highest_occupied_floor_height` | 最高入户层楼面高度 | m | number | 否 | — |
 | `daylight_factor` | 采光系数 | — | number | 否 | — |
 | `sunlight_hours` | 日照时数 | h | number | 否 | — |
 

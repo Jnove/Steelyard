@@ -4,12 +4,20 @@
   "params": {
     "structure_type": "剪力墙",
     "units": 432,
-    "unit_mix": {"两室": 216, "三室": 216},
+    "unit_mix": {
+      "两室": 216,
+      "三室": 216
+    },
     "floor_height": 3.0,
     "inner_area_ratio": 0.74,
     "south_room_ratio": 0.65,
-    "window_floor_ratio": 0.20,
-    "window_wall_ratio": {"南": 0.38, "北": 0.25, "东": 0.25, "西": 0.25},
+    "window_floor_ratio": 0.2,
+    "window_wall_ratio": {
+      "南": 0.38,
+      "北": 0.25,
+      "东": 0.25,
+      "西": 0.25
+    },
     "elevators_per_unit": 2,
     "gfa": 43200,
     "footprint": 2400,
@@ -17,24 +25,31 @@
     "floors": 18,
     "envelope_area": 14000,
     "volume": 129600,
-    "std_floor_repeat": 0.80,
+    "std_floor_repeat": 0.8,
     "component_types": 18,
-    "risk_features": ["大悬挑"],
-    "prefab_ratio_est": 0.30,
+    "risk_features": [
+      "大悬挑"
+    ],
+    "prefab_ratio_est": 0.3,
     "slab_thickness": 120,
     "design_working_life": 50,
     "min_plan_width": 15,
     "concrete_grade": 30,
-    "irregularity_items": ["局部不规则"],
+    "irregularity_items": [
+      "局部不规则"
+    ],
     "daylight_factor": 0.025,
     "sunlight_hours": 2.2,
-    "green_ratio": 0.37
+    "green_ratio": 0.37,
+    "highest_occupied_floor": 18,
+    "highest_occupied_floor_height": 51.0
   },
   "_design_notes": {
     "intent": "C 方案改为现浇剪力墙后的对照版，用于演示'改用 MiC 会怎样'。",
     "tradeoff": "保留 C 的体量与户数，但结构改回现浇剪力墙：标准层重复率从 0.95 降到 0.80，构件种类从 8 升到 18，装配率从 0.75 降到 0.30，并加入'大悬挑'风险特征。",
     "gfa_consistency": "footprint × floors × buildings = 2400 × 18 = 43,200 m²，与 gfa 一致；总高 18 × 3.0 = 54.0 m ≤ 54 m。",
     "far_check": "gfa / site_area = 43,200 / 18,000 = 2.40 < 2.5；density = 2,400 / 18,000 ≈ 0.13 < 0.22。",
-    "what_if_link": "本方案在 seed_mock.py 中以 is_whatif=True、parent_id=<C MiC 高标准化方案 id> 写入，用于 T8 假设推演。"
+    "what_if_link": "本方案在 seed_mock.py 中以 is_whatif=True、parent_id=<C MiC 高标准化方案 id> 写入，用于 T8 假设推演。",
+    "lift_input": "虚构样例假设首层入户楼面与室外设计地面齐平，最高入户层为总层数，楼面高度按 (floors - 1) × floor_height 填写；实际项目必须填实测或图纸数据，不得套用此假设。"
   }
 }

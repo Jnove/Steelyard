@@ -35,6 +35,7 @@ export interface RankInput { role?: string; weights?: number[] }
 export interface FieldMetadata {
   name: string; label: string; description: string; unit: string; group: string; type: string; required: boolean
   essential?: boolean; enum?: (string | number | boolean | null)[]
+  allow_custom_options?: boolean; empty_means_unknown?: boolean
   options?: Record<string, string> | (string | { value: string; label: string })[]
   constraints: { minimum?: number; maximum?: number; exclusiveMinimum?: number;
     exclusiveMaximum?: number; minLength?: number; maxLength?: number }

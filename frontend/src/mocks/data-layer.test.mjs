@@ -131,7 +131,7 @@ test('修改参数或新增方案后不复用旧评估，其他项目保持不�
 test('全部角色快照、精确权重网格与真实名次翻转', async () => {
   await mock.evaluation.run(1)
   const roles = await mock.ranking.roles(1)
-  assert.equal(roles.roles.length, 4)
+  assert.deepEqual(roles.roles.map(role => role.role), ['government', 'developer', 'contractor', 'resident', 'design'])
   const values = []
   for (const role of roles.roles) {
     const ranked = await mock.ranking.run(1, { role: role.role })
@@ -139,14 +139,15 @@ test('全部角色快照、精确权重网格与真实名次翻转', async () =>
     assert.deepEqual(ranked.rank_acceptability, fixtures.ranks[role.role].rank_acceptability)
     values.push(ranked.ranking[0].closeness)
   }
-  assert.equal(new Set(values).size, 4)
+  assert.equal(new Set(values).size, 5)
   const exact = await mock.ranking.run(1, { weights: [40, 30, 20, 10] })
   assert.equal(exact.demo.mode, 'engine-fixture')
   exact.sensitivity.baseline_weights.forEach((w, i) => close(w, exact.weights_used.weights[i]))
   const roleWeights = roles.roles[0].weights.map(v => v * 100)
   assert.equal((await mock.ranking.run(1, { weights: roleWeights })).demo.mode, 'engine-fixture')
   const flip = await mock.ranking.run(1, { weights: [1, 0, 0, 0] })
-  assert.equal(flip.ranking[0].scheme_id, '5')
+  assert.equal(flip.ranking[0].scheme_id, '1') // 当前规则下 A 的居住品质最高。
+  assert.notEqual(flip.ranking[0].scheme_id, fixtures.ranks.government.ranking[0].scheme_id)
   assert.ok(flip.rank_acceptability && flip.sensitivity)
 })
 

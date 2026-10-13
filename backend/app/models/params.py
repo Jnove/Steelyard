@@ -162,9 +162,7 @@ class ProjectParams(BaseModel):
     seismic_intensity: SeismicIntensity | None = Field(
         None,
         description="抗震设防烈度（浙江全省最高为 7 度 0.10g）",
-        json_schema_extra=_meta(
-            "—", "基本信息", "抗震设防烈度", enum=list(SEISMIC_INTENSITIES)
-        ),
+        json_schema_extra=_meta("—", "基本信息", "抗震设防烈度", enum=list(SEISMIC_INTENSITIES)),
     )
 
     @field_validator("density_max", mode="before")
@@ -249,8 +247,20 @@ class SchemeParams(BaseModel):
     elevators_per_unit: int | None = Field(
         None,
         description="每单元电梯数",
-        gt=0,
+        ge=0,
         json_schema_extra=_meta("台", "居住品质", "电梯数/单元"),
+    )
+    highest_occupied_floor: int | None = Field(
+        None,
+        ge=1,
+        description="最高住宅入户层的层序，不得用含非住宅层的总层数代替",
+        json_schema_extra=_meta("层", "居住品质", "最高住宅入户层"),
+    )
+    highest_occupied_floor_height: float | None = Field(
+        None,
+        ge=0,
+        description="最高住宅入户层楼面距室外设计地面的实际高度，不是建筑总高",
+        json_schema_extra=_meta("m", "居住品质", "最高入户层楼面高度"),
     )
     daylight_factor: float | None = Field(
         None,
@@ -327,16 +337,21 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("MPa", "结构与造价", "混凝土强度等级"),
     )
-    irregularity_items: list[str] = Field(
-        default_factory=list,
-        description="超限高层不规则项（结构计算判定后勾选，见建质〔2015〕67号 附件1）",
+    irregularity_items: list[str] | None = Field(
+        None,
+        description="超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
         json_schema_extra=_meta(
             "—",
             "结构与造价",
             "超限不规则项",
             options=IRREGULARITY_OPTIONS,
             # 开放枚举：使用者可在界面上追加候选值（见 app/custom/）。
+            # allow_custom_options / empty_means_unknown 是 main 侧新增的字段语义说明，
+            # 覆盖层不覆盖它们，两者共存：前者描述"内置枚举本身封闭"，
+            # 后者描述"空清单＝已核对无不规则项、缺省＝未核对"。
             extensible=True,
+            allow_custom_options=False,
+            empty_means_unknown=True,
         ),
     )
 
@@ -392,6 +407,16 @@ class SchemeParams(BaseModel):
         json_schema_extra=_meta("—", "绿色低碳", "绿地率"),
     )
 
+    @field_validator("irregularity_items")
+    @classmethod
+    def _validate_irregularity_items(cls, value: list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        unknown = sorted(set(value) - set(IRREGULARITY_OPTIONS))
+        if unknown:
+            raise ValueError(f"超限不规则项含未支持的选项：{'、'.join(unknown)}；请选择预设项")
+        return list(dict.fromkeys(value))
+
     @field_validator(
         "inner_area_ratio",
         "south_room_ratio",
@@ -425,7 +450,5 @@ class SchemeParams(BaseModel):
         if self.units is not None and self.unit_mix:
             total = sum(self.unit_mix.values())
             if total != self.units:
-                raise ValueError(
-                    f"户型配比合计 {total} 户与总户数 {self.units} 不一致"
-                )
+                raise ValueError(f"户型配比合计 {total} 户与总户数 {self.units} 不一致")
         return self
