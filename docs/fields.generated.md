@@ -68,6 +68,23 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `design_working_life` | 结构设计工作年限 | 年 | integer | 否 | — |
 | `min_plan_width` | 最小平面宽度 | m | number | 否 | — |
 | `concrete_grade` | 混凝土强度等级 | MPa | number | 否 | — |
+| `structural_height_classification` | 结构高度分类 | — | string | 否 | 取值：高层 / 多层；— |
+| `foundation_type` | 基础形式 | — | string | 否 | 取值：筏形基础 / 桩筏基础 / 独立基础 / 条形基础 / 桩基础；— |
+| `foundation_concrete_grade` | 基础混凝土强度等级 | MPa | number | 否 | — |
+| `foundation_working_life` | 地基基础工作年限 | 年 | integer | 否 | — |
+| `steel_system` | 钢结构体系 | — | string | 否 | 取值：框架 / 框架-中心支撑 / 框架-偏心支撑（延性墙板） / 筒体和巨型框架；— |
+| `has_basement` | 是否设地下室 | — | boolean | 否 | — |
+| `shear_wall_thickness` | 剪力墙截面厚度 | mm | number | 否 | — |
+| `frame_beam_width` | 框架梁截面宽度 | mm | number | 否 | — |
+| `frame_column_shape` | 框架柱截面形状 | — | string | 否 | 取值：矩形 / 圆形；— |
+| `frame_column_size` | 框架柱截面尺寸 | mm | number | 否 | — |
+| `raft_rebar_ratio` | 筏基底板贯通筋配筋率 | % | number | 否 | — |
+| `foundation_depth` | 基础埋置深度 | m | number | 否 | — |
+| `has_staggered_floor` | 是否存在错层 | — | boolean | 否 | — |
+| `staggered_concrete_grade` | 错层处构件混凝土等级 | MPa | number | 否 | — |
+| `has_out_of_plane_staggered_wall` | 错层处是否有平面外受力墙 | — | boolean | 否 | — |
+| `staggered_wall_thickness` | 错层处平面外受力墙厚度 | mm | number | 否 | — |
+| `is_single_span_frame` | 是否单跨框架 | — | boolean | 否 | — |
 | `irregularity_items` | 超限不规则项 | — | array<string> | 否 | 预设：扭转不规则 / 凹凸不规则 / 楼板不连续 / 刚度突变 / 尺寸突变 / 构件间断 / 承载力突变 / 局部不规则 / 高位转换 / 厚板转换 / 复杂连接 / 多重复杂；— |
 
 #### 施工与安全
@@ -77,6 +94,17 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `std_floor_repeat` | 标准层重复率 | — | number | 否 | — |
 | `component_types` | 预制构件种类 | 种 | integer | 否 | — |
 | `risk_features` | 风险特征 | — | array<string> | 否 | 预设：大悬挑 / 高大空间 / 深基坑 / 高支模 / 超长结构 / 不规则建筑 / 超限构件 / 复杂地质；— |
+| `excavation_depth` | 基坑开挖深度 | m | number | 否 | — |
+| `formwork_height` | 模板支撑高度 | m | number | 否 | — |
+| `scaffold_type` | 脚手架形式 | — | string | 否 | 取值：落地式钢管脚手架 / 附着式升降脚手架 / 悬挑式脚手架；— |
+| `scaffold_height` | 脚手架搭设高度 | m | number | 否 | — |
+| `retaining_type` | 基坑支护形式 | — | string | 否 | 取值：排桩 / 地下连续墙 / 土钉墙 / 放坡开挖 / 其他；— |
+| `retaining_wall_two_in_one` | 地下连续墙是否两墙合一 | — | boolean | 否 | — |
+| `retaining_concrete_grade` | 支护混凝土强度等级 | MPa | number | 否 | — |
+| `excavation_working_life` | 基坑工作年限 | 年 | number | 否 | — |
+| `brace_type` | 内支撑 / 锚拉体系 | — | string | 否 | 取值：混凝土内支撑 / 钢支撑 / 锚杆（锚拉） / 无内支撑与锚拉；— |
+| `brace_concrete_grade` | 内支撑混凝土强度等级 | MPa | number | 否 | — |
+| `anchor_free_length` | 锚杆自由段长度 | m | number | 否 | — |
 
 #### 绿色低碳
 

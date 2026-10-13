@@ -436,8 +436,8 @@ def _translate_pydantic_error(
             message=f"规则 ID「{raw_input}」格式不对",
             fix=(
                 "必须是一个大写字母 + 短横线 + 两位数字，例如 C-03、Q-01、K-12。"
-                "前缀按文件选：compliance 用 C，quality 用 Q，structure 用 S，"
-                "construction 用 K，green 用 G"
+                "**前缀按维度选**：合规用 C，品质用 Q，结构用 S，施工用 K，绿色用 G"
+                "（同一维度可以有多个文件，例如结构既有 structure.yaml 也有 structure_mic.yaml）"
             ),
             line=_line_of(rule_node, loc),
         )
