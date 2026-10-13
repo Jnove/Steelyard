@@ -169,6 +169,14 @@ BraceType = Literal["混凝土内支撑", "钢支撑", "锚杆（锚拉）", "�
 """
 BRACE_TYPES: tuple[str, ...] = ("混凝土内支撑", "钢支撑", "锚杆（锚拉）", "无内支撑与锚拉")
 
+ColumnShape = Literal["矩形", "圆形"]
+"""框架柱截面形状（GB 55008—2021 第4.4.4条第2款对两种形状给了不同下限）：
+
+- 矩形截面柱：边长不应小于 300 mm；
+- 圆形截面柱：直径不应小于 350 mm。
+"""
+COLUMN_SHAPES: tuple[str, ...] = ("矩形", "圆形")
+
 
 def _meta(unit: str, group: str, label: str, **extra: object) -> dict[str, object]:
     """拼装 ``json_schema_extra`` 片段，统一字段元信息格式。"""
@@ -426,6 +434,54 @@ class SchemeParams(BaseModel):
         None,
         description="是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
         json_schema_extra=_meta("—", "结构与造价", "是否设地下室"),
+    )
+    # —— 构件与构造（GB 55008—2021 第4.4节的最小截面与配筋要求）—— #
+    # 这些都是"设计输出"，但都是强制下限；填了就能判，不填按"数据不足"处理，
+    # 不会误判为通过——这正是本系统对设计输出类字段的一贯口径。
+    shear_wall_thickness: float | None = Field(
+        None,
+        description="剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "剪力墙截面厚度"),
+    )
+    frame_beam_width: float | None = Field(
+        None,
+        description="矩形截面框架梁的截面宽度（不应小于 200 mm）",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "框架梁截面宽度"),
+    )
+    frame_column_shape: ColumnShape | None = Field(
+        None,
+        description="框架柱截面形状（矩形柱按边长、圆形柱按直径判定）",
+        json_schema_extra=_meta("—", "结构与造价", "框架柱截面形状", enum=list(COLUMN_SHAPES)),
+    )
+    frame_column_size: float | None = Field(
+        None,
+        description="框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "框架柱截面尺寸"),
+    )
+    raft_rebar_ratio: float | None = Field(
+        None,
+        description="筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）",
+        gt=0,
+        json_schema_extra=_meta("%", "结构与造价", "筏基底板贯通筋配筋率"),
+    )
+    foundation_depth: float | None = Field(
+        None,
+        description="基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）",
+        gt=0,
+        json_schema_extra=_meta("m", "结构与造价", "基础埋置深度"),
+    )
+    has_staggered_floor: bool | None = Field(
+        None,
+        description="是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）",
+        json_schema_extra=_meta("—", "结构与造价", "是否存在错层"),
+    )
+    is_single_span_frame: bool | None = Field(
+        None,
+        description="框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）",
+        json_schema_extra=_meta("—", "结构与造价", "是否单跨框架"),
     )
     irregularity_items: list[str] | None = Field(
         None,

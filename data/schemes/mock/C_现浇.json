@@ -53,7 +53,15 @@
     "retaining_concrete_grade": 30,
     "has_basement": true,
     "excavation_working_life": 2,
-    "brace_type": "混凝土内支撑"
+    "brace_type": "混凝土内支撑",
+    "shear_wall_thickness": 200,
+    "frame_beam_width": 250,
+    "frame_column_shape": "矩形",
+    "frame_column_size": 400,
+    "foundation_depth": 6.0,
+    "has_staggered_floor": false,
+    "is_single_span_frame": false,
+    "raft_rebar_ratio": 0.2
   },
   "_design_notes": {
     "intent": "C 方案改为现浇剪力墙后的对照版，用于演示'改用 MiC 会怎样'。",

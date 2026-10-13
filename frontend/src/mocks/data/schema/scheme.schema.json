@@ -322,6 +322,90 @@
       "constraints": {}
     },
     {
+      "name": "shear_wall_thickness",
+      "label": "剪力墙截面厚度",
+      "description": "剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）",
+      "unit": "mm",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "frame_beam_width",
+      "label": "框架梁截面宽度",
+      "description": "矩形截面框架梁的截面宽度（不应小于 200 mm）",
+      "unit": "mm",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "frame_column_shape",
+      "label": "框架柱截面形状",
+      "description": "框架柱截面形状（矩形柱按边长、圆形柱按直径判定）",
+      "unit": "—",
+      "group": "结构与造价",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "矩形",
+        "圆形"
+      ]
+    },
+    {
+      "name": "frame_column_size",
+      "label": "框架柱截面尺寸",
+      "description": "框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）",
+      "unit": "mm",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "raft_rebar_ratio",
+      "label": "筏基底板贯通筋配筋率",
+      "description": "筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）",
+      "unit": "%",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "foundation_depth",
+      "label": "基础埋置深度",
+      "description": "基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）",
+      "unit": "m",
+      "group": "结构与造价",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "has_staggered_floor",
+      "label": "是否存在错层",
+      "description": "是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）",
+      "unit": "—",
+      "group": "结构与造价",
+      "type": "boolean",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "is_single_span_frame",
+      "label": "是否单跨框架",
+      "description": "框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）",
+      "unit": "—",
+      "group": "结构与造价",
+      "type": "boolean",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "irregularity_items",
       "label": "超限不规则项",
       "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",

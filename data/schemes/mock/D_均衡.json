@@ -50,7 +50,15 @@
     "has_basement": true,
     "excavation_working_life": 2,
     "brace_type": "锚杆（锚拉）",
-    "anchor_free_length": 6.0
+    "anchor_free_length": 6.0,
+    "shear_wall_thickness": 200,
+    "frame_beam_width": 250,
+    "frame_column_shape": "矩形",
+    "frame_column_size": 400,
+    "foundation_depth": 6.0,
+    "has_staggered_floor": false,
+    "is_single_span_frame": false,
+    "raft_rebar_ratio": 0.2
   },
   "_design_notes": {
     "intent": "中庸偏上：四个维度均衡得分，作为比选的对照基准。",

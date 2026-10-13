@@ -1,5 +1,5 @@
 {
-  "fixture_id": "1b1cb4261423c89e64e2b0754431b6f36ac6bb8b03db71c30e5aa8edffb8b8bf",
+  "fixture_id": "e6a76b3efeef2c603fc59bcd22d5227826358f946c9064419cbd699bb623d7f0",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -32,7 +32,7 @@
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "a3aba6561eca548993986d735377b37d2197a1e375980637c76ccfc379db2632",
+    "backend/app/models/params.py": "9cf6ca7285c28362cd42d0b14efa20536b15bc1c827807cba896c7d52c9a977c",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
@@ -44,17 +44,18 @@
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
     "rules/structure.yaml": "33bfd1961b8ef6d8dd4b6ddfc11244d1fcf44954e9a472bcb88cac29078a8280",
     "rules/structure_foundation.yaml": "532126a00e3387b1e57a16e499051a8f951415821a7e7241982c714adb223daf",
+    "rules/structure_members.yaml": "ee358639f257191102d76ce906027e14547b83dc3e48fcac976db88945fcfbae",
     "rules/structure_steel.yaml": "74b77f9d3faa7d2df3cc31ecd7b9b0b8a13e62a1a859a9c74d410590a3df62a2",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
-    "data/schemes/mock/A_高品质.json": "aa5d7f7ce0914ac4cc4bfd8c72ae640b146d01ddf1875a9ae5f60890d973ef79",
-    "data/schemes/mock/B_不合规.json": "260889b13f7d9390c72e8b0db1c98eb5ca6591a8dd9f826042fda290d41694d6",
-    "data/schemes/mock/C_MiC高标准化.json": "d706e725409de478810b2756b45f85520f8bb23a06e036e382d2527d63bcbca8",
-    "data/schemes/mock/C_现浇.json": "63bceee5c5d7695689795652f2963d43dd8890abbc95c95072cc680af20127c2",
-    "data/schemes/mock/D_均衡.json": "c69994a36ddf832933178b220ed7406ee6636da3968ff2105aaf0d0c4a63accf",
-    "data/schemes/mock/E_被支配.json": "10a2bc25e16a39d0a2c216113d9e12ae9607ba730e0a57ccf82027396d851b38",
+    "data/schemes/mock/A_高品质.json": "5f737a10df7842843acbbe1170c0840846fbdebd83e32e4528dba5897dfaf516",
+    "data/schemes/mock/B_不合规.json": "71ddbf892f561829f92f19113f0d9f24f2fabd2c18e243cf72d6ce1faf58564c",
+    "data/schemes/mock/C_MiC高标准化.json": "d2409f45c4717dda7fcd6d2e71e754a242a2e76a451ced08ebb26b9f626c39ea",
+    "data/schemes/mock/C_现浇.json": "1f6493ad51756eceab5db347cd5a83e52dff16a1af8fd975c52d7d5635a5bd61",
+    "data/schemes/mock/D_均衡.json": "8866b25e9155a1039ee261798547e87bedbfd627a50a89499831c01f8416a108",
+    "data/schemes/mock/E_被支配.json": "89db1634bdac5282ef1e1aaa6cb8ef26ba02a3416991e8cf835d03b723a3f67f",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
     "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
-    "data/schemes/方案录入模板.xlsx": "f45349652a5a6820853a073e648df25cd3705d65094337788a11db8ff283be66"
+    "data/schemes/方案录入模板.xlsx": "8ca52b1beae47f4afa2674fc405f4d29445a7b4081f905a77f728ab4ecd7a0aa"
   },
   "grid_step": 10,
   "projects": [
@@ -115,6 +116,14 @@
         "foundation_working_life": 70,
         "steel_system": null,
         "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "is_single_span_frame": false,
         "irregularity_items": [
           "凹凸不规则",
           "局部不规则"
@@ -183,6 +192,14 @@
         "foundation_working_life": 50,
         "steel_system": null,
         "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": null,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "is_single_span_frame": false,
         "irregularity_items": [],
         "std_floor_repeat": 0.8,
         "component_types": 14,
@@ -246,6 +263,14 @@
         "foundation_working_life": 50,
         "steel_system": null,
         "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "is_single_span_frame": false,
         "irregularity_items": [],
         "std_floor_repeat": 0.95,
         "component_types": 8,
@@ -308,6 +333,14 @@
         "foundation_working_life": 50,
         "steel_system": null,
         "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "is_single_span_frame": false,
         "irregularity_items": [],
         "std_floor_repeat": 0.85,
         "component_types": 12,
@@ -370,6 +403,14 @@
         "foundation_working_life": 50,
         "steel_system": null,
         "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": null,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "is_single_span_frame": false,
         "irregularity_items": [
           "扭转不规则"
         ],
@@ -437,6 +478,14 @@
         "foundation_working_life": 50,
         "steel_system": null,
         "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "is_single_span_frame": false,
         "irregularity_items": [
           "局部不规则"
         ],
@@ -465,7 +514,7 @@
   ],
   "evaluation": {
     "project_id": 1,
-    "rule_count": 46,
+    "rule_count": 54,
     "results": [
       {
         "scheme_id": "1",
@@ -794,6 +843,102 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if height > 27 else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "剪力墙截面厚度下限 通过"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 0.2,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础底板贯通筋配筋率下限 通过"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。条文本款为「不宜」，但属强制条文的构造要求，故按不通过提示并写明依据",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 200.0,
+            "limit": ">= 250",
+            "formula": "shear_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 27）"
           },
           {
             "rule_id": "S-19",
@@ -1369,6 +1514,102 @@
             "message": "地基与基础设计工作年限不低于上部结构 通过"
           },
           {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if height > 27 else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "剪力墙截面厚度下限 通过"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。条文本款为「不宜」，但属强制条文的构造要求，故按不通过提示并写明依据",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 200.0,
+            "limit": ">= 250",
+            "formula": "shear_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 27）"
+          },
+          {
             "rule_id": "S-19",
             "name": "钢结构建筑高度不超体系最大适用高度",
             "status": "not_applicable",
@@ -1940,6 +2181,102 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if height > 27 else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '剪力墙' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 0.2,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础底板贯通筋配筋率下限 通过"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。条文本款为「不宜」，但属强制条文的构造要求，故按不通过提示并写明依据",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 200.0,
+            "limit": ">= 250",
+            "formula": "shear_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 27）"
           },
           {
             "rule_id": "S-19",
@@ -2515,6 +2852,102 @@
             "message": "地基与基础设计工作年限不低于上部结构 通过"
           },
           {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if height > 27 else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "剪力墙截面厚度下限 通过"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架梁截面宽度下限 通过"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架柱截面尺寸下限 通过"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 0.2,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础底板贯通筋配筋率下限 通过"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。条文本款为「不宜」，但属强制条文的构造要求，故按不通过提示并写明依据",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 200.0,
+            "limit": ">= 250",
+            "formula": "shear_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 27）"
+          },
+          {
             "rule_id": "S-19",
             "name": "钢结构建筑高度不超体系最大适用高度",
             "status": "not_applicable",
@@ -3086,6 +3519,102 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if height > 27 else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '剪力墙' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架梁截面宽度下限 通过"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架柱截面尺寸下限 通过"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。条文本款为「不宜」，但属强制条文的构造要求，故按不通过提示并写明依据",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 200.0,
+            "limit": ">= 250",
+            "formula": "shear_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 27）"
           },
           {
             "rule_id": "S-19",
@@ -6752,6 +7281,90 @@
           "constraints": {}
         },
         {
+          "name": "shear_wall_thickness",
+          "label": "剪力墙截面厚度",
+          "description": "剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）",
+          "unit": "mm",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "frame_beam_width",
+          "label": "框架梁截面宽度",
+          "description": "矩形截面框架梁的截面宽度（不应小于 200 mm）",
+          "unit": "mm",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "frame_column_shape",
+          "label": "框架柱截面形状",
+          "description": "框架柱截面形状（矩形柱按边长、圆形柱按直径判定）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "矩形",
+            "圆形"
+          ]
+        },
+        {
+          "name": "frame_column_size",
+          "label": "框架柱截面尺寸",
+          "description": "框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）",
+          "unit": "mm",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "raft_rebar_ratio",
+          "label": "筏基底板贯通筋配筋率",
+          "description": "筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）",
+          "unit": "%",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "foundation_depth",
+          "label": "基础埋置深度",
+          "description": "基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）",
+          "unit": "m",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "has_staggered_floor",
+          "label": "是否存在错层",
+          "description": "是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "is_single_span_frame",
+          "label": "是否单跨框架",
+          "description": "框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
           "name": "irregularity_items",
           "label": "超限不规则项",
           "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -7026,8 +7639,8 @@
     }
   },
   "rules": {
-    "rule_count": 46,
-    "hard_count": 30,
+    "rule_count": 54,
+    "hard_count": 38,
     "metric_count": 16,
     "rules": [
       {
@@ -8023,6 +8636,142 @@
       },
       {
         "definition": {
+          "id": "S-22",
+          "name": "剪力墙截面厚度下限",
+          "type": "hard",
+          "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+          "when": "structure_type == '剪力墙' or structure_type == '框架-剪力墙'",
+          "check": "shear_wall_thickness >= (160 if height > 27 else 140)",
+          "message": "剪力墙截面厚度 {shear_wall_thickness} mm 低于 GB 55008 对该高度的下限（高层 160 mm、多层 140 mm）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-23",
+          "name": "框架梁截面宽度下限",
+          "type": "hard",
+          "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+          "when": "structure_type == '框架' or structure_type == '框架-剪力墙'",
+          "check": "frame_beam_width >= 200",
+          "message": "矩形截面框架梁的截面宽度 {frame_beam_width} mm 小于 GB 55008 要求的 200 mm",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-24",
+          "name": "框架柱截面尺寸下限",
+          "type": "hard",
+          "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+          "when": "structure_type == '框架' or structure_type == '框架-剪力墙'",
+          "check": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+          "message": "框架柱截面尺寸 {frame_column_size} mm 低于 GB 55008 的下限（矩形截面边长 300 mm、圆形截面直径 350 mm）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-25",
+          "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+          "type": "hard",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+          "when": "foundation_type == '筏形基础' or foundation_type == '桩筏基础'",
+          "check": "raft_rebar_ratio >= 0.15",
+          "message": "筏形 / 桩筏基础底板上下贯通钢筋的配筋率 {raft_rebar_ratio}% 小于 GB 55003 要求的 0.15%",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-26",
+          "name": "超过 50 m 的钢结构基础埋置深度",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。条文本款为「不宜」，但属强制条文的构造要求，故按不通过提示并写明依据",
+          "when": "structure_type == '钢结构' and height > 50",
+          "check": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+          "message": "基础埋置深度 {foundation_depth} m 小于该总高下的建议值（天然地基 H/15、桩基 H/20）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-27",
+          "name": "错层处构件混凝土强度等级下限",
+          "type": "hard",
+          "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+          "when": "has_staggered_floor",
+          "check": "concrete_grade >= 30",
+          "message": "存在错层，而混凝土强度等级 C{concrete_grade} 低于 GB 55008 对错层处构件的 C30 要求",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-28",
+          "name": "错层处平面外受力剪力墙截面厚度下限",
+          "type": "hard",
+          "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+          "when": "has_staggered_floor and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')",
+          "check": "shear_wall_thickness >= 250",
+          "message": "存在错层，平面外受力剪力墙截面厚度 {shear_wall_thickness} mm 低于 GB 55008 要求的 250 mm",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-29",
+          "name": "钢结构高层不应采用单跨框架",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+          "when": "structure_type == '钢结构' and height > 27",
+          "check": "not is_single_span_frame",
+          "message": "钢结构高层采用单跨框架，违反 GB/T 50011 第8.1.5条（甲、乙类建筑和高层丙类建筑不应采用单跨框架）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
           "id": "S-19",
           "name": "钢结构建筑高度不超体系最大适用高度",
           "type": "hard",
@@ -8171,7 +8920,7 @@
   "imports": [
     {
       "filename": "demo-import.xlsx",
-      "sha256": "03198b0be1476c72f26d66aa1cf90330a50f2d7a06aa9ed67673ccc5fc46ad02",
+      "sha256": "6101a7e694c3df9e2a8e06167d16d50d347575b18cfa0cdc06ce0d3305cb3dc1",
       "schemes": [
         {
           "name": "A 高品质",
@@ -8210,6 +8959,14 @@
             "foundation_type": "桩筏基础",
             "foundation_working_life": 70,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -8269,6 +9026,13 @@
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
@@ -8323,6 +9087,14 @@
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
@@ -8376,6 +9148,14 @@
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
@@ -8430,6 +9210,13 @@
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -8464,7 +9251,7 @@
     },
     {
       "filename": "demo-invalid.xlsx",
-      "sha256": "d8f35d3c25e0e3d946ec3c06532d1377079d9d65f4f8460d03fe3afe8824128f",
+      "sha256": "cac0ed9a8fd3e2337243f209f832624996fe661c60817b678dc5c1e5fa34905e",
       "schemes": [
         {
           "name": "A 高品质",
@@ -8501,6 +9288,14 @@
             "foundation_type": "桩筏基础",
             "foundation_working_life": 70,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -8560,6 +9355,13 @@
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
@@ -8614,6 +9416,14 @@
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
@@ -8667,6 +9477,14 @@
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
@@ -8721,6 +9539,13 @@
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
             "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -8768,7 +9593,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "f45349652a5a6820853a073e648df25cd3705d65094337788a11db8ff283be66",
+      "sha256": "8ca52b1beae47f4afa2674fc405f4d29445a7b4081f905a77f728ab4ecd7a0aa",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -8812,6 +9637,14 @@
       "foundation_working_life": null,
       "steel_system": null,
       "has_basement": null,
+      "shear_wall_thickness": null,
+      "frame_beam_width": null,
+      "frame_column_shape": null,
+      "frame_column_size": null,
+      "raft_rebar_ratio": null,
+      "foundation_depth": null,
+      "has_staggered_floor": null,
+      "is_single_span_frame": null,
       "irregularity_items": null,
       "std_floor_repeat": null,
       "component_types": null,
@@ -9515,6 +10348,147 @@
           "group": "结构与造价",
           "label": "是否设地下室",
           "title": "Has Basement",
+          "unit": "—"
+        },
+        "shear_wall_thickness": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）",
+          "group": "结构与造价",
+          "label": "剪力墙截面厚度",
+          "title": "Shear Wall Thickness",
+          "unit": "mm"
+        },
+        "frame_beam_width": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "矩形截面框架梁的截面宽度（不应小于 200 mm）",
+          "group": "结构与造价",
+          "label": "框架梁截面宽度",
+          "title": "Frame Beam Width",
+          "unit": "mm"
+        },
+        "frame_column_shape": {
+          "anyOf": [
+            {
+              "enum": [
+                "矩形",
+                "圆形"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "框架柱截面形状（矩形柱按边长、圆形柱按直径判定）",
+          "enum": [
+            "矩形",
+            "圆形"
+          ],
+          "group": "结构与造价",
+          "label": "框架柱截面形状",
+          "title": "Frame Column Shape",
+          "unit": "—"
+        },
+        "frame_column_size": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）",
+          "group": "结构与造价",
+          "label": "框架柱截面尺寸",
+          "title": "Frame Column Size",
+          "unit": "mm"
+        },
+        "raft_rebar_ratio": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）",
+          "group": "结构与造价",
+          "label": "筏基底板贯通筋配筋率",
+          "title": "Raft Rebar Ratio",
+          "unit": "%"
+        },
+        "foundation_depth": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）",
+          "group": "结构与造价",
+          "label": "基础埋置深度",
+          "title": "Foundation Depth",
+          "unit": "m"
+        },
+        "has_staggered_floor": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）",
+          "group": "结构与造价",
+          "label": "是否存在错层",
+          "title": "Has Staggered Floor",
+          "unit": "—"
+        },
+        "is_single_span_frame": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）",
+          "group": "结构与造价",
+          "label": "是否单跨框架",
+          "title": "Is Single Span Frame",
           "unit": "—"
         },
         "irregularity_items": {

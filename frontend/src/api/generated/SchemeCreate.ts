@@ -142,6 +142,38 @@ export type SteelSystem = (("框架" | "框架-中心支撑" | "框架-偏心支
  */
 export type HasBasement = boolean | null;
 /**
+ * 剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）
+ */
+export type ShearWallThickness = number | null;
+/**
+ * 矩形截面框架梁的截面宽度（不应小于 200 mm）
+ */
+export type FrameBeamWidth = number | null;
+/**
+ * 框架柱截面形状（矩形柱按边长、圆形柱按直径判定）
+ */
+export type FrameColumnShape = (("矩形" | "圆形") | null) & ("矩形" | "圆形");
+/**
+ * 框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）
+ */
+export type FrameColumnSize = number | null;
+/**
+ * 筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）
+ */
+export type RaftRebarRatio = number | null;
+/**
+ * 基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）
+ */
+export type FoundationDepth = number | null;
+/**
+ * 是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）
+ */
+export type HasStaggeredFloor = boolean | null;
+/**
+ * 框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）
+ */
+export type IsSingleSpanFrame = boolean | null;
+/**
  * 超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）
  */
 export type IrregularityItems = string[] | null;
@@ -254,6 +286,14 @@ export interface SchemeParams {
   foundation_working_life?: FoundationWorkingLife;
   steel_system?: SteelSystem;
   has_basement?: HasBasement;
+  shear_wall_thickness?: ShearWallThickness;
+  frame_beam_width?: FrameBeamWidth;
+  frame_column_shape?: FrameColumnShape;
+  frame_column_size?: FrameColumnSize;
+  raft_rebar_ratio?: RaftRebarRatio;
+  foundation_depth?: FoundationDepth;
+  has_staggered_floor?: HasStaggeredFloor;
+  is_single_span_frame?: IsSingleSpanFrame;
   irregularity_items?: IrregularityItems;
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;

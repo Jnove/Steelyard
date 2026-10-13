@@ -54,7 +54,14 @@
     "retaining_concrete_grade": 25,
     "has_basement": true,
     "excavation_working_life": 2,
-    "brace_type": "无内支撑与锚拉"
+    "brace_type": "无内支撑与锚拉",
+    "shear_wall_thickness": 200,
+    "frame_beam_width": 250,
+    "frame_column_shape": "矩形",
+    "frame_column_size": 400,
+    "foundation_depth": 6.0,
+    "has_staggered_floor": false,
+    "is_single_span_frame": false
   },
   "_design_notes": {
     "intent": "演示帕累托支配：构造每个数值字段都朝'更差'的方向偏离 D，使 E 在所有维度都不如 D。",

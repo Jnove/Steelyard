@@ -72,6 +72,14 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `foundation_working_life` | 地基基础工作年限 | 年 | integer | 否 | — |
 | `steel_system` | 钢结构体系 | — | string | 否 | 取值：框架 / 框架-中心支撑 / 框架-偏心支撑（延性墙板） / 筒体和巨型框架；— |
 | `has_basement` | 是否设地下室 | — | boolean | 否 | — |
+| `shear_wall_thickness` | 剪力墙截面厚度 | mm | number | 否 | — |
+| `frame_beam_width` | 框架梁截面宽度 | mm | number | 否 | — |
+| `frame_column_shape` | 框架柱截面形状 | — | string | 否 | 取值：矩形 / 圆形；— |
+| `frame_column_size` | 框架柱截面尺寸 | mm | number | 否 | — |
+| `raft_rebar_ratio` | 筏基底板贯通筋配筋率 | % | number | 否 | — |
+| `foundation_depth` | 基础埋置深度 | m | number | 否 | — |
+| `has_staggered_floor` | 是否存在错层 | — | boolean | 否 | — |
+| `is_single_span_frame` | 是否单跨框架 | — | boolean | 否 | — |
 | `irregularity_items` | 超限不规则项 | — | array<string> | 否 | 预设：扭转不规则 / 凹凸不规则 / 楼板不连续 / 刚度突变 / 尺寸突变 / 构件间断 / 承载力突变 / 局部不规则 / 高位转换 / 厚板转换 / 复杂连接 / 多重复杂；— |
 
 #### 施工与安全
