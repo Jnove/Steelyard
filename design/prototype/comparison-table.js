@@ -207,14 +207,51 @@ function initMatrixControls() {
 function matrixSvg() {
   const shown=tableSchemes(),rows=tableRows(),labelWidth=205,cellWidth=156,left=30,top=124,header=92,rowHeight=65;
   const W=Math.max(730,left*2+labelWidth+shown.length*cellWidth),H=top+header+rows.length*rowHeight+112;
-  const text=(x,y,value,size=13,color='#526f82',anchor='start',weight=400)=>`<text x="${x}" y="${y}" font-size="${size}" fill="${color}" text-anchor="${anchor}" font-weight="${weight}">${escapeText(value)}</text>`;
-  const rect=(x,y,w,h,fill)=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${fill}" stroke="#dce5eb"/>`;
-  let body=text(30,38,'筑衡 · 指标与依据查询',24,'#203e54','start',600)+text(30,67,`${roleLabels[state.role]}视角 · ${state.matrixDataset==='compliance'?'合规检查':state.matrixMode==='difference'?`得分差 / 以 ${schemeById(state.matrixBaseline).letter} 为基准`:'维度与指标得分'}`,14);
-  body+=text(30,95,`${shown.length} 套方案 · ${rows.length} 行结果${state.matrixSearch?` · 搜索：${state.matrixSearch}`:''}`,12,'#52647e');
-  body+=rect(left,top,labelWidth,header,'#ebf0fa')+text(left+14,top+46,'维度 / 指标',14);
-  shown.forEach((s,index)=>{const x=left+labelWidth+index*cellWidth;body+=rect(x,top,cellWidth,header,'#f0f4fb')+text(x+cellWidth/2,top+25,s.letter,23,pointColors[s.id],'middle',600)+text(x+cellWidth/2,top+48,s.title,12,'#52647e','middle')+text(x+cellWidth/2,top+70,ranked(s.id)?`第 ${ranked(s.id).rank} 名`:'未通过硬约束 / 参考',11,'#52647e','middle');});
-  rows.forEach((row,index)=>{const y=top+header+index*rowHeight;body+=rect(left,y,labelWidth,rowHeight,row.kind==='dimension'?'#ebf0fa':'#fff')+text(left+13,y+27,row.name.replace(/（.*?）/g,''),13,'#48677e','start',row.kind==='dimension'?600:400)+text(left+13,y+47,row.kind==='dimension'?`权重 ${one(current().weights[row.dimensionIndex]*100)}%`:row.key,11,'#5e6f86');shown.forEach((s,col)=>{const x=left+labelWidth+col*cellWidth;let val='',note='',color='#3b59a6';if(row.kind==='hard'){const status=tableStatus(row,s.id);val=`${status.icon} ${status.label}`;color=status.style==='fail'?'#a4444d':status.style==='pass'?'#277465':'#5e6f86';}else{const value=tableScore(row,s.id),base=tableScore(row,state.matrixBaseline),delta=valid(value)&&valid(base)?value-base:null;val=state.matrixMode==='difference'?(String(s.id)===state.matrixBaseline&&valid(value)?'基准':signed(delta)):one(value);note=!valid(value)?'缺数据':state.matrixMode==='difference'?`原分 ${one(value)}`:row.kind==='metric'?`输入 ${inputValue(evaluation(s.id).metrics[row.key],row.key)}`:'';if(state.matrixMode==='difference'&&valid(delta)&&delta<0)color='#92612c';}body+=rect(x,y,cellWidth,rowHeight,row.kind==='dimension'?'#f0f4fb':'#fff')+text(x+cellWidth/2,y+30,val,19,color,'middle',600)+text(x+cellWidth/2,y+50,note,10,'#5e6f86','middle');});});
+  const wash={'1':'#e9e2f7','2':'#f5dce2','3':'#dce6ff','4':'#d7eeeb','5':'#f1e6d5'};
+  const text=(x,y,value,size=13,color='#52647e',anchor='start',weight=400)=>`<text x="${x}" y="${y}" font-size="${size}" fill="${color}" text-anchor="${anchor}" font-weight="${weight}">${escapeText(value)}</text>`;
+  const rect=(x,y,w,h,fill,stroke='#fff')=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="11" fill="${fill}" stroke="${stroke}"/>`;
+  let body=text(30,38,'筑衡 · 指标与依据查询',24,'#23334f','start',600)+text(30,67,`${roleLabels[state.role]}视角 · ${state.matrixDataset==='compliance'?'合规检查':state.matrixMode==='difference'?`得分差 / 以 ${schemeById(state.matrixBaseline).letter} 为基准`:'维度与指标得分'}`,14);
+  body+=text(30,95,`${shown.length} 套方案 · ${rows.length} 行结果${state.matrixSearch?` · 搜索：${state.matrixSearch}`:''}`,12);
+  body+=rect(left,top,labelWidth-8,header-8,'#e8eef8')+text(left+14,top+42,state.matrixDataset==='compliance'?'硬约束规则':'维度 / 指标',14);
+  shown.forEach((s,index)=>{
+    const x=left+labelWidth+index*cellWidth;
+    body+=rect(x+3,top,cellWidth-9,header-8,`url(#matrix-card-${s.id})`,state.matrixActive?.scheme===String(s.id)?pointColors[s.id]:'#fff');
+    body+=`<circle cx="${x+cellWidth/2}" cy="${top+22}" r="15" fill="#fff" fill-opacity=".7" stroke="#fff"/>`;
+    body+=text(x+cellWidth/2,top+29,s.letter,21,pointColors[s.id],'middle',600)+text(x+cellWidth/2,top+50,s.title,12,'#23334f','middle')+text(x+cellWidth/2,top+69,ranked(s.id)?`第 ${ranked(s.id).rank} 名 · ${ranked(s.id).closeness.toFixed(3)}`:'未通过硬约束 · 仅参考',10,'#52647e','middle');
+  });
+  rows.forEach((row,index)=>{
+    const y=top+header+index*rowHeight;
+    body+=rect(left,y,labelWidth-8,rowHeight-7,row.kind==='dimension'?'#e1e9f8':'#f1f5fb')+text(left+13,y+25,row.name.replace(/（.*?）/g,''),13,'#23334f','start',row.kind==='dimension'?600:400)+text(left+13,y+44,row.kind==='dimension'?`权重 ${one(current().weights[row.dimensionIndex]*100)}%`:row.key,11);
+    shown.forEach((s,col)=>{
+      const x=left+labelWidth+col*cellWidth,id=String(s.id),selected=state.matrixActive?.scheme===id&&state.matrixActive?.row===row.key;
+      const value=tableScore(row,id),base=tableScore(row,state.matrixBaseline),delta=valid(value)&&valid(base)?value-base:null,relative=state.matrixMode==='difference';
+      let val='',note='',color='#3b59a6';
+      if(row.kind==='hard'){
+        const status=tableStatus(row,id);val=`${status.icon} ${status.label}`;
+        color=status.style==='fail'?'#a4444d':status.style==='pass'?'#277465':'#5e6f86';
+      }else{
+        val=relative?(id===state.matrixBaseline&&valid(value)?'基准':signed(delta)):one(value);
+        const metric=evaluation(id)?.metrics[row.key];
+        note=!valid(value)?(metric?.status==='not_applicable'?'不适用':'缺数据'):relative?`原分 ${one(value)}`:row.kind==='metric'?`输入 ${inputValue(metric,row.key)}`:'维度汇总';
+        if(relative&&valid(value)&&!valid(base))note='基准缺数据';
+        if(relative&&valid(delta)&&delta<0)color='#92612c';
+      }
+      const fill=excluded(id)?'url(#matrix-reference)':row.kind==='dimension'||selected?`url(#matrix-card-${id})`:'#ffffffb3';
+      body+=rect(x+3,y,cellWidth-9,rowHeight-7,fill,selected?pointColors[id]:'#fff');
+      body+=text(x+cellWidth/2,y+25,val,row.kind==='hard'?14:19,color,'middle',600);
+      if(row.kind!=='hard'){
+        const tx=x+28,tw=cellWidth-56;
+        body+=rect(tx,y+32,tw,4,'#d0daea');
+        const start=relative?(valid(delta)&&delta<0?50-Math.min(50,Math.abs(delta)/2):50):0;
+        const extent=relative?(valid(delta)?Math.min(50,Math.abs(delta)/2):0):(valid(value)?Math.max(0,Math.min(100,value)):0);
+        if(extent>0)body+=rect(tx+tw*start/100,y+32,tw*extent/100,4,relative&&delta<0?'#aa7a39':pointColors[id]);
+        if(relative)body+=`<line x1="${tx+tw/2}" y1="${y+30}" x2="${tx+tw/2}" y2="${y+39}" stroke="#5e6f86"/>`;
+        body+=text(x+cellWidth/2,y+50,note,10,'#52647e','middle');
+      }
+    });
+  });
   if(!rows.length||!shown.length)body+=text(30,top+header+45,'没有可导出的匹配结果',14);
-  body+=text(30,H-54,'缺数据、不适用和未通过硬约束分别呈现；违规方案不参与默认排名。',12,'#52647e')+text(30,H-26,'虚构示例，仅供设计讨论，不得作为工程验证或答辩结论。',12,'#52647e');
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="font-family:Segoe UI,Microsoft YaHei,sans-serif">${exportGlassBackdrop(W,H)}${body}</svg>`;
+  body+=text(30,H-54,'缺数据、不适用和未通过硬约束分别呈现；违规方案不参与默认排名。',12)+text(30,H-26,'虚构示例，仅供设计讨论，不得作为工程验证或答辩结论。',12);
+  const paints=`<defs>${shown.map(s=>`<linearGradient id="matrix-card-${s.id}" x2="1" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="${wash[s.id]}"/></linearGradient>`).join('')}<pattern id="matrix-reference" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><rect width="10" height="10" fill="#faebf0"/><rect width="3" height="10" fill="#fff" fill-opacity=".7"/></pattern></defs>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" style="font-family:Segoe UI,Microsoft YaHei,sans-serif">${exportGlassBackdrop(W,H)}${paints}${body}</svg>`;
 }

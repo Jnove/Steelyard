@@ -9,7 +9,8 @@ const dimensions = [
 ];
 const roleLabels = { government: '政府 / 平台', developer: '开发企业', contractor: '施工总包', resident: '住户' };
 const schemes = data.schemes.map(scheme => ({ ...scheme, letter: scheme.name.split(' ')[0], title: scheme.name.substring(scheme.name.indexOf(' ') + 1) }));
-const state = { role: 'government', view: 'map', selected: '3', dimension: 2, x: 0, y: 2, includeB: false, pairA: '3', pairB: '4' };
+const requestedView = new URLSearchParams(location.hash.slice(1)).get('view');
+const state = { role: 'government', view: ['map','pair','matrix'].includes(requestedView) ? requestedView : 'map', selected: '3', dimension: 2, x: 0, y: 2, includeB: false, pairA: '3', pairB: '4' };
 Object.assign(state, {
   matrixDataset: 'scores', matrixMode: 'score', matrixBaseline: '3', matrixDimension: 'all', matrixSearch: '', matrixOrder: 'rank',
   matrixShown: new Set(schemes.map(s => String(s.id))), matrixOpen: new Set(['quality']),
