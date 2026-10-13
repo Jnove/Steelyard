@@ -150,16 +150,21 @@ MIC_SCHEME = {
 }
 
 
-def _evaluate_ids(packs: list[str]) -> set[str]:
+def _evaluate_items(packs: list[str], **overrides: object) -> dict[str, str]:
+    """跑一次评估，返回 ``规则 ID → 状态``（状态见 app/models/eval.py 的 ComplianceStatus）。"""
     ruleset = load_rules_from_dir(REPO_RULES).select_packs(packs)
-    params = {**MIC_SCHEME}
+    params = {**MIC_SCHEME, **overrides}
     project = {**PROJECT, "standard_packs": packs}
     results = evaluate(
         ProjectParams.model_validate(project),
         [SchemeInput(scheme_id="1", name="MiC 示例", params=SchemeParams.model_validate(params))],
         ruleset,
     )
-    return {item.rule_id for item in results[0].compliance}
+    return {item.rule_id: item.status for item in results[0].compliance}
+
+
+def _evaluate_ids(packs: list[str]) -> set[str]:
+    return set(_evaluate_items(packs))
 
 
 def test_evaluation_only_runs_the_selected_packs() -> None:
@@ -203,6 +208,66 @@ def test_every_province_pack_is_selectable() -> None:
         assert {r.pack for r in selected.rules} <= {"GB", code}
 
 
+def test_new_local_fields_actually_drive_judgement() -> None:
+    """新加的地方字段必须真的参与判定，否则加字段等于没加。
+
+    山西 DBJ04/T 437-2022：5.2.11 层高一般 ≥3.0m、**设新风系统时 ≥3.2m**；
+    4.2.2 日照按**冬至日累计 1h**。这三条正好覆盖"条件表达式、枚举标准日、新字段"。
+    """
+    # 3.1m + 有新风 → 不达标（要求 3.2m）；冬至日 0.5h → 不达标（要求 1h）
+    bad = _evaluate_items(
+        ["GB", "SX"],
+        floor_height=3.1,
+        has_fresh_air=True,
+        daylight_standard_day="冬至日",
+        sunlight_hours=0.5,
+    )
+    assert bad["SX-Q-01"] == "failed"
+    assert bad["SX-Q-02"] == "failed"
+
+    # 同样 3.1m，但没有新风 → 达标（要求 3.0m）；日照 1.2h → 达标
+    good = _evaluate_items(
+        ["GB", "SX"],
+        floor_height=3.1,
+        has_fresh_air=False,
+        daylight_standard_day="冬至日",
+        sunlight_hours=1.2,
+    )
+    assert good["SX-Q-01"] == "passed"
+    assert good["SX-Q-02"] == "passed"
+
+    # 标准日不对（按大寒日分析）→ 冬至日那条不适用，交给提示条 SX-Q-03
+    mismatched = _evaluate_items(
+        ["GB", "SX"],
+        floor_height=3.1,
+        has_fresh_air=False,
+        daylight_standard_day="大寒日",
+        sunlight_hours=3.0,
+    )
+    assert mismatched["SX-Q-02"] == "not_applicable"
+    assert mismatched["SX-Q-03"] == "failed"  # check 恒为 False，warning 级
+
+    # 字段没填 → 数据不足，不会误判为通过
+    missing = _evaluate_items(["GB", "SX"], floor_height=3.1)
+    assert missing["SX-Q-01"] == "insufficient_data"
+
+
+def test_boolean_fields_round_trip_through_excel(tmp_path: Path) -> None:
+    """布尔字段必须能经 Excel 往返。
+
+    这是"新增字段类型要同时检查写入与读取两端"的第三条教训（前两条是项目层
+    缺 ``array<...>`` 分支、整体缺 boolean 分支）：地方册的层高加严条款以
+    "是否设新风系统"这类开关为条件，读不回来就等于规则永远判不了。
+    """
+    scheme = {**MIC_SCHEME, "has_fresh_air": True, "has_stretcher_elevator": False}
+    path = write_export(tmp_path / "bools.xlsx", PROJECT, [{"name": "示例", "params": scheme}])
+    parsed = parse_workbook(path)
+    assert not parsed.errors
+    saved = parsed.schemes[0]["params"]
+    assert saved["has_fresh_air"] is True
+    assert saved["has_stretcher_elevator"] is False
+
+
 def test_packs_endpoint_lists_gb_and_every_province(client: TestClient) -> None:
     body = client.get("/api/standards/packs").json()
     assert len(body) == 32  # GB + 31 个省级行政区
@@ -215,9 +280,24 @@ def test_packs_endpoint_lists_gb_and_every_province(client: TestClient) -> None:
     assert by_code["ZJ"]["gb_code"] == "330000"
     assert by_code["ZJ"]["rule_count"] == 4
     assert by_code["ZJ"]["hard_count"] == 4
-    # 宁夏册：住建厅印发的导则正文已逐字核对，绿地率一条可用现有字段判定
-    assert by_code["NX"]["rule_count"] == 1
     assert by_code["NX"]["always_on"] is False
+    # 已收条文的省册清单：收新省时要一起更新——它同时是"哪些省已有规则"的清单。
+    # GB 不写死（国标规则会随核定轮次增减），只要求它有内容。
+    local_counts = {
+        code: item["rule_count"] for code, item in by_code.items() if code != "GB"
+    }
+    assert {c: n for c, n in local_counts.items() if n} == {
+        "ZJ": 4,
+        "NX": 3,
+        "HE": 3,
+        "SX": 4,
+        "LN": 4,
+        "HB": 4,
+        "CQ": 3,
+        "JL": 4,
+        "SC": 2,
+    }
+    assert by_code["GB"]["rule_count"] > 0
     # 还没有条文可收的省册：条数为 0，并写明原因（不凭记忆塞规则）
     assert by_code["JS"]["rule_count"] == 0
     assert by_code["JS"]["note"]

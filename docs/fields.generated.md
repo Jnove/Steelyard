@@ -55,6 +55,14 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `highest_occupied_floor_height` | 最高入户层楼面高度 | m | number | 否 | — |
 | `daylight_factor` | 采光系数 | — | number | 否 | — |
 | `sunlight_hours` | 日照时数 | h | number | 否 | — |
+| `daylight_standard_day` | 日照标准日 | — | string | 否 | 取值：大寒日 / 冬至日；— |
+| `living_space_count` | 居住空间总数 | 个 | integer | 否 | — |
+| `daylight_room_count` | 满足日照空间数 | 个 | integer | 否 | — |
+| `clear_height` | 室内净高 | m | number | 否 | — |
+| `has_fresh_air` | 设新风/中央空调 | — | boolean | 否 | — |
+| `has_stretcher_elevator` | 设担架电梯 | — | boolean | 否 | — |
+| `has_accessible_elevator` | 设无障碍电梯 | — | boolean | 否 | — |
+| `total_elevators` | 电梯总台数 | 台 | integer | 否 | — |
 
 #### 结构与造价
 
@@ -84,6 +92,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 
 | 字段名 | 中文名 | 单位 | 类型 | 必填 | 说明 |
 | --- | --- | --- | --- | --- | --- |
+| `per_capita_green` | 人均公共绿地 | m²/人 | number | 否 | — |
 | `prefab_ratio_est` | 预估装配率 | — | number | 否 | — |
 | `green_ratio` | 绿地率 | — | number | 否 | — |
 

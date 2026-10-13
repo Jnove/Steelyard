@@ -167,6 +167,100 @@
       "constraints": {}
     },
     {
+      "name": "daylight_standard_day",
+      "label": "日照标准日",
+      "description": "日照分析用的标准日。必须与日照时数一起填：各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "大寒日",
+        "冬至日"
+      ]
+    },
+    {
+      "name": "living_space_count",
+      "label": "居住空间总数",
+      "description": "套内居住空间（卧室、起居室等）总数",
+      "unit": "个",
+      "group": "居住品质",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "daylight_room_count",
+      "label": "满足日照空间数",
+      "description": "其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
+      "unit": "个",
+      "group": "居住品质",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "clear_height",
+      "label": "室内净高",
+      "description": "卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
+      "unit": "m",
+      "group": "居住品质",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "has_fresh_air",
+      "label": "设新风/中央空调",
+      "description": "户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "boolean",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "has_stretcher_elevator",
+      "label": "设担架电梯",
+      "description": "每个单元是否至少设 1 台可容纳担架的电梯",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "boolean",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "has_accessible_elevator",
+      "label": "设无障碍电梯",
+      "description": "是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
+      "unit": "—",
+      "group": "居住品质",
+      "type": "boolean",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "total_elevators",
+      "label": "电梯总台数",
+      "description": "电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
+      "unit": "台",
+      "group": "居住品质",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "per_capita_green",
+      "label": "人均公共绿地",
+      "description": "人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
+      "unit": "m²/人",
+      "group": "绿色低碳",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "gfa",
       "label": "总建筑面积",
       "description": "总建筑面积",

@@ -33,6 +33,16 @@ STRUCTURE_TYPES: tuple[str, ...] = ("剪力墙", "框架-剪力墙", "框架", "
 ClimateZone = Literal["严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和"]
 CLIMATE_ZONES: tuple[str, ...] = ("严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和")
 
+DaylightStandardDay = Literal["大寒日", "冬至日"]
+"""日照标准日。
+
+各地口径差别很大：山西按**冬至日累计 1h**，吉林按**大寒日 3h**，
+京津冀辽按**大寒日 2h**，广东可"大寒日 3h 或冬至日 1h"二选一。
+所以"日照时数"必须和"按哪个标准日算的"一起记录——否则 2h 这个数字没法比。
+"""
+
+DAYLIGHT_STANDARD_DAYS: tuple[str, ...] = ("大寒日", "冬至日")
+
 SeismicIntensity = Literal["6度(0.05g)", "7度(0.10g)"]
 """抗震设防烈度。
 
@@ -340,6 +350,62 @@ class SchemeParams(BaseModel):
         description="日照标准日的日照时数（杭州为大寒日）",
         gt=0,
         json_schema_extra=_meta("h", "居住品质", "日照时数"),
+    )
+    # —— 地方条文（省级规则册）用的字段：国标不判、地方判 —— #
+    daylight_standard_day: DaylightStandardDay | None = Field(
+        None,
+        description=(
+            "日照分析用的标准日。必须与日照时数一起填："
+            "各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）"
+        ),
+        json_schema_extra=_meta(
+            "—", "居住品质", "日照标准日", enum=list(DAYLIGHT_STANDARD_DAYS)
+        ),
+    )
+    living_space_count: int | None = Field(
+        None,
+        description="套内居住空间（卧室、起居室等）总数",
+        gt=0,
+        json_schema_extra=_meta("个", "居住品质", "居住空间总数"),
+    )
+    daylight_room_count: int | None = Field(
+        None,
+        description="其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
+        gt=0,
+        json_schema_extra=_meta("个", "居住品质", "满足日照空间数"),
+    )
+    clear_height: float | None = Field(
+        None,
+        description="卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
+        gt=0,
+        json_schema_extra=_meta("m", "居住品质", "室内净高"),
+    )
+    has_fresh_air: bool | None = Field(
+        None,
+        description="户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
+        json_schema_extra=_meta("—", "居住品质", "设新风/中央空调"),
+    )
+    has_stretcher_elevator: bool | None = Field(
+        None,
+        description="每个单元是否至少设 1 台可容纳担架的电梯",
+        json_schema_extra=_meta("—", "居住品质", "设担架电梯"),
+    )
+    has_accessible_elevator: bool | None = Field(
+        None,
+        description="是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
+        json_schema_extra=_meta("—", "居住品质", "设无障碍电梯"),
+    )
+    total_elevators: int | None = Field(
+        None,
+        description="电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
+        gt=0,
+        json_schema_extra=_meta("台", "居住品质", "电梯总台数"),
+    )
+    per_capita_green: float | None = Field(
+        None,
+        description="人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
+        gt=0,
+        json_schema_extra=_meta("m²/人", "绿色低碳", "人均公共绿地"),
     )
 
     # —— 结构与造价 —— #

@@ -1,5 +1,5 @@
 {
-  "fixture_id": "00255f55356fc28c81e8c8233025b3068a710b390fd952fe24f5c730bc299b0a",
+  "fixture_id": "44e67c42cf3e4e77490529f274687764f17141c3851374958b0eabfdbef97527",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -29,12 +29,12 @@
     "backend/app/engine/scoring.py": "c8bfdec44e428a96ab106089643e1de5185fce4ce5bacb8e2b417a1a4976ea26",
     "backend/app/engine/weights.py": "ce2e765e6b7f780fe36cacaa1084ad799595b90aae95fd801616faefe92a9e8f",
     "backend/app/excel/__init__.py": "a85d4a74036c4cdf454ec4cce162fcbbef17d844a5486243280cfa9caec0d502",
-    "backend/app/excel/io.py": "42f303b27fe43e1f78496a4196d977685a540ef890df6a6de8a067d1044e5e28",
+    "backend/app/excel/io.py": "25e1eee63d20086cfe7105900183988cfd9415f04ed8571e9dcc4d4f775400e5",
     "backend/app/main.py": "160482fcfd722b72c7f4a5ef1792955c2dec181afbf79ca87225a393cdf97995",
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "db6f46a74a78b0322c1446374b7cfd5c07a5f332c29ab3b7805461b0d8d26a11",
+    "backend/app/models/params.py": "5510cc532710e3a193ca4f26f7e5f5d1067a0138ab6841286bf954e2c4656a32",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
@@ -42,10 +42,17 @@
     "rules/_template.yaml": "5d7740c4a23a2e802808a2882b8d05428dd9b39fe40180fe800d7fee73667c4c",
     "rules/compliance.yaml": "d4d1ee2de2eeb7070e5e58aac9981997d0179bca1c23ac1f63c5c8cc08906953",
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
+    "rules/cq_local.yaml": "d0fdfbbb0408d0ae71bbc05bbf354ffb3f534bce35abba77c8e3c4d6c215121f",
     "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
-    "rules/nx_green.yaml": "8c7f8c8583786c2fe48e3c15ad838ff2b7c75c8193bdc4d25a746d6f05484f96",
+    "rules/hb_local.yaml": "fb3b4df2a1db5433492c24bf09d8d161c00a649a63d690883ce3acea2b5bff7d",
+    "rules/he_local.yaml": "e6daec37f8a51f7ce3e4a116a126fe6a4374bb2b35ac476476f0a0281e7d1c69",
+    "rules/jl_local.yaml": "978c2c9e69868347e03a88a4090d15492acf286d2231f08703a5d6ba5987319e",
+    "rules/ln_local.yaml": "82f773094d66ca696d18e46a270dfb8349bad3f4c751e8ebbc3b9788a6347841",
+    "rules/nx_local.yaml": "07742b356a1079f201fe9f7874295b671db698d84a7a6031ae56cc789c257e22",
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
+    "rules/sc_local.yaml": "41145e3ba454b7717c829945e6c30db45729bb82e14518d4ad119240ab761958",
     "rules/structure.yaml": "3f56e9c0206b711e6b3fd97b63d56812da3145e60299c095153ef9fd558f6e63",
+    "rules/sx_local.yaml": "f835167e8aa9739724b7fbe33b8cdaffd6a2d2a5d7424cd56b74142c6d6e872b",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
     "rules/zj_mic.yaml": "1e59bd42fb824e7c613cd07fc610bf574d427c64470a2e644bdea67569480424",
     "data/schemes/mock/A_高品质.json": "e0e84802b5bdda1d9d3a732520e3d872bd85408c595a54176593daddb37aa54f",
@@ -56,7 +63,7 @@
     "data/schemes/mock/E_被支配.json": "4defc2cf39ee4e24de45da4508889427c2628e4f78d5b5f0b5b30ea263c69e95",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
     "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
-    "data/schemes/方案录入模板.xlsx": "acf493bfeb3b15444f7602c4dafff8c3639ac3e2c319f07bfebaac3f61d6102d"
+    "data/schemes/方案录入模板.xlsx": "7ebafe4b67d6502d6b5ccb0d2ed5c1f7d57f7adb609e96b400f7d7c7168dc89a"
   },
   "grid_step": 10,
   "projects": [
@@ -105,6 +112,15 @@
         "highest_occupied_floor_height": 49.5,
         "daylight_factor": 0.032,
         "sunlight_hours": 2.5,
+        "daylight_standard_day": null,
+        "living_space_count": null,
+        "daylight_room_count": null,
+        "clear_height": null,
+        "has_fresh_air": null,
+        "has_stretcher_elevator": null,
+        "has_accessible_elevator": null,
+        "total_elevators": null,
+        "per_capita_green": null,
         "gfa": 38400.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -160,6 +176,15 @@
         "highest_occupied_floor_height": 46.4,
         "daylight_factor": 0.022,
         "sunlight_hours": 2.0,
+        "daylight_standard_day": null,
+        "living_space_count": null,
+        "daylight_room_count": null,
+        "clear_height": null,
+        "has_fresh_air": null,
+        "has_stretcher_elevator": null,
+        "has_accessible_elevator": null,
+        "total_elevators": null,
+        "per_capita_green": null,
         "gfa": 40800.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -210,6 +235,15 @@
         "highest_occupied_floor_height": 51.0,
         "daylight_factor": 0.024,
         "sunlight_hours": 2.2,
+        "daylight_standard_day": null,
+        "living_space_count": null,
+        "daylight_room_count": null,
+        "clear_height": null,
+        "has_fresh_air": null,
+        "has_stretcher_elevator": null,
+        "has_accessible_elevator": null,
+        "total_elevators": null,
+        "per_capita_green": null,
         "gfa": 43200.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -259,6 +293,15 @@
         "highest_occupied_floor_height": 48.0,
         "daylight_factor": 0.028,
         "sunlight_hours": 2.8,
+        "daylight_standard_day": null,
+        "living_space_count": null,
+        "daylight_room_count": null,
+        "clear_height": null,
+        "has_fresh_air": null,
+        "has_stretcher_elevator": null,
+        "has_accessible_elevator": null,
+        "total_elevators": null,
+        "per_capita_green": null,
         "gfa": 40800.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -308,6 +351,15 @@
         "highest_occupied_floor_height": 48.0,
         "daylight_factor": 0.023,
         "sunlight_hours": 2.1,
+        "daylight_standard_day": null,
+        "living_space_count": null,
+        "daylight_room_count": null,
+        "clear_height": null,
+        "has_fresh_air": null,
+        "has_stretcher_elevator": null,
+        "has_accessible_elevator": null,
+        "total_elevators": null,
+        "per_capita_green": null,
         "gfa": 40800.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -362,6 +414,15 @@
         "highest_occupied_floor_height": 51.0,
         "daylight_factor": 0.025,
         "sunlight_hours": 2.2,
+        "daylight_standard_day": null,
+        "living_space_count": null,
+        "daylight_room_count": null,
+        "clear_height": null,
+        "has_fresh_air": null,
+        "has_stretcher_elevator": null,
+        "has_accessible_elevator": null,
+        "total_elevators": null,
+        "per_capita_green": null,
         "gfa": 43200.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -5830,6 +5891,100 @@
           "constraints": {}
         },
         {
+          "name": "daylight_standard_day",
+          "label": "日照标准日",
+          "description": "日照分析用的标准日。必须与日照时数一起填：各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "大寒日",
+            "冬至日"
+          ]
+        },
+        {
+          "name": "living_space_count",
+          "label": "居住空间总数",
+          "description": "套内居住空间（卧室、起居室等）总数",
+          "unit": "个",
+          "group": "居住品质",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "daylight_room_count",
+          "label": "满足日照空间数",
+          "description": "其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
+          "unit": "个",
+          "group": "居住品质",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "clear_height",
+          "label": "室内净高",
+          "description": "卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
+          "unit": "m",
+          "group": "居住品质",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "has_fresh_air",
+          "label": "设新风/中央空调",
+          "description": "户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "has_stretcher_elevator",
+          "label": "设担架电梯",
+          "description": "每个单元是否至少设 1 台可容纳担架的电梯",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "has_accessible_elevator",
+          "label": "设无障碍电梯",
+          "description": "是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
+          "unit": "—",
+          "group": "居住品质",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "total_elevators",
+          "label": "电梯总台数",
+          "description": "电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
+          "unit": "台",
+          "group": "居住品质",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "per_capita_green",
+          "label": "人均公共绿地",
+          "description": "人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
+          "unit": "m²/人",
+          "group": "绿色低碳",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
           "name": "gfa",
           "label": "总建筑面积",
           "description": "总建筑面积",
@@ -6098,8 +6253,8 @@
     }
   },
   "rules": {
-    "rule_count": 38,
-    "hard_count": 22,
+    "rule_count": 64,
+    "hard_count": 48,
     "metric_count": 16,
     "rules": [
       {
@@ -6316,6 +6471,60 @@
       },
       {
         "definition": {
+          "id": "CQ-Q-01",
+          "pack": "CQ",
+          "name": "重庆保障性住房层高下限",
+          "type": "hard",
+          "source": "《好房子技术导则（保障性住房）》（渝建勘设〔2025〕41号，重庆市住房和城乡建设委员会 2025 年 12 月）第5.3.3节「套内空间」第4款：保障性住房的层高不应低于3.0m（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "floor_height >= 3.0",
+          "message": "保障性住房层高 {floor_height} m 低于重庆市导则要求的 3.0 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "cq_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "CQ-Q-02",
+          "pack": "CQ",
+          "name": "重庆保障性住房窗地面积比下限",
+          "type": "hard",
+          "source": "同上 第5.4.2节「光环境」第2款：住宅的起居室、卧室应进行采光计算，卧室、书房、起居室等房间的窗地面积比不应小于1/7（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "window_floor_ratio >= 1/7",
+          "message": "窗地面积比 {window_floor_ratio} 低于重庆市导则要求的 1/7（严于国标 1/6）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "cq_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "CQ-Q-03",
+          "pack": "CQ",
+          "name": "重庆保障性住房梯户配比（提示）",
+          "type": "hard",
+          "source": "同上 第5.3.2节「梯户配比」第1款：电梯数量及规格应根据楼层高度和住户数量合理配置，宜按 30~60 户/台配置，并符合重庆市工程建设标准《住宅电梯配置和选型及安装维护标准》DBJ 50-253 的相关规定（官方 PDF 去空格逐字核对，2026-10-13）。条文用词为「宜」，故本条只作提示",
+          "when": null,
+          "check": "units / total_elevators <= 60",
+          "message": "每台电梯服务 {units} / {total_elevators} 户，超过重庆市导则建议的 30~60 户/台 区间上限",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "cq_local.yaml"
+      },
+      {
+        "definition": {
           "id": "G-01",
           "pack": "GB",
           "name": "预估装配率",
@@ -6486,11 +6695,281 @@
       },
       {
         "definition": {
+          "id": "HB-Q-01",
+          "pack": "HB",
+          "name": "湖北高品质住宅层高下限",
+          "type": "hard",
+          "source": "《高品质住宅技术标准》DB42/T 2305-2024 第6.2节「层高与净高」：住宅层高不应小于3m（湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13）",
+          "when": null,
+          "check": "floor_height >= 3",
+          "message": "住宅层高 {floor_height} m 低于湖北省《高品质住宅技术标准》要求的 3 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "hb_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HB-Q-02",
+          "pack": "HB",
+          "name": "湖北套内主要居住空间净高下限",
+          "type": "hard",
+          "source": "同上 第6.2节：套内主要居住空间净高不应小于2.6m（公共空间另有：单元主门厅净高不应小于3.0m，单元门厅、电梯厅等净高不应小于2.4m；架空层层高不应小于4.2m、净高不应小于3.6m——这些部位本系统尚未采集，未收）。湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13",
+          "when": null,
+          "check": "clear_height >= 2.6",
+          "message": "套内主要居住空间净高 {clear_height} m 低于湖北省要求的 2.6 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "hb_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HB-G-01",
+          "pack": "HB",
+          "name": "湖北小区绿地率下限",
+          "type": "hard",
+          "source": "同上 第5.2节「规划控制」：小区绿地率不应小于35%（同条另有：人均集中绿地不低于0.5㎡、大于3公顷地块应配置至少一处不小于400㎡的集中绿地、集中绿地最小宽度大于8m、日照阴影线范围外集中绿地面积占比不小于1/3）。湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13",
+          "when": null,
+          "check": "green_ratio >= 0.35",
+          "message": "小区绿地率 {green_ratio} 低于湖北省要求的 35%",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "hb_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HB-G-02",
+          "pack": "HB",
+          "name": "湖北人均集中绿地下限",
+          "type": "hard",
+          "source": "同上 第5.2节：小区应设置人均不低于0.5㎡的集中绿地（湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13）",
+          "when": null,
+          "check": "per_capita_green >= 0.5",
+          "message": "人均集中绿地 {per_capita_green} m²/人 低于湖北省要求的 0.5 m²/人",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "hb_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HE-Q-01",
+          "pack": "HE",
+          "name": "河北七十年住宅层高下限",
+          "type": "hard",
+          "source": "河北省工程建设地方标准《七十年住宅建筑设计标准》DB13(J)/T 8431-2021 第6.2.3条第1款：层高不应低于3.00m且不宜高于3.60m（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "floor_height >= 3.00",
+          "message": "层高 {floor_height} m 低于河北省《七十年住宅建筑设计标准》要求的 3.00 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "he_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HE-Q-02",
+          "pack": "HE",
+          "name": "河北七十年住宅日照（大寒日 2h，按空间数）",
+          "type": "hard",
+          "source": "同上 第6.2.5条：每套住宅至少应有一个居住空间能获得大寒日两小时日照；当有4个以上居住空间时，其中2个或2个以上居住空间应能获得大寒日两小时日照（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": "daylight_standard_day == '大寒日'",
+          "check": "daylight_room_count >= 1 and (living_space_count <= 4 or daylight_room_count >= 2)",
+          "message": "日照不满足：{living_space_count} 个居住空间中仅 {daylight_room_count} 个达到大寒日 2h（河北要求至少 1 个；4 个以上时至少 2 个）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "he_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HE-Q-03",
+          "pack": "HE",
+          "name": "河北日照标准日核对（提示）",
+          "type": "hard",
+          "source": "同上 第6.2.5条以「大寒日」为日照标准日。标准日不一致时本条只作提示——不同标准日的日照时数不能互相换算，本系统不替使用者换算",
+          "when": "daylight_standard_day == '冬至日'",
+          "check": "False",
+          "message": "本项目日照按冬至日分析，而河北按大寒日判定，HE-Q-02 无法给出结论；请补充大寒日日照分析",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "he_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "JL-Q-01",
+          "pack": "JL",
+          "name": "吉林好房子层高下限",
+          "type": "hard",
+          "source": "《吉林省好房子建设技术导则》（吉林省住房和城乡建设厅通告第669号，2025-01-02 发布施行）第5.2.6条：建筑层高不应小于3.0m（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "floor_height >= 3.0",
+          "message": "建筑层高 {floor_height} m 低于吉林省导则要求的 3.0 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "jl_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "JL-Q-02",
+          "pack": "JL",
+          "name": "吉林好房子日照（大寒日 3h）",
+          "type": "hard",
+          "source": "同上 第4.4.5条：建筑日照标准不应低于大寒日日照时数3h（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": "daylight_standard_day == '大寒日'",
+          "check": "sunlight_hours >= 3",
+          "message": "日照时数 {sunlight_hours} h 低于吉林省要求的 大寒日 3 h（严于国标 2 h）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "jl_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "JL-Q-03",
+          "pack": "JL",
+          "name": "吉林日照标准日核对（提示）",
+          "type": "hard",
+          "source": "同上 第4.4.5条以「大寒日」为日照标准日。标准日不一致时本条只作提示——不同标准日的日照时数不能互相换算，本系统不替使用者换算",
+          "when": "daylight_standard_day == '冬至日'",
+          "check": "False",
+          "message": "本项目日照按冬至日分析，而吉林按大寒日 3h 判定，JL-Q-02 无法给出结论；请补充大寒日日照分析",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "jl_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "JL-G-01",
+          "pack": "JL",
+          "name": "吉林居住街坊集中绿地下限",
+          "type": "hard",
+          "source": "同上 第4.4.4条：居住街坊内的集中绿地不应低于0.6m²/人（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "per_capita_green >= 0.6",
+          "message": "集中绿地 {per_capita_green} m²/人 低于吉林省导则要求的 0.6 m²/人",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "jl_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "LN-Q-01",
+          "pack": "LN",
+          "name": "辽宁好房子层高下限",
+          "type": "hard",
+          "source": "《辽宁省「好房子」施工图设计文件技术审查要点（试行）》第4.1.2条：住宅层高不应小于3.0m；设有地热采暖、管道式新风或集中式中央空调系统的住宅，层高不宜小于3.15m；卧室、起居室的室内净高不低于2.60m（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "floor_height >= (3.15 if has_fresh_air else 3.0)",
+          "message": "层高 {floor_height} m 低于辽宁省审查要点要求（不应小于 3.0 m；设地热采暖、管道式新风或集中式中央空调时不宜小于 3.15 m）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "ln_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "LN-Q-02",
+          "pack": "LN",
+          "name": "辽宁每台电梯服务户数上限",
+          "type": "hard",
+          "source": "同上 第4.2.4条第1款：电梯数量的确定应综合考虑建筑类型、层数、服务户数、电梯速度等主要技术参数及使用者的舒适度等因素，每台电梯服务户数不应超过60户（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "units / total_elevators <= 60",
+          "message": "每台电梯服务 {units} / {total_elevators} 户，超过辽宁省要求的每台不超过 60 户",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "ln_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "LN-Q-03",
+          "pack": "LN",
+          "name": "辽宁担架电梯设置",
+          "type": "hard",
+          "source": "同上 第4.2.4条第2款：当最高入户层为4层及4层以上时，或最高入户层楼面距室外设计地面高度超过9m时，每个单元应至少设置1台可容纳担架的电梯（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9",
+          "check": "has_stretcher_elevator",
+          "message": "最高入户层 {highest_occupied_floor} 层／楼面高 {highest_occupied_floor_height} m，按辽宁要求每个单元应至少设 1 台可容纳担架的电梯",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "ln_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "LN-G-01",
+          "pack": "LN",
+          "name": "辽宁住区绿地率下限",
+          "type": "hard",
+          "source": "同上 第3.2.2条：住区绿地率不应小于30%（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "green_ratio >= 0.30",
+          "message": "住区绿地率 {green_ratio} 低于辽宁省审查要点要求的 30%",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "ln_local.yaml"
+      },
+      {
+        "definition": {
           "id": "NX-G-01",
           "pack": "NX",
           "name": "宁夏高品质商品住宅绿地率下限",
           "type": "hard",
-          "source": "《宁夏高品质商品住宅建设技术导则（试行）》（宁建发〔2024〕80号，宁夏回族自治区住房和城乡建设厅 2024-11-28 印发）第5.4节「绿地与活动场地」第1款：住宅绿地率不应小于35%，且满足当地标准（按住建厅官网发布的 DOCX 附件逐字核对，核对日期 2026-10-13）",
+          "source": "《宁夏高品质商品住宅建设技术导则（试行）》（宁建发〔2024〕80号，宁夏回族自治区住房和城乡建设厅 2024-11-28 印发）第5.4节「绿地与活动场地」第1款：住宅绿地率不应小于35%，且满足当地标准（按住建厅官网发布的 DOCX 附件逐字核对，2026-10-13）",
           "when": null,
           "check": "green_ratio >= 0.35",
           "message": "住宅绿地率 {green_ratio} 低于宁夏导则要求的 35%",
@@ -6500,7 +6979,43 @@
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "nx_green.yaml"
+        "source_file": "nx_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "NX-Q-01",
+          "pack": "NX",
+          "name": "宁夏起居室与卧室净高下限",
+          "type": "hard",
+          "source": "同上 第4章「适用性能·套型」：套型主要功能空间面积配置应合理，起居室（厅）供布置家具、设备的连续实墙面长度不应小于3.6m；双人卧室开间净宽不应小于3.0m；起居室、卧室空间净高不应低于3.0m（住建厅官网 DOCX 附件逐字核对，2026-10-13）",
+          "when": null,
+          "check": "clear_height >= 3.0",
+          "message": "起居室／卧室空间净高 {clear_height} m 低于宁夏导则要求的 3.0 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "nx_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "NX-Q-02",
+          "pack": "NX",
+          "name": "宁夏套内获日照空间数量",
+          "type": "hard",
+          "source": "同上 第4章「适用性能·套型」：每套住宅应至少有1个居住空间获得日照。当有4个以上居住空间时，应至少有2个居住空间获得日照（住建厅官网 DOCX 附件逐字核对，2026-10-13）",
+          "when": null,
+          "check": "daylight_room_count >= 1 and (living_space_count <= 4 or daylight_room_count >= 2)",
+          "message": "日照不满足：{living_space_count} 个居住空间中仅 {daylight_room_count} 个获得日照（宁夏要求至少 1 个；4 个以上时至少 2 个）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "nx_local.yaml"
       },
       {
         "definition": {
@@ -6705,6 +7220,42 @@
           "weight_in_dimension": 1.0
         },
         "source_file": "quality.yaml"
+      },
+      {
+        "definition": {
+          "id": "SC-G-01",
+          "pack": "SC",
+          "name": "四川夏热冬冷地区居住建筑体形系数上限",
+          "type": "hard",
+          "source": "《四川省居住建筑节能设计标准》DB51/T 5027-2024 第4.3.1条 表4.3.1「居住建筑体形系数限值」：夏热冬冷地区（Ⅲ）≤3层 0.60、>3层 0.40；高海拔严寒地区（Ⅰ）0.55/0.30、高海拔寒冷地区（Ⅱ）0.57/0.33、温和地区（Ⅳ）0.60/0.45。条文说明提到高海拔严寒、寒冷地区宜采用「热当量体形系数」代替体形系数指标（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": "climate_zone == '夏热冬冷'",
+          "check": "shape_coef <= (0.60 if floors <= 3 else 0.40)",
+          "message": "体形系数 {shape_coef} 超过四川省表4.3.1 对夏热冬冷地区该层数档的限值（≤3 层 0.60、>3 层 0.40）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sc_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SC-G-02",
+          "pack": "SC",
+          "name": "四川居住建筑房间窗墙面积比上限（提示）",
+          "type": "hard",
+          "source": "同上 第4.3.2条：居住建筑的主要功能房间窗墙面积比应小于0.8，非主要功能房间的窗墙面积比应小于0.4（官方 PDF 去空格逐字核对，2026-10-13）。注意：系统的窗墙比是按朝向采集的，与「主要/非主要功能房间」不是同一口径，故本条只作提示",
+          "when": null,
+          "check": "max(window_wall_ratio) <= 0.8",
+          "message": "存在窗墙面积比 {window_wall_ratio} 超过四川省 4.3.2 条 0.8（主要功能房间）的朝向，请按房间性质复核",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sc_local.yaml"
       },
       {
         "definition": {
@@ -6976,6 +7527,78 @@
       },
       {
         "definition": {
+          "id": "SX-Q-01",
+          "pack": "SX",
+          "name": "山西宜居住宅层高下限",
+          "type": "hard",
+          "source": "山西省工程建设地方标准《宜居住宅建设标准》DBJ04/T 437-2022 第5.2.11条：住宅层高应大于等于3.0米；户内设置新风系统时，层高不应低于3.2米（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": null,
+          "check": "floor_height >= (3.2 if has_fresh_air else 3.0)",
+          "message": "层高 {floor_height} m 低于山西省《宜居住宅建设标准》要求（一般 3.0 m；设新风系统时 3.2 m）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sx_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SX-Q-02",
+          "pack": "SX",
+          "name": "山西宜居住宅日照（冬至日累计 1h）",
+          "type": "hard",
+          "source": "同上 第4.2.2条：建筑规划布局不得降低周边建筑的日照标准，新建宜居住宅的日照标准应满足冬至日累计1小时的要求，有条件的应提高标准，达到冬至日累计2小时（官方 PDF 去空格逐字核对，2026-10-13）",
+          "when": "daylight_standard_day == '冬至日'",
+          "check": "sunlight_hours >= 1",
+          "message": "日照时数 {sunlight_hours} h 低于山西省要求的冬至日累计 1 h",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sx_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SX-Q-03",
+          "pack": "SX",
+          "name": "山西日照标准日核对（提示）",
+          "type": "hard",
+          "source": "同上 第4.2.2条以「冬至日累计」为日照标准（国标给的是大寒日 2h／冬至日 1h 两档，山西明确取冬至日）。标准日不一致时本条只作提示，本系统不替使用者换算",
+          "when": "daylight_standard_day == '大寒日'",
+          "check": "False",
+          "message": "本项目日照按大寒日分析，而山西按冬至日累计判定，SX-Q-02 无法给出结论；请补充冬至日日照分析",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sx_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SX-G-01",
+          "pack": "SX",
+          "name": "山西宜居住宅绿地率下限",
+          "type": "hard",
+          "source": "同上 表4.2.1「宜居住宅居住区用地控制指标」：低层 绿地率 30%、多层Ⅰ类 30%、多层Ⅱ类 30%、高层Ⅰ类 35%（表内另有容积率与建筑密度上限，需按层数档判定，本系统暂未收）。官方 PDF 去空格逐字核对，2026-10-13",
+          "when": null,
+          "check": "green_ratio >= 0.30",
+          "message": "绿地率 {green_ratio} 低于山西省《宜居住宅建设标准》表4.2.1 要求的 30%",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sx_local.yaml"
+      },
+      {
+        "definition": {
           "id": "ZJ-S-01",
           "pack": "ZJ",
           "name": "浙江省 MiC 混凝土强度等级下限",
@@ -7145,7 +7768,7 @@
   "imports": [
     {
       "filename": "demo-import.xlsx",
-      "sha256": "7de6d8a6af8fbac1c78ae33c76dc972f1e96f846faa03e9a4a9692f86b36b022",
+      "sha256": "68f68075c37e083fe67046a66d1f0e7eb4e4d0d6fd42f26a2aab12ab85aeb6fb",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7383,7 +8006,7 @@
     },
     {
       "filename": "demo-invalid.xlsx",
-      "sha256": "d981469b243b258a5e14b316b75a6543d5efa11fd67cac0c14b97bfef87e0248",
+      "sha256": "7a8a30356a2848685c3a0014a2ee70f816a571b4bea7d9a4a31aace0159d359d",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7632,7 +8255,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "acf493bfeb3b15444f7602c4dafff8c3639ac3e2c319f07bfebaac3f61d6102d",
+      "sha256": "7ebafe4b67d6502d6b5ccb0d2ed5c1f7d57f7adb609e96b400f7d7c7168dc89a",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -7664,6 +8287,15 @@
       "highest_occupied_floor_height": null,
       "daylight_factor": null,
       "sunlight_hours": null,
+      "daylight_standard_day": null,
+      "living_space_count": null,
+      "daylight_room_count": null,
+      "clear_height": null,
+      "has_fresh_air": null,
+      "has_stretcher_elevator": null,
+      "has_accessible_elevator": null,
+      "total_elevators": null,
+      "per_capita_green": null,
       "gfa": null,
       "footprint": null,
       "buildings": null,
@@ -8208,6 +8840,163 @@
           "label": "日照时数",
           "title": "Sunlight Hours",
           "unit": "h"
+        },
+        "daylight_standard_day": {
+          "anyOf": [
+            {
+              "enum": [
+                "大寒日",
+                "冬至日"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "日照分析用的标准日。必须与日照时数一起填：各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）",
+          "enum": [
+            "大寒日",
+            "冬至日"
+          ],
+          "group": "居住品质",
+          "label": "日照标准日",
+          "title": "Daylight Standard Day",
+          "unit": "—"
+        },
+        "living_space_count": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "套内居住空间（卧室、起居室等）总数",
+          "group": "居住品质",
+          "label": "居住空间总数",
+          "title": "Living Space Count",
+          "unit": "个"
+        },
+        "daylight_room_count": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
+          "group": "居住品质",
+          "label": "满足日照空间数",
+          "title": "Daylight Room Count",
+          "unit": "个"
+        },
+        "clear_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
+          "group": "居住品质",
+          "label": "室内净高",
+          "title": "Clear Height",
+          "unit": "m"
+        },
+        "has_fresh_air": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
+          "group": "居住品质",
+          "label": "设新风/中央空调",
+          "title": "Has Fresh Air",
+          "unit": "—"
+        },
+        "has_stretcher_elevator": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "每个单元是否至少设 1 台可容纳担架的电梯",
+          "group": "居住品质",
+          "label": "设担架电梯",
+          "title": "Has Stretcher Elevator",
+          "unit": "—"
+        },
+        "has_accessible_elevator": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
+          "group": "居住品质",
+          "label": "设无障碍电梯",
+          "title": "Has Accessible Elevator",
+          "unit": "—"
+        },
+        "total_elevators": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
+          "group": "居住品质",
+          "label": "电梯总台数",
+          "title": "Total Elevators",
+          "unit": "台"
+        },
+        "per_capita_green": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
+          "group": "绿色低碳",
+          "label": "人均公共绿地",
+          "title": "Per Capita Green",
+          "unit": "m²/人"
         },
         "gfa": {
           "anyOf": [

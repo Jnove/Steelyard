@@ -286,6 +286,163 @@
           "title": "Sunlight Hours",
           "unit": "h"
         },
+        "daylight_standard_day": {
+          "anyOf": [
+            {
+              "enum": [
+                "大寒日",
+                "冬至日"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "日照分析用的标准日。必须与日照时数一起填：各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）",
+          "enum": [
+            "大寒日",
+            "冬至日"
+          ],
+          "group": "居住品质",
+          "label": "日照标准日",
+          "title": "Daylight Standard Day",
+          "unit": "—"
+        },
+        "living_space_count": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "套内居住空间（卧室、起居室等）总数",
+          "group": "居住品质",
+          "label": "居住空间总数",
+          "title": "Living Space Count",
+          "unit": "个"
+        },
+        "daylight_room_count": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
+          "group": "居住品质",
+          "label": "满足日照空间数",
+          "title": "Daylight Room Count",
+          "unit": "个"
+        },
+        "clear_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
+          "group": "居住品质",
+          "label": "室内净高",
+          "title": "Clear Height",
+          "unit": "m"
+        },
+        "has_fresh_air": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
+          "group": "居住品质",
+          "label": "设新风/中央空调",
+          "title": "Has Fresh Air",
+          "unit": "—"
+        },
+        "has_stretcher_elevator": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "每个单元是否至少设 1 台可容纳担架的电梯",
+          "group": "居住品质",
+          "label": "设担架电梯",
+          "title": "Has Stretcher Elevator",
+          "unit": "—"
+        },
+        "has_accessible_elevator": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
+          "group": "居住品质",
+          "label": "设无障碍电梯",
+          "title": "Has Accessible Elevator",
+          "unit": "—"
+        },
+        "total_elevators": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
+          "group": "居住品质",
+          "label": "电梯总台数",
+          "title": "Total Elevators",
+          "unit": "台"
+        },
+        "per_capita_green": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
+          "group": "绿色低碳",
+          "label": "人均公共绿地",
+          "title": "Per Capita Green",
+          "unit": "m²/人"
+        },
         "gfa": {
           "anyOf": [
             {
