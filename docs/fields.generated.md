@@ -38,6 +38,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `mic_system` | MiC 体系类型 | — | string | 否 | 取值：模块化框架结构 / 模块化全预制剪力墙结构 / 模块化叠合剪力墙结构 / 模块化箱模框架结构 / 模块化箱模框架-剪力墙结构 / 模块化箱模剪力墙结构；— |
 | `units` | 总户数 | 户 | integer | 否 · 必录 | — |
 | `unit_mix` | 户型配比 | 户 | object<integer> | 否 | — |
+| `custom` | 自定义字段 | — | object<any> | 否 | — |
 
 #### 居住品质
 

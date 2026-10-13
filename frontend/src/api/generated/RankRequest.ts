@@ -1,7 +1,7 @@
 /* 自动生成，请运行 npm run gen:types 更新。 */
 
 /**
- * 角色键，查 rules/weights.yaml，如 government / developer / contractor / resident
+ * 角色键，先查 rules/weights.yaml（government / developer / contractor / resident），再查运行期自定义的权重模板（可用 custom:<id> 或模板名）
  */
 export type Role = string | null;
 /**

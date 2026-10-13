@@ -54,7 +54,7 @@
       "properties": {
         "id": {
           "description": "规则编号，形如 C-03；全局唯一。前缀 C/Q/S/K/G 对应 rules/ 下的五个文件",
-          "pattern": "^[CQSKG]-\\d{2}$",
+          "pattern": "^[CQSKGX]-\\d{2}$",
           "title": "Id",
           "type": "string"
         },

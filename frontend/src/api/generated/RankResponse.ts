@@ -33,6 +33,10 @@ export type Role = string | null;
  */
 export type RoleName = string | null;
 /**
+ * 该角色模板是否来自运行期自定义（未进入 git、不参与 CI 校验）；报告里应据此提示读者
+ */
+export type IsCustom = boolean;
+/**
  * 角色模板的说明；自定义权重时为空
  */
 export type Note = string;
@@ -282,6 +286,7 @@ export interface WeightsUsed {
   weights: Weights;
   role: Role;
   role_name: RoleName;
+  is_custom: IsCustom;
   note: Note;
   /**
    * 有两两比较矩阵时的一致性检验结果；直接给权重时为 null

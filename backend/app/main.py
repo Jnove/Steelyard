@@ -7,6 +7,8 @@ T3 阶段接入确定性引擎：启动时加载 rules/*.yaml，提供 /api/proj
 T4 阶段接入多准则决策：启动时加载 rules/weights.yaml 的角色模板，
 提供 /api/projects/{id}/rank（TOPSIS + 敏感性 + 帕累托 + 名次概率）。
 T8 阶段接入 LangGraph、报告与对话 SSE、what-if 副本和引用校验缓存。
+T9 之后接入「自定义添加」覆盖层：运行期可加枚举选项与角色权重模板
+（见 docs/design-custom-add.md 与 app/custom/），写接口仅在开发环境开放。
 """
 
 from collections.abc import AsyncIterator
@@ -16,7 +18,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import agents as agents_api
+from app.api import custom as custom_api
 from app.api import evaluate as evaluate_api
+from app.api import excel as excel_api
 from app.api import projects as projects_api
 from app.api import rank as rank_api
 from app.api import rules as rules_api
@@ -74,8 +78,10 @@ def create_app() -> FastAPI:
     app.include_router(projects_api.router, prefix="/api")
     app.include_router(schemes_api.router, prefix="/api")
     app.include_router(schema_api.router, prefix="/api")
+    app.include_router(excel_api.router, prefix="/api")
     app.include_router(evaluate_api.router, prefix="/api")
     app.include_router(rules_api.router, prefix="/api")
+    app.include_router(custom_api.router, prefix="/api")
     app.include_router(rank_api.router, prefix="/api")
     app.include_router(agents_api.router, prefix="/api")
 

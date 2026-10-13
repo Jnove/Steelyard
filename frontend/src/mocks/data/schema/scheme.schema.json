@@ -523,7 +523,8 @@
         "不规则建筑",
         "超限构件",
         "复杂地质"
-      ]
+      ],
+      "extensible": true
     },
     {
       "name": "excavation_depth",
@@ -652,6 +653,17 @@
       "type": "number",
       "required": false,
       "constraints": {}
+    },
+    {
+      "name": "custom",
+      "label": "自定义字段",
+      "description": "自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示（见 app/custom/fields.py 与 docs/design-custom-add.md）",
+      "unit": "—",
+      "group": "基本信息",
+      "type": "object<any>",
+      "required": false,
+      "constraints": {},
+      "hidden": true
     },
     {
       "name": "prefab_ratio_est",
