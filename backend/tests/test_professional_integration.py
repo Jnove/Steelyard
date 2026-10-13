@@ -128,6 +128,27 @@ def test_irregularity_excel_preserves_unknown_empty_and_declared(tmp_path: Path)
     ]
 
 
+def test_boolean_field_round_trips_through_excel(tmp_path: Path) -> None:
+    """布尔字段（是否设地下室）必须能在 Excel 里往返：写出「是 / 否」，读回仍是布尔。
+
+    这个字段类型此前**既没有写入分支也没有解析分支**：导出后重新解析会直接报
+    「字段类型 boolean 暂未支持」，而这条链只在"导出 → 再解析"时才会暴露
+    （CI 的前端数据层测试正是靠演示工作簿的解析快照发现的），所以在这里钉住，
+    并同时覆盖"未填写保持 None"。
+    """
+    source = [
+        {"name": "有地下室", "params": {"has_basement": True}},
+        {"name": "无地下室", "params": {"has_basement": False}},
+        {"name": "未填写", "params": {}},
+    ]
+    path = write_export(tmp_path / "bool.xlsx", {}, source)
+    parsed = parse_workbook(path)
+    assert not parsed.errors
+    assert [
+        SchemeParams.model_validate(item["params"]).has_basement for item in parsed.schemes
+    ] == [True, False, None]
+
+
 def test_named_weights_keep_all_five_roles_and_dimension_order() -> None:
     roles = load_role_templates()
     expected = {

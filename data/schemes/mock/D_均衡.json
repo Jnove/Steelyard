@@ -46,7 +46,11 @@
     "foundation_type": "桩筏基础",
     "foundation_working_life": 50,
     "retaining_type": "地下连续墙",
-    "retaining_concrete_grade": 30
+    "retaining_concrete_grade": 30,
+    "has_basement": true,
+    "excavation_working_life": 2,
+    "brace_type": "锚杆（锚拉）",
+    "anchor_free_length": 6.0
   },
   "_design_notes": {
     "intent": "中庸偏上：四个维度均衡得分，作为比选的对照基准。",

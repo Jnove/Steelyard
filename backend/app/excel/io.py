@@ -292,6 +292,10 @@ def _value_to_cell(value: Any) -> Any:
             return f"{v:.10g}"
         return str(v)
 
+    if isinstance(value, bool):
+        # 布尔字段写成「是/否」，与其它中文字段一致，也让专业组一眼看懂；
+        # 解析端 _parse_bool 同时接受 是/否、TRUE/FALSE、1/0。
+        return "是" if value else "否"
     if isinstance(value, dict):
         return ",".join(f"{k}: {_fmt_scalar(v)}" for k, v in value.items())
     if isinstance(value, list):
@@ -498,6 +502,32 @@ def _parse_string(value: Any, label: str) -> str:
     raise ValueError(f"【{label}】应为文本，实际类型为 {type(value).__name__}")
 
 
+_TRUE_WORDS = {"是", "true", "t", "yes", "y", "1", "√"}
+_FALSE_WORDS = {"否", "false", "f", "no", "n", "0", "×", "x"}
+
+
+def _parse_bool(value: Any, label: str) -> bool:
+    """解析布尔单元格。
+
+    导出写的是「是 / 否」；同时接受 TRUE/FALSE、1/0 等常见写法，
+    以及 Excel 里真正的布尔单元格（openpyxl 读回来就是 Python bool）。
+    """
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        if value in (0, 1):
+            return bool(value)
+        raise ValueError(f"【{label}】应为「是 / 否」，实际填了 {value}")
+    if isinstance(value, str):
+        text = value.strip().lower()
+        if text in _TRUE_WORDS:
+            return True
+        if text in _FALSE_WORDS:
+            return False
+        raise ValueError(f"【{label}】应为「是 / 否」，实际填了「{value.strip()}」")
+    raise ValueError(f"【{label}】应为「是 / 否」，实际类型为 {type(value).__name__}")
+
+
 def _parse_dict(value: Any, label: str, value_parser) -> dict[str, Any]:
     """解析 ``{label1: v1, label2: v2}`` 形式的单元格。
 
@@ -574,6 +604,8 @@ def _project_field_parser(
         return _parse_number(raw, label)
     if typ == "integer":
         return _parse_integer(raw, label)
+    if typ == "boolean":
+        return _parse_bool(raw, label)
     if typ == "string":
         if "enum" in field_info:
             return _parse_enum(raw, label, field_info["enum"])
@@ -611,6 +643,8 @@ def _scheme_field_parser(
         return _parse_number(raw, label)
     if typ == "integer":
         return _parse_integer(raw, label)
+    if typ == "boolean":
+        return _parse_bool(raw, label)
     if typ == "string":
         if "enum" in field_info:
             return _parse_enum(raw, label, field_info["enum"])

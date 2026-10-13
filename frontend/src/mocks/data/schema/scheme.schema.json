@@ -296,6 +296,32 @@
       "constraints": {}
     },
     {
+      "name": "steel_system",
+      "label": "钢结构体系",
+      "description": "钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+      "unit": "—",
+      "group": "结构与造价",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "框架",
+        "框架-中心支撑",
+        "框架-偏心支撑（延性墙板）",
+        "筒体和巨型框架"
+      ]
+    },
+    {
+      "name": "has_basement",
+      "label": "是否设地下室",
+      "description": "是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+      "unit": "—",
+      "group": "结构与造价",
+      "type": "boolean",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "irregularity_items",
       "label": "超限不规则项",
       "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -428,6 +454,42 @@
       "label": "支护混凝土强度等级",
       "description": "支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
       "unit": "MPa",
+      "group": "施工与安全",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "excavation_working_life",
+      "label": "基坑工作年限",
+      "description": "基坑工程设计工作年限（不应小于 1 年）",
+      "unit": "年",
+      "group": "施工与安全",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "brace_type",
+      "label": "内支撑 / 锚拉体系",
+      "description": "基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+      "unit": "—",
+      "group": "施工与安全",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "混凝土内支撑",
+        "钢支撑",
+        "锚杆（锚拉）",
+        "无内支撑与锚拉"
+      ]
+    },
+    {
+      "name": "anchor_free_length",
+      "label": "锚杆自由段长度",
+      "description": "锚杆自由段长度（不应小于 5.0 m）",
+      "unit": "m",
       "group": "施工与安全",
       "type": "number",
       "required": false,

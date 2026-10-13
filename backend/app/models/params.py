@@ -145,6 +145,30 @@ RetainingType = Literal["排桩", "地下连续墙", "土钉墙", "放坡开挖"
 """
 RETAINING_TYPES: tuple[str, ...] = ("排桩", "地下连续墙", "土钉墙", "放坡开挖", "其他")
 
+SteelSystem = Literal["框架", "框架-中心支撑", "框架-偏心支撑（延性墙板）", "筒体和巨型框架"]
+"""钢结构体系类型。
+
+依据 GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」：
+同一烈度下不同体系的最大适用高度差一倍以上（6、7度 0.10g 列：框架 110、
+框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体和巨型框架 300），
+所以必须分体系取值，不能给钢结构一个笼统限值。
+"""
+STEEL_SYSTEMS: tuple[str, ...] = (
+    "框架",
+    "框架-中心支撑",
+    "框架-偏心支撑（延性墙板）",
+    "筒体和巨型框架",
+)
+
+BraceType = Literal["混凝土内支撑", "钢支撑", "锚杆（锚拉）", "无内支撑与锚拉"]
+"""基坑内支撑 / 锚拉体系。
+
+依据 GB 55003—2021 第7.2节：混凝土内支撑的混凝土强度等级不应低于 C25（第7.2.6条）、
+锚拉结构的锚杆自由段长度不应小于 5.0 m（第7.2.8条）。钢支撑与"无内支撑与锚拉"
+在本规范里没有对应的混凝土等级或锚杆长度要求，规则中判为"不适用"。
+"""
+BRACE_TYPES: tuple[str, ...] = ("混凝土内支撑", "钢支撑", "锚杆（锚拉）", "无内支撑与锚拉")
+
 
 def _meta(unit: str, group: str, label: str, **extra: object) -> dict[str, object]:
     """拼装 ``json_schema_extra`` 片段，统一字段元信息格式。"""
@@ -393,6 +417,16 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("年", "结构与造价", "地基基础工作年限"),
     )
+    steel_system: SteelSystem | None = Field(
+        None,
+        description="钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+        json_schema_extra=_meta("—", "结构与造价", "钢结构体系", enum=list(STEEL_SYSTEMS)),
+    )
+    has_basement: bool | None = Field(
+        None,
+        description="是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+        json_schema_extra=_meta("—", "结构与造价", "是否设地下室"),
+    )
     irregularity_items: list[str] | None = Field(
         None,
         description="超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -465,6 +499,23 @@ class SchemeParams(BaseModel):
         description="支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
         gt=0,
         json_schema_extra=_meta("MPa", "施工与安全", "支护混凝土强度等级"),
+    )
+    excavation_working_life: float | None = Field(
+        None,
+        description="基坑工程设计工作年限（不应小于 1 年）",
+        gt=0,
+        json_schema_extra=_meta("年", "施工与安全", "基坑工作年限"),
+    )
+    brace_type: BraceType | None = Field(
+        None,
+        description="基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+        json_schema_extra=_meta("—", "施工与安全", "内支撑 / 锚拉体系", enum=list(BRACE_TYPES)),
+    )
+    anchor_free_length: float | None = Field(
+        None,
+        description="锚杆自由段长度（不应小于 5.0 m）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "锚杆自由段长度"),
     )
 
     # —— 绿色低碳 —— #

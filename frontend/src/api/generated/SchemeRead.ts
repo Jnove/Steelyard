@@ -132,6 +132,15 @@ export type FoundationType = (("筏形基础" | "桩筏基础" | "独立基础" 
  */
 export type FoundationWorkingLife = number | null;
 /**
+ * 钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）
+ */
+export type SteelSystem = (("框架" | "框架-中心支撑" | "框架-偏心支撑（延性墙板）" | "筒体和巨型框架") | null) &
+  ("框架" | "框架-中心支撑" | "框架-偏心支撑（延性墙板）" | "筒体和巨型框架");
+/**
+ * 是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）
+ */
+export type HasBasement = boolean | null;
+/**
  * 超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）
  */
 export type IrregularityItems = string[] | null;
@@ -173,6 +182,19 @@ export type RetainingType = (("排桩" | "地下连续墙" | "土钉墙" | "放�
  * 支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）
  */
 export type RetainingConcreteGrade = number | null;
+/**
+ * 基坑工程设计工作年限（不应小于 1 年）
+ */
+export type ExcavationWorkingLife = number | null;
+/**
+ * 基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）
+ */
+export type BraceType = (("混凝土内支撑" | "钢支撑" | "锚杆（锚拉）" | "无内支撑与锚拉") | null) &
+  ("混凝土内支撑" | "钢支撑" | "锚杆（锚拉）" | "无内支撑与锚拉");
+/**
+ * 锚杆自由段长度（不应小于 5.0 m）
+ */
+export type AnchorFreeLength = number | null;
 /**
  * 预估装配率
  */
@@ -229,6 +251,8 @@ export interface SchemeParams {
   concrete_grade?: ConcreteGrade;
   foundation_type?: FoundationType;
   foundation_working_life?: FoundationWorkingLife;
+  steel_system?: SteelSystem;
+  has_basement?: HasBasement;
   irregularity_items?: IrregularityItems;
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;
@@ -239,6 +263,9 @@ export interface SchemeParams {
   scaffold_height?: ScaffoldHeight;
   retaining_type?: RetainingType;
   retaining_concrete_grade?: RetainingConcreteGrade;
+  excavation_working_life?: ExcavationWorkingLife;
+  brace_type?: BraceType;
+  anchor_free_length?: AnchorFreeLength;
   prefab_ratio_est?: PrefabRatioEst;
   green_ratio?: GreenRatio;
 }

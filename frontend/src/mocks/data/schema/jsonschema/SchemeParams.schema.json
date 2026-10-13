@@ -503,6 +503,50 @@
       "title": "Foundation Working Life",
       "unit": "年"
     },
+    "steel_system": {
+      "anyOf": [
+        {
+          "enum": [
+            "框架",
+            "框架-中心支撑",
+            "框架-偏心支撑（延性墙板）",
+            "筒体和巨型框架"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+      "enum": [
+        "框架",
+        "框架-中心支撑",
+        "框架-偏心支撑（延性墙板）",
+        "筒体和巨型框架"
+      ],
+      "group": "结构与造价",
+      "label": "钢结构体系",
+      "title": "Steel System",
+      "unit": "—"
+    },
+    "has_basement": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+      "group": "结构与造价",
+      "label": "是否设地下室",
+      "title": "Has Basement",
+      "unit": "—"
+    },
     "irregularity_items": {
       "allow_custom_options": false,
       "anyOf": [
@@ -717,6 +761,68 @@
       "label": "支护混凝土强度等级",
       "title": "Retaining Concrete Grade",
       "unit": "MPa"
+    },
+    "excavation_working_life": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "基坑工程设计工作年限（不应小于 1 年）",
+      "group": "施工与安全",
+      "label": "基坑工作年限",
+      "title": "Excavation Working Life",
+      "unit": "年"
+    },
+    "brace_type": {
+      "anyOf": [
+        {
+          "enum": [
+            "混凝土内支撑",
+            "钢支撑",
+            "锚杆（锚拉）",
+            "无内支撑与锚拉"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+      "enum": [
+        "混凝土内支撑",
+        "钢支撑",
+        "锚杆（锚拉）",
+        "无内支撑与锚拉"
+      ],
+      "group": "施工与安全",
+      "label": "内支撑 / 锚拉体系",
+      "title": "Brace Type",
+      "unit": "—"
+    },
+    "anchor_free_length": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "锚杆自由段长度（不应小于 5.0 m）",
+      "group": "施工与安全",
+      "label": "锚杆自由段长度",
+      "title": "Anchor Free Length",
+      "unit": "m"
     },
     "prefab_ratio_est": {
       "anyOf": [

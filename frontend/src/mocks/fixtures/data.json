@@ -1,5 +1,5 @@
 {
-  "fixture_id": "5e3c811487d221108f27663d060fd1136922b39844abfed27ab7388954f9de45",
+  "fixture_id": "1b1cb4261423c89e64e2b0754431b6f36ac6bb8b03db71c30e5aa8edffb8b8bf",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -27,33 +27,34 @@
     "backend/app/engine/scoring.py": "c8bfdec44e428a96ab106089643e1de5185fce4ce5bacb8e2b417a1a4976ea26",
     "backend/app/engine/weights.py": "ce2e765e6b7f780fe36cacaa1084ad799595b90aae95fd801616faefe92a9e8f",
     "backend/app/excel/__init__.py": "a85d4a74036c4cdf454ec4cce162fcbbef17d844a5486243280cfa9caec0d502",
-    "backend/app/excel/io.py": "1df5459bc1984952a5f651cbf9e23aa0ea6c22c5f0162f63b16ce0912c410aea",
+    "backend/app/excel/io.py": "5c2d788e7427aca08fec54ee3a611f53be0955e0cff7786dee497aa8f65f173a",
     "backend/app/main.py": "9b3b69e8af380bf519be09b86e48aa0f0c0f0a70eeb51f160d3af1bd6cad6fe5",
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "8b6b90e0de17ff0da893082db86ee48ba8266f1ce0acc09c1faa2cd444649c59",
+    "backend/app/models/params.py": "a3aba6561eca548993986d735377b37d2197a1e375980637c76ccfc379db2632",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
     "rules/_template.yaml": "5d7740c4a23a2e802808a2882b8d05428dd9b39fe40180fe800d7fee73667c4c",
     "rules/compliance.yaml": "d4d1ee2de2eeb7070e5e58aac9981997d0179bca1c23ac1f63c5c8cc08906953",
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
-    "rules/construction_safety.yaml": "eb8b6ec9a504249623b349005e0034362c578b21baa21a7a4db79edca755f108",
+    "rules/construction_safety.yaml": "b58523412ee4674d016a7899e8e820e47efd70342372f1b11d339bb1d85c5cc1",
     "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
     "rules/structure.yaml": "33bfd1961b8ef6d8dd4b6ddfc11244d1fcf44954e9a472bcb88cac29078a8280",
     "rules/structure_foundation.yaml": "532126a00e3387b1e57a16e499051a8f951415821a7e7241982c714adb223daf",
+    "rules/structure_steel.yaml": "74b77f9d3faa7d2df3cc31ecd7b9b0b8a13e62a1a859a9c74d410590a3df62a2",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
-    "data/schemes/mock/A_高品质.json": "dfcce25b9d0034334ed605c5be5a917509c4aa5c68b64ab73f6e3af49ad7b484",
-    "data/schemes/mock/B_不合规.json": "39e61ab7257e507578c31b7b49f3ea55749ce0ed840c317409ce07f2567167b3",
-    "data/schemes/mock/C_MiC高标准化.json": "92da201f44cbae256afc4f103c342c350e9f6c912f137d2c8aa7ae7dcf1c5857",
-    "data/schemes/mock/C_现浇.json": "d5d844a5b30702f7e0cea912e143bd982b7b43a40d0f46cd77ed2edec4e9d028",
-    "data/schemes/mock/D_均衡.json": "f8d85913fa9a43695e4a9ebc78b135de356731195dff2f604a766e799cf32010",
-    "data/schemes/mock/E_被支配.json": "056550fa66c444c5e0b26be09d8ffb9b2ab4b5b659647df1f9d8e772845dd43b",
+    "data/schemes/mock/A_高品质.json": "aa5d7f7ce0914ac4cc4bfd8c72ae640b146d01ddf1875a9ae5f60890d973ef79",
+    "data/schemes/mock/B_不合规.json": "260889b13f7d9390c72e8b0db1c98eb5ca6591a8dd9f826042fda290d41694d6",
+    "data/schemes/mock/C_MiC高标准化.json": "d706e725409de478810b2756b45f85520f8bb23a06e036e382d2527d63bcbca8",
+    "data/schemes/mock/C_现浇.json": "63bceee5c5d7695689795652f2963d43dd8890abbc95c95072cc680af20127c2",
+    "data/schemes/mock/D_均衡.json": "c69994a36ddf832933178b220ed7406ee6636da3968ff2105aaf0d0c4a63accf",
+    "data/schemes/mock/E_被支配.json": "10a2bc25e16a39d0a2c216113d9e12ae9607ba730e0a57ccf82027396d851b38",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
     "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
-    "data/schemes/方案录入模板.xlsx": "54f8d8dc4307e4400d9f053646dfdebfa695a950574e508ccc9842a3c2a00f77"
+    "data/schemes/方案录入模板.xlsx": "f45349652a5a6820853a073e648df25cd3705d65094337788a11db8ff283be66"
   },
   "grid_step": 10,
   "projects": [
@@ -112,6 +113,8 @@
         "concrete_grade": 30.0,
         "foundation_type": "桩筏基础",
         "foundation_working_life": 70,
+        "steel_system": null,
+        "has_basement": true,
         "irregularity_items": [
           "凹凸不规则",
           "局部不规则"
@@ -128,6 +131,9 @@
         "scaffold_height": 52.8,
         "retaining_type": "排桩",
         "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "混凝土内支撑",
+        "anchor_free_length": null,
         "prefab_ratio_est": 0.25,
         "green_ratio": 0.38
       },
@@ -175,6 +181,8 @@
         "concrete_grade": 25.0,
         "foundation_type": "桩基础",
         "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
         "irregularity_items": [],
         "std_floor_repeat": 0.8,
         "component_types": 14,
@@ -185,6 +193,9 @@
         "scaffold_height": 49.0,
         "retaining_type": "放坡开挖",
         "retaining_concrete_grade": null,
+        "excavation_working_life": 2.0,
+        "brace_type": "无内支撑与锚拉",
+        "anchor_free_length": null,
         "prefab_ratio_est": 0.45,
         "green_ratio": 0.35
       },
@@ -233,6 +244,8 @@
         "concrete_grade": 30.0,
         "foundation_type": "桩筏基础",
         "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
         "irregularity_items": [],
         "std_floor_repeat": 0.95,
         "component_types": 8,
@@ -243,6 +256,9 @@
         "scaffold_height": 54.0,
         "retaining_type": "排桩",
         "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "混凝土内支撑",
+        "anchor_free_length": null,
         "prefab_ratio_est": 0.75,
         "green_ratio": 0.36
       },
@@ -290,6 +306,8 @@
         "concrete_grade": 30.0,
         "foundation_type": "桩筏基础",
         "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
         "irregularity_items": [],
         "std_floor_repeat": 0.85,
         "component_types": 12,
@@ -300,6 +318,9 @@
         "scaffold_height": 51.0,
         "retaining_type": "地下连续墙",
         "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "锚杆（锚拉）",
+        "anchor_free_length": 6.0,
         "prefab_ratio_est": 0.5,
         "green_ratio": 0.4
       },
@@ -347,6 +368,8 @@
         "concrete_grade": 25.0,
         "foundation_type": "桩基础",
         "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
         "irregularity_items": [
           "扭转不规则"
         ],
@@ -362,6 +385,9 @@
         "scaffold_height": 51.0,
         "retaining_type": "排桩",
         "retaining_concrete_grade": 25.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "无内支撑与锚拉",
+        "anchor_free_length": null,
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.35
       },
@@ -409,6 +435,8 @@
         "concrete_grade": 30.0,
         "foundation_type": "桩筏基础",
         "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
         "irregularity_items": [
           "局部不规则"
         ],
@@ -423,6 +451,9 @@
         "scaffold_height": 54.0,
         "retaining_type": "排桩",
         "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "混凝土内支撑",
+        "anchor_free_length": null,
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.37
       },
@@ -434,7 +465,7 @@
   ],
   "evaluation": {
     "project_id": 1,
-    "rule_count": 40,
+    "rule_count": 46,
     "results": [
       {
         "scheme_id": "1",
@@ -597,6 +628,42 @@
             "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
           },
           {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取支护结构混凝土强度等级字段",
+            "missing_fields": [],
+            "message": "混凝土内支撑强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -727,6 +794,42 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.3,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -1098,6 +1201,42 @@
             "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
           },
           {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取支护结构混凝土强度等级字段",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '混凝土内支撑'）"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -1228,6 +1367,42 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.2866666666666666,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -1599,6 +1774,42 @@
             "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
           },
           {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取支护结构混凝土强度等级字段",
+            "missing_fields": [],
+            "message": "混凝土内支撑强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -1729,6 +1940,42 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.375,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -2100,6 +2347,42 @@
             "message": "两墙合一地下连续墙混凝土强度等级下限 通过"
           },
           {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取支护结构混凝土强度等级字段",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '混凝土内支撑'）"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 6.0,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "锚杆自由段长度下限 通过"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -2230,6 +2513,42 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.1875,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -2601,6 +2920,42 @@
             "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
           },
           {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取支护结构混凝土强度等级字段",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '混凝土内支撑'）"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -2731,6 +3086,42 @@
             "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
             "missing_fields": [],
             "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.642857142857143,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -6335,6 +6726,32 @@
           "constraints": {}
         },
         {
+          "name": "steel_system",
+          "label": "钢结构体系",
+          "description": "钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "框架",
+            "框架-中心支撑",
+            "框架-偏心支撑（延性墙板）",
+            "筒体和巨型框架"
+          ]
+        },
+        {
+          "name": "has_basement",
+          "label": "是否设地下室",
+          "description": "是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
           "name": "irregularity_items",
           "label": "超限不规则项",
           "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -6473,6 +6890,42 @@
           "constraints": {}
         },
         {
+          "name": "excavation_working_life",
+          "label": "基坑工作年限",
+          "description": "基坑工程设计工作年限（不应小于 1 年）",
+          "unit": "年",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "brace_type",
+          "label": "内支撑 / 锚拉体系",
+          "description": "基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "混凝土内支撑",
+            "钢支撑",
+            "锚杆（锚拉）",
+            "无内支撑与锚拉"
+          ]
+        },
+        {
+          "name": "anchor_free_length",
+          "label": "锚杆自由段长度",
+          "description": "锚杆自由段长度（不应小于 5.0 m）",
+          "unit": "m",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
           "name": "prefab_ratio_est",
           "label": "预估装配率",
           "description": "预估装配率",
@@ -6573,8 +7026,8 @@
     }
   },
   "rules": {
-    "rule_count": 40,
-    "hard_count": 24,
+    "rule_count": 46,
+    "hard_count": 30,
     "metric_count": 16,
     "rules": [
       {
@@ -6856,6 +7309,57 @@
           "when": "retaining_type == '地下连续墙'",
           "check": "retaining_concrete_grade >= 30",
           "message": "两墙合一地下连续墙的混凝土强度等级 C{retaining_concrete_grade} 低于 GB 55003 要求的 C30",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-08",
+          "name": "基坑工程设计工作年限下限",
+          "type": "hard",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+          "when": null,
+          "check": "excavation_working_life >= 1",
+          "message": "基坑工程设计工作年限 {excavation_working_life} 年低于规范要求的 1 年",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-09",
+          "name": "混凝土内支撑强度等级下限",
+          "type": "hard",
+          "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取支护结构混凝土强度等级字段",
+          "when": "brace_type == '混凝土内支撑'",
+          "check": "retaining_concrete_grade >= 25",
+          "message": "混凝土内支撑的强度等级 C{retaining_concrete_grade} 低于 GB 55003 要求的 C25",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-10",
+          "name": "锚杆自由段长度下限",
+          "type": "hard",
+          "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+          "when": "brace_type == '锚杆（锚拉）'",
+          "check": "anchor_free_length >= 5",
+          "message": "锚杆自由段长度 {anchor_free_length} m 小于 GB 55003 要求的 5.0 m",
           "severity": "error",
           "dimension": null,
           "value": null,
@@ -7516,6 +8020,57 @@
           "weight_in_dimension": 1.0
         },
         "source_file": "structure_foundation.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-19",
+          "name": "钢结构建筑高度不超体系最大适用高度",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+          "when": "structure_type == '钢结构'",
+          "check": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+          "message": "钢结构建筑总高 {height} m 超过该体系在 6、7 度（0.10g）区的最大适用高度（框架 110、框架-中心支撑 220、框架-偏心支撑 240、筒体和巨型框架 300 m），须改体系或按超限高层做专项审查",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_steel.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-20",
+          "name": "钢结构高宽比不超限值（提示）",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+          "when": "structure_type == '钢结构'",
+          "check": "height_width_ratio <= 6.5",
+          "message": "钢结构高宽比 {height_width_ratio} 超过表8.1.2 在 6、7 度区的限值 6.5，请复核结构整体稳定与经济性",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_steel.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-21",
+          "name": "超过 50 m 的钢结构房屋应设置地下室",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+          "when": "structure_type == '钢结构' and height > 50",
+          "check": "has_basement",
+          "message": "钢结构建筑总高 {height} m 超过 50 m，按规范应设置地下室",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_steel.yaml"
       }
     ],
     "derived_quantities": [
@@ -7616,7 +8171,7 @@
   "imports": [
     {
       "filename": "demo-import.xlsx",
-      "sha256": "5a455941bc3e4f20e10a654d3c614012c0d0de6853e67d22b08675b3c86e73ff",
+      "sha256": "03198b0be1476c72f26d66aa1cf90330a50f2d7a06aa9ed67673ccc5fc46ad02",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7654,6 +8209,7 @@
             "concrete_grade": 30.0,
             "foundation_type": "桩筏基础",
             "foundation_working_life": 70,
+            "has_basement": true,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -7670,6 +8226,8 @@
             "scaffold_height": 52.8,
             "retaining_type": "排桩",
             "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.25,
             "green_ratio": 0.38
           }
@@ -7710,6 +8268,7 @@
             "concrete_grade": 25.0,
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
@@ -7719,6 +8278,8 @@
             "scaffold_type": "落地式钢管脚手架",
             "scaffold_height": 49.0,
             "retaining_type": "放坡开挖",
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.45,
             "green_ratio": 0.35
           }
@@ -7761,6 +8322,7 @@
             "concrete_grade": 30.0,
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
@@ -7771,6 +8333,8 @@
             "scaffold_height": 54.0,
             "retaining_type": "排桩",
             "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.75,
             "green_ratio": 0.36
           }
@@ -7811,6 +8375,7 @@
             "concrete_grade": 30.0,
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
@@ -7821,6 +8386,9 @@
             "scaffold_height": 51.0,
             "retaining_type": "地下连续墙",
             "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "锚杆（锚拉）",
+            "anchor_free_length": 6.0,
             "prefab_ratio_est": 0.5,
             "green_ratio": 0.4
           }
@@ -7861,6 +8429,7 @@
             "concrete_grade": 25.0,
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -7876,6 +8445,8 @@
             "scaffold_height": 51.0,
             "retaining_type": "排桩",
             "retaining_concrete_grade": 25.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.3,
             "green_ratio": 0.35
           }
@@ -7893,7 +8464,7 @@
     },
     {
       "filename": "demo-invalid.xlsx",
-      "sha256": "2877b015e48fdf6e633e099e43bb2c4e4b35bff924121f4d0a8be7e8895b5a57",
+      "sha256": "d8f35d3c25e0e3d946ec3c06532d1377079d9d65f4f8460d03fe3afe8824128f",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7929,6 +8500,7 @@
             "concrete_grade": 30.0,
             "foundation_type": "桩筏基础",
             "foundation_working_life": 70,
+            "has_basement": true,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -7945,6 +8517,8 @@
             "scaffold_height": 52.8,
             "retaining_type": "排桩",
             "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.25,
             "green_ratio": 0.38
           }
@@ -7985,6 +8559,7 @@
             "concrete_grade": 25.0,
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
@@ -7994,6 +8569,8 @@
             "scaffold_type": "落地式钢管脚手架",
             "scaffold_height": 49.0,
             "retaining_type": "放坡开挖",
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.45,
             "green_ratio": 0.35
           }
@@ -8036,6 +8613,7 @@
             "concrete_grade": 30.0,
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
@@ -8046,6 +8624,8 @@
             "scaffold_height": 54.0,
             "retaining_type": "排桩",
             "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.75,
             "green_ratio": 0.36
           }
@@ -8086,6 +8666,7 @@
             "concrete_grade": 30.0,
             "foundation_type": "桩筏基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
@@ -8096,6 +8677,9 @@
             "scaffold_height": 51.0,
             "retaining_type": "地下连续墙",
             "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "锚杆（锚拉）",
+            "anchor_free_length": 6.0,
             "prefab_ratio_est": 0.5,
             "green_ratio": 0.4
           }
@@ -8136,6 +8720,7 @@
             "concrete_grade": 25.0,
             "foundation_type": "桩基础",
             "foundation_working_life": 50,
+            "has_basement": true,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -8151,6 +8736,8 @@
             "scaffold_height": 51.0,
             "retaining_type": "排桩",
             "retaining_concrete_grade": 25.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.3,
             "green_ratio": 0.35
           }
@@ -8181,7 +8768,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "54f8d8dc4307e4400d9f053646dfdebfa695a950574e508ccc9842a3c2a00f77",
+      "sha256": "f45349652a5a6820853a073e648df25cd3705d65094337788a11db8ff283be66",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -8223,6 +8810,8 @@
       "concrete_grade": null,
       "foundation_type": null,
       "foundation_working_life": null,
+      "steel_system": null,
+      "has_basement": null,
       "irregularity_items": null,
       "std_floor_repeat": null,
       "component_types": null,
@@ -8233,6 +8822,9 @@
       "scaffold_height": null,
       "retaining_type": null,
       "retaining_concrete_grade": null,
+      "excavation_working_life": null,
+      "brace_type": null,
+      "anchor_free_length": null,
       "prefab_ratio_est": null,
       "green_ratio": null
     }
@@ -8881,6 +9473,50 @@
           "title": "Foundation Working Life",
           "unit": "年"
         },
+        "steel_system": {
+          "anyOf": [
+            {
+              "enum": [
+                "框架",
+                "框架-中心支撑",
+                "框架-偏心支撑（延性墙板）",
+                "筒体和巨型框架"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+          "enum": [
+            "框架",
+            "框架-中心支撑",
+            "框架-偏心支撑（延性墙板）",
+            "筒体和巨型框架"
+          ],
+          "group": "结构与造价",
+          "label": "钢结构体系",
+          "title": "Steel System",
+          "unit": "—"
+        },
+        "has_basement": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+          "group": "结构与造价",
+          "label": "是否设地下室",
+          "title": "Has Basement",
+          "unit": "—"
+        },
         "irregularity_items": {
           "allow_custom_options": false,
           "anyOf": [
@@ -9095,6 +9731,68 @@
           "label": "支护混凝土强度等级",
           "title": "Retaining Concrete Grade",
           "unit": "MPa"
+        },
+        "excavation_working_life": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑工程设计工作年限（不应小于 1 年）",
+          "group": "施工与安全",
+          "label": "基坑工作年限",
+          "title": "Excavation Working Life",
+          "unit": "年"
+        },
+        "brace_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "混凝土内支撑",
+                "钢支撑",
+                "锚杆（锚拉）",
+                "无内支撑与锚拉"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+          "enum": [
+            "混凝土内支撑",
+            "钢支撑",
+            "锚杆（锚拉）",
+            "无内支撑与锚拉"
+          ],
+          "group": "施工与安全",
+          "label": "内支撑 / 锚拉体系",
+          "title": "Brace Type",
+          "unit": "—"
+        },
+        "anchor_free_length": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "锚杆自由段长度（不应小于 5.0 m）",
+          "group": "施工与安全",
+          "label": "锚杆自由段长度",
+          "title": "Anchor Free Length",
+          "unit": "m"
         },
         "prefab_ratio_est": {
           "anyOf": [

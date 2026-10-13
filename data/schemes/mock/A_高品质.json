@@ -52,7 +52,10 @@
     "foundation_type": "桩筏基础",
     "foundation_working_life": 70,
     "retaining_type": "排桩",
-    "retaining_concrete_grade": 30
+    "retaining_concrete_grade": 30,
+    "has_basement": true,
+    "excavation_working_life": 2,
+    "brace_type": "混凝土内支撑"
   },
   "_design_notes": {
     "intent": "高品质定位：层高 3.3 m、得房率 0.82、南向比例 0.85，走现浇剪力墙路线，户型与立面定制化程度高。",
