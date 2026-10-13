@@ -127,3 +127,36 @@ class CustomField(SQLModel, table=True):
     description: str = Field(default="", description="字段说明，进 schema 的 description")
     created_at: datetime = Field(default_factory=_utcnow)
     created_by: str | None = Field(default=None, description="创建者标识；接入登录后替换")
+
+
+class CustomAudit(SQLModel, table=True):
+    """覆盖层的变更留痕。
+
+    **只追加**：没有修改与删除接口（见 ``app/custom/audit.py`` 的三条纪律）。
+    它与上面四张表最大的不同是——那四张表记录"现在有什么"，这张表记录"发生过什么"；
+    清空自定义内容时**不应**连带清掉它，否则就失去了追查"谁删的"的能力。
+
+    ``detail`` 存变更的关键字段（例如新增规则时的规则定义、删除时的原值），
+    界面展开一条留痕就能看到当时到底改了什么。
+    """
+
+    __tablename__ = "custom_audit"
+
+    id: int | None = Field(default=None, primary_key=True)
+    at: datetime = Field(default_factory=_utcnow, index=True, description="发生时间（UTC）")
+    operator: str = Field(
+        default="anonymous",
+        index=True,
+        description="操作者标识；当前取自 X-Operator 头，是占位实现（生产写接口是关的）",
+    )
+    action: str = Field(description="动作：create / delete")
+    kind: str = Field(description="对象类别：option / template / rule / field")
+    target: str = Field(
+        description="被操作对象的标识，如 risk_features=深基坑、X-01、bearing_wall_ratio"
+    )
+    summary: str = Field(default="", description="一句话说明，界面与报告直接展示")
+    detail: dict[str, Any] = Field(
+        default_factory=dict,
+        sa_column=Column(JSON),
+        description="变更的关键字段（新增时的定义 / 删除时的原值）",
+    )

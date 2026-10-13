@@ -22,12 +22,19 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlmodel import Session
 
 from app.config import get_settings
+from app.custom import audit as audit_service
 from app.custom import fields as fields_service
 from app.custom import options as options_service
 from app.custom import rules as rules_service
 from app.custom import templates as templates_service
 from app.custom.errors import CustomAddError
-from app.custom.models import CustomField, CustomOption, CustomRule, CustomWeightTemplate
+from app.custom.models import (
+    CustomAudit,
+    CustomField,
+    CustomOption,
+    CustomRule,
+    CustomWeightTemplate,
+)
 from app.db import get_session
 from app.engine.mcdm import AhpResult
 
@@ -312,10 +319,11 @@ def create_custom_option(
 def delete_custom_option(
     option_id: int,
     session: SessionDep,
+    operator: OperatorDep = None,
     _: None = Depends(_require_dev),
 ) -> Response:
     try:
-        options_service.delete_option(session, option_id)
+        options_service.delete_option(session, option_id, operator=operator)
     except CustomAddError as exc:
         _raise_custom(exc)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -368,10 +376,11 @@ def create_custom_template(
 def delete_custom_template(
     template_id: int,
     session: SessionDep,
+    operator: OperatorDep = None,
     _: None = Depends(_require_dev),
 ) -> Response:
     try:
-        templates_service.delete_template(session, template_id)
+        templates_service.delete_template(session, template_id, operator=operator)
     except CustomAddError as exc:
         _raise_custom(exc)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -468,10 +477,11 @@ def create_custom_rule(
 def delete_custom_rule(
     rule_row_id: int,
     session: SessionDep,
+    operator: OperatorDep = None,
     _: None = Depends(_require_dev),
 ) -> Response:
     try:
-        rules_service.delete_rule(session, rule_row_id)
+        rules_service.delete_rule(session, rule_row_id, operator=operator)
     except CustomAddError as exc:
         _raise_custom(exc)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
@@ -548,6 +558,7 @@ def create_custom_field(
 def delete_custom_field(
     field_row_id: int,
     session: SessionDep,
+    operator: OperatorDep = None,
     _: None = Depends(_require_dev),
 ) -> Response:
     """删除字段注册表里的一行。
@@ -556,7 +567,60 @@ def delete_custom_field(
     或报告引用过。要一并清理请另行处理。
     """
     try:
-        fields_service.delete_field(session, field_row_id)
+        fields_service.delete_field(session, field_row_id, operator=operator)
     except CustomAddError as exc:
         _raise_custom(exc)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
+
+
+# —— 变更留痕（审计） —— #
+
+
+class CustomAuditRead(BaseModel):
+    """一条覆盖层变更留痕。"""
+
+    model_config = ConfigDict(json_schema_extra={"title": "自定义变更留痕"})
+
+    id: int = Field(description="自增序号")
+    at: datetime = Field(description="发生时间（UTC）")
+    operator: str = Field(
+        description="操作者标识；没带 X-Operator 头时为 anonymous（占位实现，见接口说明）"
+    )
+    action: str = Field(description="动作：create / delete")
+    kind: str = Field(description="对象类别：option / template / rule / field")
+    kind_label: str = Field(description="类别的中文名，界面可直接显示")
+    target: str = Field(description="被操作对象的标识，如 risk_features=深基坑、X-01")
+    summary: str = Field(description="一句话说明")
+    detail: dict[str, Any] = Field(description="变更的关键字段（新增时的定义 / 删除时的原值）")
+
+
+def _audit_read(row: CustomAudit) -> CustomAuditRead:
+    return CustomAuditRead(
+        id=row.id or 0,
+        at=row.at,
+        operator=row.operator,
+        action=row.action,
+        kind=row.kind,
+        kind_label=audit_service.KIND_LABELS.get(row.kind, row.kind),
+        target=row.target,
+        summary=row.summary,
+        detail=dict(row.detail),
+    )
+
+
+@router.get(
+    "/audit",
+    response_model=list[CustomAuditRead],
+    summary="自定义变更留痕（审计，新的在前）",
+)
+def list_custom_audit(session: SessionDep, limit: int = 100) -> list[CustomAuditRead]:
+    """最近的变更留痕，**新的在前**；``limit`` 默认 100、上限 500。
+
+    **只追加**：没有修改与删除接口——能被改的留痕没有意义。留痕与业务写操作
+    **同一个事务**，所以"改成功但没留痕"或"留痕了但没改成功"都不会发生。
+
+    ⚠️ ``operator`` 取自可选的 ``X-Operator`` 头，是**占位实现**：头可以伪造，
+    所以生产环境的**写接口本身是关的**（``APP_ENV != dev`` 一律 403）。
+    接入登录后把身份来源换成真实认证即可，留痕结构与接口都不用动。
+    """
+    return [_audit_read(row) for row in audit_service.list_entries(session, limit=limit)]

@@ -15,6 +15,7 @@ from typing import Any
 
 from sqlmodel import Session, select
 
+from app.custom import audit
 from app.custom.errors import CustomAddError, CustomProblem
 from app.custom.models import CustomWeightTemplate
 from app.engine.mcdm import CRITERION_ORDER
@@ -183,12 +184,28 @@ def add_template(
         created_by=created_by,
     )
     session.add(row)
+    # 留痕与业务写操作同一个事务；存归一化后的权重，便于日后核对"当时用的是哪组数"。
+    audit.record(
+        session,
+        operator=created_by,
+        action="create",
+        kind="template",
+        target=clean,
+        summary=f"新增自定义权重模板「{clean}」",
+        detail={
+            "name": clean,
+            "weights": list(template.weights),
+            "has_matrix": template.matrix is not None,
+        },
+    )
     session.commit()
     session.refresh(row)
     return row
 
 
-def delete_template(session: Session, template_id: int) -> None:
+def delete_template(
+    session: Session, template_id: int, *, operator: str | None = None
+) -> None:
     """删除一个自定义模板。
 
     Raises:
@@ -205,6 +222,15 @@ def delete_template(session: Session, template_id: int) -> None:
                 )
             ]
         )
+    audit.record(
+        session,
+        operator=operator,
+        action="delete",
+        kind="template",
+        target=row.name,
+        summary=f"删除自定义权重模板「{row.name}」",
+        detail={"name": row.name, "weights": list(row.weights or [])},
+    )
     session.delete(row)
     session.commit()
 

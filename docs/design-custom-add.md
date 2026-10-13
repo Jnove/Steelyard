@@ -154,10 +154,36 @@ OpenAPI 与前端类型，代价远大于收益）。
 
 ## 六、生产开关与审计
 
-- `APP_ENV=prod` 时**关闭所有自定义写接口**（403），只读；
-- 所有自定义记录带 `created_at` / `created_by`（先落一个简单的操作者标识，
-  后续接登录时替换）；
-- 前端对自定义规则/字段显示"未进入 git、不参与 CI 校验"的提示，避免被当成已评审内容。
+**生产开关**：`APP_ENV=prod` 时**关闭所有自定义写接口**（403），读接口照常开放
+（前端要能渲染使用者加的选项、模板、字段与留痕）。理由与 `POST /api/rules/reload` 同一口径：
+生产环境的规则与字段变更应当走 Git 提交 + CI 校验，而不是在线上悄悄改。
+
+**审计（片 4 已落地）**：
+
+- 单独一张 `custom_audit` 表，记录"发生过什么"（四张内容表记录"现在有什么"）；
+- **只追加**：只有 `record` 与 `list_entries`，没有修改与删除接口——能被改的留痕没有意义；
+  清空自定义内容时也不应连带清掉它，否则就查不出"谁删的"；
+- **与业务写操作同一个事务**：`record` 只 `add` + `flush`、**不 commit**，
+  由调用方那次写操作一起提交，于是"改成功但没留痕"或"留痕了但没改成功"都不会发生；
+- 四类内容的**新增与删除**都埋点（选项 / 模板 / 规则 / 字段），删除时先把原值写进
+  `detail` 再删，否则删完就说不清"删掉的是什么"；
+- 读接口 `GET /api/custom/audit`，新的在前，`limit` 默认 100、上限 500；
+- 每条记录带 `operator` / `action` / `kind` / `target` / `summary` / `detail`，
+  界面展开一条就能看到当时到底改了什么。
+
+**操作者标识（占位实现，接入登录后替换）**：取自可选的 `X-Operator` 头。
+头可以伪造，所以**生产写接口本身是关的**，这个标识用于开发环境内的自查与演示，
+**不作为权限判据**。归一化规则（`app/custom/audit.py::normalize_operator`）：
+
+- **HTTP 头按规范只能是 ASCII**，所以中文名必须由客户端**百分号编码**后传
+  （浏览器里 `encodeURIComponent('张三')`），后端解回 UTF-8；
+  推荐直接用**工号**这类 ASCII 标识，中文名则用百分号编码——这一条是写测试时被
+  httpx 的 `UnicodeEncodeError` 逼出来的真实限制，不是设想；
+- 控制字符清掉、空白折叠、超长截断（64 字符上限）；
+- 空值统一成 `anonymous`（留痕里的空值最难解释）。
+
+**前端提示**：对自定义规则 / 字段显示"未进入 git、不参与 CI 校验"，避免被当成已评审内容
+（这条仍待前端落地，接口已把 `source_file` / `custom: true` 与留痕都备好了）。
 
 ---
 
@@ -170,8 +196,12 @@ OpenAPI 与前端类型，代价远大于收益）。
 | **3** | 自定义规则（校验同源 + 规则合并 + 编辑器 + 导回 YAML） | 非法规则被拒并给中文原因；合法规则参与评估与报告溯源；导出片段可直接提交进 `rules/` 并通过 CI |
 | **4** | 权限与审计完善、生产开关、文档 | prod 下写接口 403；审计字段齐全；`docs/` 更新完毕 |
 
-每片结束都要：跑 `check_rules` + `pytest` + 前端测试、重跑生成链确认零 diff、
-更新 `docs/open-items.md`，并推送到 `jnove/professional-rules`。
+**各片状态**：片 1、片 3、片 2、片 4 均已落地，落地记录与验证证据见第九节；
+"导出自定义内容为 YAML / 代码"的回灌路径仍待补（它是第 3、4 片验收里的最后一项）。
+
+每片结束都要：跑 `check_rules` + `pytest` + 前端测试、重跑生成链确认零 diff
+（**外加 `export_frontend_fixtures.py --grid-step 10`**——CI 有一条"离线快照与当前规则一致"
+的检查，改了规则不重导会直接红）、更新 `docs/open-items.md`，并推到独立分支。
 
 ---
 
@@ -329,18 +359,48 @@ Pydantic 生成的是 `"additionalProperties": true`（**布尔值**），旧代
 
 ---
 
+### 片 4：权限与审计（2026-10）
+
+| 部分 | 位置 | 要点 |
+| --- | --- | --- |
+| 审计表 | `app/custom/models.py` | `custom_audit`：`at` / `operator` / `action` / `kind` / `target` / `summary` / `detail`，**只追加** |
+| 审计服务 | `app/custom/audit.py`（新） | `record()` 只 `add`+`flush`、**不 commit**（与业务写操作同事务）；`list_entries()` 新的在前、上限 500；`normalize_operator()` 归一化 |
+| 埋点 | 四个服务模块 | 选项 / 模板 / 规则 / 字段的**新增与删除**都留痕；删除前先把原值写进 `detail` |
+| 接口 | `app/api/custom.py` | `GET /api/custom/audit`（读接口，生产也可用）；四个删除接口补上操作者 |
+| 生产开关 | 既有 `_require_dev()` | 写接口 prod 403；读接口与留痕照常 |
+
+**一个被测试逼出来的真实限制**：HTTP 头按规范只能是 ASCII——写测试时直接传
+`X-Operator: 张三`，被 httpx 的 `UnicodeEncodeError` 拦下。于是 `normalize_operator`
+支持**百分号编码**：中文名由客户端 `encodeURIComponent` 后传，后端解回 UTF-8；
+纯 ASCII 标识（工号）原样通过。**推荐用「工号」这类 ASCII 标识做操作者**。
+
+**验证**（`ruff` 干净、`check_rules` 0 错误 0 警告、`pytest` 全绿）：
+
+- 四类内容各建一条、再各删一条 → **八条留痕**，新的在前，动作与类别齐全，类别中文名可直接展示；
+- 删除的留痕里能看到**原值**（例如 `risk_features=临近地铁振动`）——删完就说不清是留痕的大忌；
+- 操作者归一化：百分号编码的中文解回、ASCII 工号原样、控制字符清掉、空白折叠、超长截断、空值 → `anonymous`；
+- 生产环境写接口 **403 且不产生新留痕**，而留痕读接口照常 200；
+- `limit` 有上限（1~500）；`record()` 对未知动作 / 类别直接 `ValueError`
+  ——宁可当场炸，也不要写进一条"看起来像留痕、其实没人认识"的记录。
+
+**片 4 未完成**：接入真实登录身份（当前是 `X-Operator` 占位）；前端把留痕展示出来。
+
+---
+
 ## 十、推送计划（与 PR 的关系）
 
 按要求，本功能**不并进土木侧那条 PR**，而是**单独分支 + 单独 PR**：
 
 | 项 | 约定 |
 | --- | --- |
-| 分支 | `feat/custom-add`（本地开发分支，基于 `jnove/professional-rules`） |
-| base | **指向 `jnove/professional-rules`，不是 `main`**：这样新 PR 的 diff 只含自定义功能，不会混进土木侧规则；等土木侧 PR 合并后，GitHub 会自动把 base 改回 `main`，diff 仍然只含本功能 |
-| **标题** | **必须写明本次推送的具体内容**，例如「Add the runtime custom-add overlay: enum options, weight templates, custom rules and custom fields」 |
-| **不要动** | **土木侧 PR 的标题**（它描述的是"结构规则核定 + 与 main 合并"，与本功能无关） |
+| 分支 | **`feat/custom-add`**（已推送） |
+| base | **`main`**：土木侧 PR（#8）已合并，所以 base 就是 main；本分支已把 main 合进来，diff 只含本功能 |
+| **标题** | **必须写明本次推送的具体内容**：现为「Add the runtime custom-add overlay: enum options, weight templates, custom rules and custom fields」 |
+| PR | **#12**（OPEN，独立于土木侧规则的 #10） |
+| **不要动** | **其它 PR 的标题**（#8 已合并、#10 是土木侧规则，都与本功能无关） |
 
 推送前还要按老规矩跑一遍：`ruff`、`check_rules`、后端全量 `pytest`、前端 `tsc` + `npm test`，
-并核对生成链幂等（`export_schema` / `gen_field_table` / `gen:types` / `sync:mock` 的 `git diff` 为空）。
+并核对生成链幂等（`export_schema` / `gen_field_table` / `gen:types` / `sync:mock` /
+`export_frontend_fixtures --grid-step 10` 的 `--check` 全过）。
 
 

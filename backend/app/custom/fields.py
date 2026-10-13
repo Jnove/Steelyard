@@ -17,6 +17,7 @@ from typing import Any
 
 from sqlmodel import Session, select
 
+from app.custom import audit
 from app.custom.errors import CustomAddError, CustomProblem
 from app.custom.models import CustomField
 from app.engine.metrics import derived_names
@@ -190,12 +191,24 @@ def add_field(
         created_by=created_by,
     )
     session.add(row)
+    # 留痕与业务写操作同一个事务（见 app/custom/audit.py 的三条纪律）。
+    audit.record(
+        session,
+        operator=created_by,
+        action="create",
+        kind="field",
+        target=clean_key,
+        summary=f"新增自定义字段「{clean_label}」（{clean_key}）",
+        detail={"key": clean_key, "label": clean_label, "kind": kind, "group": group},
+    )
     session.commit()
     session.refresh(row)
     return row
 
 
-def delete_field(session: Session, field_row_id: int) -> None:
+def delete_field(
+    session: Session, field_row_id: int, *, operator: str | None = None
+) -> None:
     """删除一个自定义字段。
 
     注意：值仍留在各方案的 ``custom`` 字典里（不主动清理）——那些值可能已被
@@ -215,6 +228,15 @@ def delete_field(session: Session, field_row_id: int) -> None:
                 )
             ]
         )
+    audit.record(
+        session,
+        operator=operator,
+        action="delete",
+        kind="field",
+        target=row.key,
+        summary=f"删除自定义字段「{row.label}」（{row.key}）",
+        detail={"key": row.key, "label": row.label, "kind": row.kind},
+    )
     session.delete(row)
     session.commit()
 

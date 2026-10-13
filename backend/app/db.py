@@ -61,6 +61,7 @@ def register_table_models() -> None:
     """
     from app.agents.storage import AgentResultRow, ReportCacheRow  # noqa: F401
     from app.custom.models import (  # noqa: F401
+        CustomAudit,
         CustomField,
         CustomOption,
         CustomRule,

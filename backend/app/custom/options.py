@@ -13,6 +13,7 @@ from typing import Any
 
 from sqlmodel import Session, select
 
+from app.custom import audit
 from app.custom.errors import CustomAddError, CustomProblem
 from app.custom.models import CustomOption
 from app.models.params import ProjectParams, SchemeParams
@@ -143,12 +144,22 @@ def add_option(
 
     option = CustomOption(field=field, value=text, sort=next_sort, created_by=created_by)
     session.add(option)
+    # 留痕与业务写操作**同一个事务**：要么都成，要么都不成（见 app/custom/audit.py）。
+    audit.record(
+        session,
+        operator=created_by,
+        action="create",
+        kind="option",
+        target=f"{field}={text}",
+        summary=f"给「{field}」增加候选值「{text}」",
+        detail={"field": field, "value": text, "sort": next_sort},
+    )
     session.commit()
     session.refresh(option)
     return option
 
 
-def delete_option(session: Session, option_id: int) -> None:
+def delete_option(session: Session, option_id: int, *, operator: str | None = None) -> None:
     """删除一个自定义选项。
 
     Raises:
@@ -165,6 +176,16 @@ def delete_option(session: Session, option_id: int) -> None:
                 )
             ]
         )
+    # 先把原值写进留痕，再删——否则删完就说不清"删掉的是什么"了。
+    audit.record(
+        session,
+        operator=operator,
+        action="delete",
+        kind="option",
+        target=f"{row.field}={row.value}",
+        summary=f"删除「{row.field}」的候选值「{row.value}」",
+        detail={"field": row.field, "value": row.value, "sort": row.sort},
+    )
     session.delete(row)
     session.commit()
 

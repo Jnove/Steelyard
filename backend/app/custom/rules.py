@@ -15,6 +15,7 @@ from collections.abc import Iterable
 
 from sqlmodel import Session, select
 
+from app.custom import audit
 from app.custom import fields as fields_service
 from app.custom.errors import CustomAddError, CustomProblem
 from app.custom.models import CustomRule
@@ -179,12 +180,22 @@ def add_rule(session: Session, *, payload: object, created_by: str | None = None
 
     row = CustomRule(rule_id=parsed.id, payload=dict(payload), created_by=created_by)
     session.add(row)
+    # 留痕与业务写操作同一个事务；detail 存整份规则定义，便于日后复核"当时加的是什么"。
+    audit.record(
+        session,
+        operator=created_by,
+        action="create",
+        kind="rule",
+        target=parsed.id,
+        summary=f"新增自定义规则「{parsed.id} {parsed.name}」",
+        detail={"rule_id": parsed.id, "name": parsed.name, "type": parsed.type},
+    )
     session.commit()
     session.refresh(row)
     return row
 
 
-def delete_rule(session: Session, row_id: int) -> None:
+def delete_rule(session: Session, row_id: int, *, operator: str | None = None) -> None:
     """删除一条自定义规则。
 
     Raises:
@@ -201,6 +212,16 @@ def delete_rule(session: Session, row_id: int) -> None:
                 )
             ]
         )
+    # 先留痕再删：删掉之后就再也说不出"删的是哪条规则、它原来写了什么"。
+    audit.record(
+        session,
+        operator=operator,
+        action="delete",
+        kind="rule",
+        target=row.rule_id,
+        summary=f"删除自定义规则「{row.rule_id}」",
+        detail={"rule_id": row.rule_id, "payload": dict(row.payload)},
+    )
     session.delete(row)
     session.commit()
 
