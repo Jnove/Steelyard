@@ -1,5 +1,5 @@
 {
-  "fixture_id": "06944bfe000ce202079ef3cab1119c8c762f59a2b26f7f4c60399127a85bc786",
+  "fixture_id": "5e3c811487d221108f27663d060fd1136922b39844abfed27ab7388954f9de45",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -32,27 +32,28 @@
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "b6fdc5400e384a911bf71e495bf1a17b35b46d981d0196a15024bc21713b7721",
+    "backend/app/models/params.py": "8b6b90e0de17ff0da893082db86ee48ba8266f1ce0acc09c1faa2cd444649c59",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
     "rules/_template.yaml": "5d7740c4a23a2e802808a2882b8d05428dd9b39fe40180fe800d7fee73667c4c",
     "rules/compliance.yaml": "d4d1ee2de2eeb7070e5e58aac9981997d0179bca1c23ac1f63c5c8cc08906953",
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
-    "rules/construction_safety.yaml": "84b7d284d583b87624dc37fa52fb1effe68c4f264f80c76d2064b68cd8f446ec",
+    "rules/construction_safety.yaml": "eb8b6ec9a504249623b349005e0034362c578b21baa21a7a4db79edca755f108",
     "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
     "rules/structure.yaml": "33bfd1961b8ef6d8dd4b6ddfc11244d1fcf44954e9a472bcb88cac29078a8280",
+    "rules/structure_foundation.yaml": "532126a00e3387b1e57a16e499051a8f951415821a7e7241982c714adb223daf",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
-    "data/schemes/mock/A_高品质.json": "b6cfa0bb19dee88cafd68d2cbaf95f4ced890bb0edb72873bda8c910817484ed",
-    "data/schemes/mock/B_不合规.json": "7b042f9e6f17288d32db6e1d67dc2559fc2a58128bf53cfabefb02a7235497bd",
-    "data/schemes/mock/C_MiC高标准化.json": "fa3e32dbe757c18ad070f2a636555025638ed4b5a7018dd9866c56a8e1c7a5a1",
-    "data/schemes/mock/C_现浇.json": "fd778912afca057824a109f2de4f5e890eaa4a15e1c79f7d1fddcc3dbbd4ba7e",
-    "data/schemes/mock/D_均衡.json": "048f144bdd8e07dc5c55d31d4179d1c5d857bf495c1a678f73e4a6b629e72ff4",
-    "data/schemes/mock/E_被支配.json": "565a826ddcfac086508cd0a4bfdd8db06964b939074156ddf85cbc5e7cd54160",
+    "data/schemes/mock/A_高品质.json": "dfcce25b9d0034334ed605c5be5a917509c4aa5c68b64ab73f6e3af49ad7b484",
+    "data/schemes/mock/B_不合规.json": "39e61ab7257e507578c31b7b49f3ea55749ce0ed840c317409ce07f2567167b3",
+    "data/schemes/mock/C_MiC高标准化.json": "92da201f44cbae256afc4f103c342c350e9f6c912f137d2c8aa7ae7dcf1c5857",
+    "data/schemes/mock/C_现浇.json": "d5d844a5b30702f7e0cea912e143bd982b7b43a40d0f46cd77ed2edec4e9d028",
+    "data/schemes/mock/D_均衡.json": "f8d85913fa9a43695e4a9ebc78b135de356731195dff2f604a766e799cf32010",
+    "data/schemes/mock/E_被支配.json": "056550fa66c444c5e0b26be09d8ffb9b2ab4b5b659647df1f9d8e772845dd43b",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
     "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
-    "data/schemes/方案录入模板.xlsx": "149cc177968eaba4dc623683e355e9c962a3c2cefdbe0fb9cc614f68d067d6f9"
+    "data/schemes/方案录入模板.xlsx": "54f8d8dc4307e4400d9f053646dfdebfa695a950574e508ccc9842a3c2a00f77"
   },
   "grid_step": 10,
   "projects": [
@@ -109,6 +110,8 @@
         "design_working_life": 70,
         "min_plan_width": 16.0,
         "concrete_grade": 30.0,
+        "foundation_type": "桩筏基础",
+        "foundation_working_life": 70,
         "irregularity_items": [
           "凹凸不规则",
           "局部不规则"
@@ -123,6 +126,8 @@
         "formwork_height": 4.5,
         "scaffold_type": "附着式升降脚手架",
         "scaffold_height": 52.8,
+        "retaining_type": "排桩",
+        "retaining_concrete_grade": 30.0,
         "prefab_ratio_est": 0.25,
         "green_ratio": 0.38
       },
@@ -168,6 +173,8 @@
         "design_working_life": 50,
         "min_plan_width": 15.0,
         "concrete_grade": 25.0,
+        "foundation_type": "桩基础",
+        "foundation_working_life": 50,
         "irregularity_items": [],
         "std_floor_repeat": 0.8,
         "component_types": 14,
@@ -176,6 +183,8 @@
         "formwork_height": 4.5,
         "scaffold_type": "落地式钢管脚手架",
         "scaffold_height": 49.0,
+        "retaining_type": "放坡开挖",
+        "retaining_concrete_grade": null,
         "prefab_ratio_est": 0.45,
         "green_ratio": 0.35
       },
@@ -222,6 +231,8 @@
         "design_working_life": 50,
         "min_plan_width": 16.0,
         "concrete_grade": 30.0,
+        "foundation_type": "桩筏基础",
+        "foundation_working_life": 50,
         "irregularity_items": [],
         "std_floor_repeat": 0.95,
         "component_types": 8,
@@ -230,6 +241,8 @@
         "formwork_height": 4.5,
         "scaffold_type": "附着式升降脚手架",
         "scaffold_height": 54.0,
+        "retaining_type": "排桩",
+        "retaining_concrete_grade": 30.0,
         "prefab_ratio_est": 0.75,
         "green_ratio": 0.36
       },
@@ -275,6 +288,8 @@
         "design_working_life": 50,
         "min_plan_width": 16.0,
         "concrete_grade": 30.0,
+        "foundation_type": "桩筏基础",
+        "foundation_working_life": 50,
         "irregularity_items": [],
         "std_floor_repeat": 0.85,
         "component_types": 12,
@@ -283,6 +298,8 @@
         "formwork_height": 4.5,
         "scaffold_type": "附着式升降脚手架",
         "scaffold_height": 51.0,
+        "retaining_type": "地下连续墙",
+        "retaining_concrete_grade": 30.0,
         "prefab_ratio_est": 0.5,
         "green_ratio": 0.4
       },
@@ -328,6 +345,8 @@
         "design_working_life": 50,
         "min_plan_width": 14.0,
         "concrete_grade": 25.0,
+        "foundation_type": "桩基础",
+        "foundation_working_life": 50,
         "irregularity_items": [
           "扭转不规则"
         ],
@@ -341,6 +360,8 @@
         "formwork_height": 4.5,
         "scaffold_type": "附着式升降脚手架",
         "scaffold_height": 51.0,
+        "retaining_type": "排桩",
+        "retaining_concrete_grade": 25.0,
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.35
       },
@@ -386,6 +407,8 @@
         "design_working_life": 50,
         "min_plan_width": 15.0,
         "concrete_grade": 30.0,
+        "foundation_type": "桩筏基础",
+        "foundation_working_life": 50,
         "irregularity_items": [
           "局部不规则"
         ],
@@ -398,6 +421,8 @@
         "formwork_height": 4.5,
         "scaffold_type": "附着式升降脚手架",
         "scaffold_height": 54.0,
+        "retaining_type": "排桩",
+        "retaining_concrete_grade": 30.0,
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.37
       },
@@ -409,7 +434,7 @@
   ],
   "evaluation": {
     "project_id": 1,
-    "rule_count": 36,
+    "rule_count": 40,
     "results": [
       {
         "scheme_id": "1",
@@ -548,6 +573,30 @@
             "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
           },
           {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "排桩桩身混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -654,6 +703,30 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按方案填写的结构混凝土强度等级判定；若基础单独采用更高等级，请在方案说明中注明",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
           }
         ],
         "metrics": {
@@ -1001,6 +1074,30 @@
             "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
           },
           {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '排桩'）"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -1107,6 +1204,30 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按方案填写的结构混凝土强度等级判定；若基础单独采用更高等级，请在方案说明中注明",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
           }
         ],
         "metrics": {
@@ -1454,6 +1575,30 @@
             "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
           },
           {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "排桩桩身混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -1560,6 +1705,30 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按方案填写的结构混凝土强度等级判定；若基础单独采用更高等级，请在方案说明中注明",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
           }
         ],
         "metrics": {
@@ -1907,6 +2076,30 @@
             "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
           },
           {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '排桩'）"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [],
+            "message": "两墙合一地下连续墙混凝土强度等级下限 通过"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -2013,6 +2206,30 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按方案填写的结构混凝土强度等级判定；若基础单独采用更高等级，请在方案说明中注明",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
           }
         ],
         "metrics": {
@@ -2360,6 +2577,30 @@
             "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
           },
           {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "排桩桩身混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -2466,6 +2707,30 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 30",
+            "formula": "concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按方案填写的结构混凝土强度等级判定；若基础单独采用更高等级，请在方案说明中注明",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
           }
         ],
         "metrics": {
@@ -6043,6 +6308,33 @@
           "constraints": {}
         },
         {
+          "name": "foundation_type",
+          "label": "基础形式",
+          "description": "基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "筏形基础",
+            "桩筏基础",
+            "独立基础",
+            "条形基础",
+            "桩基础"
+          ]
+        },
+        {
+          "name": "foundation_working_life",
+          "label": "地基基础工作年限",
+          "description": "地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+          "unit": "年",
+          "group": "结构与造价",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
           "name": "irregularity_items",
           "label": "超限不规则项",
           "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -6154,6 +6446,33 @@
           "constraints": {}
         },
         {
+          "name": "retaining_type",
+          "label": "基坑支护形式",
+          "description": "基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "排桩",
+            "地下连续墙",
+            "土钉墙",
+            "放坡开挖",
+            "其他"
+          ]
+        },
+        {
+          "name": "retaining_concrete_grade",
+          "label": "支护混凝土强度等级",
+          "description": "支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+          "unit": "MPa",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
           "name": "prefab_ratio_est",
           "label": "预估装配率",
           "description": "预估装配率",
@@ -6254,8 +6573,8 @@
     }
   },
   "rules": {
-    "rule_count": 36,
-    "hard_count": 20,
+    "rule_count": 40,
+    "hard_count": 24,
     "metric_count": 16,
     "rules": [
       {
@@ -6504,6 +6823,40 @@
           "check": "scaffold_height < 50",
           "message": "落地式钢管脚手架搭设高度 {scaffold_height} m 达到 50 m，属超过一定规模的危大工程，专项施工方案须经专家论证",
           "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-06",
+          "name": "排桩桩身混凝土强度等级下限",
+          "type": "hard",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+          "when": "retaining_type == '排桩'",
+          "check": "retaining_concrete_grade >= 25",
+          "message": "排桩支护的桩身混凝土强度等级 C{retaining_concrete_grade} 低于 GB 55003 要求的 C25",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-07",
+          "name": "两墙合一地下连续墙混凝土强度等级下限",
+          "type": "hard",
+          "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+          "when": "retaining_type == '地下连续墙'",
+          "check": "retaining_concrete_grade >= 30",
+          "message": "两墙合一地下连续墙的混凝土强度等级 C{retaining_concrete_grade} 低于 GB 55003 要求的 C30",
+          "severity": "error",
           "dimension": null,
           "value": null,
           "scoring": null,
@@ -7129,6 +7482,40 @@
           "weight_in_dimension": 1.0
         },
         "source_file": "structure.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-17",
+          "name": "筏形 / 桩筏基础混凝土强度等级下限",
+          "type": "hard",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按方案填写的结构混凝土强度等级判定；若基础单独采用更高等级，请在方案说明中注明",
+          "when": "foundation_type == '筏形基础' or foundation_type == '桩筏基础'",
+          "check": "concrete_grade >= 30",
+          "message": "筏形 / 桩筏基础的混凝土强度等级 C{concrete_grade} 低于 GB 55003 要求的 C30",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_foundation.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-18",
+          "name": "地基与基础设计工作年限不低于上部结构",
+          "type": "hard",
+          "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（需「基坑工作年限」字段，本系统暂未采集）",
+          "when": null,
+          "check": "foundation_working_life >= design_working_life",
+          "message": "地基与基础的设计工作年限 {foundation_working_life} 年低于上部结构的 {design_working_life} 年",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_foundation.yaml"
       }
     ],
     "derived_quantities": [
@@ -7229,7 +7616,7 @@
   "imports": [
     {
       "filename": "demo-import.xlsx",
-      "sha256": "57b4cb5781cd8776ba15c146d66f215140c989633058582271021b7d0f2c5fc8",
+      "sha256": "5a455941bc3e4f20e10a654d3c614012c0d0de6853e67d22b08675b3c86e73ff",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7265,6 +7652,8 @@
             "design_working_life": 70,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 70,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -7279,6 +7668,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 52.8,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
             "prefab_ratio_est": 0.25,
             "green_ratio": 0.38
           }
@@ -7317,6 +7708,8 @@
             "design_working_life": 50,
             "min_plan_width": 15.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
@@ -7325,6 +7718,7 @@
             "formwork_height": 4.5,
             "scaffold_type": "落地式钢管脚手架",
             "scaffold_height": 49.0,
+            "retaining_type": "放坡开挖",
             "prefab_ratio_est": 0.45,
             "green_ratio": 0.35
           }
@@ -7365,6 +7759,8 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
@@ -7373,6 +7769,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 54.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
             "prefab_ratio_est": 0.75,
             "green_ratio": 0.36
           }
@@ -7411,6 +7809,8 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
@@ -7419,6 +7819,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 51.0,
+            "retaining_type": "地下连续墙",
+            "retaining_concrete_grade": 30.0,
             "prefab_ratio_est": 0.5,
             "green_ratio": 0.4
           }
@@ -7457,6 +7859,8 @@
             "design_working_life": 50,
             "min_plan_width": 14.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -7470,6 +7874,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 51.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 25.0,
             "prefab_ratio_est": 0.3,
             "green_ratio": 0.35
           }
@@ -7487,7 +7893,7 @@
     },
     {
       "filename": "demo-invalid.xlsx",
-      "sha256": "1ee344dc07899081fd232b57589309ef523581f5bbd23b33299d25dd89a1763f",
+      "sha256": "2877b015e48fdf6e633e099e43bb2c4e4b35bff924121f4d0a8be7e8895b5a57",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7521,6 +7927,8 @@
             "design_working_life": 70,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 70,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -7535,6 +7943,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 52.8,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
             "prefab_ratio_est": 0.25,
             "green_ratio": 0.38
           }
@@ -7573,6 +7983,8 @@
             "design_working_life": 50,
             "min_plan_width": 15.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
@@ -7581,6 +7993,7 @@
             "formwork_height": 4.5,
             "scaffold_type": "落地式钢管脚手架",
             "scaffold_height": 49.0,
+            "retaining_type": "放坡开挖",
             "prefab_ratio_est": 0.45,
             "green_ratio": 0.35
           }
@@ -7621,6 +8034,8 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
@@ -7629,6 +8044,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 54.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
             "prefab_ratio_est": 0.75,
             "green_ratio": 0.36
           }
@@ -7667,6 +8084,8 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
@@ -7675,6 +8094,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 51.0,
+            "retaining_type": "地下连续墙",
+            "retaining_concrete_grade": 30.0,
             "prefab_ratio_est": 0.5,
             "green_ratio": 0.4
           }
@@ -7713,6 +8134,8 @@
             "design_working_life": 50,
             "min_plan_width": 14.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -7726,6 +8149,8 @@
             "formwork_height": 4.5,
             "scaffold_type": "附着式升降脚手架",
             "scaffold_height": 51.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 25.0,
             "prefab_ratio_est": 0.3,
             "green_ratio": 0.35
           }
@@ -7756,7 +8181,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "149cc177968eaba4dc623683e355e9c962a3c2cefdbe0fb9cc614f68d067d6f9",
+      "sha256": "54f8d8dc4307e4400d9f053646dfdebfa695a950574e508ccc9842a3c2a00f77",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -7796,6 +8221,8 @@
       "design_working_life": null,
       "min_plan_width": null,
       "concrete_grade": null,
+      "foundation_type": null,
+      "foundation_working_life": null,
       "irregularity_items": null,
       "std_floor_repeat": null,
       "component_types": null,
@@ -7804,6 +8231,8 @@
       "formwork_height": null,
       "scaffold_type": null,
       "scaffold_height": null,
+      "retaining_type": null,
+      "retaining_concrete_grade": null,
       "prefab_ratio_est": null,
       "green_ratio": null
     }
@@ -8405,6 +8834,53 @@
           "title": "Concrete Grade",
           "unit": "MPa"
         },
+        "foundation_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "筏形基础",
+                "桩筏基础",
+                "独立基础",
+                "条形基础",
+                "桩基础"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+          "enum": [
+            "筏形基础",
+            "桩筏基础",
+            "独立基础",
+            "条形基础",
+            "桩基础"
+          ],
+          "group": "结构与造价",
+          "label": "基础形式",
+          "title": "Foundation Type",
+          "unit": "—"
+        },
+        "foundation_working_life": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+          "group": "结构与造价",
+          "label": "地基基础工作年限",
+          "title": "Foundation Working Life",
+          "unit": "年"
+        },
         "irregularity_items": {
           "allow_custom_options": false,
           "anyOf": [
@@ -8572,6 +9048,53 @@
           "label": "脚手架搭设高度",
           "title": "Scaffold Height",
           "unit": "m"
+        },
+        "retaining_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "排桩",
+                "地下连续墙",
+                "土钉墙",
+                "放坡开挖",
+                "其他"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+          "enum": [
+            "排桩",
+            "地下连续墙",
+            "土钉墙",
+            "放坡开挖",
+            "其他"
+          ],
+          "group": "施工与安全",
+          "label": "基坑支护形式",
+          "title": "Retaining Type",
+          "unit": "—"
+        },
+        "retaining_concrete_grade": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+          "group": "施工与安全",
+          "label": "支护混凝土强度等级",
+          "title": "Retaining Concrete Grade",
+          "unit": "MPa"
         },
         "prefab_ratio_est": {
           "anyOf": [
