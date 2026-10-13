@@ -456,6 +456,53 @@
       "title": "Concrete Grade",
       "unit": "MPa"
     },
+    "foundation_type": {
+      "anyOf": [
+        {
+          "enum": [
+            "筏形基础",
+            "桩筏基础",
+            "独立基础",
+            "条形基础",
+            "桩基础"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+      "enum": [
+        "筏形基础",
+        "桩筏基础",
+        "独立基础",
+        "条形基础",
+        "桩基础"
+      ],
+      "group": "结构与造价",
+      "label": "基础形式",
+      "title": "Foundation Type",
+      "unit": "—"
+    },
+    "foundation_working_life": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+      "group": "结构与造价",
+      "label": "地基基础工作年限",
+      "title": "Foundation Working Life",
+      "unit": "年"
+    },
     "irregularity_items": {
       "allow_custom_options": false,
       "anyOf": [
@@ -623,6 +670,53 @@
       "label": "脚手架搭设高度",
       "title": "Scaffold Height",
       "unit": "m"
+    },
+    "retaining_type": {
+      "anyOf": [
+        {
+          "enum": [
+            "排桩",
+            "地下连续墙",
+            "土钉墙",
+            "放坡开挖",
+            "其他"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+      "enum": [
+        "排桩",
+        "地下连续墙",
+        "土钉墙",
+        "放坡开挖",
+        "其他"
+      ],
+      "group": "施工与安全",
+      "label": "基坑支护形式",
+      "title": "Retaining Type",
+      "unit": "—"
+    },
+    "retaining_concrete_grade": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+      "group": "施工与安全",
+      "label": "支护混凝土强度等级",
+      "title": "Retaining Concrete Grade",
+      "unit": "MPa"
     },
     "prefab_ratio_est": {
       "anyOf": [

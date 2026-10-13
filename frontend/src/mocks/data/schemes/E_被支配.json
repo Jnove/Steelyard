@@ -47,7 +47,11 @@
     "excavation_depth": 4.5,
     "formwork_height": 4.5,
     "scaffold_type": "附着式升降脚手架",
-    "scaffold_height": 51.0
+    "scaffold_height": 51.0,
+    "foundation_type": "桩基础",
+    "foundation_working_life": 50,
+    "retaining_type": "排桩",
+    "retaining_concrete_grade": 25
   },
   "_design_notes": {
     "intent": "演示帕累托支配：构造每个数值字段都朝'更差'的方向偏离 D，使 E 在所有维度都不如 D。",

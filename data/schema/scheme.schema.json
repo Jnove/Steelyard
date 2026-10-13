@@ -269,6 +269,33 @@
       "constraints": {}
     },
     {
+      "name": "foundation_type",
+      "label": "基础形式",
+      "description": "基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+      "unit": "—",
+      "group": "结构与造价",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "筏形基础",
+        "桩筏基础",
+        "独立基础",
+        "条形基础",
+        "桩基础"
+      ]
+    },
+    {
+      "name": "foundation_working_life",
+      "label": "地基基础工作年限",
+      "description": "地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+      "unit": "年",
+      "group": "结构与造价",
+      "type": "integer",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "irregularity_items",
       "label": "超限不规则项",
       "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -374,6 +401,33 @@
       "label": "脚手架搭设高度",
       "description": "脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
       "unit": "m",
+      "group": "施工与安全",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "retaining_type",
+      "label": "基坑支护形式",
+      "description": "基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+      "unit": "—",
+      "group": "施工与安全",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "排桩",
+        "地下连续墙",
+        "土钉墙",
+        "放坡开挖",
+        "其他"
+      ]
+    },
+    {
+      "name": "retaining_concrete_grade",
+      "label": "支护混凝土强度等级",
+      "description": "支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+      "unit": "MPa",
       "group": "施工与安全",
       "type": "number",
       "required": false,

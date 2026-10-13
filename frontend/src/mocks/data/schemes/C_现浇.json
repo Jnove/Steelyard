@@ -46,7 +46,11 @@
     "excavation_depth": 4.5,
     "formwork_height": 4.5,
     "scaffold_type": "附着式升降脚手架",
-    "scaffold_height": 54.0
+    "scaffold_height": 54.0,
+    "foundation_type": "桩筏基础",
+    "foundation_working_life": 50,
+    "retaining_type": "排桩",
+    "retaining_concrete_grade": 30
   },
   "_design_notes": {
     "intent": "C 方案改为现浇剪力墙后的对照版，用于演示'改用 MiC 会怎样'。",

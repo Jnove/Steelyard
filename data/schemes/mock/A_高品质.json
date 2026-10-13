@@ -48,7 +48,11 @@
     "excavation_depth": 4.5,
     "formwork_height": 4.5,
     "scaffold_type": "附着式升降脚手架",
-    "scaffold_height": 52.8
+    "scaffold_height": 52.8,
+    "foundation_type": "桩筏基础",
+    "foundation_working_life": 70,
+    "retaining_type": "排桩",
+    "retaining_concrete_grade": 30
   },
   "_design_notes": {
     "intent": "高品质定位：层高 3.3 m、得房率 0.82、南向比例 0.85，走现浇剪力墙路线，户型与立面定制化程度高。",

@@ -119,6 +119,32 @@ SCAFFOLD_TYPES: tuple[str, ...] = (
     "悬挑式脚手架",
 )
 
+FoundationType = Literal["筏形基础", "桩筏基础", "独立基础", "条形基础", "桩基础"]
+"""基础形式。
+
+只区分**规范给了不同下限**的几类（依据 GB 55003—2021《建筑与市政地基基础通用规范》，
+全文强制）：
+
+- 筏形基础、桩筏基础：混凝土强度等级不应低于 C30（第6.3.5条）；
+- 其余形式（独立基础、条形基础、桩基础）：该条未给混凝土强度下限，
+  规则里判为"不适用"，而不是硬套 C30。
+
+基础形式单独成字段，是因为"上部结构相同、基础做法不同"会直接改变材料要求与造价，
+属于方案比选里应当显式比较的一项。
+"""
+FOUNDATION_TYPES: tuple[str, ...] = ("筏形基础", "桩筏基础", "独立基础", "条形基础", "桩基础")
+
+RetainingType = Literal["排桩", "地下连续墙", "土钉墙", "放坡开挖", "其他"]
+"""基坑支护形式。
+
+同样只区分**规范给了不同下限**的几类（GB 55003—2021 第7.2节）：
+
+- 排桩：桩身混凝土强度等级不应低于 C25（第7.2.4条）；
+- 两墙合一的地下连续墙：混凝土强度等级不应低于 C30（第7.2.5条）；
+- 土钉墙、放坡开挖等无混凝土构件或规范未给专门下限，判为"不适用"。
+"""
+RETAINING_TYPES: tuple[str, ...] = ("排桩", "地下连续墙", "土钉墙", "放坡开挖", "其他")
+
 
 def _meta(unit: str, group: str, label: str, **extra: object) -> dict[str, object]:
     """拼装 ``json_schema_extra`` 片段，统一字段元信息格式。"""
@@ -356,6 +382,17 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("MPa", "结构与造价", "混凝土强度等级"),
     )
+    foundation_type: FoundationType | None = Field(
+        None,
+        description="基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+        json_schema_extra=_meta("—", "结构与造价", "基础形式", enum=list(FOUNDATION_TYPES)),
+    )
+    foundation_working_life: int | None = Field(
+        None,
+        description="地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+        gt=0,
+        json_schema_extra=_meta("年", "结构与造价", "地基基础工作年限"),
+    )
     irregularity_items: list[str] | None = Field(
         None,
         description="超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -417,6 +454,17 @@ class SchemeParams(BaseModel):
         description="脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
         gt=0,
         json_schema_extra=_meta("m", "施工与安全", "脚手架搭设高度"),
+    )
+    retaining_type: RetainingType | None = Field(
+        None,
+        description="基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+        json_schema_extra=_meta("—", "施工与安全", "基坑支护形式", enum=list(RETAINING_TYPES)),
+    )
+    retaining_concrete_grade: float | None = Field(
+        None,
+        description="支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+        gt=0,
+        json_schema_extra=_meta("MPa", "施工与安全", "支护混凝土强度等级"),
     )
 
     # —— 绿色低碳 —— #

@@ -124,6 +124,15 @@ export type MinPlanWidth = number | null;
  */
 export type ConcreteGrade = number | null;
 /**
+ * 基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）
+ */
+export type FoundationType = (("筏形基础" | "桩筏基础" | "独立基础" | "条形基础" | "桩基础") | null) &
+  ("筏形基础" | "桩筏基础" | "独立基础" | "条形基础" | "桩基础");
+/**
+ * 地基与基础的设计工作年限（不应低于上部结构的设计工作年限）
+ */
+export type FoundationWorkingLife = number | null;
+/**
  * 超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）
  */
 export type IrregularityItems = string[] | null;
@@ -156,6 +165,15 @@ export type ScaffoldType = (("落地式钢管脚手架" | "附着式升降脚手
  * 脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）
  */
 export type ScaffoldHeight = number | null;
+/**
+ * 基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）
+ */
+export type RetainingType = (("排桩" | "地下连续墙" | "土钉墙" | "放坡开挖" | "其他") | null) &
+  ("排桩" | "地下连续墙" | "土钉墙" | "放坡开挖" | "其他");
+/**
+ * 支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）
+ */
+export type RetainingConcreteGrade = number | null;
 /**
  * 预估装配率
  */
@@ -210,6 +228,8 @@ export interface SchemeParams {
   design_working_life?: DesignWorkingLife;
   min_plan_width?: MinPlanWidth;
   concrete_grade?: ConcreteGrade;
+  foundation_type?: FoundationType;
+  foundation_working_life?: FoundationWorkingLife;
   irregularity_items?: IrregularityItems;
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;
@@ -218,6 +238,8 @@ export interface SchemeParams {
   formwork_height?: FormworkHeight;
   scaffold_type?: ScaffoldType;
   scaffold_height?: ScaffoldHeight;
+  retaining_type?: RetainingType;
+  retaining_concrete_grade?: RetainingConcreteGrade;
   prefab_ratio_est?: PrefabRatioEst;
   green_ratio?: GreenRatio;
 }
