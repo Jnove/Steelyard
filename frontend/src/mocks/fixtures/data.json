@@ -1,5 +1,5 @@
 {
-  "fixture_id": "8faeb25946b6cc32658a814d82b2de8b87ed0f3e0f3192dcc360f87f1846911d",
+  "fixture_id": "28122b538f7fd156ede00521ab38826d85289aec9c3aa96d9a7b34df0721e184",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -12,7 +12,7 @@
     "backend/app/agents/tools.py": "184cee9223ca0f0cc0419e0f874f43c5d200a6f063a23620b0d44884317f349d",
     "backend/app/api/__init__.py": "e61363389bcff57bfd5ddd9ff8cd10b8c6fdaecbf149e9aec7b7608f4af6305c",
     "backend/app/api/agents.py": "05edb1e18b159620dcea4213bec711c554f1e98c553f044a1f3aa3708219b924",
-    "backend/app/api/custom.py": "606593fec4498677e30e4072c98d39dfdc5edbe94667eff7daca0fcf29e4584f",
+    "backend/app/api/custom.py": "1c31d77f7c96b66e8da4c55689104fe8ba7db0bba52417673565f00173c2edd3",
     "backend/app/api/evaluate.py": "3e3a9bcff4d1095caf516477df33a777a299202bdaa3524a0ad9aa6e3115fc90",
     "backend/app/api/projects.py": "d1149e11f1aed03ec3a9361dbc40339efc9285a762acdb1075b080e2517f66cd",
     "backend/app/api/rank.py": "139a893dbd0e58b6f47ac76aa71071e6c8360a546b3faad73db8ae5ebc33946d",
@@ -23,6 +23,7 @@
     "backend/app/custom/__init__.py": "679bff1858f0acb12ab126936e825d3f93d5a45ee33a38ad7d9f25e502f615d8",
     "backend/app/custom/audit.py": "ed0f7dd24514cd1cfaae51636bcc5c49744ed6e83e3c44117645ba9fdc2ca568",
     "backend/app/custom/errors.py": "89213082ecdd44e4a2f3b7af6f780b1a1b9eaf4a588b7046165db23fb6cce44e",
+    "backend/app/custom/export.py": "f38afb2ba64276bbc5e0a853a33daff3f58ce56686be9d64f285614f6d9cc621",
     "backend/app/custom/fields.py": "0a1f78e7e9203441d6609687e061cf08ac93f4caa222c0c0541d005270de6094",
     "backend/app/custom/models.py": "226758330ecb3cfc95079b184d6557f491dd2218c85d8451acf689bb6b03bf86",
     "backend/app/custom/options.py": "b626f5710a7d62f67b40aa5056caa5cc338af83629ffebce4ff6c7f6aeea10cd",
@@ -62,7 +63,7 @@
     "data/schemes/mock/E_被支配.json": "4defc2cf39ee4e24de45da4508889427c2628e4f78d5b5f0b5b30ea263c69e95",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
     "scripts/export_frontend_fixtures.py": "ef289012f2bd9d6a623671a7c773e8a8f51e3ee35a3629695079a3a002baabeb",
-    "data/schemes/方案录入模板.xlsx": "406fae3100da434049a184fc792a98aa5677d8c83c8e61a5d1dddf9c4948527a"
+    "data/schemes/方案录入模板.xlsx": "2554f93f3392d33954e5eac4c70005d76af603152b280e2c50a2f9bfb39dfcd0"
   },
   "grid_step": 10,
   "projects": [
@@ -7610,7 +7611,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "406fae3100da434049a184fc792a98aa5677d8c83c8e61a5d1dddf9c4948527a",
+      "sha256": "2554f93f3392d33954e5eac4c70005d76af603152b280e2c50a2f9bfb39dfcd0",
       "schemes": [],
       "project_params": {},
       "errors": []

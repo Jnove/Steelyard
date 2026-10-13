@@ -379,6 +379,27 @@ def check_file(path: Path) -> FileReport:
         for issue in check_rule_problems(raw, node=rule_node):
             report.issues.append(issue)
 
+        # 保留前缀 X- 只属于**运行期覆盖层**。文件里出现它，说明有人把界面上临时加的规则
+        # 直接抄进了仓库、没走回灌路径（回灌要求换成维度前缀并顺延编号）。
+        # 这一条只能放在**文件校验**里：共享校验器还要放行运行期的 X- 规则。
+        rule_id = raw.get("id")
+        if isinstance(rule_id, str) and rule_id.startswith("X-"):
+            report.issues.append(
+                Issue(
+                    severity="error",
+                    code="RUNTIME_PREFIX_IN_FILE",
+                    message=f"规则 ID「{rule_id}」用了运行期保留前缀 X-",
+                    fix=(
+                        "换成对应维度的前缀并顺延编号：合规 C、品质 Q、结构 S、施工 K、绿色 G"
+                        "（评分指标按 dimension 决定，硬约束按主题选文件）。"
+                        "X- 只属于界面上临时加的规则；留在文件里会让「进了 git 的」"
+                        "与「界面加的」再也分不开。导出自定义内容时会给出建议编号"
+                        "（GET /api/custom/export）"
+                    ),
+                    line=rule_node.start_mark.line + 1,
+                )
+            )
+
     report.dedupe()
     return report
 

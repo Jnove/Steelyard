@@ -23,6 +23,7 @@ from sqlmodel import Session
 
 from app.config import get_settings
 from app.custom import audit as audit_service
+from app.custom import export as export_service
 from app.custom import fields as fields_service
 from app.custom import options as options_service
 from app.custom import rules as rules_service
@@ -624,3 +625,29 @@ def list_custom_audit(session: SessionDep, limit: int = 100) -> list[CustomAudit
     接入登录后把身份来源换成真实认证即可，留痕结构与接口都不用动。
     """
     return [_audit_read(row) for row in audit_service.list_entries(session, limit=limit)]
+
+
+# —— 回灌：把覆盖层导出成可落库的片段 —— #
+
+
+@router.get(
+    "/export",
+    summary="导出自定义内容为可落库的 YAML / Python 片段（回灌路径）",
+)
+def export_custom(session: SessionDep) -> dict[str, Any]:
+    """把当前覆盖层导出成**可以粘进仓库**的四段片段 + 落地清单。
+
+    覆盖层是**草稿台**：这里的片段粘进 ``rules/*.yaml`` 与 ``params.py``、跑通 CI
+    之后，才算成为权威内容（见 ``docs/design-custom-add.md`` 第一节第二条决策）。
+
+    两处**不能自动改对、必须人工确认**的地方，片段里都写了注释：
+
+    - 规则 ID 的保留前缀 ``X-`` 要换成维度前缀（``C``/``Q``/``S``/``K``/``G``）
+      并顺延编号——文件里不允许出现 ``X-``，``scripts/check_rules.py`` 会直接报错；
+      导出会给出**建议编号**（按现有规则号顺延）。
+    - 权重模板的角色键要改成英文标识，并同步 ``app/engine/weights.py`` 的 ``ROLE_KEYS``；
+      ``compliance`` 是独立硬门槛、不计入评分，片段给的是内建常见参考值。
+
+    读接口，生产环境照常可用——它不改变任何内容。
+    """
+    return export_service.export_overlay(session)
