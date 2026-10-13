@@ -8,9 +8,10 @@
   --line: #d5dfed;
   --bg: #f8fafc;
   --red: #a4444d;
-  --glass: rgba(255,255,255,.62);
+  --glass: rgba(255,255,255,.36);
   --glass-edge: rgba(255,255,255,.9);
-  --glass-shadow: 0 16px 44px #344b8010, inset 0 1px 0 #fff;
+  --glass-shadow: 0 18px 45px #344b8024, 0 3px 8px #344b8010,
+    inset 0 2px 1px #ffffffed, inset 0 -1px 1px #9aaacf40;
   --table-paper: #fafcff;
   --table-subtle: #f0f4fb;
   --table-group: #ebf0fa;
@@ -28,8 +29,9 @@
 }
 body {
   background:
-    radial-gradient(ellipse 70% 65% at 0% 0%, #7da7ff5c, transparent 75%),
-    radial-gradient(ellipse 65% 70% at 100% 100%, #f7a4cf52, transparent 75%),
+    radial-gradient(ellipse 65% 65% at 7% 10%, #7a9ffb91, transparent 78%),
+    radial-gradient(ellipse 45% 60% at 70% 56%, #a2dcde61, transparent 80%),
+    radial-gradient(ellipse 55% 65% at 100% 88%, #efa6d48a, transparent 78%),
     var(--bg);
   background-attachment: fixed;
 }
@@ -64,20 +66,27 @@ body {
 .sample-tag { border-radius: 20px; background: #fff8ec; color: #75542d; }
 h1 { color: var(--ink); }
 .comparison-panel, .decision-strip, .detail-panel, .reading-panel {
-  background: var(--glass);
+  background: linear-gradient(135deg,#ffffff6b,transparent 45%,#ffffff24), var(--glass);
   border: 1px solid var(--glass-edge);
   border-radius: 22px;
   box-shadow: var(--glass-shadow);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
 }
-.decision-strip { background: linear-gradient(120deg,#ffffffa6,#eaf0ff73); }
+.decision-strip { background: linear-gradient(120deg,#ffffff99,#dbe7ff4d); }
 .decision-stat { border-left-color: #b4c4e257; }
 .lead-letter { color: #4565b6; }
 .tiny, .decision-stat > span, .decision-stat small { color: var(--muted); }
 .badge, .live-chip { border-radius: 20px; }
 .blue { background: #e0e9fb; color: #3b59a6; }
-.panel-toolbar { background: #ffffff32; }
+.panel-toolbar {
+  margin: 16px 16px 0; padding: 0 14px;
+  background: linear-gradient(120deg,#ffffffc2,#ffffff57);
+  border: 1px solid #fff; border-radius: 18px;
+  box-shadow: 0 8px 20px #526a9b18, inset 0 2px 1px #fff, inset 0 -1px 1px #a1b5d240;
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
 .view-tabs { align-items: center; gap: 5px; padding-block: 12px; }
 .view-tab {
   min-height: 44px; padding: 10px 14px; border: 1px solid transparent;
@@ -111,9 +120,21 @@ input[type=checkbox] { accent-color: #4565c0; }
 .export-button:hover, .primary-button:hover { background: linear-gradient(145deg,#526ebf,#344d9b); }
 .export-button span { color: #fff; }
 .map-focus, .pair-story, .matrix-inspector {
-  background: linear-gradient(140deg,#ffffffcc,#e7eef97d);
+  background: linear-gradient(140deg,#ffffffc2,#ffffff52 45%,#cbd9f238);
   border: 1px solid #ffffffeb; border-radius: 18px;
-  box-shadow: inset 0 1px 0 #fff, 0 6px 18px #344b8009;
+  box-shadow: inset 0 2px 1px #fff, inset 0 -1px 1px #8aa0c040, 0 12px 26px #344b8021;
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.map-controls, .pair-controls {
+  margin: 0 23px 16px; padding: 10px 14px;
+  background: linear-gradient(120deg,#ffffffad,#ffffff4d);
+  border: 1px solid #ffffffdd; border-radius: 16px;
+  box-shadow: inset 0 2px 1px #fff, 0 5px 12px #344b8012;
+}
+.plot-wrap, .pair-plot {
+  padding: 8px; border: 1px solid #fff; border-radius: 22px;
+  background: linear-gradient(135deg,#ffffff70,#ffffff21);
+  box-shadow: 0 10px 26px #344b801c, inset 0 2px 1px #fff, inset 0 -1px 1px #8198bd4d;
 }
 .focus-state span { border-radius: 20px; background: #ffffff88; color: #3e5d94; border-color: #c1d0ed; }
 .focus-row b, .pair-story strong, .pair-largest, .detail-score { color: #3b59a6; }
@@ -135,7 +156,10 @@ input[type=checkbox] { accent-color: #4565c0; }
 .scheme-filter { border-radius: 12px; background: #ffffffb3; }
 .matrix-display { border-radius: 12px; }
 .scheme-filter-line { background: #ffffff32; }
-#view-matrix .matrix-scroll { border-radius: 14px; background: var(--table-paper); }
+#view-matrix .matrix-scroll {
+  border-radius: 16px; background: var(--table-paper);
+  border: 1px solid #fff; box-shadow: 0 10px 24px #344b801f, 0 0 0 1px #9daece4d;
+}
 #matrix th[data-column="1"] .table-scheme-title > span { color: #7465ab; }
 #matrix th[data-column="2"] .table-scheme-title > span { color: #a4444d; }
 #matrix th[data-column="3"] .table-scheme-title > span { color: #4565b6; }
@@ -158,20 +182,28 @@ input[type=checkbox] { accent-color: #4565c0; }
 .constraint-note small { color: #80535b; }
 .inspector-number small, .detail-score small { color: var(--muted); }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .sidebar, .topbar, .comparison-panel, .decision-strip, .detail-panel, .reading-panel { background: #f7f9fe; }
+  .sidebar, .topbar, .comparison-panel, .decision-strip, .detail-panel, .reading-panel,
+  .panel-toolbar, .map-focus, .pair-story, .matrix-inspector { background: #f7f9fe; }
 }
 @media (prefers-reduced-transparency: reduce) {
   body { background: #f8fafc; }
   .sidebar, .topbar, .comparison-panel, .decision-strip, .detail-panel, .reading-panel,
-  .map-focus, .pair-story, .matrix-inspector, #matrix-detail-dialog {
+  .map-focus, .pair-story, .matrix-inspector, .panel-toolbar, .map-controls, .pair-controls,
+  .plot-wrap, .pair-plot, #matrix-detail-dialog {
     background: #f8faff; backdrop-filter: none; -webkit-backdrop-filter: none;
   }
 }
-@media (max-width:980px) { .view-tabs { min-height: 60px; } }
+@media (max-width:980px) {
+  .view-tabs { min-height: 60px; }
+  .panel-toolbar { padding-bottom: 12px; }
+}
 @media (max-width:700px) {
   .comparison-panel, .decision-strip, .detail-panel, .reading-panel { border-radius: 18px; }
   .view-tabs { gap: 3px; }
   .view-tab { padding: 10px; font-size: 12px; }
+  .panel-toolbar { margin: 10px 10px 0; padding-inline: 8px; }
+  .map-controls, .pair-controls { margin: 0 10px 14px; padding: 10px; }
+  .plot-wrap, .pair-plot { padding: 2px; border-radius: 16px; }
   .map-focus { border-radius: 14px; }
   .role-picker { gap: 0; }
   #matrix-detail-dialog { border-radius: 22px 22px 0 0; }
