@@ -17,7 +17,10 @@ from app.agents.storage import AgentResultRow
 from app.api.evaluate import evaluate_project, get_last_evaluation
 from app.api.rank import RankRequest, _resolve_weights, rank_project
 from app.config import get_settings
-from app.engine.rules import get_ruleset
+from app.custom import fields as fields_service
+from app.custom.rules import ruleset_with_custom
+from app.custom.signature import SIGNATURE_KEY, require_rules_signature, rules_signature
+from app.custom.templates import list_templates
 from app.engine.weights import get_role_templates
 from app.models import EvalResult, Project, ProjectParams, Scheme, SchemeParams
 
@@ -135,6 +138,8 @@ class AgentTools:
                         for s in schemes
                     ],
                     "rules": self.rule_definitions(),
+                    "custom_fields": [row.model_dump(mode="json") for row in fields_service.list_fields(session)],
+                    "rules_signature": rules_signature(session),
                 }
             )
 
@@ -145,11 +150,17 @@ class AgentTools:
             p.name: p.read_text(encoding="utf-8")
             for p in (Path(__file__).parent / "prompts").glob("*.md")
         }
+        with Session(self.engine) as session:
+            weights = _resolve_weights(request, session).model_dump(mode="json")
+            # 运行期自定义的角色模板同样进缓存键：它一改，权重就变、结论也可能变；
+            # 不带上它会出现"模板改了但报告还是旧结论"。
+            custom_templates = [row.model_dump(mode="json") for row in list_templates(session)]
         return digest(
             {
                 "version": "T8-v1",
                 "data": self.fingerprint(request.include_whatif),
-                "weights": _resolve_weights(request).model_dump(mode="json"),
+                "weights": weights,
+                "custom_templates": custom_templates,
                 "provider": get_settings().llm_provider,
                 "model": get_settings().llm_model,
                 "templates": templates,
@@ -159,7 +170,8 @@ class AgentTools:
         )
 
     def rule_definitions(self) -> list[dict[str, Any]]:
-        return [rule.model_dump(mode="json") for rule in get_ruleset().rules]
+        with Session(self.engine) as session:
+            return [rule.model_dump(mode="json") for rule in ruleset_with_custom(session).rules]
 
     def scheme_count(self, include_whatif: bool) -> int:
         with Session(self.engine) as session:
@@ -175,7 +187,8 @@ class AgentTools:
             if not include_whatif:
                 query = query.where(Scheme.is_whatif == False)  # noqa: E712
             for scheme in session.exec(query).all():
-                SchemeParams.model_validate(scheme.params)
+                params = SchemeParams.model_validate(scheme.params)
+                fields_service.validate_values(session, params.custom, allow_inactive=True)
 
     def call(self, name: str, arguments: dict[str, Any]) -> Any:
         if name not in ARGUMENTS:
@@ -191,9 +204,11 @@ class AgentTools:
             self._require_project(session)
             row = session.get(AgentResultRow, project_id)
             if row:
+                require_rules_signature(row.evaluation, rules_signature(session))
                 if row.fingerprint != self.fingerprint(row.include_whatif):
                     raise HTTPException(409, "项目数据或规则已变更，请先重新评估")
-                return {"evaluation": row.evaluation, "ranking": row.ranking}
+                public_evaluation = {key: value for key, value in row.evaluation.items() if key != SIGNATURE_KEY}
+                return {"evaluation": public_evaluation, "ranking": row.ranking}
             # 支持引擎 REST 接口刚刚生成的结果；检查更新时间避免解释旧结果。
             evaluation = get_last_evaluation(project_id, session)
             if not evaluation.results:
@@ -213,8 +228,6 @@ class AgentTools:
             return {"evaluation": evaluation.model_dump(mode="json"), "ranking": {}}
 
     def update_scheme_param(self, scheme_id: int, field: str, value: Any) -> dict[str, Any]:
-        if field not in SchemeParams.model_fields:
-            raise ValueError("字段必须是 SchemeParams 中的设计参数")
         _reject_nonfinite(value)
         if field == "window_wall_ratio" and isinstance(value, dict):
             if any(
@@ -235,8 +248,18 @@ class AgentTools:
             parent = session.get(Scheme, scheme_id)
             if parent is None or parent.project_id != self.project_id:
                 raise ValueError("方案不属于当前项目")
+            is_custom = field in fields_service.field_keys(session)
+            if field not in SchemeParams.model_fields and not is_custom:
+                raise ValueError("字段必须是内建设计参数或已注册的自定义字段")
+            previous_custom = (parent.params or {}).get("custom", {})
+            updated = {**parent.params, field: value}
+            before = parent.params.get(field)
+            if is_custom:
+                updated = {**parent.params, "custom": {**previous_custom, field: value}}
+                before = previous_custom.get(field)
             # 严格模式避免 bool 被当作数值；嵌套字段也经过完整模型校验。
-            params = SchemeParams.model_validate({**parent.params, field: value}, strict=True)
+            params = SchemeParams.model_validate(updated, strict=True)
+            fields_service.validate_values(session, params.custom, previous=previous_custom)
             copy = Scheme(
                 project_id=self.project_id,
                 name=f"{parent.name}（假设推演）"[:200],
@@ -252,7 +275,7 @@ class AgentTools:
                 "parent_id": parent.id,
                 "is_whatif": True,
                 "field": field,
-                "before": parent.params.get(field),
+                "before": before,
                 "after": value,
             }
 
@@ -288,7 +311,9 @@ class AgentTools:
             return result
 
     def explain_metric(self, rule_id: str) -> dict[str, Any]:
-        for rule in get_ruleset().rules:
+        with Session(self.engine) as session:
+            rules = ruleset_with_custom(session).rules
+        for rule in rules:
             if rule.id == rule_id:
                 result = rule.model_dump(mode="json")
                 result["formula"] = (
@@ -309,13 +334,14 @@ class AgentTools:
 
 
 def record_evaluation(
-    session: Session, project_id: int, evaluation: dict[str, Any], include_whatif: bool
+    session: Session, project_id: int, evaluation: dict[str, Any], include_whatif: bool,
+    *, signature: str | None = None,
 ) -> None:
     """记录 REST 与智能体共同使用的最新评估。"""
     row = session.get(AgentResultRow, project_id) or AgentResultRow(
         project_id=project_id, fingerprint=""
     )
-    row.evaluation = evaluation
+    row.evaluation = {**evaluation, SIGNATURE_KEY: signature if signature is not None else rules_signature(session)}
     row.ranking = {}
     row.include_whatif = include_whatif
     row.fingerprint = AgentTools(session.get_bind(), project_id).fingerprint(include_whatif)
@@ -333,13 +359,17 @@ def record_ranking(
     """记录 REST 权重滑杆或智能体产生的最新排名，保留同一候选集合的证据。"""
     row = session.get(AgentResultRow, project_id)
     tools = AgentTools(session.get_bind(), project_id)
+    signature = rules_signature(session)
+    if row:
+        require_rules_signature(row.evaluation, signature)
     if row and row.fingerprint != tools.fingerprint(row.include_whatif):
         raise HTTPException(409, "项目数据或规则已变更，请先重新评估")
     row = row or AgentResultRow(project_id=project_id, fingerprint="")
     row.evaluation = {
         "project_id": project_id,
-        "rule_count": len(get_ruleset().rules),
+        "rule_count": len(ruleset_with_custom(session).rules),
         "results": [result.model_dump(mode="json") for _, result in pairs],
+        SIGNATURE_KEY: signature,
     }
     row.ranking = ranking
     row.include_whatif = include_whatif

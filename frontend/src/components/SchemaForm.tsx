@@ -54,11 +54,47 @@ export function RequestErrors({ error, title = '操作未完成' }: { error: unk
 }
 
 export function orderedFields(schema: FieldSchema): FieldMetadata[] {
+  // custom 是存储容器；运行期 schema 已把其中的字段展开成独立输入项。
+  const fields = schema.fields.filter((field) => field.name !== 'custom')
   const groups = [...new Set([
     ...(schema.group_order ?? []),
-    ...schema.fields.map((field) => field.group || '其他参数'),
+    ...fields.map((field) => field.group || '其他参数'),
   ])]
-  return groups.flatMap((group) => schema.fields.filter((field) => (field.group || '其他参数') === group))
+  return groups.flatMap((group) => fields.filter((field) => (field.group || '其他参数') === group))
+}
+
+/** 显示用的 schema 是平铺字段，方案里的自定义参数仍保存在 custom 内。 */
+export function schemaFieldValue(params: object, field: FieldMetadata): unknown {
+  const custom: unknown = Reflect.get(params, 'custom')
+  return field.custom ? (isRecord(custom) ? custom[field.name] : undefined) : Reflect.get(params, field.name)
+}
+
+export function schemaInitialParams(schema: FieldSchema, params?: object): Record<string, unknown> {
+  return Object.fromEntries(orderedFields(schema).map((field) => {
+    const value = params ? schemaFieldValue(params, field) : undefined
+    const type = fieldType(field)
+    return [field.name, type.startsWith('object') && value != null ? JSON.stringify(value, null, 2)
+      : type === 'boolean' && value != null ? String(value) : value ?? undefined]
+  }))
+}
+
+export function schemaSubmitParams(schema: FieldSchema, raw: Record<string, unknown> = {}, original?: object): Record<string, unknown> {
+  const fields = orderedFields(schema)
+  const previous: unknown = original ? Reflect.get(original, 'custom') : undefined
+  const custom = Object.fromEntries([
+    ...Object.entries(isRecord(previous) ? previous : {}),
+    ...fields.filter((field) => field.custom).map((field) => [field.name, parseSchemaValue(field, raw[field.name])]),
+  ])
+  const builtin = Object.fromEntries(fields.filter((field) => !field.custom).map((field) => [field.name, parseSchemaValue(field, raw[field.name])]))
+  // 编辑时保留已删除定义或暂未返回定义的值；添加普通方案无需凭空添加容器。
+  return fields.some((field) => field.custom) || isRecord(previous) ? { ...builtin, custom } : builtin
+}
+
+export function recordedSchemaFields(schema: FieldSchema, params: object): number {
+  return orderedFields(schema).filter((field) => {
+    const value = schemaFieldValue(params, field)
+    return value != null && value !== '' && (typeof value !== 'object' || Object.keys(value).length > 0)
+  }).length
 }
 
 function fieldType(field: FieldMetadata): string {
@@ -71,7 +107,7 @@ function isEmpty(value: unknown): boolean {
 
 export function parseSchemaValue(field: FieldMetadata, value: unknown): unknown {
   const type = fieldType(field)
-  if (isEmpty(value)) return type.startsWith('array') && !field.empty_means_unknown ? [] : null
+  if (isEmpty(value)) return type.startsWith('array') && !field.custom && !field.empty_means_unknown ? [] : null
   if (type.startsWith('object') && typeof value === 'string') return JSON.parse(value) as unknown
   if (type === 'boolean' && typeof value === 'string') return value === 'true'
   if (type.startsWith('array') && Array.isArray(value)) {
@@ -186,11 +222,7 @@ export default function SchemaForm({ schema, nameLabel, initialValues, pending =
   const fields = orderedFields(schema)
   const groups = [...new Set(fields.map((field) => field.group || '其他参数'))]
   const [activeGroups, setActiveGroups] = useState<string[]>(groups)
-  const initialParams = Object.fromEntries(fields.map((field) => {
-    const value: unknown = initialValues ? Reflect.get(initialValues.params, field.name) : undefined
-    const type = fieldType(field)
-    return [field.name, type.startsWith('object') && value != null ? JSON.stringify(value, null, 2) : type === 'boolean' && value != null ? String(value) : value ?? undefined]
-  }))
+  const initialParams = schemaInitialParams(schema, initialValues?.params)
 
   return (
     <Form<SchemaFormValues>
@@ -198,7 +230,7 @@ export default function SchemaForm({ schema, nameLabel, initialValues, pending =
       layout="vertical"
       disabled={pending}
       initialValues={{ name: initialValues?.name ?? '', params: initialParams }}
-      onFinish={(values) => onSubmit({ name: values.name.trim(), params: Object.fromEntries(fields.map((field) => [field.name, parseSchemaValue(field, values.params?.[field.name])])) })}
+      onFinish={(values) => onSubmit({ name: values.name.trim(), params: schemaSubmitParams(schema, values.params, initialValues?.params) })}
       onFinishFailed={() => setActiveGroups(groups)}
     >
       <RequestErrors error={error} title="保存失败，请检查以下问题" />

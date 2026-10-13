@@ -11,7 +11,7 @@ from collections.abc import Iterator
 from typing import Any
 
 import pytest
-from app.db import get_session, override_engine_for_testing
+from app.db import get_session, override_engine_for_testing, register_table_models
 from app.main import app
 from fastapi.testclient import TestClient
 from sqlalchemy import StaticPool
@@ -26,8 +26,8 @@ def engine() -> Iterator[Any]:
         connect_args={"check_same_thread": False},
         poolclass=StaticPool,
     )
-    from app.models.orm import EvalResultRow, Project, Scheme  # noqa: F401
-
+    # 表模块集中登记在 app.db 里，避免测试与生产两条路径漏掉同一张表。
+    register_table_models()
     SQLModel.metadata.create_all(eng)
     override_engine_for_testing(eng)
     yield eng

@@ -97,8 +97,8 @@ def main() -> int:
     from app.api.evaluate import evaluate_project
     from app.api.projects import ProjectRead
     from app.api.rank import RankRequest, list_roles, rank_project
-    from app.api.rules import list_rules
-    from app.api.schema import get_all_schemas
+    from app.api.rules import build_rules_response
+    from app.api.schema import build_all_schemas
     from app.api.schemes import SchemeRead
     from app.excel import parse_workbook, write_export
     from app.models import Project, ProjectParams, Scheme, SchemeParams
@@ -255,8 +255,10 @@ def main() -> int:
             "evaluation": evaluation,
             "roles": roles,
             "ranks": ranks,
-            "schema": get_all_schemas(),
-            "rules": list_rules().model_dump(mode="json"),
+            # 不带 session：提交进仓库的前端产物必须只含**内建基线**，
+            # 使用者运行期加的自定义内容不能混进 git（见 app/api/schema.py 的说明）。
+            "schema": build_all_schemas(),
+            "rules": build_rules_response().model_dump(mode="json"),
             "imports": imports,
             "defaults": {
                 "project": ProjectParams().model_dump(),

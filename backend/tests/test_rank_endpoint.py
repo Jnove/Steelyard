@@ -7,6 +7,7 @@ from time import perf_counter
 
 import numpy as np
 import pytest
+from app.custom.signature import SIGNATURE_KEY, rules_signature
 from app.engine.mcdm import CRITERION_ORDER
 from app.models import ComplianceItem, DimensionScores, EvalResult, EvalResultRow, Project, Scheme
 from fastapi.testclient import TestClient
@@ -74,7 +75,8 @@ def _seed(
             )
             session.add(
                 EvalResultRow(
-                    project_id=project.id, scheme_id=scheme.id, result=result.model_dump()
+                    project_id=project.id, scheme_id=scheme.id,
+                    result={**result.model_dump(), SIGNATURE_KEY: rules_signature(session)},
                 )
             )
         session.commit()
@@ -206,7 +208,7 @@ def test_reads_latest_without_mutating_evaluation(client: TestClient, engine: En
             EvalResultRow(
                 project_id=project,
                 scheme_id=ids[0],
-                result=data.model_dump(),
+                result={**data.model_dump(), SIGNATURE_KEY: rules_signature(session)},
                 created_at=datetime.now(UTC) + timedelta(seconds=1),
             )
         )

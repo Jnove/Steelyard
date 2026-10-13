@@ -795,6 +795,7 @@
       "default": null,
       "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
       "empty_means_unknown": true,
+      "extensible": false,
       "group": "结构与造价",
       "label": "超限不规则项",
       "options": [
@@ -851,6 +852,7 @@
     },
     "risk_features": {
       "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
+      "extensible": true,
       "group": "施工与安全",
       "items": {
         "type": "string"
@@ -1088,6 +1090,16 @@
       "label": "锚杆自由段长度",
       "title": "Anchor Free Length",
       "unit": "m"
+    },
+    "custom": {
+      "additionalProperties": true,
+      "description": "自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示（见 app/custom/fields.py 与 docs/design-custom-add.md）",
+      "group": "基本信息",
+      "hidden": true,
+      "label": "自定义字段",
+      "title": "Custom",
+      "type": "object",
+      "unit": "—"
     },
     "prefab_ratio_est": {
       "anyOf": [

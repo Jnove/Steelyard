@@ -52,7 +52,9 @@ def main(argv: list[str] | None = None) -> int:
     out_path = args.out or DEFAULT_OUT.with_name(
         DEFAULT_OUT.name.format(project_id=args.project_id)
     )
-    write_export(out_path, project.params or {}, schemes_payload)
+    # 传 session：导出时带上覆盖层的自定义字段列（值从 params["custom"] 里取）。
+    with Session(engine) as session:
+        write_export(out_path, project.params or {}, schemes_payload, session=session)
     print(f"OK · wrote {out_path}")
     print(f"     · 项目 {project.id}「{project.name}」")
     print(f"     · 方案数 {len(schemes_payload)}")

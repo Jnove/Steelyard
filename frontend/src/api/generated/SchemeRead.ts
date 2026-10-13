@@ -341,6 +341,13 @@ export interface SchemeParams {
   brace_type?: BraceType;
   brace_concrete_grade?: BraceConcreteGrade;
   anchor_free_length?: AnchorFreeLength;
+  custom?: Custom;
   prefab_ratio_est?: PrefabRatioEst;
   green_ratio?: GreenRatio;
+}
+/**
+ * 自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示（见 app/custom/fields.py 与 docs/design-custom-add.md）
+ */
+export interface Custom {
+  [k: string]: unknown;
 }

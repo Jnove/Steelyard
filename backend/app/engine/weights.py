@@ -40,6 +40,7 @@ __all__ = [
     "RoleWeightTemplate",
     "WeightsLoadError",
     "WeightsProblem",
+    "check_one_role",
     "default_weights_path",
     "get_role_templates",
     "load_role_templates",
@@ -143,6 +144,17 @@ def default_weights_path() -> Path:
     ``app/engine/weights.py`` → parents: engine → app → backend → 仓库根。
     """
     return Path(__file__).resolve().parents[3] / "rules" / WEIGHTS_FILENAME
+
+
+def check_one_role(key: str, raw: Any) -> tuple[RoleWeightTemplate | None, list[WeightsProblem]]:
+    """校验单个角色的配置，返回 ``(模板 或 None, 问题列表)``。
+
+    公开出来的用途是**运行期自定义模板**（见 ``app/custom/templates.py``）：界面里
+    新增的角色模板必须走同一套校验，否则"``check_rules`` 说通过 ⟺ 引擎能加载"
+    这条不变式会被绕过。
+    ``key`` 只影响返回值里的 ``key`` 字段，调用方可以随后覆盖成自己的标识。
+    """
+    return _check_one_role(key, raw)
 
 
 def _check_one_role(key: str, raw: Any) -> tuple[RoleWeightTemplate | None, list[WeightsProblem]]:

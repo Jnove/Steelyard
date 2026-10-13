@@ -15,8 +15,12 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict, Field
 from sqlmodel import Session, select
 
+from app.custom import fields as fields_service
+from app.custom.errors import CustomAddError
+from app.custom.rules import ruleset_with_custom
+from app.custom.signature import SIGNATURE_KEY, require_rules_signature, rules_signature
 from app.db import get_session
-from app.engine.rules import RuleLoadError, SchemeInput, evaluate, get_ruleset
+from app.engine.rules import RuleLoadError, SchemeInput, evaluate
 from app.models import EvalResult, EvalResultRow, Project, ProjectParams, Scheme, SchemeParams
 
 router = APIRouter(prefix="/projects/{project_id}", tags=["evaluate"])
@@ -77,7 +81,9 @@ def evaluate_project(
         )
 
     try:
-        ruleset = get_ruleset()
+        # 内建规则 + 覆盖层的自定义规则（见 app/custom/rules.py）。
+        # 没有自定义规则时返回的就是内建集合本身，行为与纯内建完全一致。
+        ruleset = ruleset_with_custom(session)
     except RuleLoadError as exc:
         # 规则写错了是规则作者的问题，不是调用方的问题，用 500 并把中文原因带出来。
         raise HTTPException(
@@ -85,6 +91,17 @@ def evaluate_project(
             detail={
                 "message": "规则加载失败，请跑 scripts/check_rules.py 修正",
                 "problems": exc.problems,
+            },
+        ) from exc
+    except CustomAddError as exc:
+        # 自定义规则的报错措辞与 check_rules 一致，逐条带出来让使用者在界面上改。
+        raise HTTPException(
+            status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail={
+                "message": "自定义规则校验失败，请在自定义页面修正或删除",
+                "problems": [
+                    {"code": p.code, "message": p.message, "fix": p.fix} for p in exc.problems
+                ],
             },
         ) from exc
 
@@ -98,7 +115,15 @@ def evaluate_project(
         for scheme in schemes
     ]
 
-    results = evaluate(project_params, inputs, ruleset)
+    try:
+        for item in inputs:
+            fields_service.validate_values(session, item.params.custom, allow_inactive=True)
+    except CustomAddError as exc:
+        raise HTTPException(422, detail={"message": str(exc), "problems": [
+            {"code": p.code, "message": p.message, "fix": p.fix} for p in exc.problems
+        ]}) from exc
+    results = evaluate(project_params, inputs, ruleset, known=fields_service.known_names(session))
+    signature = rules_signature(session, ruleset=ruleset)
 
     # 先清掉本项目的旧结果，保证同一方案只有一行最新结果。
     for stale in session.exec(
@@ -110,7 +135,7 @@ def evaluate_project(
             EvalResultRow(
                 project_id=project_id,
                 scheme_id=scheme.id or 0,
-                result=result.model_dump(mode="json"),
+                result={**result.model_dump(mode="json"), SIGNATURE_KEY: signature},
             )
         )
     session.commit()
@@ -121,7 +146,7 @@ def evaluate_project(
     # T8 保存最近一次工具证据；REST 评估也必须使旧排名失效。
     from app.agents.tools import record_evaluation
 
-    record_evaluation(session, project_id, response.model_dump(mode="json"), include_whatif)
+    record_evaluation(session, project_id, response.model_dump(mode="json"), include_whatif, signature=signature)
     return response
 
 
@@ -138,5 +163,11 @@ def get_last_evaluation(project_id: int, session: SessionDep) -> EvaluateRespons
         .where(EvalResultRow.project_id == project_id)
         .order_by(EvalResultRow.scheme_id)
     ).all()
+    if not rows:
+        return EvaluateResponse(project_id=project_id, rule_count=0, results=[])
+    ruleset = ruleset_with_custom(session)
+    signature = rules_signature(session, ruleset=ruleset)
+    for row in rows:
+        require_rules_signature(row.result, signature)
     results = [EvalResult.model_validate(row.result) for row in rows]
-    return EvaluateResponse(project_id=project_id, rule_count=0, results=results)
+    return EvaluateResponse(project_id=project_id, rule_count=len(ruleset.rules), results=results)

@@ -1,5 +1,5 @@
 {
-  "fixture_id": "1508e22ffc484acdda6a3b108a4067c995d0e301c3590adc3959283599031f12",
+  "fixture_id": "f0d22c4a66b4bb1a18f2d0f387b0450e3a562cd1594e67927cc4cc280ef5c017",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -9,33 +9,48 @@
     "backend/app/agents/llm.py": "19b1bff898cbfba21ca900d40d06516462f56b2c4c7a76fb2a10a086b6a71460",
     "backend/app/agents/state.py": "065bc5a40b54065980c4311dd966e4bd93f21cada3436445827c58d5fea661f8",
     "backend/app/agents/storage.py": "868b6d6e6c648af1b3c07029fd199fe7e3dc46b878e0c578dfe8e7d0a08553bf",
-    "backend/app/agents/tools.py": "3ca916006a797adfa031ef88d67268a6848cf0ce68826c1b971c4760b64a85b5",
+    "backend/app/agents/tools.py": "c11071f15bf4cc8a02776c63d46d17ba2071cf41896c261c69262678708dc7c5",
     "backend/app/api/__init__.py": "e61363389bcff57bfd5ddd9ff8cd10b8c6fdaecbf149e9aec7b7608f4af6305c",
     "backend/app/api/agents.py": "05edb1e18b159620dcea4213bec711c554f1e98c553f044a1f3aa3708219b924",
-    "backend/app/api/evaluate.py": "02269c95d32fc513fa036e49baedc96238094c748a7a55c185fe8c4af663130b",
+    "backend/app/api/custom.py": "47388d976a9d1a66a49dd6b5c3b4af623cc37ab278a429da0f13e6e53aa2d354",
+    "backend/app/api/evaluate.py": "dc7bb93b2142a2ae7c4b980ae3f1dcace2dad0ebf284c89faf34990f7c5e1b1c",
+    "backend/app/api/excel.py": "fca513ffc04fba6acad4843f512a655859aff75343eb6e94ecc17198d57c0729",
     "backend/app/api/projects.py": "d1149e11f1aed03ec3a9361dbc40339efc9285a762acdb1075b080e2517f66cd",
-    "backend/app/api/rank.py": "d43691440a35a03be9352f6a34506fe38bf4aace4128804179a0a9d34bcc751d",
-    "backend/app/api/rules.py": "8f07de6ed90ab0a1d42f010a45cec16275e730400eaab5ab21d9755aa5d984f8",
-    "backend/app/api/schema.py": "55bf2e288fafe34880489764a2f530861555e05806f068989bbf2b28c2bd7e0c",
-    "backend/app/api/schemes.py": "8dc15cbca733d96e949785f6f48a3f0d3d5c8d98cfa06fa8dc41d9bb7fab78cc",
+    "backend/app/api/rank.py": "1e80115150a2f42c8af05fd9f492f9452c25f60ec4c41ba20646dec2e5e879bd",
+    "backend/app/api/rules.py": "c7e8c05cc27c4d093c90e6b6d42ebd7e61cbde3b8a35ff32f7761d2e3b380a6a",
+    "backend/app/api/schema.py": "29a739bf3c6ab2ff535b5b5552d3b95201902b0ed84088291444bfd60b3f391c",
+    "backend/app/api/schemes.py": "2890e906c132a70fefc27d742d312b95020332a06efe5d7c7c92bb66fa54591f",
     "backend/app/config.py": "b2b86238500b2a566900ea8044ca8cdf1ab76395305b178f31f8924f83314082",
-    "backend/app/db.py": "2d59f9a1748ef5fa19ccace231fd02ad8bbd3ca33da8b20accba62a5d0f2c625",
+    "backend/app/custom/__init__.py": "679bff1858f0acb12ab126936e825d3f93d5a45ee33a38ad7d9f25e502f615d8",
+    "backend/app/custom/audit.py": "ed0f7dd24514cd1cfaae51636bcc5c49744ed6e83e3c44117645ba9fdc2ca568",
+    "backend/app/custom/errors.py": "89213082ecdd44e4a2f3b7af6f780b1a1b9eaf4a588b7046165db23fb6cce44e",
+    "backend/app/custom/export.py": "06f79f578668b7b817e4dfa6504dd416245f274a459b12e1e094a4599c506574",
+    "backend/app/custom/fields.py": "6d8aae181d8802abaafd9d5f292c622953ca3a0294b8534cf973087c9222ceaa",
+    "backend/app/custom/models.py": "226758330ecb3cfc95079b184d6557f491dd2218c85d8451acf689bb6b03bf86",
+    "backend/app/custom/options.py": "e0bd6487b7f571367b789a80af2cd1b371fb598598c2ff6f195383a7dcc97cbb",
+    "backend/app/custom/rules.py": "30ec38c814d46d7320dec4503609405b942edf9eca6fb0d9b75e02dd81f63301",
+    "backend/app/custom/signature.py": "d7ca48cec2c8b780cc7632d555394e09ca31a47c5d2f7f32f3acb732d63044f1",
+    "backend/app/custom/state.py": "35f06771571aee321b4de0a28600f7c785de5b9e04f867720073fad3ff33308a",
+    "backend/app/custom/templates.py": "7e875a8a401cbca9ac50e3dc84ec8c5a8301906026e80ae49adfd53651339f88",
+    "backend/app/db.py": "5f20c7a441dc7f1f2d169606fc8a2c8ce0d288aea6b0a7204f9756016c8a7a15",
     "backend/app/engine/__init__.py": "83887cdb1f4f0f9dd021986db8de509f55f9b857a33f18b52a95119bd84fd482",
     "backend/app/engine/mcdm.py": "efdaf57b7282583298096224e88d9842043a44f3a514f52e4e20a919ee24e8ed",
     "backend/app/engine/metrics.py": "0273ac714ec5ebc123bff15b3dda21839862336d5a78ff89f23893221adf45f0",
-    "backend/app/engine/rules.py": "239eff91bb6ca3a73d872a033a90eb8d4bb9ff7c3f6f2337a4694dec1406b439",
+    "backend/app/engine/rule_check.py": "9d7cc357e6cdfb5c309a4ffebb60f518a3e9d3e816d5a4b27ccbb8a7f290b9d5",
+    "backend/app/engine/rules.py": "340e093713cfe93727e88ab8feb546a825d8261cd45f0a061900f6425442d24f",
     "backend/app/engine/scoring.py": "c8bfdec44e428a96ab106089643e1de5185fce4ce5bacb8e2b417a1a4976ea26",
-    "backend/app/engine/weights.py": "ce2e765e6b7f780fe36cacaa1084ad799595b90aae95fd801616faefe92a9e8f",
+    "backend/app/engine/weights.py": "2f1b7de63e5a369682232aab9a3dc98655c7c2e9680c69128cde8905536a2d9a",
     "backend/app/excel/__init__.py": "a85d4a74036c4cdf454ec4cce162fcbbef17d844a5486243280cfa9caec0d502",
-    "backend/app/excel/io.py": "5c2d788e7427aca08fec54ee3a611f53be0955e0cff7786dee497aa8f65f173a",
-    "backend/app/main.py": "9b3b69e8af380bf519be09b86e48aa0f0c0f0a70eeb51f160d3af1bd6cad6fe5",
+    "backend/app/excel/io.py": "b049e987d3d0026dec11ca57086b722af539ad7896283cfe8a7df08edaf61f4f",
+    "backend/app/main.py": "cef088e1751acd2c24c98a4b418cbde03351e915cb7ea261c3aa20228cff80ad",
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "28b7ca098516f21b6ee247c658a80ea9d676e22ab3f70230c6beca4879499d84",
+    "backend/app/models/params.py": "8f3e2399d5b8072b43f422aea2b057d83e2edc542fd70b39731de8eb01f35740",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
-    "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
+    "backend/app/schemas/merged.py": "32815e54397f97a6bc3b4333bd79f959e0d64ccb1baee30d376e0db350c8c682",
+    "backend/app/schemas/meta.py": "2df5215626d56fd7bf1457cf164fd4a5dcde80f29ea5507752dbd2a9fc1ccc27",
     "rules/_template.yaml": "5d7740c4a23a2e802808a2882b8d05428dd9b39fe40180fe800d7fee73667c4c",
     "rules/compliance.yaml": "d4d1ee2de2eeb7070e5e58aac9981997d0179bca1c23ac1f63c5c8cc08906953",
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
@@ -54,8 +69,8 @@
     "data/schemes/mock/D_均衡.json": "8866b25e9155a1039ee261798547e87bedbfd627a50a89499831c01f8416a108",
     "data/schemes/mock/E_被支配.json": "89db1634bdac5282ef1e1aaa6cb8ef26ba02a3416991e8cf835d03b723a3f67f",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
-    "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
-    "data/schemes/方案录入模板.xlsx": "16af216f312053724c0be893ee441c43a66cb92f4b1bddf08f89ef3a78b61dbd"
+    "scripts/export_frontend_fixtures.py": "ef289012f2bd9d6a623671a7c773e8a8f51e3ee35a3629695079a3a002baabeb",
+    "data/schemes/方案录入模板.xlsx": "bb9fc903000fceffce413fdbd5480e87c115246e10b3989f42933f410d475545"
   },
   "grid_step": 10,
   "projects": [
@@ -150,6 +165,7 @@
         "brace_type": "混凝土内支撑",
         "brace_concrete_grade": null,
         "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.25,
         "green_ratio": 0.38
       },
@@ -227,6 +243,7 @@
         "brace_type": "无内支撑与锚拉",
         "brace_concrete_grade": null,
         "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.45,
         "green_ratio": 0.35
       },
@@ -305,6 +322,7 @@
         "brace_type": "混凝土内支撑",
         "brace_concrete_grade": null,
         "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.75,
         "green_ratio": 0.36
       },
@@ -382,6 +400,7 @@
         "brace_type": "锚杆（锚拉）",
         "brace_concrete_grade": null,
         "anchor_free_length": 6.0,
+        "custom": {},
         "prefab_ratio_est": 0.5,
         "green_ratio": 0.4
       },
@@ -464,6 +483,7 @@
         "brace_type": "无内支撑与锚拉",
         "brace_concrete_grade": null,
         "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.35
       },
@@ -545,6 +565,7 @@
         "brace_type": "混凝土内支撑",
         "brace_concrete_grade": null,
         "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.37
       },
@@ -3980,6 +4001,7 @@
         ],
         "role": "government",
         "role_name": "政府",
+        "is_custom": false,
         "note": "政府首先关注强制性规范和结构安全底线，同时兼顾居住品质、产业化实施与绿色目标。",
         "ahp": null,
         "consistency_warning": null
@@ -4000,6 +4022,7 @@
         ],
         "role": "developer",
         "role_name": "开发企业",
+        "is_custom": false,
         "note": "开发企业需要控制合规、结构和交付风险，同时平衡产品品质、建造可实施性、工期和绿色竞争力。",
         "ahp": null,
         "consistency_warning": null
@@ -4020,6 +4043,7 @@
         ],
         "role": "contractor",
         "role_name": "施工单位",
+        "is_custom": false,
         "note": "施工单位最关注安全合规、结构实施风险、工艺可实施性、标准化、构件供应、吊装和现场湿作业控制。",
         "ahp": null,
         "consistency_warning": null
@@ -4040,6 +4064,7 @@
         ],
         "role": "resident",
         "role_name": "住户",
+        "is_custom": false,
         "note": "住户最直接感知居住舒适、安全、采光、通风、噪声和电梯服务；结构安全与绿色运行也会直接影响长期居住体验。",
         "ahp": null,
         "consistency_warning": null
@@ -4060,11 +4085,13 @@
         ],
         "role": "design",
         "role_name": "设计单位",
+        "is_custom": false,
         "note": "设计单位需要先满足规范底线，再协调空间品质、结构安全、实施性以及节能低碳目标。",
         "ahp": null,
         "consistency_warning": null
       }
     ],
+    "custom_roles": [],
     "needs_review": []
   },
   "ranks": {
@@ -4098,6 +4125,7 @@
         ],
         "role": "government",
         "role_name": "政府",
+        "is_custom": false,
         "note": "政府首先关注强制性规范和结构安全底线，同时兼顾居住品质、产业化实施与绿色目标。",
         "ahp": null,
         "consistency_warning": null
@@ -4677,6 +4705,7 @@
         ],
         "role": "developer",
         "role_name": "开发企业",
+        "is_custom": false,
         "note": "开发企业需要控制合规、结构和交付风险，同时平衡产品品质、建造可实施性、工期和绿色竞争力。",
         "ahp": null,
         "consistency_warning": null
@@ -5256,6 +5285,7 @@
         ],
         "role": "contractor",
         "role_name": "施工单位",
+        "is_custom": false,
         "note": "施工单位最关注安全合规、结构实施风险、工艺可实施性、标准化、构件供应、吊装和现场湿作业控制。",
         "ahp": null,
         "consistency_warning": null
@@ -5835,6 +5865,7 @@
         ],
         "role": "resident",
         "role_name": "住户",
+        "is_custom": false,
         "note": "住户最直接感知居住舒适、安全、采光、通风、噪声和电梯服务；结构安全与绿色运行也会直接影响长期居住体验。",
         "ahp": null,
         "consistency_warning": null
@@ -6414,6 +6445,7 @@
         ],
         "role": "design",
         "role_name": "设计单位",
+        "is_custom": false,
         "note": "设计单位需要先满足规范底线，再协调空间品质、结构安全、实施性以及节能低碳目标。",
         "ahp": null,
         "consistency_warning": null
@@ -7575,7 +7607,8 @@
             "不规则建筑",
             "超限构件",
             "复杂地质"
-          ]
+          ],
+          "extensible": true
         },
         {
           "name": "excavation_depth",
@@ -7704,6 +7737,17 @@
           "type": "number",
           "required": false,
           "constraints": {}
+        },
+        {
+          "name": "custom",
+          "label": "自定义字段",
+          "description": "自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示（见 app/custom/fields.py 与 docs/design-custom-add.md）",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "object<any>",
+          "required": false,
+          "constraints": {},
+          "hidden": true
         },
         {
           "name": "prefab_ratio_est",
@@ -9760,7 +9804,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "16af216f312053724c0be893ee441c43a66cb92f4b1bddf08f89ef3a78b61dbd",
+      "sha256": "bb9fc903000fceffce413fdbd5480e87c115246e10b3989f42933f410d475545",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -9832,6 +9876,7 @@
       "brace_type": null,
       "brace_concrete_grade": null,
       "anchor_free_length": null,
+      "custom": {},
       "prefab_ratio_est": null,
       "green_ratio": null
     }
@@ -10772,6 +10817,7 @@
           "default": null,
           "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
           "empty_means_unknown": true,
+          "extensible": false,
           "group": "结构与造价",
           "label": "超限不规则项",
           "options": [
@@ -10828,6 +10874,7 @@
         },
         "risk_features": {
           "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
+          "extensible": true,
           "group": "施工与安全",
           "items": {
             "type": "string"
@@ -11065,6 +11112,16 @@
           "label": "锚杆自由段长度",
           "title": "Anchor Free Length",
           "unit": "m"
+        },
+        "custom": {
+          "additionalProperties": true,
+          "description": "自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示（见 app/custom/fields.py 与 docs/design-custom-add.md）",
+          "group": "基本信息",
+          "hidden": true,
+          "label": "自定义字段",
+          "title": "Custom",
+          "type": "object",
+          "unit": "—"
         },
         "prefab_ratio_est": {
           "anyOf": [
