@@ -191,6 +191,16 @@ def test_standard_packs_round_trips_through_excel(tmp_path: Path) -> None:
     assert parsed.project_params["province"] == "ZJ"
 
 
+def test_every_province_pack_is_selectable() -> None:
+    """31 个省册都要能被选中（哪怕还是空册）——注册表与引擎必须对得上。"""
+    full = load_rules_from_dir(REPO_RULES)
+    for code in PROVINCE_CODES:
+        selected = full.select_packs(["GB", code])
+        assert selected.rules, code
+        # 选中后只剩 GB 与本省：别的省一条都不该混进来
+        assert {r.pack for r in selected.rules} <= {"GB", code}
+
+
 def test_packs_endpoint_lists_gb_and_every_province(client: TestClient) -> None:
     body = client.get("/api/standards/packs").json()
     assert len(body) == 32  # GB + 31 个省级行政区
