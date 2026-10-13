@@ -1,0 +1,87 @@
+# 构件与构造的下限要求。规则 ID 用 S-XX（前缀按维度选，文件按主题分）。
+#
+# 依据：**GB 55008—2021《混凝土结构通用规范》第4.4节**（全文强制，国家层面标准）
+# 与 **GB/T 50011—2010（2024年版）第8.1.5、8.1.9条**（钢结构）。条号与数值均逐字核对。
+#
+# 为什么把"构件级"的数字也做成规则：它们都是**强制下限**，而方案阶段本来就要定墙厚、
+# 柱截面、梁宽、基础做法与配筋率。填了就自动校核；不填按"数据不足"处理，
+# 不会误判为通过——这与其它设计输出类字段是同一口径。
+#
+# 仍不判定的构件条目（以及原因）：
+# · 4.4.6 纵向受力钢筋最小配筋率表、4.4.8 梁端受压区高度与箍筋加密、4.4.9 柱配筋与箍筋、
+#   4.4.10/4.4.11 转换梁与转换柱、4.4.12 加强层、4.4.14 连接体——需要逐构件计算与配筋数据；
+# · 4.4.7 剪力墙分布筋配筋率：分档取决于**抗震等级**（一~三级 0.25%、四级 0.20%），
+#   而抗震等级属设计输出（详见 open-items 的说明与 GB 55002 表5.2.1 的抄录），故暂不判定；
+# · 4.4.4 第4、5款 现浇空心楼板与叠合楼板的 50 mm 是**分层厚度**，与现有单一"楼板厚度"
+#   语义不同；住宅现浇实心板已由 S-12 的 ≥100 mm 覆盖，故不另立规则。
+
+- id: S-22
+  name: 剪力墙截面厚度下限
+  type: hard
+  # 高层与多层取不同下限，分类由结构专业按适用条文核定。
+  when: "structure_type == '剪力墙' or structure_type == '框架-剪力墙'"
+  check: "shear_wall_thickness >= (160 if structural_height_classification == '高层' else 140)"
+  message: "剪力墙截面厚度 {shear_wall_thickness} mm 低于 GB 55008 对该高度的下限（高层 160 mm、多层 140 mm）"
+  source: "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）"
+
+- id: S-23
+  name: 框架梁截面宽度下限
+  type: hard
+  when: "structure_type == '框架' or structure_type == '框架-剪力墙'"
+  check: "frame_beam_width >= 200"
+  message: "矩形截面框架梁的截面宽度 {frame_beam_width} mm 小于 GB 55008 要求的 200 mm"
+  source: "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）"
+
+- id: S-24
+  name: 框架柱截面尺寸下限
+  type: hard
+  when: "structure_type == '框架' or structure_type == '框架-剪力墙'"
+  check: "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)"
+  message: "框架柱截面尺寸 {frame_column_size} mm 低于 GB 55008 的下限（矩形截面边长 300 mm、圆形截面直径 350 mm）"
+  source: "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）"
+
+- id: S-25
+  name: 筏形 / 桩筏基础底板贯通筋配筋率下限
+  type: hard
+  when: "foundation_type == '筏形基础' or foundation_type == '桩筏基础'"
+  check: "raft_rebar_ratio >= 0.15"
+  message: "筏形 / 桩筏基础底板上下贯通钢筋的配筋率 {raft_rebar_ratio}% 小于 GB 55003 要求的 0.15%"
+  source: "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）"
+
+- id: S-26
+  name: 超过 50 m 的钢结构基础埋置深度
+  type: hard
+  # 第8.1.9条第2款按地基形式给两个下限：天然地基不宜小于 H/15、桩基不宜小于 H/20。
+  # 用乘法表达以避开除法的白名单问题：埋深×15 ≥ 总高（天然地基）、埋深×20 ≥ 总高（桩基）。
+  when: "structure_type == '钢结构' and height > 50"
+  check: "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)"
+  message: "基础埋置深度 {foundation_depth} m 小于该总高下的建议值（天然地基 H/15、桩基 H/20）"
+  severity: warning
+  source: "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。本条埋深用语为「不宜」，不足时给出复核警告，不据此自动排除方案；地下室设置要求另行判定"
+
+- id: S-27
+  name: 错层处构件混凝土强度等级下限
+  type: hard
+  # 4.4.13 第1、2款分别对错层处框架柱与平面外受力剪力墙给出同一个混凝土下限 C30。
+  when: "has_staggered_floor and (structure_type == '框架' or structure_type == '剪力墙' or structure_type == '框架-剪力墙')"
+  check: "staggered_concrete_grade >= 30"
+  message: "存在错层，而错层处相关构件混凝土强度等级 C{staggered_concrete_grade} 低于 GB 55008 的 C30 要求"
+  source: "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围"
+
+- id: S-28
+  name: 错层处平面外受力剪力墙截面厚度下限
+  type: hard
+  when: "has_staggered_floor and has_out_of_plane_staggered_wall and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')"
+  check: "staggered_wall_thickness >= 250"
+  message: "存在错层，平面外受力剪力墙截面厚度 {staggered_wall_thickness} mm 低于 GB 55008 要求的 250 mm"
+  source: "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）"
+
+- id: S-29
+  name: 钢结构高层不应采用单跨框架
+  type: hard
+  # 第8.1.5条：采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架。
+  # 本项目为丙类住宅，且仅检查框架体系；高层分类由结构专业核定。
+  when: "structure_type == '钢结构' and steel_system == '框架' and structural_height_classification == '高层'"
+  check: "not is_single_span_frame"
+  message: "钢结构高层采用单跨框架，违反 GB/T 50011 第8.1.5条（甲、乙类建筑和高层丙类建筑不应采用单跨框架）"
+  source: "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）"

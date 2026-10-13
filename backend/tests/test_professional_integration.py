@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 import yaml
-from app.engine.rules import SchemeInput, default_rules_dir, evaluate, load_rules_from_dir
+from app.engine.rules import RuleSet, SchemeInput, default_rules_dir, evaluate, load_rules_from_dir
 from app.engine.weights import check_weights_file, default_weights_path, load_role_templates
 from app.excel import parse_workbook, write_export
 from app.models.params import ProjectParams, SchemeParams
@@ -126,6 +126,262 @@ def test_irregularity_excel_preserves_unknown_empty_and_declared(tmp_path: Path)
         [],
         ["扭转不规则"],
     ]
+
+
+def test_boolean_field_round_trips_through_excel(tmp_path: Path) -> None:
+    """布尔字段（是否设地下室）必须能在 Excel 里往返：写出「是 / 否」，读回仍是布尔。
+
+    这个字段类型此前**既没有写入分支也没有解析分支**：导出后重新解析会直接报
+    「字段类型 boolean 暂未支持」，而这条链只在"导出 → 再解析"时才会暴露
+    （CI 的前端数据层测试正是靠演示工作簿的解析快照发现的），所以在这里钉住，
+    并同时覆盖"未填写保持 None"。
+    """
+    source = [
+        {"name": "有地下室", "params": {"has_basement": True}},
+        {"name": "无地下室", "params": {"has_basement": False}},
+        {"name": "未填写", "params": {}},
+    ]
+    path = write_export(tmp_path / "bool.xlsx", {}, source)
+    parsed = parse_workbook(path)
+    assert not parsed.errors
+    assert [
+        SchemeParams.model_validate(item["params"]).has_basement for item in parsed.schemes
+    ] == [True, False, None]
+
+
+def _round2_evaluation(rule_id: str, **params):
+    # 独立加载待测规则，避免无关规则的缺值或失败掩盖阻断语义。
+    rules = RuleSet(
+        rules=tuple(
+            rule for rule in load_rules_from_dir(default_rules_dir()).rules if rule.id == rule_id
+        ),
+        origins={},
+    )
+    result = evaluate(
+        ProjectParams(),
+        [SchemeInput(scheme_id="1", name="二轮边界", params=SchemeParams(**params))],
+        rules,
+    )[0]
+    return result, result.compliance[0]
+
+
+@pytest.mark.parametrize(
+    "upper,foundation,status",
+    [(40, 25, "failed"), (25, 30, "passed"), (40, None, "insufficient_data")],
+)
+def test_foundation_concrete_grade_is_independent_of_superstructure(
+    upper: float, foundation: float | None, status: str
+) -> None:
+    result, item = _round2_evaluation(
+        "S-17",
+        foundation_type="筏形基础",
+        concrete_grade=upper,
+        foundation_concrete_grade=foundation,
+    )
+    assert item.status == status
+    assert result.has_blocking_failure == (status == "failed")
+    if foundation is None:
+        assert item.missing_fields == ["foundation_concrete_grade"]
+
+
+@pytest.mark.parametrize("foundation_type", ["独立基础", "条形基础", "桩基础"])
+def test_foundation_concrete_rule_does_not_apply_to_other_foundations(
+    foundation_type: str,
+) -> None:
+    _, item = _round2_evaluation("S-17", foundation_type=foundation_type)
+    assert item.status == "not_applicable"
+
+
+@pytest.mark.parametrize(
+    "retaining_type,two_in_one,grade,status,missing",
+    [
+        ("地下连续墙", True, 25, "failed", []),
+        ("地下连续墙", True, 30, "passed", []),
+        ("地下连续墙", False, 25, "not_applicable", []),
+        ("地下连续墙", None, 30, "insufficient_data", ["retaining_wall_two_in_one"]),
+        ("地下连续墙", True, None, "insufficient_data", ["retaining_concrete_grade"]),
+        ("排桩", False, 25, "not_applicable", []),
+        ("土钉墙", False, None, "not_applicable", []),
+        ("排桩", None, 25, "insufficient_data", ["retaining_wall_two_in_one"]),
+    ],
+)
+def test_two_in_one_wall_rule_requires_declared_applicability(
+    retaining_type: str,
+    two_in_one: bool | None,
+    grade: float | None,
+    status: str,
+    missing: list[str],
+) -> None:
+    result, item = _round2_evaluation(
+        "K-07",
+        retaining_type=retaining_type,
+        retaining_wall_two_in_one=two_in_one,
+        retaining_concrete_grade=grade,
+    )
+    assert item.status == status
+    assert item.missing_fields == missing
+    assert result.has_blocking_failure == (status == "failed")
+
+
+def test_steel_foundation_depth_recommendation_warns_without_blocking() -> None:
+    result, item = _round2_evaluation(
+        "S-26",
+        structure_type="钢结构",
+        floors=20,
+        floor_height=3,
+        foundation_type="筏形基础",
+        foundation_depth=1,
+    )
+    assert item.status == "failed"
+    assert item.severity == "warning"
+    assert not result.has_blocking_failure
+
+
+def test_steel_foundation_depth_missing_is_unknown() -> None:
+    _, item = _round2_evaluation(
+        "S-26", structure_type="钢结构", floors=20, floor_height=3, foundation_type="筏形基础"
+    )
+    assert item.status == "insufficient_data"
+    assert item.missing_fields == ["foundation_depth"]
+
+
+def test_foundation_and_wall_fields_round_trip_without_defaults(tmp_path: Path) -> None:
+    values = [(30, True), (25, False), (None, None)]
+    path = write_export(
+        tmp_path / "foundation-wall.xlsx",
+        {},
+        [
+            {
+                "name": str(index),
+                "params": {
+                    "foundation_concrete_grade": grade,
+                    "retaining_wall_two_in_one": two_in_one,
+                },
+            }
+            for index, (grade, two_in_one) in enumerate(values)
+        ],
+    )
+    parsed = parse_workbook(path)
+    assert not parsed.errors
+    assert [
+        (params.foundation_concrete_grade, params.retaining_wall_two_in_one)
+        for params in [SchemeParams.model_validate(item["params"]) for item in parsed.schemes]
+    ] == values
+
+
+@pytest.mark.parametrize(
+    "retaining,brace,status",
+    [(40, 20, "failed"), (20, 25, "passed"), (40, None, "insufficient_data")],
+)
+def test_brace_concrete_does_not_reuse_wall_grade(
+    retaining: float, brace: float | None, status: str
+) -> None:
+    _, item = _round2_evaluation(
+        "K-09",
+        brace_type="混凝土内支撑",
+        retaining_concrete_grade=retaining,
+        brace_concrete_grade=brace,
+    )
+    assert item.status == status
+    if brace is None:
+        assert item.missing_fields == ["brace_concrete_grade"]
+
+
+@pytest.mark.parametrize(
+    "structure,local_grade,status",
+    [
+        ("框架", 25, "failed"),
+        ("剪力墙", 30, "passed"),
+        ("框架", None, "insufficient_data"),
+        ("钢结构", None, "not_applicable"),
+        ("MiC", None, "not_applicable"),
+    ],
+)
+def test_staggered_concrete_rule_checks_only_declared_concrete_members(
+    structure: str, local_grade: float | None, status: str
+) -> None:
+    _, item = _round2_evaluation(
+        "S-27",
+        structure_type=structure,
+        has_staggered_floor=True,
+        concrete_grade=40,
+        staggered_concrete_grade=local_grade,
+    )
+    assert item.status == status
+    if status == "insufficient_data":
+        assert item.missing_fields == ["staggered_concrete_grade"]
+
+
+@pytest.mark.parametrize(
+    "has_wall,thickness,status,missing",
+    [
+        (True, 200, "failed", []),
+        (True, 250, "passed", []),
+        (False, None, "not_applicable", []),
+        (None, None, "insufficient_data", ["has_out_of_plane_staggered_wall"]),
+        (True, None, "insufficient_data", ["staggered_wall_thickness"]),
+    ],
+)
+def test_staggered_wall_does_not_reuse_general_wall_thickness(
+    has_wall: bool | None, thickness: float | None, status: str, missing: list[str]
+) -> None:
+    _, item = _round2_evaluation(
+        "S-28",
+        structure_type="剪力墙",
+        has_staggered_floor=True,
+        has_out_of_plane_staggered_wall=has_wall,
+        shear_wall_thickness=300,
+        staggered_wall_thickness=thickness,
+    )
+    assert item.status == status
+    assert item.missing_fields == missing
+
+
+@pytest.mark.parametrize(
+    "classification,status",
+    [("高层", "failed"), ("多层", "passed"), (None, "insufficient_data")],
+)
+def test_wall_thickness_uses_structural_classification_not_residential_height(
+    classification: str | None, status: str
+) -> None:
+    _, item = _round2_evaluation(
+        "S-22",
+        structure_type="剪力墙",
+        structural_height_classification=classification,
+        floors=20,
+        floor_height=3,
+        shear_wall_thickness=150,
+    )
+    assert item.status == status
+    if classification is None:
+        assert item.missing_fields == ["structural_height_classification"]
+
+
+@pytest.mark.parametrize(
+    "system,classification,status",
+    [
+        ("框架", "高层", "failed"),
+        ("框架", "多层", "not_applicable"),
+        ("框架-中心支撑", "高层", "not_applicable"),
+        ("筒体和巨型框架", "高层", "not_applicable"),
+        ("框架", None, "insufficient_data"),
+    ],
+)
+def test_single_span_limit_applies_only_to_declared_highrise_steel_frame(
+    system: str, classification: str | None, status: str
+) -> None:
+    _, item = _round2_evaluation(
+        "S-29",
+        structure_type="钢结构",
+        steel_system=system,
+        structural_height_classification=classification,
+        floors=20,
+        floor_height=3,
+        is_single_span_frame=True,
+    )
+    assert item.status == status
+    if classification is None:
+        assert item.missing_fields == ["structural_height_classification"]
 
 
 def test_named_weights_keep_all_five_roles_and_dimension_order() -> None:

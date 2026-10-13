@@ -100,6 +100,83 @@ GROUP_ORDER: tuple[str, ...] = (
     "绿色低碳",
 )
 
+ScaffoldType = Literal["落地式钢管脚手架", "附着式升降脚手架", "悬挑式脚手架"]
+"""外脚手架形式。
+
+只收这三类，因为它们对应**不同的危大工程门槛**（依据：住建部令第37号《危险性较大的
+分部分项工程安全管理规定》配套的建办质〔2018〕31号 附件1/附件2）：
+
+- 落地式钢管脚手架：搭设高度 ≥24 m 须编专项施工方案，≥50 m 须专家论证；
+- 附着式升降脚手架、悬挑式脚手架：**一律属于危大工程**（无高度门槛），
+  其中附着式提升高度 ≥150 m、悬挑式分段架体高度 ≥20 m 还须专家论证。
+
+前者有阈值可判，后两者是"只要采用就成立"，因此本系统只对落地式做阈值判定，
+其余两类在规则文件头部说明里交代，避免对每个方案都刷一条同义提示。
+"""
+SCAFFOLD_TYPES: tuple[str, ...] = (
+    "落地式钢管脚手架",
+    "附着式升降脚手架",
+    "悬挑式脚手架",
+)
+
+FoundationType = Literal["筏形基础", "桩筏基础", "独立基础", "条形基础", "桩基础"]
+"""基础形式。
+
+只区分**规范给了不同下限**的几类（依据 GB 55003—2021《建筑与市政地基基础通用规范》，
+全文强制）：
+
+- 筏形基础、桩筏基础：混凝土强度等级不应低于 C30（第6.3.5条）；
+- 其余形式（独立基础、条形基础、桩基础）：该条未给混凝土强度下限，
+  规则里判为"不适用"，而不是硬套 C30。
+
+基础形式单独成字段，是因为"上部结构相同、基础做法不同"会直接改变材料要求与造价，
+属于方案比选里应当显式比较的一项。
+"""
+FOUNDATION_TYPES: tuple[str, ...] = ("筏形基础", "桩筏基础", "独立基础", "条形基础", "桩基础")
+
+RetainingType = Literal["排桩", "地下连续墙", "土钉墙", "放坡开挖", "其他"]
+"""基坑支护形式。
+
+同样只区分**规范给了不同下限**的几类（GB 55003—2021 第7.2节）：
+
+- 排桩：桩身混凝土强度等级不应低于 C25（第7.2.4条）；
+- 两墙合一的地下连续墙：混凝土强度等级不应低于 C30（第7.2.5条）；
+- 土钉墙、放坡开挖等无混凝土构件或规范未给专门下限，判为"不适用"。
+"""
+RETAINING_TYPES: tuple[str, ...] = ("排桩", "地下连续墙", "土钉墙", "放坡开挖", "其他")
+
+SteelSystem = Literal["框架", "框架-中心支撑", "框架-偏心支撑（延性墙板）", "筒体和巨型框架"]
+"""钢结构体系类型。
+
+依据 GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」：
+同一烈度下不同体系的最大适用高度差一倍以上（6、7度 0.10g 列：框架 110、
+框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体和巨型框架 300），
+所以必须分体系取值，不能给钢结构一个笼统限值。
+"""
+STEEL_SYSTEMS: tuple[str, ...] = (
+    "框架",
+    "框架-中心支撑",
+    "框架-偏心支撑（延性墙板）",
+    "筒体和巨型框架",
+)
+
+BraceType = Literal["混凝土内支撑", "钢支撑", "锚杆（锚拉）", "无内支撑与锚拉"]
+"""基坑内支撑 / 锚拉体系。
+
+依据 GB 55003—2021 第7.2节：混凝土内支撑的混凝土强度等级不应低于 C25（第7.2.6条）、
+锚拉结构的锚杆自由段长度不应小于 5.0 m（第7.2.8条）。钢支撑与"无内支撑与锚拉"
+在本规范里没有对应的混凝土等级或锚杆长度要求，规则中判为"不适用"。
+"""
+BRACE_TYPES: tuple[str, ...] = ("混凝土内支撑", "钢支撑", "锚杆（锚拉）", "无内支撑与锚拉")
+
+ColumnShape = Literal["矩形", "圆形"]
+"""框架柱截面形状（GB 55008—2021 第4.4.4条第2款对两种形状给了不同下限）：
+
+- 矩形截面柱：边长不应小于 300 mm；
+- 圆形截面柱：直径不应小于 350 mm。
+"""
+COLUMN_SHAPES: tuple[str, ...] = ("矩形", "圆形")
+
 
 def _meta(unit: str, group: str, label: str, **extra: object) -> dict[str, object]:
     """拼装 ``json_schema_extra`` 片段，统一字段元信息格式。"""
@@ -337,6 +414,103 @@ class SchemeParams(BaseModel):
         gt=0,
         json_schema_extra=_meta("MPa", "结构与造价", "混凝土强度等级"),
     )
+    structural_height_classification: Literal["高层", "多层"] | None = Field(
+        None,
+        description="结构专业核定的高层 / 多层分类（按所适用结构条文核定，不从住宅建筑高度分类自动推定）",
+        json_schema_extra=_meta("—", "结构与造价", "结构高度分类", enum=["高层", "多层"]),
+    )
+    foundation_type: FoundationType | None = Field(
+        None,
+        description="基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+        json_schema_extra=_meta("—", "结构与造价", "基础形式", enum=list(FOUNDATION_TYPES)),
+    )
+    foundation_concrete_grade: float | None = Field(
+        None,
+        description="基础混凝土强度等级（填 C 后的数值，如 C30 填 30；不从上部结构等级推定）",
+        gt=0,
+        json_schema_extra=_meta("MPa", "结构与造价", "基础混凝土强度等级"),
+    )
+    foundation_working_life: int | None = Field(
+        None,
+        description="地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+        gt=0,
+        json_schema_extra=_meta("年", "结构与造价", "地基基础工作年限"),
+    )
+    steel_system: SteelSystem | None = Field(
+        None,
+        description="钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+        json_schema_extra=_meta("—", "结构与造价", "钢结构体系", enum=list(STEEL_SYSTEMS)),
+    )
+    has_basement: bool | None = Field(
+        None,
+        description="是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+        json_schema_extra=_meta("—", "结构与造价", "是否设地下室"),
+    )
+    # —— 构件与构造（GB 55008—2021 第4.4节的最小截面与配筋要求）—— #
+    # 这些都是"设计输出"，但都是强制下限；填了就能判，不填按"数据不足"处理，
+    # 不会误判为通过——这正是本系统对设计输出类字段的一贯口径。
+    shear_wall_thickness: float | None = Field(
+        None,
+        description="剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "剪力墙截面厚度"),
+    )
+    frame_beam_width: float | None = Field(
+        None,
+        description="矩形截面框架梁的截面宽度（不应小于 200 mm）",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "框架梁截面宽度"),
+    )
+    frame_column_shape: ColumnShape | None = Field(
+        None,
+        description="框架柱截面形状（矩形柱按边长、圆形柱按直径判定）",
+        json_schema_extra=_meta("—", "结构与造价", "框架柱截面形状", enum=list(COLUMN_SHAPES)),
+    )
+    frame_column_size: float | None = Field(
+        None,
+        description="框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "框架柱截面尺寸"),
+    )
+    raft_rebar_ratio: float | None = Field(
+        None,
+        description="筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）",
+        gt=0,
+        json_schema_extra=_meta("%", "结构与造价", "筏基底板贯通筋配筋率"),
+    )
+    foundation_depth: float | None = Field(
+        None,
+        description="基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）",
+        gt=0,
+        json_schema_extra=_meta("m", "结构与造价", "基础埋置深度"),
+    )
+    has_staggered_floor: bool | None = Field(
+        None,
+        description="是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）",
+        json_schema_extra=_meta("—", "结构与造价", "是否存在错层"),
+    )
+    staggered_concrete_grade: float | None = Field(
+        None,
+        description="错层处框架柱 / 平面外受力剪力墙的最低核定混凝土强度等级（填 C 后数值，不从全局结构等级推定）",
+        gt=0,
+        json_schema_extra=_meta("MPa", "结构与造价", "错层处构件混凝土等级"),
+    )
+    has_out_of_plane_staggered_wall: bool | None = Field(
+        None,
+        description="错层处是否存在平面外受力剪力墙（专业核定；未填写表示未核对）",
+        json_schema_extra=_meta("—", "结构与造价", "错层处是否有平面外受力墙"),
+    )
+    staggered_wall_thickness: float | None = Field(
+        None,
+        description="错层处平面外受力剪力墙的最低核定截面厚度（不从一般剪力墙厚度推定）",
+        gt=0,
+        json_schema_extra=_meta("mm", "结构与造价", "错层处平面外受力墙厚度"),
+    )
+    is_single_span_frame: bool | None = Field(
+        None,
+        description="框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）",
+        json_schema_extra=_meta("—", "结构与造价", "是否单跨框架"),
+    )
     irregularity_items: list[str] | None = Field(
         None,
         description="超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -373,6 +547,68 @@ class SchemeParams(BaseModel):
             "风险特征",
             options=RISK_FEATURE_OPTIONS,
         ),
+    )
+    excavation_depth: float | None = Field(
+        None,
+        description="基坑开挖深度（用于危大工程判定：≥3m 须专项施工方案，≥5m 须专家论证）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "基坑开挖深度"),
+    )
+    formwork_height: float | None = Field(
+        None,
+        description="混凝土模板支撑搭设高度（用于危大工程判定：≥5m 须专项方案，≥8m 须专家论证）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "模板支撑高度"),
+    )
+    scaffold_type: ScaffoldType | None = Field(
+        None,
+        description="外脚手架形式（附着式升降与悬挑式一律属危大工程）",
+        json_schema_extra=_meta("—", "施工与安全", "脚手架形式", enum=list(SCAFFOLD_TYPES)),
+    )
+    scaffold_height: float | None = Field(
+        None,
+        description="脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "脚手架搭设高度"),
+    )
+    retaining_type: RetainingType | None = Field(
+        None,
+        description="基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+        json_schema_extra=_meta("—", "施工与安全", "基坑支护形式", enum=list(RETAINING_TYPES)),
+    )
+    retaining_wall_two_in_one: bool | None = Field(
+        None,
+        description="地下连续墙是否采用两墙合一（仅地下连续墙需核定，其他支护可填否；未填写表示未核对，不按否处理）",
+        json_schema_extra=_meta("—", "施工与安全", "地下连续墙是否两墙合一"),
+    )
+    retaining_concrete_grade: float | None = Field(
+        None,
+        description="支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+        gt=0,
+        json_schema_extra=_meta("MPa", "施工与安全", "支护混凝土强度等级"),
+    )
+    excavation_working_life: float | None = Field(
+        None,
+        description="基坑工程设计工作年限（不应小于 1 年）",
+        gt=0,
+        json_schema_extra=_meta("年", "施工与安全", "基坑工作年限"),
+    )
+    brace_type: BraceType | None = Field(
+        None,
+        description="基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+        json_schema_extra=_meta("—", "施工与安全", "内支撑 / 锚拉体系", enum=list(BRACE_TYPES)),
+    )
+    brace_concrete_grade: float | None = Field(
+        None,
+        description="混凝土内支撑的混凝土强度等级（填 C 后数值；不从支护桩墙等级推定）",
+        gt=0,
+        json_schema_extra=_meta("MPa", "施工与安全", "内支撑混凝土强度等级"),
+    )
+    anchor_free_length: float | None = Field(
+        None,
+        description="锚杆自由段长度（不应小于 5.0 m）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "锚杆自由段长度"),
     )
 
     # —— 绿色低碳 —— #
