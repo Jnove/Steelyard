@@ -221,7 +221,7 @@ export const ranking = {
       const grids = (await import('./fixtures/grid.json')).default as unknown as RankResponse[]
       const exact = [...Object.values(fixture.ranks), ...grids].find(r => sameWeights(r.weights_used.weights, weights))
       result = clone(exact ?? fixture.ranks.resident)
-      result.weights_used = { source: 'weights', criteria: result.criteria, weights, role: null, role_name: null, note: '', ahp: null, consistency_warning: null }
+      result.weights_used = { source: 'weights', criteria: result.criteria, weights, role: null, role_name: null, is_custom: false, note: '', ahp: null, consistency_warning: null }
       if (exact) result.demo = demo('engine-fixture', ['完整分析来自与当前归一化权重精确匹配的引擎快照。'])
       else {
         const start = performance.now()

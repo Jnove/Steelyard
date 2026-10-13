@@ -54,7 +54,7 @@
       "properties": {
         "id": {
           "description": "规则编号：国家层面标准形如 C-03（全局唯一），地方标准形如 ZJ-S-01（地区码 + 维度字母 + 两位数字）",
-          "pattern": "^(?:[CQSKG]|[A-Z]{2}-[CQSKG])-\\d{2}$",
+          "pattern": "^(?:[CQSKGX]|[A-Z]{2}-[CQSKG])-\\d{2}$",
           "title": "Id",
           "type": "string"
         },

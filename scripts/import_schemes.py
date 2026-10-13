@@ -68,7 +68,9 @@ def main(argv: list[str] | None = None) -> int:
     # 数据库初始化：脚本运行时不依赖 FastAPI lifespan。
     init_db()
 
-    result = parse_workbook(args.xlsx)
+    # 传 session：字段表按"内建 + 覆盖层"取，于是自定义字段的列会被写进 params["custom"]。
+    with Session(get_engine()) as session:
+        result = parse_workbook(args.xlsx, session=session)
 
     # 即使无方案，也打印项目层错误便于排查
     if result.errors and not args.allow_partial:

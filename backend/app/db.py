@@ -53,11 +53,26 @@ def override_engine_for_testing(engine: Engine) -> None:
     _engine = engine
 
 
-def init_db() -> None:
-    """建表（仅创建不存在的；生产应改用迁移工具如 Alembic）。"""
+def register_table_models() -> None:
+    """导入所有声明了 ``table=True`` 的模块，确保 ``create_all`` 能看到它们。
+
+    **新增表模块时必须在这里加一行。** 漏登记的表现很隐蔽：新表在测试用的内存库里
+    根本不存在，报出来的是 "no such table"，而不是"忘了导入"。
+    """
     from app.agents.storage import AgentResultRow, ReportCacheRow  # noqa: F401
+    from app.custom.models import (  # noqa: F401
+        CustomAudit,
+        CustomField,
+        CustomOption,
+        CustomRule,
+        CustomWeightTemplate,
+    )
     from app.models.orm import EvalResultRow, Project, Scheme  # noqa: F401
 
+
+def init_db() -> None:
+    """建表（仅创建不存在的；生产应改用迁移工具如 Alembic）。"""
+    register_table_models()
     SQLModel.metadata.create_all(get_engine())
 
 

@@ -5,10 +5,12 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { projects } from '../api/projects'
 import { schemes } from '../api/schemes'
+import { API_BASE } from '../api/base'
+import { USE_MOCK } from '../api/client'
 import { evaluation } from '../api/evaluation'
 import { schema } from '../api/schema'
 import type { FieldMetadata, Scheme, SchemeParams } from '../api/types'
-import SchemaForm, { orderedFields, RequestErrors } from '../components/SchemaForm'
+import SchemaForm, { orderedFields, recordedSchemaFields, schemaFieldValue, RequestErrors } from '../components/SchemaForm'
 import type { SchemaFormValues } from '../components/SchemaForm'
 import { IconPlay, IconPlus, IconUpload } from '../components/Icons'
 import { parameterSummary } from '../utils/scheme-presentation'
@@ -141,7 +143,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
         ),
         key: scheme.id,
         width: 210,
-        render: (_: unknown, field: FieldMetadata) => displayValue(Reflect.get(scheme.params, field.name), field.name),
+        render: (_: unknown, field: FieldMetadata) => displayValue(schemaFieldValue(scheme.params, field), field.name),
       }
     }),
   ]
@@ -166,10 +168,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       title: '已录入参数',
       key: 'completeness',
       render: (_, scheme) => {
-        const count = rows.filter((field) => {
-          const value: unknown = Reflect.get(scheme.params, field.name)
-          return value != null && value !== '' && (typeof value !== 'object' || Object.keys(value).length > 0)
-        }).length
+        const count = schemaQuery.data ? recordedSchemaFields(schemaQuery.data.scheme_params, scheme.params) : 0
         return schemaQuery.data ? <Tag color="cyan">{count} / {rows.length} 项完整</Tag> : <Typography.Text type="secondary">—</Typography.Text>
       },
     },
@@ -186,6 +185,10 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
           <p className="page-description">录入或批量导入候选方案，直观对照建筑品质、施工安全与绿色低碳设计参数，一键启动多准则综合评估。</p>
         </div>
         <div className="action-row">
+          {!USE_MOCK && <>
+            <Button href={`${API_BASE}/excel/template`}>下载录入模板</Button>
+            <Button disabled={!projectQuery.data || busy} href={`${API_BASE}/excel/projects/${projectId}/export`}>导出方案</Button>
+          </>}
           <Upload
             accept=".xlsx"
             showUploadList={false}

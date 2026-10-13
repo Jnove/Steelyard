@@ -1,5 +1,5 @@
 {
-  "fixture_id": "44e67c42cf3e4e77490529f274687764f17141c3851374958b0eabfdbef97527",
+  "fixture_id": "f0d22c4a66b4bb1a18f2d0f387b0450e3a562cd1594e67927cc4cc280ef5c017",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -9,61 +9,68 @@
     "backend/app/agents/llm.py": "19b1bff898cbfba21ca900d40d06516462f56b2c4c7a76fb2a10a086b6a71460",
     "backend/app/agents/state.py": "065bc5a40b54065980c4311dd966e4bd93f21cada3436445827c58d5fea661f8",
     "backend/app/agents/storage.py": "868b6d6e6c648af1b3c07029fd199fe7e3dc46b878e0c578dfe8e7d0a08553bf",
-    "backend/app/agents/tools.py": "3ca916006a797adfa031ef88d67268a6848cf0ce68826c1b971c4760b64a85b5",
+    "backend/app/agents/tools.py": "c11071f15bf4cc8a02776c63d46d17ba2071cf41896c261c69262678708dc7c5",
     "backend/app/api/__init__.py": "e61363389bcff57bfd5ddd9ff8cd10b8c6fdaecbf149e9aec7b7608f4af6305c",
     "backend/app/api/agents.py": "05edb1e18b159620dcea4213bec711c554f1e98c553f044a1f3aa3708219b924",
-    "backend/app/api/evaluate.py": "1e620cd59efb6de9f512238ec22214763e71e0530e5c25f6f3e82196eaba7870",
+    "backend/app/api/custom.py": "47388d976a9d1a66a49dd6b5c3b4af623cc37ab278a429da0f13e6e53aa2d354",
+    "backend/app/api/evaluate.py": "dc7bb93b2142a2ae7c4b980ae3f1dcace2dad0ebf284c89faf34990f7c5e1b1c",
+    "backend/app/api/excel.py": "fca513ffc04fba6acad4843f512a655859aff75343eb6e94ecc17198d57c0729",
     "backend/app/api/projects.py": "d1149e11f1aed03ec3a9361dbc40339efc9285a762acdb1075b080e2517f66cd",
-    "backend/app/api/rank.py": "d43691440a35a03be9352f6a34506fe38bf4aace4128804179a0a9d34bcc751d",
-    "backend/app/api/rules.py": "8f07de6ed90ab0a1d42f010a45cec16275e730400eaab5ab21d9755aa5d984f8",
-    "backend/app/api/schema.py": "55bf2e288fafe34880489764a2f530861555e05806f068989bbf2b28c2bd7e0c",
-    "backend/app/api/schemes.py": "8dc15cbca733d96e949785f6f48a3f0d3d5c8d98cfa06fa8dc41d9bb7fab78cc",
-    "backend/app/api/standards.py": "46f99592722d6247fc7602908cce8b0a3c7e1122fc0f1723d9c0d113035b9e21",
+    "backend/app/api/rank.py": "1e80115150a2f42c8af05fd9f492f9452c25f60ec4c41ba20646dec2e5e879bd",
+    "backend/app/api/rules.py": "c7e8c05cc27c4d093c90e6b6d42ebd7e61cbde3b8a35ff32f7761d2e3b380a6a",
+    "backend/app/api/schema.py": "29a739bf3c6ab2ff535b5b5552d3b95201902b0ed84088291444bfd60b3f391c",
+    "backend/app/api/schemes.py": "2890e906c132a70fefc27d742d312b95020332a06efe5d7c7c92bb66fa54591f",
     "backend/app/config.py": "b2b86238500b2a566900ea8044ca8cdf1ab76395305b178f31f8924f83314082",
-    "backend/app/db.py": "2d59f9a1748ef5fa19ccace231fd02ad8bbd3ca33da8b20accba62a5d0f2c625",
+    "backend/app/custom/__init__.py": "679bff1858f0acb12ab126936e825d3f93d5a45ee33a38ad7d9f25e502f615d8",
+    "backend/app/custom/audit.py": "ed0f7dd24514cd1cfaae51636bcc5c49744ed6e83e3c44117645ba9fdc2ca568",
+    "backend/app/custom/errors.py": "89213082ecdd44e4a2f3b7af6f780b1a1b9eaf4a588b7046165db23fb6cce44e",
+    "backend/app/custom/export.py": "06f79f578668b7b817e4dfa6504dd416245f274a459b12e1e094a4599c506574",
+    "backend/app/custom/fields.py": "6d8aae181d8802abaafd9d5f292c622953ca3a0294b8534cf973087c9222ceaa",
+    "backend/app/custom/models.py": "226758330ecb3cfc95079b184d6557f491dd2218c85d8451acf689bb6b03bf86",
+    "backend/app/custom/options.py": "e0bd6487b7f571367b789a80af2cd1b371fb598598c2ff6f195383a7dcc97cbb",
+    "backend/app/custom/rules.py": "30ec38c814d46d7320dec4503609405b942edf9eca6fb0d9b75e02dd81f63301",
+    "backend/app/custom/signature.py": "d7ca48cec2c8b780cc7632d555394e09ca31a47c5d2f7f32f3acb732d63044f1",
+    "backend/app/custom/state.py": "35f06771571aee321b4de0a28600f7c785de5b9e04f867720073fad3ff33308a",
+    "backend/app/custom/templates.py": "7e875a8a401cbca9ac50e3dc84ec8c5a8301906026e80ae49adfd53651339f88",
+    "backend/app/db.py": "5f20c7a441dc7f1f2d169606fc8a2c8ce0d288aea6b0a7204f9756016c8a7a15",
     "backend/app/engine/__init__.py": "83887cdb1f4f0f9dd021986db8de509f55f9b857a33f18b52a95119bd84fd482",
     "backend/app/engine/mcdm.py": "efdaf57b7282583298096224e88d9842043a44f3a514f52e4e20a919ee24e8ed",
     "backend/app/engine/metrics.py": "0273ac714ec5ebc123bff15b3dda21839862336d5a78ff89f23893221adf45f0",
-    "backend/app/engine/regions.py": "7c81ec763628b56230c936ce05759ed35a0f720ae91daabe3f4f39382ac0a254",
-    "backend/app/engine/rules.py": "be58b779f25fa92b5a1cd842bb536a0587b97a172e6876735c82a50cc211c33a",
+    "backend/app/engine/rule_check.py": "9d7cc357e6cdfb5c309a4ffebb60f518a3e9d3e816d5a4b27ccbb8a7f290b9d5",
+    "backend/app/engine/rules.py": "340e093713cfe93727e88ab8feb546a825d8261cd45f0a061900f6425442d24f",
     "backend/app/engine/scoring.py": "c8bfdec44e428a96ab106089643e1de5185fce4ce5bacb8e2b417a1a4976ea26",
-    "backend/app/engine/weights.py": "ce2e765e6b7f780fe36cacaa1084ad799595b90aae95fd801616faefe92a9e8f",
+    "backend/app/engine/weights.py": "2f1b7de63e5a369682232aab9a3dc98655c7c2e9680c69128cde8905536a2d9a",
     "backend/app/excel/__init__.py": "a85d4a74036c4cdf454ec4cce162fcbbef17d844a5486243280cfa9caec0d502",
-    "backend/app/excel/io.py": "25e1eee63d20086cfe7105900183988cfd9415f04ed8571e9dcc4d4f775400e5",
-    "backend/app/main.py": "160482fcfd722b72c7f4a5ef1792955c2dec181afbf79ca87225a393cdf97995",
+    "backend/app/excel/io.py": "b049e987d3d0026dec11ca57086b722af539ad7896283cfe8a7df08edaf61f4f",
+    "backend/app/main.py": "cef088e1751acd2c24c98a4b418cbde03351e915cb7ea261c3aa20228cff80ad",
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "5510cc532710e3a193ca4f26f7e5f5d1067a0138ab6841286bf954e2c4656a32",
+    "backend/app/models/params.py": "8f3e2399d5b8072b43f422aea2b057d83e2edc542fd70b39731de8eb01f35740",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
-    "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
-    "rules/_province_template.yaml": "c4e15f94808d603565d69cc242dfa5f4467b527cd45da69e7dd4c5634145dfd8",
+    "backend/app/schemas/merged.py": "32815e54397f97a6bc3b4333bd79f959e0d64ccb1baee30d376e0db350c8c682",
+    "backend/app/schemas/meta.py": "2df5215626d56fd7bf1457cf164fd4a5dcde80f29ea5507752dbd2a9fc1ccc27",
     "rules/_template.yaml": "5d7740c4a23a2e802808a2882b8d05428dd9b39fe40180fe800d7fee73667c4c",
     "rules/compliance.yaml": "d4d1ee2de2eeb7070e5e58aac9981997d0179bca1c23ac1f63c5c8cc08906953",
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
-    "rules/cq_local.yaml": "d0fdfbbb0408d0ae71bbc05bbf354ffb3f534bce35abba77c8e3c4d6c215121f",
+    "rules/construction_safety.yaml": "248d90abc36e4e986ca5453c1e8b7ad4a05c1a3b5b642d83dd4e080a224a40bb",
     "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
-    "rules/hb_local.yaml": "fb3b4df2a1db5433492c24bf09d8d161c00a649a63d690883ce3acea2b5bff7d",
-    "rules/he_local.yaml": "e6daec37f8a51f7ce3e4a116a126fe6a4374bb2b35ac476476f0a0281e7d1c69",
-    "rules/jl_local.yaml": "978c2c9e69868347e03a88a4090d15492acf286d2231f08703a5d6ba5987319e",
-    "rules/ln_local.yaml": "82f773094d66ca696d18e46a270dfb8349bad3f4c751e8ebbc3b9788a6347841",
-    "rules/nx_local.yaml": "07742b356a1079f201fe9f7874295b671db698d84a7a6031ae56cc789c257e22",
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
-    "rules/sc_local.yaml": "41145e3ba454b7717c829945e6c30db45729bb82e14518d4ad119240ab761958",
-    "rules/structure.yaml": "3f56e9c0206b711e6b3fd97b63d56812da3145e60299c095153ef9fd558f6e63",
-    "rules/sx_local.yaml": "f835167e8aa9739724b7fbe33b8cdaffd6a2d2a5d7424cd56b74142c6d6e872b",
+    "rules/structure.yaml": "33bfd1961b8ef6d8dd4b6ddfc11244d1fcf44954e9a472bcb88cac29078a8280",
+    "rules/structure_foundation.yaml": "d96fd8830142c21e3308558bee2c5a2300d56ef1f675564578a2478ae1e8111d",
+    "rules/structure_members.yaml": "737e11f3bf54f48cdf3e23ec97c69f7ef7f2957cc21381b3a66221cb9ab19ae8",
+    "rules/structure_steel.yaml": "3fb4a07b0a7ee389ad3f6d55857830dce99ca167829c8dc2ec72ab9d4064ccf9",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
-    "rules/zj_mic.yaml": "1e59bd42fb824e7c613cd07fc610bf574d427c64470a2e644bdea67569480424",
-    "data/schemes/mock/A_高品质.json": "e0e84802b5bdda1d9d3a732520e3d872bd85408c595a54176593daddb37aa54f",
-    "data/schemes/mock/B_不合规.json": "e9744ebcb4455cb00ab0c00cd8a254b80358d1b62066ce5548babba8913604af",
-    "data/schemes/mock/C_MiC高标准化.json": "6e0436811fcb754d42edc9a515fe5df7e0a3a5b704d557fb0b51271f72480c11",
-    "data/schemes/mock/C_现浇.json": "03845558a44d354ea9f1cb6e5621e8deacd9c58804356c557a1f29eaf8f426cf",
-    "data/schemes/mock/D_均衡.json": "38e61d280fe84cecd0f3aa24167508cfa050dbb212f8e933d8f5bdb7eb947e40",
-    "data/schemes/mock/E_被支配.json": "4defc2cf39ee4e24de45da4508889427c2628e4f78d5b5f0b5b30ea263c69e95",
+    "data/schemes/mock/A_高品质.json": "5f737a10df7842843acbbe1170c0840846fbdebd83e32e4528dba5897dfaf516",
+    "data/schemes/mock/B_不合规.json": "71ddbf892f561829f92f19113f0d9f24f2fabd2c18e243cf72d6ce1faf58564c",
+    "data/schemes/mock/C_MiC高标准化.json": "d2409f45c4717dda7fcd6d2e71e754a242a2e76a451ced08ebb26b9f626c39ea",
+    "data/schemes/mock/C_现浇.json": "1f6493ad51756eceab5db347cd5a83e52dff16a1af8fd975c52d7d5635a5bd61",
+    "data/schemes/mock/D_均衡.json": "8866b25e9155a1039ee261798547e87bedbfd627a50a89499831c01f8416a108",
+    "data/schemes/mock/E_被支配.json": "89db1634bdac5282ef1e1aaa6cb8ef26ba02a3416991e8cf835d03b723a3f67f",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
-    "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
-    "data/schemes/方案录入模板.xlsx": "7ebafe4b67d6502d6b5ccb0d2ed5c1f7d57f7adb609e96b400f7d7c7168dc89a"
+    "scripts/export_frontend_fixtures.py": "ef289012f2bd9d6a623671a7c773e8a8f51e3ee35a3629695079a3a002baabeb",
+    "data/schemes/方案录入模板.xlsx": "bb9fc903000fceffce413fdbd5480e87c115246e10b3989f42933f410d475545"
   },
   "grid_step": 10,
   "projects": [
@@ -76,9 +83,7 @@
         "density_max": 0.22,
         "height_max": 54.0,
         "climate_zone": "夏热冬冷",
-        "seismic_intensity": "6度(0.05g)",
-        "province": null,
-        "standard_packs": null
+        "seismic_intensity": "6度(0.05g)"
       },
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
@@ -112,15 +117,6 @@
         "highest_occupied_floor_height": 49.5,
         "daylight_factor": 0.032,
         "sunlight_hours": 2.5,
-        "daylight_standard_day": null,
-        "living_space_count": null,
-        "daylight_room_count": null,
-        "clear_height": null,
-        "has_fresh_air": null,
-        "has_stretcher_elevator": null,
-        "has_accessible_elevator": null,
-        "total_elevators": null,
-        "per_capita_green": null,
         "gfa": 38400.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -131,6 +127,23 @@
         "design_working_life": 70,
         "min_plan_width": 16.0,
         "concrete_grade": 30.0,
+        "structural_height_classification": null,
+        "foundation_type": "桩筏基础",
+        "foundation_concrete_grade": null,
+        "foundation_working_life": 70,
+        "steel_system": null,
+        "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "staggered_concrete_grade": null,
+        "has_out_of_plane_staggered_wall": null,
+        "staggered_wall_thickness": null,
+        "is_single_span_frame": false,
         "irregularity_items": [
           "凹凸不规则",
           "局部不规则"
@@ -141,6 +154,18 @@
           "大悬挑",
           "高支模"
         ],
+        "excavation_depth": 4.5,
+        "formwork_height": 4.5,
+        "scaffold_type": "附着式升降脚手架",
+        "scaffold_height": 52.8,
+        "retaining_type": "排桩",
+        "retaining_wall_two_in_one": null,
+        "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "混凝土内支撑",
+        "brace_concrete_grade": null,
+        "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.25,
         "green_ratio": 0.38
       },
@@ -176,15 +201,6 @@
         "highest_occupied_floor_height": 46.4,
         "daylight_factor": 0.022,
         "sunlight_hours": 2.0,
-        "daylight_standard_day": null,
-        "living_space_count": null,
-        "daylight_room_count": null,
-        "clear_height": null,
-        "has_fresh_air": null,
-        "has_stretcher_elevator": null,
-        "has_accessible_elevator": null,
-        "total_elevators": null,
-        "per_capita_green": null,
         "gfa": 40800.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -195,10 +211,39 @@
         "design_working_life": 50,
         "min_plan_width": 15.0,
         "concrete_grade": 25.0,
+        "structural_height_classification": null,
+        "foundation_type": "桩基础",
+        "foundation_concrete_grade": null,
+        "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": null,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "staggered_concrete_grade": null,
+        "has_out_of_plane_staggered_wall": null,
+        "staggered_wall_thickness": null,
+        "is_single_span_frame": false,
         "irregularity_items": [],
         "std_floor_repeat": 0.8,
         "component_types": 14,
         "risk_features": [],
+        "excavation_depth": 4.5,
+        "formwork_height": 4.5,
+        "scaffold_type": "落地式钢管脚手架",
+        "scaffold_height": 49.0,
+        "retaining_type": "放坡开挖",
+        "retaining_wall_two_in_one": null,
+        "retaining_concrete_grade": null,
+        "excavation_working_life": 2.0,
+        "brace_type": "无内支撑与锚拉",
+        "brace_concrete_grade": null,
+        "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.45,
         "green_ratio": 0.35
       },
@@ -235,15 +280,6 @@
         "highest_occupied_floor_height": 51.0,
         "daylight_factor": 0.024,
         "sunlight_hours": 2.2,
-        "daylight_standard_day": null,
-        "living_space_count": null,
-        "daylight_room_count": null,
-        "clear_height": null,
-        "has_fresh_air": null,
-        "has_stretcher_elevator": null,
-        "has_accessible_elevator": null,
-        "total_elevators": null,
-        "per_capita_green": null,
         "gfa": 43200.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -254,10 +290,39 @@
         "design_working_life": 50,
         "min_plan_width": 16.0,
         "concrete_grade": 30.0,
+        "structural_height_classification": null,
+        "foundation_type": "桩筏基础",
+        "foundation_concrete_grade": null,
+        "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "staggered_concrete_grade": null,
+        "has_out_of_plane_staggered_wall": null,
+        "staggered_wall_thickness": null,
+        "is_single_span_frame": false,
         "irregularity_items": [],
         "std_floor_repeat": 0.95,
         "component_types": 8,
         "risk_features": [],
+        "excavation_depth": 4.5,
+        "formwork_height": 4.5,
+        "scaffold_type": "附着式升降脚手架",
+        "scaffold_height": 54.0,
+        "retaining_type": "排桩",
+        "retaining_wall_two_in_one": null,
+        "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "混凝土内支撑",
+        "brace_concrete_grade": null,
+        "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.75,
         "green_ratio": 0.36
       },
@@ -293,15 +358,6 @@
         "highest_occupied_floor_height": 48.0,
         "daylight_factor": 0.028,
         "sunlight_hours": 2.8,
-        "daylight_standard_day": null,
-        "living_space_count": null,
-        "daylight_room_count": null,
-        "clear_height": null,
-        "has_fresh_air": null,
-        "has_stretcher_elevator": null,
-        "has_accessible_elevator": null,
-        "total_elevators": null,
-        "per_capita_green": null,
         "gfa": 40800.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -312,10 +368,39 @@
         "design_working_life": 50,
         "min_plan_width": 16.0,
         "concrete_grade": 30.0,
+        "structural_height_classification": null,
+        "foundation_type": "桩筏基础",
+        "foundation_concrete_grade": null,
+        "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "staggered_concrete_grade": null,
+        "has_out_of_plane_staggered_wall": null,
+        "staggered_wall_thickness": null,
+        "is_single_span_frame": false,
         "irregularity_items": [],
         "std_floor_repeat": 0.85,
         "component_types": 12,
         "risk_features": [],
+        "excavation_depth": 4.5,
+        "formwork_height": 4.5,
+        "scaffold_type": "附着式升降脚手架",
+        "scaffold_height": 51.0,
+        "retaining_type": "地下连续墙",
+        "retaining_wall_two_in_one": null,
+        "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "锚杆（锚拉）",
+        "brace_concrete_grade": null,
+        "anchor_free_length": 6.0,
+        "custom": {},
         "prefab_ratio_est": 0.5,
         "green_ratio": 0.4
       },
@@ -351,15 +436,6 @@
         "highest_occupied_floor_height": 48.0,
         "daylight_factor": 0.023,
         "sunlight_hours": 2.1,
-        "daylight_standard_day": null,
-        "living_space_count": null,
-        "daylight_room_count": null,
-        "clear_height": null,
-        "has_fresh_air": null,
-        "has_stretcher_elevator": null,
-        "has_accessible_elevator": null,
-        "total_elevators": null,
-        "per_capita_green": null,
         "gfa": 40800.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -370,6 +446,23 @@
         "design_working_life": 50,
         "min_plan_width": 14.0,
         "concrete_grade": 25.0,
+        "structural_height_classification": null,
+        "foundation_type": "桩基础",
+        "foundation_concrete_grade": null,
+        "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": null,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "staggered_concrete_grade": null,
+        "has_out_of_plane_staggered_wall": null,
+        "staggered_wall_thickness": null,
+        "is_single_span_frame": false,
         "irregularity_items": [
           "扭转不规则"
         ],
@@ -379,6 +472,18 @@
           "大悬挑",
           "复杂地质"
         ],
+        "excavation_depth": 4.5,
+        "formwork_height": 4.5,
+        "scaffold_type": "附着式升降脚手架",
+        "scaffold_height": 51.0,
+        "retaining_type": "排桩",
+        "retaining_wall_two_in_one": null,
+        "retaining_concrete_grade": 25.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "无内支撑与锚拉",
+        "brace_concrete_grade": null,
+        "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.35
       },
@@ -414,15 +519,6 @@
         "highest_occupied_floor_height": 51.0,
         "daylight_factor": 0.025,
         "sunlight_hours": 2.2,
-        "daylight_standard_day": null,
-        "living_space_count": null,
-        "daylight_room_count": null,
-        "clear_height": null,
-        "has_fresh_air": null,
-        "has_stretcher_elevator": null,
-        "has_accessible_elevator": null,
-        "total_elevators": null,
-        "per_capita_green": null,
         "gfa": 43200.0,
         "footprint": 2400.0,
         "buildings": 4,
@@ -433,6 +529,23 @@
         "design_working_life": 50,
         "min_plan_width": 15.0,
         "concrete_grade": 30.0,
+        "structural_height_classification": null,
+        "foundation_type": "桩筏基础",
+        "foundation_concrete_grade": null,
+        "foundation_working_life": 50,
+        "steel_system": null,
+        "has_basement": true,
+        "shear_wall_thickness": 200.0,
+        "frame_beam_width": 250.0,
+        "frame_column_shape": "矩形",
+        "frame_column_size": 400.0,
+        "raft_rebar_ratio": 0.2,
+        "foundation_depth": 6.0,
+        "has_staggered_floor": false,
+        "staggered_concrete_grade": null,
+        "has_out_of_plane_staggered_wall": null,
+        "staggered_wall_thickness": null,
+        "is_single_span_frame": false,
         "irregularity_items": [
           "局部不规则"
         ],
@@ -441,6 +554,18 @@
         "risk_features": [
           "大悬挑"
         ],
+        "excavation_depth": 4.5,
+        "formwork_height": 4.5,
+        "scaffold_type": "附着式升降脚手架",
+        "scaffold_height": 54.0,
+        "retaining_type": "排桩",
+        "retaining_wall_two_in_one": null,
+        "retaining_concrete_grade": 30.0,
+        "excavation_working_life": 2.0,
+        "brace_type": "混凝土内支撑",
+        "brace_concrete_grade": null,
+        "anchor_free_length": null,
+        "custom": {},
         "prefab_ratio_est": 0.3,
         "green_ratio": 0.37
       },
@@ -452,7 +577,7 @@
   ],
   "evaluation": {
     "project_id": 1,
-    "rule_count": 33,
+    "rule_count": 54,
     "results": [
       {
         "scheme_id": "1",
@@ -555,6 +680,106 @@
             "message": "四层及以上或入户楼面超过9m的住宅每单元至少一台电梯 通过"
           },
           {
+            "rule_id": "K-03",
+            "name": "深基坑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 5",
+            "formula": "excavation_depth < 5",
+            "source": "建办质〔2018〕31号 附件2 一：开挖深度超过5m（含5m）的基坑（槽）的土方开挖、支护、降水工程；程序依据为住建部令第37号 第十二条（超过一定规模的危大工程应组织专家论证会，专家不少于5名）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：excavation_depth >= 5）"
+          },
+          {
+            "rule_id": "K-04",
+            "name": "高大模板支撑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 8",
+            "formula": "formwork_height < 8",
+            "source": "建办质〔2018〕31号 附件2 二（二）：混凝土模板支撑工程搭设高度8m及以上，或搭设跨度18m及以上，或施工总荷载（设计值）15kN/m²及以上，或集中线荷载（设计值）20kN/m及以上。本系统只按搭设高度判定（其余三个条件缺字段）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：formwork_height >= 8）"
+          },
+          {
+            "rule_id": "K-05",
+            "name": "落地式脚手架超高属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 52.8,
+            "limit": "< 50",
+            "formula": "scaffold_height < 50",
+            "source": "建办质〔2018〕31号 附件2 四（一）：搭设高度50m及以上的落地式钢管脚手架工程（附件2 四（二）（三）另有附着式升降提升高度≥150m、悬挑式分段架体高度≥20m 两档）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
+          },
+          {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "排桩桩身混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [
+              "retaining_wall_two_in_one"
+            ],
+            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "brace_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取内支撑专用字段；不从支护桩墙等级推定",
+            "missing_fields": [
+              "brace_concrete_grade"
+            ],
+            "message": "缺少字段 brace_concrete_grade，无法判定"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -573,8 +798,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -585,10 +810,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -661,6 +886,171 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "foundation_concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按基础专用混凝土强度等级字段判定；未填写时为数据不足，不用上部结构等级替代",
+            "missing_fields": [
+              "foundation_concrete_grade"
+            ],
+            "message": "缺少字段 foundation_concrete_grade，无法判定"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款基坑工作年限要求另由 K-08 判定",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if structural_height_classification == '高层' else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 structural_height_classification，无法判定"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 0.2,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础底板贯通筋配筋率下限 通过"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。本条埋深用语为「不宜」，不足时给出复核警告，不据此自动排除方案；地下室设置要求另行判定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "staggered_concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '框架' or structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 250",
+            "formula": "staggered_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [
+              "has_out_of_plane_staggered_wall"
+            ],
+            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [
+              "steel_system",
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.3,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -972,6 +1362,104 @@
             "message": "四层及以上或入户楼面超过9m的住宅每单元至少一台电梯 通过"
           },
           {
+            "rule_id": "K-03",
+            "name": "深基坑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 5",
+            "formula": "excavation_depth < 5",
+            "source": "建办质〔2018〕31号 附件2 一：开挖深度超过5m（含5m）的基坑（槽）的土方开挖、支护、降水工程；程序依据为住建部令第37号 第十二条（超过一定规模的危大工程应组织专家论证会，专家不少于5名）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：excavation_depth >= 5）"
+          },
+          {
+            "rule_id": "K-04",
+            "name": "高大模板支撑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 8",
+            "formula": "formwork_height < 8",
+            "source": "建办质〔2018〕31号 附件2 二（二）：混凝土模板支撑工程搭设高度8m及以上，或搭设跨度18m及以上，或施工总荷载（设计值）15kN/m²及以上，或集中线荷载（设计值）20kN/m及以上。本系统只按搭设高度判定（其余三个条件缺字段）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：formwork_height >= 8）"
+          },
+          {
+            "rule_id": "K-05",
+            "name": "落地式脚手架超高属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 49.0,
+            "limit": "< 50",
+            "formula": "scaffold_height < 50",
+            "source": "建办质〔2018〕31号 附件2 四（一）：搭设高度50m及以上的落地式钢管脚手架工程（附件2 四（二）（三）另有附着式升降提升高度≥150m、悬挑式分段架体高度≥20m 两档）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
+          },
+          {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '排桩'）"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [
+              "retaining_wall_two_in_one"
+            ],
+            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "brace_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取内支撑专用字段；不从支护桩墙等级推定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '混凝土内支撑'）"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -990,8 +1478,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -1002,10 +1490,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -1078,6 +1566,169 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "foundation_concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按基础专用混凝土强度等级字段判定；未填写时为数据不足，不用上部结构等级替代",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款基坑工作年限要求另由 K-08 判定",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if structural_height_classification == '高层' else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 structural_height_classification，无法判定"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。本条埋深用语为「不宜」，不足时给出复核警告，不据此自动排除方案；地下室设置要求另行判定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "staggered_concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '框架' or structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 250",
+            "formula": "staggered_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [
+              "has_out_of_plane_staggered_wall"
+            ],
+            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [
+              "steel_system",
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.2866666666666666,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -1389,6 +2040,106 @@
             "message": "四层及以上或入户楼面超过9m的住宅每单元至少一台电梯 通过"
           },
           {
+            "rule_id": "K-03",
+            "name": "深基坑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 5",
+            "formula": "excavation_depth < 5",
+            "source": "建办质〔2018〕31号 附件2 一：开挖深度超过5m（含5m）的基坑（槽）的土方开挖、支护、降水工程；程序依据为住建部令第37号 第十二条（超过一定规模的危大工程应组织专家论证会，专家不少于5名）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：excavation_depth >= 5）"
+          },
+          {
+            "rule_id": "K-04",
+            "name": "高大模板支撑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 8",
+            "formula": "formwork_height < 8",
+            "source": "建办质〔2018〕31号 附件2 二（二）：混凝土模板支撑工程搭设高度8m及以上，或搭设跨度18m及以上，或施工总荷载（设计值）15kN/m²及以上，或集中线荷载（设计值）20kN/m及以上。本系统只按搭设高度判定（其余三个条件缺字段）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：formwork_height >= 8）"
+          },
+          {
+            "rule_id": "K-05",
+            "name": "落地式脚手架超高属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 54.0,
+            "limit": "< 50",
+            "formula": "scaffold_height < 50",
+            "source": "建办质〔2018〕31号 附件2 四（一）：搭设高度50m及以上的落地式钢管脚手架工程（附件2 四（二）（三）另有附着式升降提升高度≥150m、悬挑式分段架体高度≥20m 两档）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
+          },
+          {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "排桩桩身混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [
+              "retaining_wall_two_in_one"
+            ],
+            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "brace_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取内支撑专用字段；不从支护桩墙等级推定",
+            "missing_fields": [
+              "brace_concrete_grade"
+            ],
+            "message": "缺少字段 brace_concrete_grade，无法判定"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -1407,10 +2158,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '6度(0.05g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '6度(0.05g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-06",
@@ -1419,10 +2170,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -1495,6 +2246,169 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "foundation_concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按基础专用混凝土强度等级字段判定；未填写时为数据不足，不用上部结构等级替代",
+            "missing_fields": [
+              "foundation_concrete_grade"
+            ],
+            "message": "缺少字段 foundation_concrete_grade，无法判定"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款基坑工作年限要求另由 K-08 判定",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if structural_height_classification == '高层' else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '剪力墙' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 0.2,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础底板贯通筋配筋率下限 通过"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。本条埋深用语为「不宜」，不足时给出复核警告，不据此自动排除方案；地下室设置要求另行判定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "staggered_concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '框架' or structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 250",
+            "formula": "staggered_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [
+              "has_out_of_plane_staggered_wall"
+            ],
+            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [
+              "steel_system",
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.375,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -1806,6 +2720,104 @@
             "message": "四层及以上或入户楼面超过9m的住宅每单元至少一台电梯 通过"
           },
           {
+            "rule_id": "K-03",
+            "name": "深基坑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 5",
+            "formula": "excavation_depth < 5",
+            "source": "建办质〔2018〕31号 附件2 一：开挖深度超过5m（含5m）的基坑（槽）的土方开挖、支护、降水工程；程序依据为住建部令第37号 第十二条（超过一定规模的危大工程应组织专家论证会，专家不少于5名）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：excavation_depth >= 5）"
+          },
+          {
+            "rule_id": "K-04",
+            "name": "高大模板支撑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 8",
+            "formula": "formwork_height < 8",
+            "source": "建办质〔2018〕31号 附件2 二（二）：混凝土模板支撑工程搭设高度8m及以上，或搭设跨度18m及以上，或施工总荷载（设计值）15kN/m²及以上，或集中线荷载（设计值）20kN/m及以上。本系统只按搭设高度判定（其余三个条件缺字段）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：formwork_height >= 8）"
+          },
+          {
+            "rule_id": "K-05",
+            "name": "落地式脚手架超高属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 51.0,
+            "limit": "< 50",
+            "formula": "scaffold_height < 50",
+            "source": "建办质〔2018〕31号 附件2 四（一）：搭设高度50m及以上的落地式钢管脚手架工程（附件2 四（二）（三）另有附着式升降提升高度≥150m、悬挑式分段架体高度≥20m 两档）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
+          },
+          {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '排桩'）"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": 30.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [
+              "retaining_wall_two_in_one"
+            ],
+            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "brace_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取内支撑专用字段；不从支护桩墙等级推定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '混凝土内支撑'）"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 6.0,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "锚杆自由段长度下限 通过"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -1824,8 +2836,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -1836,10 +2848,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -1912,6 +2924,171 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "foundation_concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按基础专用混凝土强度等级字段判定；未填写时为数据不足，不用上部结构等级替代",
+            "missing_fields": [
+              "foundation_concrete_grade"
+            ],
+            "message": "缺少字段 foundation_concrete_grade，无法判定"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款基坑工作年限要求另由 K-08 判定",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if structural_height_classification == '高层' else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 structural_height_classification，无法判定"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架梁截面宽度下限 通过"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架柱截面尺寸下限 通过"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 0.2,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "筏形 / 桩筏基础底板贯通筋配筋率下限 通过"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。本条埋深用语为「不宜」，不足时给出复核警告，不据此自动排除方案；地下室设置要求另行判定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "staggered_concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '框架' or structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 250",
+            "formula": "staggered_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [
+              "has_out_of_plane_staggered_wall"
+            ],
+            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [
+              "steel_system",
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.1875,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -2223,6 +3400,104 @@
             "message": "四层及以上或入户楼面超过9m的住宅每单元至少一台电梯 通过"
           },
           {
+            "rule_id": "K-03",
+            "name": "深基坑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 5",
+            "formula": "excavation_depth < 5",
+            "source": "建办质〔2018〕31号 附件2 一：开挖深度超过5m（含5m）的基坑（槽）的土方开挖、支护、降水工程；程序依据为住建部令第37号 第十二条（超过一定规模的危大工程应组织专家论证会，专家不少于5名）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：excavation_depth >= 5）"
+          },
+          {
+            "rule_id": "K-04",
+            "name": "高大模板支撑属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 4.5,
+            "limit": "< 8",
+            "formula": "formwork_height < 8",
+            "source": "建办质〔2018〕31号 附件2 二（二）：混凝土模板支撑工程搭设高度8m及以上，或搭设跨度18m及以上，或施工总荷载（设计值）15kN/m²及以上，或集中线荷载（设计值）20kN/m及以上。本系统只按搭设高度判定（其余三个条件缺字段）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：formwork_height >= 8）"
+          },
+          {
+            "rule_id": "K-05",
+            "name": "落地式脚手架超高属超过一定规模的危大工程（须专家论证）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 51.0,
+            "limit": "< 50",
+            "formula": "scaffold_height < 50",
+            "source": "建办质〔2018〕31号 附件2 四（一）：搭设高度50m及以上的落地式钢管脚手架工程（附件2 四（二）（三）另有附着式升降提升高度≥150m、悬挑式分段架体高度≥20m 两档）。程序依据同 K-03（住建部令第37号 第十二条）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50）"
+          },
+          {
+            "rule_id": "K-06",
+            "name": "排桩桩身混凝土强度等级下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 25",
+            "formula": "retaining_concrete_grade >= 25",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+            "missing_fields": [],
+            "message": "排桩桩身混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "K-07",
+            "name": "两墙合一地下连续墙混凝土强度等级下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": 25.0,
+            "limit": ">= 30",
+            "formula": "retaining_concrete_grade >= 30",
+            "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+            "missing_fields": [
+              "retaining_wall_two_in_one"
+            ],
+            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "K-08",
+            "name": "基坑工程设计工作年限下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 2.0,
+            "limit": ">= 1",
+            "formula": "excavation_working_life >= 1",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+            "missing_fields": [],
+            "message": "基坑工程设计工作年限下限 通过"
+          },
+          {
+            "rule_id": "K-09",
+            "name": "混凝土内支撑强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 25",
+            "formula": "brace_concrete_grade >= 25",
+            "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取内支撑专用字段；不从支护桩墙等级推定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '混凝土内支撑'）"
+          },
+          {
+            "rule_id": "K-10",
+            "name": "锚杆自由段长度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 5",
+            "formula": "anchor_free_length >= 5",
+            "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：brace_type == '锚杆（锚拉）'）"
+          },
+          {
             "rule_id": "S-02",
             "name": "钢结构方案须申报人工复核事项（条件硬约束）",
             "status": "not_applicable",
@@ -2241,8 +3516,8 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
+            "formula": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
             "message": "建筑高度不超结构体系最大适用高度（6 度区） 通过"
           },
@@ -2253,10 +3528,10 @@
             "severity": "error",
             "value": null,
             "limit": null,
-            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
-            "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
+            "formula": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
+            "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
             "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'）"
+            "message": "本方案不适用该规则（适用条件：seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')）"
           },
           {
             "rule_id": "S-07",
@@ -2329,6 +3604,167 @@
             "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
             "missing_fields": [],
             "message": "混凝土强度等级下限 通过"
+          },
+          {
+            "rule_id": "S-17",
+            "name": "筏形 / 桩筏基础混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "foundation_concrete_grade >= 30",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按基础专用混凝土强度等级字段判定；未填写时为数据不足，不用上部结构等级替代",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-18",
+            "name": "地基与基础设计工作年限不低于上部结构",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "foundation_working_life >= design_working_life",
+            "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款基坑工作年限要求另由 K-08 判定",
+            "missing_fields": [],
+            "message": "地基与基础设计工作年限不低于上部结构 通过"
+          },
+          {
+            "rule_id": "S-22",
+            "name": "剪力墙截面厚度下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "shear_wall_thickness >= (160 if structural_height_classification == '高层' else 140)",
+            "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '剪力墙' or structure_type == '框架-剪力墙'）"
+          },
+          {
+            "rule_id": "S-23",
+            "name": "框架梁截面宽度下限",
+            "status": "passed",
+            "severity": "error",
+            "value": 250.0,
+            "limit": ">= 200",
+            "formula": "frame_beam_width >= 200",
+            "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架梁截面宽度下限 通过"
+          },
+          {
+            "rule_id": "S-24",
+            "name": "框架柱截面尺寸下限",
+            "status": "passed",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+            "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+            "missing_fields": [],
+            "message": "框架柱截面尺寸下限 通过"
+          },
+          {
+            "rule_id": "S-25",
+            "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 0.15",
+            "formula": "raft_rebar_ratio >= 0.15",
+            "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：foundation_type == '筏形基础' or foundation_type == '桩筏基础'）"
+          },
+          {
+            "rule_id": "S-26",
+            "name": "超过 50 m 的钢结构基础埋置深度",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": null,
+            "limit": null,
+            "formula": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。本条埋深用语为「不宜」，不足时给出复核警告，不据此自动排除方案；地下室设置要求另行判定",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
+          },
+          {
+            "rule_id": "S-27",
+            "name": "错层处构件混凝土强度等级下限",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 30",
+            "formula": "staggered_concrete_grade >= 30",
+            "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and (structure_type == '框架' or structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
+          },
+          {
+            "rule_id": "S-28",
+            "name": "错层处平面外受力剪力墙截面厚度下限",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": ">= 250",
+            "formula": "staggered_wall_thickness >= 250",
+            "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+            "missing_fields": [
+              "has_out_of_plane_staggered_wall"
+            ],
+            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-29",
+            "name": "钢结构高层不应采用单跨框架",
+            "status": "insufficient_data",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "not is_single_span_frame",
+            "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+            "missing_fields": [
+              "steel_system",
+              "structural_height_classification"
+            ],
+            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+          },
+          {
+            "rule_id": "S-19",
+            "name": "钢结构建筑高度不超体系最大适用高度",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+            "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-20",
+            "name": "钢结构高宽比不超限值（提示）",
+            "status": "not_applicable",
+            "severity": "warning",
+            "value": 3.642857142857143,
+            "limit": "<= 6.5",
+            "formula": "height_width_ratio <= 6.5",
+            "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构'）"
+          },
+          {
+            "rule_id": "S-21",
+            "name": "超过 50 m 的钢结构房屋应设置地下室",
+            "status": "not_applicable",
+            "severity": "error",
+            "value": null,
+            "limit": null,
+            "formula": "has_basement",
+            "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and height > 50）"
           }
         ],
         "metrics": {
@@ -2565,6 +4001,7 @@
         ],
         "role": "government",
         "role_name": "政府",
+        "is_custom": false,
         "note": "政府首先关注强制性规范和结构安全底线，同时兼顾居住品质、产业化实施与绿色目标。",
         "ahp": null,
         "consistency_warning": null
@@ -2585,6 +4022,7 @@
         ],
         "role": "developer",
         "role_name": "开发企业",
+        "is_custom": false,
         "note": "开发企业需要控制合规、结构和交付风险，同时平衡产品品质、建造可实施性、工期和绿色竞争力。",
         "ahp": null,
         "consistency_warning": null
@@ -2605,6 +4043,7 @@
         ],
         "role": "contractor",
         "role_name": "施工单位",
+        "is_custom": false,
         "note": "施工单位最关注安全合规、结构实施风险、工艺可实施性、标准化、构件供应、吊装和现场湿作业控制。",
         "ahp": null,
         "consistency_warning": null
@@ -2625,6 +4064,7 @@
         ],
         "role": "resident",
         "role_name": "住户",
+        "is_custom": false,
         "note": "住户最直接感知居住舒适、安全、采光、通风、噪声和电梯服务；结构安全与绿色运行也会直接影响长期居住体验。",
         "ahp": null,
         "consistency_warning": null
@@ -2645,11 +4085,13 @@
         ],
         "role": "design",
         "role_name": "设计单位",
+        "is_custom": false,
         "note": "设计单位需要先满足规范底线，再协调空间品质、结构安全、实施性以及节能低碳目标。",
         "ahp": null,
         "consistency_warning": null
       }
     ],
+    "custom_roles": [],
     "needs_review": []
   },
   "ranks": {
@@ -2683,6 +4125,7 @@
         ],
         "role": "government",
         "role_name": "政府",
+        "is_custom": false,
         "note": "政府首先关注强制性规范和结构安全底线，同时兼顾居住品质、产业化实施与绿色目标。",
         "ahp": null,
         "consistency_warning": null
@@ -3262,6 +4705,7 @@
         ],
         "role": "developer",
         "role_name": "开发企业",
+        "is_custom": false,
         "note": "开发企业需要控制合规、结构和交付风险，同时平衡产品品质、建造可实施性、工期和绿色竞争力。",
         "ahp": null,
         "consistency_warning": null
@@ -3841,6 +5285,7 @@
         ],
         "role": "contractor",
         "role_name": "施工单位",
+        "is_custom": false,
         "note": "施工单位最关注安全合规、结构实施风险、工艺可实施性、标准化、构件供应、吊装和现场湿作业控制。",
         "ahp": null,
         "consistency_warning": null
@@ -4420,6 +5865,7 @@
         ],
         "role": "resident",
         "role_name": "住户",
+        "is_custom": false,
         "note": "住户最直接感知居住舒适、安全、采光、通风、噪声和电梯服务；结构安全与绿色运行也会直接影响长期居住体验。",
         "ahp": null,
         "consistency_warning": null
@@ -4999,6 +6445,7 @@
         ],
         "role": "design",
         "role_name": "设计单位",
+        "is_custom": false,
         "note": "设计单位需要先满足规范底线，再协调空间品质、结构安全、实施性以及节能低碳目标。",
         "ahp": null,
         "consistency_warning": null
@@ -5632,93 +7079,6 @@
             "6度(0.05g)",
             "7度(0.10g)"
           ]
-        },
-        {
-          "name": "province",
-          "label": "所在省份",
-          "description": "项目所在省级行政区（两字母地区码，如 ZJ）。用于提示「所选的地方册是否与项目所在地一致」",
-          "unit": "—",
-          "group": "基本信息",
-          "type": "string",
-          "required": false,
-          "constraints": {},
-          "enum": [
-            "BJ",
-            "TJ",
-            "HE",
-            "SX",
-            "NM",
-            "LN",
-            "JL",
-            "HL",
-            "SH",
-            "JS",
-            "ZJ",
-            "AH",
-            "FJ",
-            "JX",
-            "SD",
-            "HA",
-            "HB",
-            "HN",
-            "GD",
-            "GX",
-            "HI",
-            "CQ",
-            "SC",
-            "GZ",
-            "YN",
-            "XZ",
-            "SN",
-            "GS",
-            "QH",
-            "NX",
-            "XJ"
-          ]
-        },
-        {
-          "name": "standard_packs",
-          "label": "适用标准册",
-          "description": "适用的规则册；留空＝只用国家标准（GB）。GB 永远生效、不能去掉；加进省级地区码后，该省的地方规则才会参与评估",
-          "unit": "—",
-          "group": "基本信息",
-          "type": "array<string>",
-          "required": false,
-          "constraints": {},
-          "options": [
-            "GB",
-            "BJ",
-            "TJ",
-            "HE",
-            "SX",
-            "NM",
-            "LN",
-            "JL",
-            "HL",
-            "SH",
-            "JS",
-            "ZJ",
-            "AH",
-            "FJ",
-            "JX",
-            "SD",
-            "HA",
-            "HB",
-            "HN",
-            "GD",
-            "GX",
-            "HI",
-            "CQ",
-            "SC",
-            "GZ",
-            "YN",
-            "XZ",
-            "SN",
-            "GS",
-            "QH",
-            "NX",
-            "XJ"
-          ]
         }
       ]
     },
@@ -5891,100 +7251,6 @@
           "constraints": {}
         },
         {
-          "name": "daylight_standard_day",
-          "label": "日照标准日",
-          "description": "日照分析用的标准日。必须与日照时数一起填：各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）",
-          "unit": "—",
-          "group": "居住品质",
-          "type": "string",
-          "required": false,
-          "constraints": {},
-          "enum": [
-            "大寒日",
-            "冬至日"
-          ]
-        },
-        {
-          "name": "living_space_count",
-          "label": "居住空间总数",
-          "description": "套内居住空间（卧室、起居室等）总数",
-          "unit": "个",
-          "group": "居住品质",
-          "type": "integer",
-          "required": false,
-          "constraints": {}
-        },
-        {
-          "name": "daylight_room_count",
-          "label": "满足日照空间数",
-          "description": "其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
-          "unit": "个",
-          "group": "居住品质",
-          "type": "integer",
-          "required": false,
-          "constraints": {}
-        },
-        {
-          "name": "clear_height",
-          "label": "室内净高",
-          "description": "卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
-          "unit": "m",
-          "group": "居住品质",
-          "type": "number",
-          "required": false,
-          "constraints": {}
-        },
-        {
-          "name": "has_fresh_air",
-          "label": "设新风/中央空调",
-          "description": "户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
-          "unit": "—",
-          "group": "居住品质",
-          "type": "boolean",
-          "required": false,
-          "constraints": {}
-        },
-        {
-          "name": "has_stretcher_elevator",
-          "label": "设担架电梯",
-          "description": "每个单元是否至少设 1 台可容纳担架的电梯",
-          "unit": "—",
-          "group": "居住品质",
-          "type": "boolean",
-          "required": false,
-          "constraints": {}
-        },
-        {
-          "name": "has_accessible_elevator",
-          "label": "设无障碍电梯",
-          "description": "是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
-          "unit": "—",
-          "group": "居住品质",
-          "type": "boolean",
-          "required": false,
-          "constraints": {}
-        },
-        {
-          "name": "total_elevators",
-          "label": "电梯总台数",
-          "description": "电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
-          "unit": "台",
-          "group": "居住品质",
-          "type": "integer",
-          "required": false,
-          "constraints": {}
-        },
-        {
-          "name": "per_capita_green",
-          "label": "人均公共绿地",
-          "description": "人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
-          "unit": "m²/人",
-          "group": "绿色低碳",
-          "type": "number",
-          "required": false,
-          "constraints": {}
-        },
-        {
           "name": "gfa",
           "label": "总建筑面积",
           "description": "总建筑面积",
@@ -6087,6 +7353,197 @@
           "constraints": {}
         },
         {
+          "name": "structural_height_classification",
+          "label": "结构高度分类",
+          "description": "结构专业核定的高层 / 多层分类（按所适用结构条文核定，不从住宅建筑高度分类自动推定）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "高层",
+            "多层"
+          ]
+        },
+        {
+          "name": "foundation_type",
+          "label": "基础形式",
+          "description": "基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "筏形基础",
+            "桩筏基础",
+            "独立基础",
+            "条形基础",
+            "桩基础"
+          ]
+        },
+        {
+          "name": "foundation_concrete_grade",
+          "label": "基础混凝土强度等级",
+          "description": "基础混凝土强度等级（填 C 后的数值，如 C30 填 30；不从上部结构等级推定）",
+          "unit": "MPa",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "foundation_working_life",
+          "label": "地基基础工作年限",
+          "description": "地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+          "unit": "年",
+          "group": "结构与造价",
+          "type": "integer",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "steel_system",
+          "label": "钢结构体系",
+          "description": "钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "框架",
+            "框架-中心支撑",
+            "框架-偏心支撑（延性墙板）",
+            "筒体和巨型框架"
+          ]
+        },
+        {
+          "name": "has_basement",
+          "label": "是否设地下室",
+          "description": "是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "shear_wall_thickness",
+          "label": "剪力墙截面厚度",
+          "description": "剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）",
+          "unit": "mm",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "frame_beam_width",
+          "label": "框架梁截面宽度",
+          "description": "矩形截面框架梁的截面宽度（不应小于 200 mm）",
+          "unit": "mm",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "frame_column_shape",
+          "label": "框架柱截面形状",
+          "description": "框架柱截面形状（矩形柱按边长、圆形柱按直径判定）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "矩形",
+            "圆形"
+          ]
+        },
+        {
+          "name": "frame_column_size",
+          "label": "框架柱截面尺寸",
+          "description": "框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）",
+          "unit": "mm",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "raft_rebar_ratio",
+          "label": "筏基底板贯通筋配筋率",
+          "description": "筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）",
+          "unit": "%",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "foundation_depth",
+          "label": "基础埋置深度",
+          "description": "基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）",
+          "unit": "m",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "has_staggered_floor",
+          "label": "是否存在错层",
+          "description": "是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "staggered_concrete_grade",
+          "label": "错层处构件混凝土等级",
+          "description": "错层处框架柱 / 平面外受力剪力墙的最低核定混凝土强度等级（填 C 后数值，不从全局结构等级推定）",
+          "unit": "MPa",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "has_out_of_plane_staggered_wall",
+          "label": "错层处是否有平面外受力墙",
+          "description": "错层处是否存在平面外受力剪力墙（专业核定；未填写表示未核对）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "staggered_wall_thickness",
+          "label": "错层处平面外受力墙厚度",
+          "description": "错层处平面外受力剪力墙的最低核定截面厚度（不从一般剪力墙厚度推定）",
+          "unit": "mm",
+          "group": "结构与造价",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "is_single_span_frame",
+          "label": "是否单跨框架",
+          "description": "框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）",
+          "unit": "—",
+          "group": "结构与造价",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
           "name": "irregularity_items",
           "label": "超限不规则项",
           "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
@@ -6150,7 +7607,147 @@
             "不规则建筑",
             "超限构件",
             "复杂地质"
+          ],
+          "extensible": true
+        },
+        {
+          "name": "excavation_depth",
+          "label": "基坑开挖深度",
+          "description": "基坑开挖深度（用于危大工程判定：≥3m 须专项施工方案，≥5m 须专家论证）",
+          "unit": "m",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "formwork_height",
+          "label": "模板支撑高度",
+          "description": "混凝土模板支撑搭设高度（用于危大工程判定：≥5m 须专项方案，≥8m 须专家论证）",
+          "unit": "m",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "scaffold_type",
+          "label": "脚手架形式",
+          "description": "外脚手架形式（附着式升降与悬挑式一律属危大工程）",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "落地式钢管脚手架",
+            "附着式升降脚手架",
+            "悬挑式脚手架"
           ]
+        },
+        {
+          "name": "scaffold_height",
+          "label": "脚手架搭设高度",
+          "description": "脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
+          "unit": "m",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "retaining_type",
+          "label": "基坑支护形式",
+          "description": "基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "排桩",
+            "地下连续墙",
+            "土钉墙",
+            "放坡开挖",
+            "其他"
+          ]
+        },
+        {
+          "name": "retaining_wall_two_in_one",
+          "label": "地下连续墙是否两墙合一",
+          "description": "地下连续墙是否采用两墙合一（仅地下连续墙需核定，其他支护可填否；未填写表示未核对，不按否处理）",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "boolean",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "retaining_concrete_grade",
+          "label": "支护混凝土强度等级",
+          "description": "支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+          "unit": "MPa",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "excavation_working_life",
+          "label": "基坑工作年限",
+          "description": "基坑工程设计工作年限（不应小于 1 年）",
+          "unit": "年",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "brace_type",
+          "label": "内支撑 / 锚拉体系",
+          "description": "基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+          "unit": "—",
+          "group": "施工与安全",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "混凝土内支撑",
+            "钢支撑",
+            "锚杆（锚拉）",
+            "无内支撑与锚拉"
+          ]
+        },
+        {
+          "name": "brace_concrete_grade",
+          "label": "内支撑混凝土强度等级",
+          "description": "混凝土内支撑的混凝土强度等级（填 C 后数值；不从支护桩墙等级推定）",
+          "unit": "MPa",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "anchor_free_length",
+          "label": "锚杆自由段长度",
+          "description": "锚杆自由段长度（不应小于 5.0 m）",
+          "unit": "m",
+          "group": "施工与安全",
+          "type": "number",
+          "required": false,
+          "constraints": {}
+        },
+        {
+          "name": "custom",
+          "label": "自定义字段",
+          "description": "自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示（见 app/custom/fields.py 与 docs/design-custom-add.md）",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "object<any>",
+          "required": false,
+          "constraints": {},
+          "hidden": true
         },
         {
           "name": "prefab_ratio_est",
@@ -6253,14 +7850,13 @@
     }
   },
   "rules": {
-    "rule_count": 64,
-    "hard_count": 48,
+    "rule_count": 54,
+    "hard_count": 38,
     "metric_count": 16,
     "rules": [
       {
         "definition": {
           "id": "C-01",
-          "pack": "GB",
           "name": "建筑总高不超过项目限高",
           "type": "hard",
           "source": "项目参数（height_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第8、39条）：住宅必须满足安全疏散、防火蔓延控制和灭火救援条件。",
@@ -6278,7 +7874,6 @@
       {
         "definition": {
           "id": "C-02",
-          "pack": "GB",
           "name": "项目容积率不超过上限",
           "type": "hard",
           "source": "项目参数（far_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第1、2条）：住宅项目总图应落实完整建设体系，项目规模应经过调查研究和科学预测确定。",
@@ -6296,7 +7891,6 @@
       {
         "definition": {
           "id": "C-03",
-          "pack": "GB",
           "name": "建筑密度不超过上限",
           "type": "hard",
           "source": "项目参数（density_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第11、28条）：集中绿地是住宅项目必要公共环境要素，节地与土地利用应以集约、高效和减少生态扰动为目标。",
@@ -6314,7 +7908,6 @@
       {
         "definition": {
           "id": "C-04",
-          "pack": "GB",
           "name": "新建住宅层高下限",
           "type": "hard",
           "source": "《住宅项目规范》GB 55038-2025，第4.1.2条；原文依据：新建住宅建筑的层高不应低于3.00m。专业判断对应第17条。",
@@ -6332,7 +7925,6 @@
       {
         "definition": {
           "id": "C-05",
-          "pack": "GB",
           "name": "十二层及以上或入户楼面超过33m的住宅每单元至少两台电梯",
           "type": "hard",
           "source": "《住宅项目规范》GB 55038-2025，第4.2.4条第2、3款；原文依据：最高入户层为十二层及十二层以上，或最高入户层楼面距室外设计地面高度超过33m的住宅建筑，每个住宅单元应至少设置2台电梯；设有电梯的住宅单元，应至少有1台电梯满足规定尺寸要求。专业判断对应第26条。",
@@ -6350,7 +7942,6 @@
       {
         "definition": {
           "id": "C-06",
-          "pack": "GB",
           "name": "住宅结构体系取值合法",
           "type": "hard",
           "source": "《工程结构通用规范》GB 55001-2021 与《建筑与市政工程抗震通用规范》GB 55002-2021；条文号：待按正式文本核对；原文依据（专业判断第2、19、40条）：结构体系必须具有清晰、连续、可靠的传力路径，抗震体系应具有明确的抗侧力体系。",
@@ -6368,7 +7959,6 @@
       {
         "definition": {
           "id": "C-07",
-          "pack": "GB",
           "name": "MiC 方案装配率基本门槛",
           "type": "hard",
           "source": "《装配式建筑评价标准》GB/T 51129-2017，第3.0.3条第1-4项；原文依据：装配式建筑应同时满足主体结构部分评价分值不低于20分、围护墙和内隔墙部分评价分值不低于10分、采用全装修、装配率不低于50%。系统当前仅能自动校验装配率，其他三项需人工复核。",
@@ -6386,7 +7976,6 @@
       {
         "definition": {
           "id": "C-08",
-          "pack": "GB",
           "name": "四层及以上或入户楼面超过9m的住宅每单元至少一台电梯",
           "type": "hard",
           "source": "《住宅项目规范》GB 55038-2025，第4.2.4条第1款；按最高入户层层序或楼面实际高度判断，数据不足时不得判为通过。官方摘录：https://ghzrzyw.beijing.gov.cn/biaozhunguanli/bzzl/202506/P020250609570099619169.pdf 第9页。",
@@ -6404,7 +7993,6 @@
       {
         "definition": {
           "id": "K-01",
-          "pack": "GB",
           "name": "标准层重复率（越大越好）",
           "type": "metric",
           "source": "经验规则（施工组）：标准层重复率越高，模板与爬架的周转次数越多、工期越短、工人重复作业的熟练度与安全性越高；低于 0.50 视为标准化程度不足，0.95 以上接近全标准层。分段点为组内取值，非规范条文",
@@ -6438,7 +8026,6 @@
       {
         "definition": {
           "id": "K-02",
-          "pack": "GB",
           "name": "预制构件种类数（越少越好）",
           "type": "metric",
           "source": "经验规则（施工组）：构件种类数决定模具套数、堆放场地与现场吊装工序数量，种类越少越利于施工组织与质量稳定；8 种以内视为高度标准化。分段点为组内取值，非规范条文",
@@ -6471,62 +8058,143 @@
       },
       {
         "definition": {
-          "id": "CQ-Q-01",
-          "pack": "CQ",
-          "name": "重庆保障性住房层高下限",
+          "id": "K-03",
+          "name": "深基坑属超过一定规模的危大工程（须专家论证）",
           "type": "hard",
-          "source": "《好房子技术导则（保障性住房）》（渝建勘设〔2025〕41号，重庆市住房和城乡建设委员会 2025 年 12 月）第5.3.3节「套内空间」第4款：保障性住房的层高不应低于3.0m（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "floor_height >= 3.0",
-          "message": "保障性住房层高 {floor_height} m 低于重庆市导则要求的 3.0 m",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "cq_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "CQ-Q-02",
-          "pack": "CQ",
-          "name": "重庆保障性住房窗地面积比下限",
-          "type": "hard",
-          "source": "同上 第5.4.2节「光环境」第2款：住宅的起居室、卧室应进行采光计算，卧室、书房、起居室等房间的窗地面积比不应小于1/7（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "window_floor_ratio >= 1/7",
-          "message": "窗地面积比 {window_floor_ratio} 低于重庆市导则要求的 1/7（严于国标 1/6）",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "cq_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "CQ-Q-03",
-          "pack": "CQ",
-          "name": "重庆保障性住房梯户配比（提示）",
-          "type": "hard",
-          "source": "同上 第5.3.2节「梯户配比」第1款：电梯数量及规格应根据楼层高度和住户数量合理配置，宜按 30~60 户/台配置，并符合重庆市工程建设标准《住宅电梯配置和选型及安装维护标准》DBJ 50-253 的相关规定（官方 PDF 去空格逐字核对，2026-10-13）。条文用词为「宜」，故本条只作提示",
-          "when": null,
-          "check": "units / total_elevators <= 60",
-          "message": "每台电梯服务 {units} / {total_elevators} 户，超过重庆市导则建议的 30~60 户/台 区间上限",
+          "source": "建办质〔2018〕31号 附件2 一：开挖深度超过5m（含5m）的基坑（槽）的土方开挖、支护、降水工程；程序依据为住建部令第37号 第十二条（超过一定规模的危大工程应组织专家论证会，专家不少于5名）",
+          "when": "excavation_depth >= 5",
+          "check": "excavation_depth < 5",
+          "message": "基坑开挖深度 {excavation_depth} m 达到 5 m，属超过一定规模的危大工程，专项施工方案须经专家论证",
           "severity": "warning",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "cq_local.yaml"
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-04",
+          "name": "高大模板支撑属超过一定规模的危大工程（须专家论证）",
+          "type": "hard",
+          "source": "建办质〔2018〕31号 附件2 二（二）：混凝土模板支撑工程搭设高度8m及以上，或搭设跨度18m及以上，或施工总荷载（设计值）15kN/m²及以上，或集中线荷载（设计值）20kN/m及以上。本系统只按搭设高度判定（其余三个条件缺字段）。程序依据同 K-03（住建部令第37号 第十二条）",
+          "when": "formwork_height >= 8",
+          "check": "formwork_height < 8",
+          "message": "模板支撑搭设高度 {formwork_height} m 达到 8 m，属超过一定规模的危大工程，专项施工方案须经专家论证",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-05",
+          "name": "落地式脚手架超高属超过一定规模的危大工程（须专家论证）",
+          "type": "hard",
+          "source": "建办质〔2018〕31号 附件2 四（一）：搭设高度50m及以上的落地式钢管脚手架工程（附件2 四（二）（三）另有附着式升降提升高度≥150m、悬挑式分段架体高度≥20m 两档）。程序依据同 K-03（住建部令第37号 第十二条）",
+          "when": "scaffold_type == '落地式钢管脚手架' and scaffold_height >= 50",
+          "check": "scaffold_height < 50",
+          "message": "落地式钢管脚手架搭设高度 {scaffold_height} m 达到 50 m，属超过一定规模的危大工程，专项施工方案须经专家论证",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-06",
+          "name": "排桩桩身混凝土强度等级下限",
+          "type": "hard",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第7.2.4条：排桩支护结构的桩身混凝土强度等级不应低于C25。桩的纵向受力钢筋的混凝土保护层厚度不应小于35mm，采用水下灌注工艺时，不应小于50mm（原文逐字核对；保护层属构件级，本系统不判）",
+          "when": "retaining_type == '排桩'",
+          "check": "retaining_concrete_grade >= 25",
+          "message": "排桩支护的桩身混凝土强度等级 C{retaining_concrete_grade} 低于 GB 55003 要求的 C25",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-07",
+          "name": "两墙合一地下连续墙混凝土强度等级下限",
+          "type": "hard",
+          "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
+          "when": "retaining_type == '地下连续墙' and retaining_wall_two_in_one",
+          "check": "retaining_concrete_grade >= 30",
+          "message": "两墙合一地下连续墙的混凝土强度等级 C{retaining_concrete_grade} 低于 GB 55003 要求的 C30",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-08",
+          "name": "基坑工程设计工作年限下限",
+          "type": "hard",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第2.1.4条第2款：基坑工程设计应规定工作年限，且设计工作年限不应小于1年（原文逐字核对）。条文说明：支护结构使用期短、设计时荷载通常不考虑长期作用，故须明确其工作年限，避免超越设计状况",
+          "when": null,
+          "check": "excavation_working_life >= 1",
+          "message": "基坑工程设计工作年限 {excavation_working_life} 年低于规范要求的 1 年",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-09",
+          "name": "混凝土内支撑强度等级下限",
+          "type": "hard",
+          "source": "GB 55003—2021 第7.2.6条：混凝土内支撑结构的混凝土强度等级不应低于C25（原文逐字核对）。混凝土强度等级取内支撑专用字段；不从支护桩墙等级推定",
+          "when": "brace_type == '混凝土内支撑'",
+          "check": "brace_concrete_grade >= 25",
+          "message": "混凝土内支撑的强度等级 C{brace_concrete_grade} 低于 GB 55003 要求的 C25",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
+      },
+      {
+        "definition": {
+          "id": "K-10",
+          "name": "锚杆自由段长度下限",
+          "type": "hard",
+          "source": "GB 55003—2021 第7.2.8条：锚拉结构的锚杆自由段的长度不应小于5.0m，且穿过潜在滑动面进入稳定土层的长度不应小于1.5m；土层锚杆锚固段不应设置在未经处理的软弱土层、不稳定土层和不良地质作用地段（原文逐字核对；「进入稳定土层 ≥1.5m」需要额外的锚固段穿越长度字段，本系统暂未采集）",
+          "when": "brace_type == '锚杆（锚拉）'",
+          "check": "anchor_free_length >= 5",
+          "message": "锚杆自由段长度 {anchor_free_length} m 小于 GB 55003 要求的 5.0 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "construction_safety.yaml"
       },
       {
         "definition": {
           "id": "G-01",
-          "pack": "GB",
           "name": "预估装配率",
           "type": "metric",
           "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。",
@@ -6560,7 +8228,6 @@
       {
         "definition": {
           "id": "G-02",
-          "pack": "GB",
           "name": "标准层重复率",
           "type": "metric",
           "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
@@ -6594,7 +8261,6 @@
       {
         "definition": {
           "id": "G-03",
-          "pack": "GB",
           "name": "预制构件种类数",
           "type": "metric",
           "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
@@ -6628,7 +8294,6 @@
       {
         "definition": {
           "id": "G-04",
-          "pack": "GB",
           "name": "体形系数",
           "type": "metric",
           "source": "《建筑节能与可再生能源利用通用规范》GB 55015-2021；条文号：待按正式文本核对；原文依据（专业判断第6-12条）：建筑体形和围护结构应作为首要节能控制对象。",
@@ -6662,7 +8327,6 @@
       {
         "definition": {
           "id": "G-05",
-          "pack": "GB",
           "name": "楼层效率",
           "type": "metric",
           "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
@@ -6695,332 +8359,7 @@
       },
       {
         "definition": {
-          "id": "HB-Q-01",
-          "pack": "HB",
-          "name": "湖北高品质住宅层高下限",
-          "type": "hard",
-          "source": "《高品质住宅技术标准》DB42/T 2305-2024 第6.2节「层高与净高」：住宅层高不应小于3m（湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13）",
-          "when": null,
-          "check": "floor_height >= 3",
-          "message": "住宅层高 {floor_height} m 低于湖北省《高品质住宅技术标准》要求的 3 m",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "hb_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "HB-Q-02",
-          "pack": "HB",
-          "name": "湖北套内主要居住空间净高下限",
-          "type": "hard",
-          "source": "同上 第6.2节：套内主要居住空间净高不应小于2.6m（公共空间另有：单元主门厅净高不应小于3.0m，单元门厅、电梯厅等净高不应小于2.4m；架空层层高不应小于4.2m、净高不应小于3.6m——这些部位本系统尚未采集，未收）。湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13",
-          "when": null,
-          "check": "clear_height >= 2.6",
-          "message": "套内主要居住空间净高 {clear_height} m 低于湖北省要求的 2.6 m",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "hb_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "HB-G-01",
-          "pack": "HB",
-          "name": "湖北小区绿地率下限",
-          "type": "hard",
-          "source": "同上 第5.2节「规划控制」：小区绿地率不应小于35%（同条另有：人均集中绿地不低于0.5㎡、大于3公顷地块应配置至少一处不小于400㎡的集中绿地、集中绿地最小宽度大于8m、日照阴影线范围外集中绿地面积占比不小于1/3）。湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13",
-          "when": null,
-          "check": "green_ratio >= 0.35",
-          "message": "小区绿地率 {green_ratio} 低于湖北省要求的 35%",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "hb_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "HB-G-02",
-          "pack": "HB",
-          "name": "湖北人均集中绿地下限",
-          "type": "hard",
-          "source": "同上 第5.2节：小区应设置人均不低于0.5㎡的集中绿地（湖北省住建厅官网 DOCX 附件逐字核对，2026-10-13）",
-          "when": null,
-          "check": "per_capita_green >= 0.5",
-          "message": "人均集中绿地 {per_capita_green} m²/人 低于湖北省要求的 0.5 m²/人",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "hb_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "HE-Q-01",
-          "pack": "HE",
-          "name": "河北七十年住宅层高下限",
-          "type": "hard",
-          "source": "河北省工程建设地方标准《七十年住宅建筑设计标准》DB13(J)/T 8431-2021 第6.2.3条第1款：层高不应低于3.00m且不宜高于3.60m（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "floor_height >= 3.00",
-          "message": "层高 {floor_height} m 低于河北省《七十年住宅建筑设计标准》要求的 3.00 m",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "he_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "HE-Q-02",
-          "pack": "HE",
-          "name": "河北七十年住宅日照（大寒日 2h，按空间数）",
-          "type": "hard",
-          "source": "同上 第6.2.5条：每套住宅至少应有一个居住空间能获得大寒日两小时日照；当有4个以上居住空间时，其中2个或2个以上居住空间应能获得大寒日两小时日照（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": "daylight_standard_day == '大寒日'",
-          "check": "daylight_room_count >= 1 and (living_space_count <= 4 or daylight_room_count >= 2)",
-          "message": "日照不满足：{living_space_count} 个居住空间中仅 {daylight_room_count} 个达到大寒日 2h（河北要求至少 1 个；4 个以上时至少 2 个）",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "he_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "HE-Q-03",
-          "pack": "HE",
-          "name": "河北日照标准日核对（提示）",
-          "type": "hard",
-          "source": "同上 第6.2.5条以「大寒日」为日照标准日。标准日不一致时本条只作提示——不同标准日的日照时数不能互相换算，本系统不替使用者换算",
-          "when": "daylight_standard_day == '冬至日'",
-          "check": "False",
-          "message": "本项目日照按冬至日分析，而河北按大寒日判定，HE-Q-02 无法给出结论；请补充大寒日日照分析",
-          "severity": "warning",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "he_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "JL-Q-01",
-          "pack": "JL",
-          "name": "吉林好房子层高下限",
-          "type": "hard",
-          "source": "《吉林省好房子建设技术导则》（吉林省住房和城乡建设厅通告第669号，2025-01-02 发布施行）第5.2.6条：建筑层高不应小于3.0m（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "floor_height >= 3.0",
-          "message": "建筑层高 {floor_height} m 低于吉林省导则要求的 3.0 m",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "jl_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "JL-Q-02",
-          "pack": "JL",
-          "name": "吉林好房子日照（大寒日 3h）",
-          "type": "hard",
-          "source": "同上 第4.4.5条：建筑日照标准不应低于大寒日日照时数3h（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": "daylight_standard_day == '大寒日'",
-          "check": "sunlight_hours >= 3",
-          "message": "日照时数 {sunlight_hours} h 低于吉林省要求的 大寒日 3 h（严于国标 2 h）",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "jl_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "JL-Q-03",
-          "pack": "JL",
-          "name": "吉林日照标准日核对（提示）",
-          "type": "hard",
-          "source": "同上 第4.4.5条以「大寒日」为日照标准日。标准日不一致时本条只作提示——不同标准日的日照时数不能互相换算，本系统不替使用者换算",
-          "when": "daylight_standard_day == '冬至日'",
-          "check": "False",
-          "message": "本项目日照按冬至日分析，而吉林按大寒日 3h 判定，JL-Q-02 无法给出结论；请补充大寒日日照分析",
-          "severity": "warning",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "jl_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "JL-G-01",
-          "pack": "JL",
-          "name": "吉林居住街坊集中绿地下限",
-          "type": "hard",
-          "source": "同上 第4.4.4条：居住街坊内的集中绿地不应低于0.6m²/人（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "per_capita_green >= 0.6",
-          "message": "集中绿地 {per_capita_green} m²/人 低于吉林省导则要求的 0.6 m²/人",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "jl_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "LN-Q-01",
-          "pack": "LN",
-          "name": "辽宁好房子层高下限",
-          "type": "hard",
-          "source": "《辽宁省「好房子」施工图设计文件技术审查要点（试行）》第4.1.2条：住宅层高不应小于3.0m；设有地热采暖、管道式新风或集中式中央空调系统的住宅，层高不宜小于3.15m；卧室、起居室的室内净高不低于2.60m（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "floor_height >= (3.15 if has_fresh_air else 3.0)",
-          "message": "层高 {floor_height} m 低于辽宁省审查要点要求（不应小于 3.0 m；设地热采暖、管道式新风或集中式中央空调时不宜小于 3.15 m）",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "ln_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "LN-Q-02",
-          "pack": "LN",
-          "name": "辽宁每台电梯服务户数上限",
-          "type": "hard",
-          "source": "同上 第4.2.4条第1款：电梯数量的确定应综合考虑建筑类型、层数、服务户数、电梯速度等主要技术参数及使用者的舒适度等因素，每台电梯服务户数不应超过60户（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "units / total_elevators <= 60",
-          "message": "每台电梯服务 {units} / {total_elevators} 户，超过辽宁省要求的每台不超过 60 户",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "ln_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "LN-Q-03",
-          "pack": "LN",
-          "name": "辽宁担架电梯设置",
-          "type": "hard",
-          "source": "同上 第4.2.4条第2款：当最高入户层为4层及4层以上时，或最高入户层楼面距室外设计地面高度超过9m时，每个单元应至少设置1台可容纳担架的电梯（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9",
-          "check": "has_stretcher_elevator",
-          "message": "最高入户层 {highest_occupied_floor} 层／楼面高 {highest_occupied_floor_height} m，按辽宁要求每个单元应至少设 1 台可容纳担架的电梯",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "ln_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "LN-G-01",
-          "pack": "LN",
-          "name": "辽宁住区绿地率下限",
-          "type": "hard",
-          "source": "同上 第3.2.2条：住区绿地率不应小于30%（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": null,
-          "check": "green_ratio >= 0.30",
-          "message": "住区绿地率 {green_ratio} 低于辽宁省审查要点要求的 30%",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "ln_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "NX-G-01",
-          "pack": "NX",
-          "name": "宁夏高品质商品住宅绿地率下限",
-          "type": "hard",
-          "source": "《宁夏高品质商品住宅建设技术导则（试行）》（宁建发〔2024〕80号，宁夏回族自治区住房和城乡建设厅 2024-11-28 印发）第5.4节「绿地与活动场地」第1款：住宅绿地率不应小于35%，且满足当地标准（按住建厅官网发布的 DOCX 附件逐字核对，2026-10-13）",
-          "when": null,
-          "check": "green_ratio >= 0.35",
-          "message": "住宅绿地率 {green_ratio} 低于宁夏导则要求的 35%",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "nx_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "NX-Q-01",
-          "pack": "NX",
-          "name": "宁夏起居室与卧室净高下限",
-          "type": "hard",
-          "source": "同上 第4章「适用性能·套型」：套型主要功能空间面积配置应合理，起居室（厅）供布置家具、设备的连续实墙面长度不应小于3.6m；双人卧室开间净宽不应小于3.0m；起居室、卧室空间净高不应低于3.0m（住建厅官网 DOCX 附件逐字核对，2026-10-13）",
-          "when": null,
-          "check": "clear_height >= 3.0",
-          "message": "起居室／卧室空间净高 {clear_height} m 低于宁夏导则要求的 3.0 m",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "nx_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "NX-Q-02",
-          "pack": "NX",
-          "name": "宁夏套内获日照空间数量",
-          "type": "hard",
-          "source": "同上 第4章「适用性能·套型」：每套住宅应至少有1个居住空间获得日照。当有4个以上居住空间时，应至少有2个居住空间获得日照（住建厅官网 DOCX 附件逐字核对，2026-10-13）",
-          "when": null,
-          "check": "daylight_room_count >= 1 and (living_space_count <= 4 or daylight_room_count >= 2)",
-          "message": "日照不满足：{living_space_count} 个居住空间中仅 {daylight_room_count} 个获得日照（宁夏要求至少 1 个；4 个以上时至少 2 个）",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "nx_local.yaml"
-      },
-      {
-        "definition": {
           "id": "Q-01",
-          "pack": "GB",
           "name": "得房率",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；专业判断第6条：住宅建筑应同时满足安全性、适用性和耐久性。评分点为项目偏好口径，非规范强制限值。",
@@ -7054,7 +8393,6 @@
       {
         "definition": {
           "id": "Q-02",
-          "pack": "GB",
           "name": "南向房间比例",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第33条）：每套住宅至少应有一个卧室或起居室满足日照标准。比例评分是品质偏好指标，不替代日照核验。",
@@ -7088,7 +8426,6 @@
       {
         "definition": {
           "id": "Q-03",
-          "pack": "GB",
           "name": "窗地比",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第33-35条）：住宅应具备直接采光条件，自然通风开口面积应按房间和阳台关系计算。评分点为项目偏好口径。",
@@ -7122,7 +8459,6 @@
       {
         "definition": {
           "id": "Q-04",
-          "pack": "GB",
           "name": "每单元电梯数",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第26条）：住宅电梯配置与建筑高度、入户层数直接挂钩。硬性最低配置另见 C-05。",
@@ -7156,7 +8492,6 @@
       {
         "definition": {
           "id": "Q-05",
-          "pack": "GB",
           "name": "单栋户数",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
@@ -7190,7 +8525,6 @@
       {
         "definition": {
           "id": "Q-06",
-          "pack": "GB",
           "name": "标准层交通规模",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
@@ -7223,44 +8557,7 @@
       },
       {
         "definition": {
-          "id": "SC-G-01",
-          "pack": "SC",
-          "name": "四川夏热冬冷地区居住建筑体形系数上限",
-          "type": "hard",
-          "source": "《四川省居住建筑节能设计标准》DB51/T 5027-2024 第4.3.1条 表4.3.1「居住建筑体形系数限值」：夏热冬冷地区（Ⅲ）≤3层 0.60、>3层 0.40；高海拔严寒地区（Ⅰ）0.55/0.30、高海拔寒冷地区（Ⅱ）0.57/0.33、温和地区（Ⅳ）0.60/0.45。条文说明提到高海拔严寒、寒冷地区宜采用「热当量体形系数」代替体形系数指标（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": "climate_zone == '夏热冬冷'",
-          "check": "shape_coef <= (0.60 if floors <= 3 else 0.40)",
-          "message": "体形系数 {shape_coef} 超过四川省表4.3.1 对夏热冬冷地区该层数档的限值（≤3 层 0.60、>3 层 0.40）",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "sc_local.yaml"
-      },
-      {
-        "definition": {
-          "id": "SC-G-02",
-          "pack": "SC",
-          "name": "四川居住建筑房间窗墙面积比上限（提示）",
-          "type": "hard",
-          "source": "同上 第4.3.2条：居住建筑的主要功能房间窗墙面积比应小于0.8，非主要功能房间的窗墙面积比应小于0.4（官方 PDF 去空格逐字核对，2026-10-13）。注意：系统的窗墙比是按朝向采集的，与「主要/非主要功能房间」不是同一口径，故本条只作提示",
-          "when": null,
-          "check": "max(window_wall_ratio) <= 0.8",
-          "message": "存在窗墙面积比 {window_wall_ratio} 超过四川省 4.3.2 条 0.8（主要功能房间）的朝向，请按房间性质复核",
-          "severity": "warning",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "sc_local.yaml"
-      },
-      {
-        "definition": {
           "id": "S-01",
-          "pack": "GB",
           "name": "结构风险特征加权指数（越少越好）",
           "type": "metric",
           "source": "经验规则（结构组）：按风险类型对结构安全与专项论证的影响加权——大悬挑、深基坑、超限构件各 3 分（均直接触发专项论证或专门研究），高大空间、高支模各 2 分，超长结构、不规则建筑、复杂地质各 1 分，满分 16 分。权重与分段点为组内取值，非规范条文",
@@ -7298,7 +8595,6 @@
       {
         "definition": {
           "id": "S-02",
-          "pack": "GB",
           "name": "钢结构方案须申报人工复核事项（条件硬约束）",
           "type": "hard",
           "source": "GB 55006—2021 第4.6.4条：需调整构造措施时，或对于新型结构、构件、连接节点，应通过计算分析和试验验证保证安全要求；第5.3节：体形复杂的大跨度钢结构应采用整体模型计算，并作非线性整体稳定分析与时程分析。本条据此要求钢结构方案显式申报复核事项",
@@ -7316,7 +8612,6 @@
       {
         "definition": {
           "id": "S-03",
-          "pack": "GB",
           "name": "结构体系适用性（越大越好）",
           "type": "metric",
           "source": "经验规则（结构组）：住宅结构选型按适用性分档——剪力墙 100（高层住宅主流体系）、框架-剪力墙 95、MiC 85、钢结构 80（二者在住宅中需专项论证）、框架 60（不适用于 16~18 层住宅）。分档参照《超限高层建筑工程抗震设防专项审查技术要点》（建质〔2015〕67号）附件1 表1 的高度超限判定阈值：6 度区框架 60m、框架-抗震墙 130m、抗震墙 140m，框架体系的适用高度明显偏低。分档为组内取值，非规范条文",
@@ -7346,7 +8641,6 @@
       {
         "definition": {
           "id": "S-04",
-          "pack": "GB",
           "name": "建筑总高（越小越好）",
           "type": "metric",
           "source": "经验规则（结构组）：结构风险、抗震要求与单位造价总体随高度上升，故越小越好。分段点以《超限高层建筑工程抗震设防专项审查技术要点》（建质〔2015〕67号）附件1 表1 的高度超限判定阈值为锚点（6 度区抗震墙 140m、框架 60m），140m 归零。分段点为组内取值，非规范条文",
@@ -7384,12 +8678,11 @@
       {
         "definition": {
           "id": "S-05",
-          "pack": "GB",
           "name": "建筑高度不超结构体系最大适用高度（6 度区）",
           "type": "hard",
-          "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
-          "when": "seismic_intensity == '6度(0.05g)' and structure_type != 'MiC'",
-          "check": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else (140 if structure_type == '剪力墙' else 110)))",
+          "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」6 度列：框架 60、框架-剪力墙 130、剪力墙（全部落地）140，数值已按原表图逐格核对。同条：平面和竖向均不规则的结构，其最大适用高度宜适当降低。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
+          "when": "seismic_intensity == '6度(0.05g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')",
+          "check": "height <= (60 if structure_type == '框架' else (130 if structure_type == '框架-剪力墙' else 140))",
           "message": "建筑总高 {height} m 超过该结构体系在 6 度（0.05g）区的最大适用高度，须改结构体系或按超限高层做专项审查",
           "severity": "error",
           "dimension": null,
@@ -7402,12 +8695,11 @@
       {
         "definition": {
           "id": "S-06",
-          "pack": "GB",
           "name": "建筑高度不超结构体系最大适用高度（7 度区）",
           "type": "hard",
-          "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
-          "when": "seismic_intensity == '7度(0.10g)' and structure_type != 'MiC'",
-          "check": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else (120 if structure_type == '剪力墙' else 110)))",
+          "source": "JGJ 3—2010《高层建筑混凝土结构技术规程》第3.3.1条 表3.3.1-1「A 级高度钢筋混凝土高层建筑的最大适用高度（m）」7 度列：框架 50、框架-剪力墙 120、剪力墙（全部落地）120，数值已按原表图逐格核对。该表 7 度列不区分 0.10g 与 0.15g。房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查",
+          "when": "seismic_intensity == '7度(0.10g)' and (structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙')",
+          "check": "height <= (50 if structure_type == '框架' else (120 if structure_type == '框架-剪力墙' else 120))",
           "message": "建筑总高 {height} m 超过该结构体系在 7 度（0.10g）区的最大适用高度，须改结构体系或按超限高层做专项审查",
           "severity": "error",
           "dimension": null,
@@ -7420,7 +8712,6 @@
       {
         "definition": {
           "id": "S-07",
-          "pack": "GB",
           "name": "高宽比不超过限值（提示）",
           "type": "hard",
           "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
@@ -7438,7 +8729,6 @@
       {
         "definition": {
           "id": "S-10",
-          "pack": "GB",
           "name": "规则性超限提示（表2 不规则项三项及以上）",
           "type": "hard",
           "source": "《超限高层建筑工程抗震设防专项审查技术要点》建质〔2015〕67号 附件1 表2：同时具有下列三项及三项以上不规则的高层建筑工程（不论高度是否大于表1）——1a 扭转不规则（考虑偶然偏心的扭转位移比大于1.2）、2a 凹凸不规则（平面凹凸尺寸大于相应边长30%等）、3 楼板不连续（有效宽度小于50%、开洞面积大于30%、错层大于梁高）、4a 刚度突变（相邻层刚度变化大于70%，或连续三层变化大于80%）、4b 尺寸突变（竖向构件收进位置高于结构高度20%且收进大于25%，或外挑大于10%和4m）、5 构件间断、6 承载力突变（相邻层受剪承载力变化大于80%）、7 局部不规则。注：序号 a、b 不重复计算不规则项",
@@ -7456,7 +8746,6 @@
       {
         "definition": {
           "id": "S-11",
-          "pack": "GB",
           "name": "特殊不规则超限提示（表4 任一项）",
           "type": "hard",
           "source": "《超限高层建筑工程抗震设防专项审查技术要点》建质〔2015〕67号 附件1 表4：具有下列某一项不规则的高层建筑工程（不论高度是否大于表1）——1 高位转换（7度超过5层，8度超过3层）；2 厚板转换（7~9度设防）；3 复杂连接；4 多重复杂（同时具有转换层、加强层、错层、连体和多塔等复杂类型中的3种）。表3 的「显著不规则」另需核定，暂未纳入",
@@ -7474,7 +8763,6 @@
       {
         "definition": {
           "id": "S-12",
-          "pack": "GB",
           "name": "楼板厚度下限",
           "type": "hard",
           "source": "GB 55038—2025 第5.0.4条：新建住宅建筑的钢筋混凝土结构实心楼板厚度不应小于100mm（全文强制）",
@@ -7492,7 +8780,6 @@
       {
         "definition": {
           "id": "S-13",
-          "pack": "GB",
           "name": "结构设计工作年限下限",
           "type": "hard",
           "source": "GB 55038—2025 第2.2.6条 表2.2.6：住宅建筑结构的设计工作年限不应低于50年（全文强制）",
@@ -7510,7 +8797,6 @@
       {
         "definition": {
           "id": "S-14",
-          "pack": "GB",
           "name": "混凝土强度等级下限",
           "type": "hard",
           "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
@@ -7527,147 +8813,224 @@
       },
       {
         "definition": {
-          "id": "SX-Q-01",
-          "pack": "SX",
-          "name": "山西宜居住宅层高下限",
+          "id": "S-17",
+          "name": "筏形 / 桩筏基础混凝土强度等级下限",
           "type": "hard",
-          "source": "山西省工程建设地方标准《宜居住宅建设标准》DBJ04/T 437-2022 第5.2.11条：住宅层高应大于等于3.0米；户内设置新风系统时，层高不应低于3.2米（官方 PDF 去空格逐字核对，2026-10-13）",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础的混凝土强度等级不应低于C30；筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%；……（原文逐字核对）。本条按基础专用混凝土强度等级字段判定；未填写时为数据不足，不用上部结构等级替代",
+          "when": "foundation_type == '筏形基础' or foundation_type == '桩筏基础'",
+          "check": "foundation_concrete_grade >= 30",
+          "message": "筏形 / 桩筏基础的混凝土强度等级 C{foundation_concrete_grade} 低于 GB 55003 要求的 C30",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_foundation.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-18",
+          "name": "地基与基础设计工作年限不低于上部结构",
+          "type": "hard",
+          "source": "GB 55003—2021 第2.1.4条第1款：地基与基础的设计工作年限不应低于上部结构的设计工作年限。同条第2款基坑工作年限要求另由 K-08 判定",
           "when": null,
-          "check": "floor_height >= (3.2 if has_fresh_air else 3.0)",
-          "message": "层高 {floor_height} m 低于山西省《宜居住宅建设标准》要求（一般 3.0 m；设新风系统时 3.2 m）",
+          "check": "foundation_working_life >= design_working_life",
+          "message": "地基与基础的设计工作年限 {foundation_working_life} 年低于上部结构的 {design_working_life} 年",
           "severity": "error",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "sx_local.yaml"
+        "source_file": "structure_foundation.yaml"
       },
       {
         "definition": {
-          "id": "SX-Q-02",
-          "pack": "SX",
-          "name": "山西宜居住宅日照（冬至日累计 1h）",
+          "id": "S-22",
+          "name": "剪力墙截面厚度下限",
           "type": "hard",
-          "source": "同上 第4.2.2条：建筑规划布局不得降低周边建筑的日照标准，新建宜居住宅的日照标准应满足冬至日累计1小时的要求，有条件的应提高标准，达到冬至日累计2小时（官方 PDF 去空格逐字核对，2026-10-13）",
-          "when": "daylight_standard_day == '冬至日'",
-          "check": "sunlight_hours >= 1",
-          "message": "日照时数 {sunlight_hours} h 低于山西省要求的冬至日累计 1 h",
+          "source": "GB 55008—2021《混凝土结构通用规范》第4.4.4条第3款：高层建筑剪力墙的截面厚度不应小于160mm，多层建筑剪力墙的截面厚度不应小于140mm（原文逐字核对）",
+          "when": "structure_type == '剪力墙' or structure_type == '框架-剪力墙'",
+          "check": "shear_wall_thickness >= (160 if structural_height_classification == '高层' else 140)",
+          "message": "剪力墙截面厚度 {shear_wall_thickness} mm 低于 GB 55008 对该高度的下限（高层 160 mm、多层 140 mm）",
           "severity": "error",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "sx_local.yaml"
+        "source_file": "structure_members.yaml"
       },
       {
         "definition": {
-          "id": "SX-Q-03",
-          "pack": "SX",
-          "name": "山西日照标准日核对（提示）",
+          "id": "S-23",
+          "name": "框架梁截面宽度下限",
           "type": "hard",
-          "source": "同上 第4.2.2条以「冬至日累计」为日照标准（国标给的是大寒日 2h／冬至日 1h 两档，山西明确取冬至日）。标准日不一致时本条只作提示，本系统不替使用者换算",
-          "when": "daylight_standard_day == '大寒日'",
-          "check": "False",
-          "message": "本项目日照按大寒日分析，而山西按冬至日累计判定，SX-Q-02 无法给出结论；请补充冬至日日照分析",
+          "source": "GB 55008—2021 第4.4.4条第1款：矩形截面框架梁的截面宽度不应小于200mm（原文逐字核对）",
+          "when": "structure_type == '框架' or structure_type == '框架-剪力墙'",
+          "check": "frame_beam_width >= 200",
+          "message": "矩形截面框架梁的截面宽度 {frame_beam_width} mm 小于 GB 55008 要求的 200 mm",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-24",
+          "name": "框架柱截面尺寸下限",
+          "type": "hard",
+          "source": "GB 55008—2021 第4.4.4条第2款：矩形截面框架柱的边长不应小于300mm，圆形截面柱的直径不应小于350mm（原文逐字核对）",
+          "when": "structure_type == '框架' or structure_type == '框架-剪力墙'",
+          "check": "frame_column_size >= (300 if frame_column_shape == '矩形' else 350)",
+          "message": "框架柱截面尺寸 {frame_column_size} mm 低于 GB 55008 的下限（矩形截面边长 300 mm、圆形截面直径 350 mm）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-25",
+          "name": "筏形 / 桩筏基础底板贯通筋配筋率下限",
+          "type": "hard",
+          "source": "GB 55003—2021《建筑与市政地基基础通用规范》第6.3.5条：筏形基础、桩筏基础底板上下贯通钢筋的配筋率不应小于0.15%（原文逐字核对；同条要求混凝土强度等级不低于 C30，已由 S-17 判定）",
+          "when": "foundation_type == '筏形基础' or foundation_type == '桩筏基础'",
+          "check": "raft_rebar_ratio >= 0.15",
+          "message": "筏形 / 桩筏基础底板上下贯通钢筋的配筋率 {raft_rebar_ratio}% 小于 GB 55003 要求的 0.15%",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-26",
+          "name": "超过 50 m 的钢结构基础埋置深度",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（原文逐字核对）。本条埋深用语为「不宜」，不足时给出复核警告，不据此自动排除方案；地下室设置要求另行判定",
+          "when": "structure_type == '钢结构' and height > 50",
+          "check": "(foundation_depth * 20 >= height) if (foundation_type == '桩基础' or foundation_type == '桩筏基础') else (foundation_depth * 15 >= height)",
+          "message": "基础埋置深度 {foundation_depth} m 小于该总高下的建议值（天然地基 H/15、桩基 H/20）",
           "severity": "warning",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "sx_local.yaml"
+        "source_file": "structure_members.yaml"
       },
       {
         "definition": {
-          "id": "SX-G-01",
-          "pack": "SX",
-          "name": "山西宜居住宅绿地率下限",
+          "id": "S-27",
+          "name": "错层处构件混凝土强度等级下限",
           "type": "hard",
-          "source": "同上 表4.2.1「宜居住宅居住区用地控制指标」：低层 绿地率 30%、多层Ⅰ类 30%、多层Ⅱ类 30%、高层Ⅰ类 35%（表内另有容积率与建筑密度上限，需按层数档判定，本系统暂未收）。官方 PDF 去空格逐字核对，2026-10-13",
-          "when": null,
-          "check": "green_ratio >= 0.30",
-          "message": "绿地率 {green_ratio} 低于山西省《宜居住宅建设标准》表4.2.1 要求的 30%",
+          "source": "GB 55008—2021 第4.4.13条：第1款 错层处框架柱的混凝土强度等级不应低于C30，箍筋应全柱段加密配置；第2款 错层处平面外受力的剪力墙……混凝土强度等级不应低于C30（原文逐字核对）。箍筋全柱段加密与抗震等级提高一级属构造要求，不在本条判定范围",
+          "when": "has_staggered_floor and (structure_type == '框架' or structure_type == '剪力墙' or structure_type == '框架-剪力墙')",
+          "check": "staggered_concrete_grade >= 30",
+          "message": "存在错层，而错层处相关构件混凝土强度等级 C{staggered_concrete_grade} 低于 GB 55008 的 C30 要求",
           "severity": "error",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "sx_local.yaml"
+        "source_file": "structure_members.yaml"
       },
       {
         "definition": {
-          "id": "ZJ-S-01",
-          "pack": "ZJ",
-          "name": "浙江省 MiC 混凝土强度等级下限",
+          "id": "S-28",
+          "name": "错层处平面外受力剪力墙截面厚度下限",
           "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30（原文逐行核对）。注意与国标 S-14 的区别：后者是钢筋混凝土结构的通用下限 C25，本条是模块化建筑的更高要求",
-          "when": "structure_type == 'MiC'",
-          "check": "concrete_grade >= 30",
-          "message": "模块化建筑的混凝土强度等级 C{concrete_grade} 低于浙江省导则要求的 C30",
+          "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
+          "when": "has_staggered_floor and has_out_of_plane_staggered_wall and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')",
+          "check": "staggered_wall_thickness >= 250",
+          "message": "存在错层，平面外受力剪力墙截面厚度 {staggered_wall_thickness} mm 低于 GB 55008 要求的 250 mm",
           "severity": "error",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "zj_mic.yaml"
+        "source_file": "structure_members.yaml"
       },
       {
         "definition": {
-          "id": "ZJ-S-02",
-          "pack": "ZJ",
-          "name": "浙江省 MiC 最大高宽比（提示）",
+          "id": "S-29",
+          "name": "钢结构高层不应采用单跨框架",
           "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
-          "when": "structure_type == 'MiC'",
-          "check": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
-          "message": "高宽比 {height_width_ratio} 超过浙江省导则表6.1.10 对该 MiC 体系的最大值（框架类 4、剪力墙与框架-剪力墙类 6）",
+          "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
+          "when": "structure_type == '钢结构' and steel_system == '框架' and structural_height_classification == '高层'",
+          "check": "not is_single_span_frame",
+          "message": "钢结构高层采用单跨框架，违反 GB/T 50011 第8.1.5条（甲、乙类建筑和高层丙类建筑不应采用单跨框架）",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_members.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-19",
+          "name": "钢结构建筑高度不超体系最大适用高度",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.1条 表8.1.1「钢结构房屋适用的最大高度（m）」6、7 度（0.10g）列：框架 110、框架-中心支撑 220、框架-偏心支撑（延性墙板）240、筒体（框筒、筒中筒、桁架筒、束筒）和巨型框架 300（原表图逐格核对）。表注 2：超过表内高度的房屋，应进行专门研究和论证，采取有效的加强措施",
+          "when": "structure_type == '钢结构'",
+          "check": "height <= (110 if steel_system == '框架' else (220 if steel_system == '框架-中心支撑' else (240 if steel_system == '框架-偏心支撑（延性墙板）' else 300)))",
+          "message": "钢结构建筑总高 {height} m 超过该体系在 6、7 度（0.10g）区的最大适用高度（框架 110、框架-中心支撑 220、框架-偏心支撑 240、筒体和巨型框架 300 m），须改体系或按超限高层做专项审查",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "structure_steel.yaml"
+      },
+      {
+        "definition": {
+          "id": "S-20",
+          "name": "钢结构高宽比不超限值（提示）",
+          "type": "hard",
+          "source": "GB/T 50011—2010（2024年版）第8.1.2条 表8.1.2「钢结构民用房屋适用的最大高宽比」：烈度 6、7 度 6.5、8 度 6.0、9 度 5.5（原表图逐格核对）。条文本条用词为「不宜」，故只作提示。表注：塔形建筑的底部有大底盘时，高宽比可按大底盘以上计算",
+          "when": "structure_type == '钢结构'",
+          "check": "height_width_ratio <= 6.5",
+          "message": "钢结构高宽比 {height_width_ratio} 超过表8.1.2 在 6、7 度区的限值 6.5，请复核结构整体稳定与经济性",
           "severity": "warning",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "zj_mic.yaml"
+        "source_file": "structure_steel.yaml"
       },
       {
         "definition": {
-          "id": "ZJ-S-03",
-          "pack": "ZJ",
-          "name": "浙江省 MiC 建筑最大适用高度（6 度区）",
+          "id": "S-21",
+          "name": "超过 50 m 的钢结构房屋应设置地下室",
           "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-          "when": "structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'",
-          "check": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-          "message": "建筑总高 {height} m 超过浙江省导则表6.1.8 对 6 度区该 MiC 体系的最大适用高度",
+          "source": "GB/T 50011—2010（2024年版）第8.1.9条第2款：超过50m的钢结构房屋应设置地下室。其基础埋置深度，当采用天然地基时不宜小于房屋总高度的1/15；当采用桩基时，桩承台埋深不宜小于房屋总高度的1/20（埋深部分需要“基础埋深”字段，本系统暂未采集）",
+          "when": "structure_type == '钢结构' and height > 50",
+          "check": "has_basement",
+          "message": "钢结构建筑总高 {height} m 超过 50 m，按规范应设置地下室",
           "severity": "error",
           "dimension": null,
           "value": null,
           "scoring": null,
           "weight_in_dimension": 1.0
         },
-        "source_file": "zj_mic.yaml"
-      },
-      {
-        "definition": {
-          "id": "ZJ-S-04",
-          "pack": "ZJ",
-          "name": "浙江省 MiC 建筑最大适用高度（7 度区）",
-          "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-          "when": "structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'",
-          "check": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-          "message": "建筑总高 {height} m 超过浙江省导则表6.1.8 对 7 度区该 MiC 体系的最大适用高度",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "zj_mic.yaml"
+        "source_file": "structure_steel.yaml"
       }
     ],
     "derived_quantities": [
@@ -7768,7 +9131,7 @@
   "imports": [
     {
       "filename": "demo-import.xlsx",
-      "sha256": "68f68075c37e083fe67046a66d1f0e7eb4e4d0d6fd42f26a2aab12ab85aeb6fb",
+      "sha256": "0d0aa31153db3d9fbd6f3d4ac4c590f5115ff0e11043d2a3b379f7f285991c4a",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7804,6 +9167,17 @@
             "design_working_life": 70,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 70,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -7814,6 +9188,14 @@
               "大悬挑",
               "高支模"
             ],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 52.8,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.25,
             "green_ratio": 0.38
           }
@@ -7852,10 +9234,27 @@
             "design_working_life": 50,
             "min_plan_width": 15.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
             "risk_features": [],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "落地式钢管脚手架",
+            "scaffold_height": 49.0,
+            "retaining_type": "放坡开挖",
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.45,
             "green_ratio": 0.35
           }
@@ -7896,10 +9295,29 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
             "risk_features": [],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 54.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.75,
             "green_ratio": 0.36
           }
@@ -7938,10 +9356,30 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
             "risk_features": [],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 51.0,
+            "retaining_type": "地下连续墙",
+            "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "锚杆（锚拉）",
+            "anchor_free_length": 6.0,
             "prefab_ratio_est": 0.5,
             "green_ratio": 0.4
           }
@@ -7980,6 +9418,16 @@
             "design_working_life": 50,
             "min_plan_width": 14.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -7989,6 +9437,14 @@
               "大悬挑",
               "复杂地质"
             ],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 51.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 25.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.3,
             "green_ratio": 0.35
           }
@@ -8006,7 +9462,7 @@
     },
     {
       "filename": "demo-invalid.xlsx",
-      "sha256": "7a8a30356a2848685c3a0014a2ee70f816a571b4bea7d9a4a31aace0159d359d",
+      "sha256": "fe1297622e200b0ea5fb3b1f2b02870e4afab867a0f77a9b71b1ee58457b5fbb",
       "schemes": [
         {
           "name": "A 高品质",
@@ -8040,6 +9496,17 @@
             "design_working_life": 70,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 70,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "凹凸不规则",
               "局部不规则"
@@ -8050,6 +9517,14 @@
               "大悬挑",
               "高支模"
             ],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 52.8,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.25,
             "green_ratio": 0.38
           }
@@ -8088,10 +9563,27 @@
             "design_working_life": 50,
             "min_plan_width": 15.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.8,
             "component_types": 14,
             "risk_features": [],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "落地式钢管脚手架",
+            "scaffold_height": 49.0,
+            "retaining_type": "放坡开挖",
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.45,
             "green_ratio": 0.35
           }
@@ -8132,10 +9624,29 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.95,
             "component_types": 8,
             "risk_features": [],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 54.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "混凝土内支撑",
             "prefab_ratio_est": 0.75,
             "green_ratio": 0.36
           }
@@ -8174,10 +9685,30 @@
             "design_working_life": 50,
             "min_plan_width": 16.0,
             "concrete_grade": 30.0,
+            "foundation_type": "桩筏基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "raft_rebar_ratio": 0.2,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [],
             "std_floor_repeat": 0.85,
             "component_types": 12,
             "risk_features": [],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 51.0,
+            "retaining_type": "地下连续墙",
+            "retaining_concrete_grade": 30.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "锚杆（锚拉）",
+            "anchor_free_length": 6.0,
             "prefab_ratio_est": 0.5,
             "green_ratio": 0.4
           }
@@ -8216,6 +9747,16 @@
             "design_working_life": 50,
             "min_plan_width": 14.0,
             "concrete_grade": 25.0,
+            "foundation_type": "桩基础",
+            "foundation_working_life": 50,
+            "has_basement": true,
+            "shear_wall_thickness": 200.0,
+            "frame_beam_width": 250.0,
+            "frame_column_shape": "矩形",
+            "frame_column_size": 400.0,
+            "foundation_depth": 6.0,
+            "has_staggered_floor": false,
+            "is_single_span_frame": false,
             "irregularity_items": [
               "扭转不规则"
             ],
@@ -8225,6 +9766,14 @@
               "大悬挑",
               "复杂地质"
             ],
+            "excavation_depth": 4.5,
+            "formwork_height": 4.5,
+            "scaffold_type": "附着式升降脚手架",
+            "scaffold_height": 51.0,
+            "retaining_type": "排桩",
+            "retaining_concrete_grade": 25.0,
+            "excavation_working_life": 2.0,
+            "brace_type": "无内支撑与锚拉",
             "prefab_ratio_est": 0.3,
             "green_ratio": 0.35
           }
@@ -8255,7 +9804,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "7ebafe4b67d6502d6b5ccb0d2ed5c1f7d57f7adb609e96b400f7d7c7168dc89a",
+      "sha256": "bb9fc903000fceffce413fdbd5480e87c115246e10b3989f42933f410d475545",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -8268,9 +9817,7 @@
       "density_max": null,
       "height_max": null,
       "climate_zone": null,
-      "seismic_intensity": null,
-      "province": null,
-      "standard_packs": null
+      "seismic_intensity": null
     },
     "scheme": {
       "structure_type": null,
@@ -8287,15 +9834,6 @@
       "highest_occupied_floor_height": null,
       "daylight_factor": null,
       "sunlight_hours": null,
-      "daylight_standard_day": null,
-      "living_space_count": null,
-      "daylight_room_count": null,
-      "clear_height": null,
-      "has_fresh_air": null,
-      "has_stretcher_elevator": null,
-      "has_accessible_elevator": null,
-      "total_elevators": null,
-      "per_capita_green": null,
       "gfa": null,
       "footprint": null,
       "buildings": null,
@@ -8306,10 +9844,39 @@
       "design_working_life": null,
       "min_plan_width": null,
       "concrete_grade": null,
+      "structural_height_classification": null,
+      "foundation_type": null,
+      "foundation_concrete_grade": null,
+      "foundation_working_life": null,
+      "steel_system": null,
+      "has_basement": null,
+      "shear_wall_thickness": null,
+      "frame_beam_width": null,
+      "frame_column_shape": null,
+      "frame_column_size": null,
+      "raft_rebar_ratio": null,
+      "foundation_depth": null,
+      "has_staggered_floor": null,
+      "staggered_concrete_grade": null,
+      "has_out_of_plane_staggered_wall": null,
+      "staggered_wall_thickness": null,
+      "is_single_span_frame": null,
       "irregularity_items": null,
       "std_floor_repeat": null,
       "component_types": null,
       "risk_features": [],
+      "excavation_depth": null,
+      "formwork_height": null,
+      "scaffold_type": null,
+      "scaffold_height": null,
+      "retaining_type": null,
+      "retaining_wall_two_in_one": null,
+      "retaining_concrete_grade": null,
+      "excavation_working_life": null,
+      "brace_type": null,
+      "brace_concrete_grade": null,
+      "anchor_free_length": null,
+      "custom": {},
       "prefab_ratio_est": null,
       "green_ratio": null
     }
@@ -8447,108 +10014,6 @@
           "group": "基本信息",
           "label": "抗震设防烈度",
           "title": "Seismic Intensity",
-          "unit": "—"
-        },
-        "province": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "项目所在省级行政区（两字母地区码，如 ZJ）。用于提示「所选的地方册是否与项目所在地一致」",
-          "enum": [
-            "BJ",
-            "TJ",
-            "HE",
-            "SX",
-            "NM",
-            "LN",
-            "JL",
-            "HL",
-            "SH",
-            "JS",
-            "ZJ",
-            "AH",
-            "FJ",
-            "JX",
-            "SD",
-            "HA",
-            "HB",
-            "HN",
-            "GD",
-            "GX",
-            "HI",
-            "CQ",
-            "SC",
-            "GZ",
-            "YN",
-            "XZ",
-            "SN",
-            "GS",
-            "QH",
-            "NX",
-            "XJ"
-          ],
-          "group": "基本信息",
-          "label": "所在省份",
-          "title": "Province",
-          "unit": "—"
-        },
-        "standard_packs": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "适用的规则册；留空＝只用国家标准（GB）。GB 永远生效、不能去掉；加进省级地区码后，该省的地方规则才会参与评估",
-          "group": "基本信息",
-          "label": "适用标准册",
-          "options": [
-            "GB",
-            "BJ",
-            "TJ",
-            "HE",
-            "SX",
-            "NM",
-            "LN",
-            "JL",
-            "HL",
-            "SH",
-            "JS",
-            "ZJ",
-            "AH",
-            "FJ",
-            "JX",
-            "SD",
-            "HA",
-            "HB",
-            "HN",
-            "GD",
-            "GX",
-            "HI",
-            "CQ",
-            "SC",
-            "GZ",
-            "YN",
-            "XZ",
-            "SN",
-            "GS",
-            "QH",
-            "NX",
-            "XJ"
-          ],
-          "title": "Standard Packs",
           "unit": "—"
         }
       },
@@ -8841,163 +10306,6 @@
           "title": "Sunlight Hours",
           "unit": "h"
         },
-        "daylight_standard_day": {
-          "anyOf": [
-            {
-              "enum": [
-                "大寒日",
-                "冬至日"
-              ],
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "日照分析用的标准日。必须与日照时数一起填：各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）",
-          "enum": [
-            "大寒日",
-            "冬至日"
-          ],
-          "group": "居住品质",
-          "label": "日照标准日",
-          "title": "Daylight Standard Day",
-          "unit": "—"
-        },
-        "living_space_count": {
-          "anyOf": [
-            {
-              "exclusiveMinimum": 0,
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "套内居住空间（卧室、起居室等）总数",
-          "group": "居住品质",
-          "label": "居住空间总数",
-          "title": "Living Space Count",
-          "unit": "个"
-        },
-        "daylight_room_count": {
-          "anyOf": [
-            {
-              "exclusiveMinimum": 0,
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
-          "group": "居住品质",
-          "label": "满足日照空间数",
-          "title": "Daylight Room Count",
-          "unit": "个"
-        },
-        "clear_height": {
-          "anyOf": [
-            {
-              "exclusiveMinimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
-          "group": "居住品质",
-          "label": "室内净高",
-          "title": "Clear Height",
-          "unit": "m"
-        },
-        "has_fresh_air": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
-          "group": "居住品质",
-          "label": "设新风/中央空调",
-          "title": "Has Fresh Air",
-          "unit": "—"
-        },
-        "has_stretcher_elevator": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "每个单元是否至少设 1 台可容纳担架的电梯",
-          "group": "居住品质",
-          "label": "设担架电梯",
-          "title": "Has Stretcher Elevator",
-          "unit": "—"
-        },
-        "has_accessible_elevator": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
-          "group": "居住品质",
-          "label": "设无障碍电梯",
-          "title": "Has Accessible Elevator",
-          "unit": "—"
-        },
-        "total_elevators": {
-          "anyOf": [
-            {
-              "exclusiveMinimum": 0,
-              "type": "integer"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
-          "group": "居住品质",
-          "label": "电梯总台数",
-          "title": "Total Elevators",
-          "unit": "台"
-        },
-        "per_capita_green": {
-          "anyOf": [
-            {
-              "exclusiveMinimum": 0,
-              "type": "number"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "default": null,
-          "description": "人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
-          "group": "绿色低碳",
-          "label": "人均公共绿地",
-          "title": "Per Capita Green",
-          "unit": "m²/人"
-        },
         "gfa": {
           "anyOf": [
             {
@@ -9170,6 +10478,329 @@
           "title": "Concrete Grade",
           "unit": "MPa"
         },
+        "structural_height_classification": {
+          "anyOf": [
+            {
+              "enum": [
+                "高层",
+                "多层"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "结构专业核定的高层 / 多层分类（按所适用结构条文核定，不从住宅建筑高度分类自动推定）",
+          "enum": [
+            "高层",
+            "多层"
+          ],
+          "group": "结构与造价",
+          "label": "结构高度分类",
+          "title": "Structural Height Classification",
+          "unit": "—"
+        },
+        "foundation_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "筏形基础",
+                "桩筏基础",
+                "独立基础",
+                "条形基础",
+                "桩基础"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基础形式（筏形 / 桩筏基础的混凝土强度等级不应低于 C30）",
+          "enum": [
+            "筏形基础",
+            "桩筏基础",
+            "独立基础",
+            "条形基础",
+            "桩基础"
+          ],
+          "group": "结构与造价",
+          "label": "基础形式",
+          "title": "Foundation Type",
+          "unit": "—"
+        },
+        "foundation_concrete_grade": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基础混凝土强度等级（填 C 后的数值，如 C30 填 30；不从上部结构等级推定）",
+          "group": "结构与造价",
+          "label": "基础混凝土强度等级",
+          "title": "Foundation Concrete Grade",
+          "unit": "MPa"
+        },
+        "foundation_working_life": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "地基与基础的设计工作年限（不应低于上部结构的设计工作年限）",
+          "group": "结构与造价",
+          "label": "地基基础工作年限",
+          "title": "Foundation Working Life",
+          "unit": "年"
+        },
+        "steel_system": {
+          "anyOf": [
+            {
+              "enum": [
+                "框架",
+                "框架-中心支撑",
+                "框架-偏心支撑（延性墙板）",
+                "筒体和巨型框架"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "钢结构体系类型（仅在结构体系选“钢结构”时填写；不同体系最大适用高度不同）",
+          "enum": [
+            "框架",
+            "框架-中心支撑",
+            "框架-偏心支撑（延性墙板）",
+            "筒体和巨型框架"
+          ],
+          "group": "结构与造价",
+          "label": "钢结构体系",
+          "title": "Steel System",
+          "unit": "—"
+        },
+        "has_basement": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "是否设置地下室（超过 50 m 的钢结构房屋应设置地下室）",
+          "group": "结构与造价",
+          "label": "是否设地下室",
+          "title": "Has Basement",
+          "unit": "—"
+        },
+        "shear_wall_thickness": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "剪力墙截面厚度（高层 ≥160 mm、多层 ≥140 mm；错层处 ≥250 mm）",
+          "group": "结构与造价",
+          "label": "剪力墙截面厚度",
+          "title": "Shear Wall Thickness",
+          "unit": "mm"
+        },
+        "frame_beam_width": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "矩形截面框架梁的截面宽度（不应小于 200 mm）",
+          "group": "结构与造价",
+          "label": "框架梁截面宽度",
+          "title": "Frame Beam Width",
+          "unit": "mm"
+        },
+        "frame_column_shape": {
+          "anyOf": [
+            {
+              "enum": [
+                "矩形",
+                "圆形"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "框架柱截面形状（矩形柱按边长、圆形柱按直径判定）",
+          "enum": [
+            "矩形",
+            "圆形"
+          ],
+          "group": "结构与造价",
+          "label": "框架柱截面形状",
+          "title": "Frame Column Shape",
+          "unit": "—"
+        },
+        "frame_column_size": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "框架柱截面尺寸（矩形填边长、圆形填直径：≥300 / ≥350 mm）",
+          "group": "结构与造价",
+          "label": "框架柱截面尺寸",
+          "title": "Frame Column Size",
+          "unit": "mm"
+        },
+        "raft_rebar_ratio": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "筏形 / 桩筏基础底板上下贯通钢筋配筋率（不应小于 0.15%，填百分数）",
+          "group": "结构与造价",
+          "label": "筏基底板贯通筋配筋率",
+          "title": "Raft Rebar Ratio",
+          "unit": "%"
+        },
+        "foundation_depth": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基础埋置深度（超过 50 m 的钢结构：天然地基不宜小于 H/15、桩基不宜小于 H/20）",
+          "group": "结构与造价",
+          "label": "基础埋置深度",
+          "title": "Foundation Depth",
+          "unit": "m"
+        },
+        "has_staggered_floor": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "是否存在错层（错层处柱、平面外受力剪力墙有专门的截面与混凝土要求）",
+          "group": "结构与造价",
+          "label": "是否存在错层",
+          "title": "Has Staggered Floor",
+          "unit": "—"
+        },
+        "staggered_concrete_grade": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "错层处框架柱 / 平面外受力剪力墙的最低核定混凝土强度等级（填 C 后数值，不从全局结构等级推定）",
+          "group": "结构与造价",
+          "label": "错层处构件混凝土等级",
+          "title": "Staggered Concrete Grade",
+          "unit": "MPa"
+        },
+        "has_out_of_plane_staggered_wall": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "错层处是否存在平面外受力剪力墙（专业核定；未填写表示未核对）",
+          "group": "结构与造价",
+          "label": "错层处是否有平面外受力墙",
+          "title": "Has Out Of Plane Staggered Wall",
+          "unit": "—"
+        },
+        "staggered_wall_thickness": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "错层处平面外受力剪力墙的最低核定截面厚度（不从一般剪力墙厚度推定）",
+          "group": "结构与造价",
+          "label": "错层处平面外受力墙厚度",
+          "title": "Staggered Wall Thickness",
+          "unit": "mm"
+        },
+        "is_single_span_frame": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "框架是否为单跨框架（钢结构：甲、乙类与高层丙类不应采用单跨框架）",
+          "group": "结构与造价",
+          "label": "是否单跨框架",
+          "title": "Is Single Span Frame",
+          "unit": "—"
+        },
         "irregularity_items": {
           "allow_custom_options": false,
           "anyOf": [
@@ -9186,6 +10817,7 @@
           "default": null,
           "description": "超限高层不规则项（结构计算判定后勾选；留空为未核对，明确填写 [] 为已核对无不规则项）",
           "empty_means_unknown": true,
+          "extensible": false,
           "group": "结构与造价",
           "label": "超限不规则项",
           "options": [
@@ -9242,6 +10874,7 @@
         },
         "risk_features": {
           "description": "风险特征列表（预设见 RISK_FEATURE_OPTIONS，允许自定义）",
+          "extensible": true,
           "group": "施工与安全",
           "items": {
             "type": "string"
@@ -9259,6 +10892,235 @@
           ],
           "title": "Risk Features",
           "type": "array",
+          "unit": "—"
+        },
+        "excavation_depth": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑开挖深度（用于危大工程判定：≥3m 须专项施工方案，≥5m 须专家论证）",
+          "group": "施工与安全",
+          "label": "基坑开挖深度",
+          "title": "Excavation Depth",
+          "unit": "m"
+        },
+        "formwork_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "混凝土模板支撑搭设高度（用于危大工程判定：≥5m 须专项方案，≥8m 须专家论证）",
+          "group": "施工与安全",
+          "label": "模板支撑高度",
+          "title": "Formwork Height",
+          "unit": "m"
+        },
+        "scaffold_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "落地式钢管脚手架",
+                "附着式升降脚手架",
+                "悬挑式脚手架"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "外脚手架形式（附着式升降与悬挑式一律属危大工程）",
+          "enum": [
+            "落地式钢管脚手架",
+            "附着式升降脚手架",
+            "悬挑式脚手架"
+          ],
+          "group": "施工与安全",
+          "label": "脚手架形式",
+          "title": "Scaffold Type",
+          "unit": "—"
+        },
+        "scaffold_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
+          "group": "施工与安全",
+          "label": "脚手架搭设高度",
+          "title": "Scaffold Height",
+          "unit": "m"
+        },
+        "retaining_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "排桩",
+                "地下连续墙",
+                "土钉墙",
+                "放坡开挖",
+                "其他"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑支护形式（排桩 ≥C25、两墙合一下的地下连续墙 ≥C30）",
+          "enum": [
+            "排桩",
+            "地下连续墙",
+            "土钉墙",
+            "放坡开挖",
+            "其他"
+          ],
+          "group": "施工与安全",
+          "label": "基坑支护形式",
+          "title": "Retaining Type",
+          "unit": "—"
+        },
+        "retaining_wall_two_in_one": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "地下连续墙是否采用两墙合一（仅地下连续墙需核定，其他支护可填否；未填写表示未核对，不按否处理）",
+          "group": "施工与安全",
+          "label": "地下连续墙是否两墙合一",
+          "title": "Retaining Wall Two In One",
+          "unit": "—"
+        },
+        "retaining_concrete_grade": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "支护结构混凝土强度等级（填 C 后的数值；与上部结构分开填）",
+          "group": "施工与安全",
+          "label": "支护混凝土强度等级",
+          "title": "Retaining Concrete Grade",
+          "unit": "MPa"
+        },
+        "excavation_working_life": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑工程设计工作年限（不应小于 1 年）",
+          "group": "施工与安全",
+          "label": "基坑工作年限",
+          "title": "Excavation Working Life",
+          "unit": "年"
+        },
+        "brace_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "混凝土内支撑",
+                "钢支撑",
+                "锚杆（锚拉）",
+                "无内支撑与锚拉"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑内支撑 / 锚拉体系（混凝土内支撑 ≥C25；锚杆自由段 ≥5.0m）",
+          "enum": [
+            "混凝土内支撑",
+            "钢支撑",
+            "锚杆（锚拉）",
+            "无内支撑与锚拉"
+          ],
+          "group": "施工与安全",
+          "label": "内支撑 / 锚拉体系",
+          "title": "Brace Type",
+          "unit": "—"
+        },
+        "brace_concrete_grade": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "混凝土内支撑的混凝土强度等级（填 C 后数值；不从支护桩墙等级推定）",
+          "group": "施工与安全",
+          "label": "内支撑混凝土强度等级",
+          "title": "Brace Concrete Grade",
+          "unit": "MPa"
+        },
+        "anchor_free_length": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "锚杆自由段长度（不应小于 5.0 m）",
+          "group": "施工与安全",
+          "label": "锚杆自由段长度",
+          "title": "Anchor Free Length",
+          "unit": "m"
+        },
+        "custom": {
+          "additionalProperties": true,
+          "description": "自定义字段的值：键是自定义字段名，值按字段类型（数值 / 比例 / 文本 / 列表）。界面上由覆盖层注册表渲染成一个个独立输入项，本字段本身不直接展示（见 app/custom/fields.py 与 docs/design-custom-add.md）",
+          "group": "基本信息",
+          "hidden": true,
+          "label": "自定义字段",
+          "title": "Custom",
+          "type": "object",
           "unit": "—"
         },
         "prefab_ratio_est": {

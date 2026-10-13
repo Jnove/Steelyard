@@ -25,6 +25,8 @@ from fastapi import (
 from pydantic import BaseModel, ConfigDict, Field
 from sqlmodel import Session, or_, select
 
+from app.custom import fields as fields_service
+from app.custom.errors import CustomAddError
 from app.db import get_session
 from app.excel import ParseError, parse_workbook
 from app.models import Project, Scheme, SchemeParams
@@ -33,6 +35,15 @@ router = APIRouter(
     prefix="/projects/{project_id}/schemes",
     tags=["schemes"],
 )
+
+
+def _validate_custom(session: Session, params: SchemeParams, *, previous: dict | None = None) -> None:
+    try:
+        fields_service.validate_values(session, params.custom, previous=previous)
+    except CustomAddError as exc:
+        raise HTTPException(422, detail={"message": str(exc), "problems": [
+            {"code": p.code, "message": p.message, "fix": p.fix} for p in exc.problems
+        ]}) from exc
 
 
 class SchemeCreate(BaseModel):
@@ -122,6 +133,7 @@ def create_scheme(
 ) -> SchemeRead:
     _require_project(session, project_id)
     _ensure_unique_name(session, project_id, payload.name)
+    _validate_custom(session, payload.params)
     if payload.is_whatif and payload.parent_id is not None:
         parent = session.get(Scheme, payload.parent_id)
         if parent is None or parent.project_id != project_id:
@@ -190,6 +202,7 @@ def update_scheme(
         _ensure_unique_name(session, project_id, payload.name, exclude_id=scheme_id)
         scheme.name = payload.name
     if payload.params is not None:
+        _validate_custom(session, payload.params, previous=(scheme.params or {}).get("custom", {}))
         scheme.params = payload.params.model_dump()
     if payload.is_whatif is not None:
         scheme.is_whatif = payload.is_whatif
@@ -300,7 +313,9 @@ def import_schemes(
             detail="上传的文件为空",
         )
     try:
-        result = parse_workbook(content)
+        # 传 session：解析时按"内建 + 覆盖层"的字段表取值，
+        # 于是自定义字段的列会被写进 params["custom"]（见 app/excel/io.py）。
+        result = parse_workbook(content, session=session)
     except Exception as exc:  # noqa: BLE001
         raise HTTPException(
             status.HTTP_400_BAD_REQUEST,
@@ -369,6 +384,7 @@ def import_schemes(
             unique = f"{unique} ({n})"
         try:
             params = SchemeParams.model_validate(scheme_data["params"])
+            fields_service.validate_values(session, params.custom)
         except Exception as exc:  # noqa: BLE001
             skipped_errors.append(
                 ImportErrorItem(

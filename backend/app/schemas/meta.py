@@ -18,6 +18,10 @@ _META_KEYS = (
     "enum",
     "options",
     "essential",
+    # 覆盖层（app/custom/）新增的两个元信息：
+    "extensible",
+    "hidden",
+    # main 侧的字段语义说明：
     "allow_custom_options",
     "empty_means_unknown",
 )
@@ -66,6 +70,16 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
             field_info["options"] = prop["options"]
         if prop.get("essential"):
             field_info["essential"] = True
+        if prop.get("extensible"):
+            # 开放枚举：允许使用者在界面上追加候选值（见 app/custom/options.py）。
+            # 只有显式声明 extensible 的字段才放行——像 structure_type 这样的封闭枚举
+            # 一旦多出规则不认识的取值，依赖它的规则会静默失效。
+            field_info["extensible"] = True
+        if prop.get("hidden"):
+            # 容器型字段（如 scheme_params.custom）：值是给覆盖层用的字典，
+            # 不该在表单里直接暴露，前端应按 hidden 跳过；
+            # 自定义字段本身由 /api/schema 追加成独立条目（见 app/custom/fields.py）。
+            field_info["hidden"] = True
         for key in ("allow_custom_options", "empty_means_unknown"):
             if key in prop:
                 field_info[key] = prop[key]
@@ -79,15 +93,26 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
     }
 
 
+def _object_value_type(prop: dict[str, Any]) -> str:
+    """取 ``additionalProperties`` 的值类型。
+
+    Pydantic 对 ``dict[str, Any]`` 会生成 ``"additionalProperties": true``（**布尔值**，
+    不是子 schema），直接当字典用会炸 ``'bool' object has no attribute 'get'``——
+    所以这里必须判类型。裸 ``true`` 表示"值可以是任意类型"，返回 ``any``。
+    """
+    additional = prop.get("additionalProperties", {})
+    if isinstance(additional, dict):
+        return str(additional.get("type", "string"))
+    return "any" if additional is True else "string"
+
+
 def _simplify_type(prop: dict[str, Any]) -> str:
     """把 Pydantic 的类型描述简化为前端好处理的字符串。"""
     if prop.get("type") == "array":
         item_type = prop.get("items", {}).get("type", "string")
         return f"array<{item_type}>"
     if prop.get("type") == "object":
-        additional = prop.get("additionalProperties", {})
-        value_type = additional.get("type", "string")
-        return f"object<{value_type}>"
+        return f"object<{_object_value_type(prop)}>"
     if "anyOf" in prop:
         non_null = [x for x in prop["anyOf"] if x.get("type") != "null"]
         if non_null:
@@ -95,8 +120,7 @@ def _simplify_type(prop: dict[str, Any]) -> str:
             if sub.get("type") == "array":
                 return f"array<{sub.get('items', {}).get('type', 'string')}>"
             if sub.get("type") == "object":
-                value_type = sub.get("additionalProperties", {}).get("type", "string")
-                return f"object<{value_type}>"
+                return f"object<{_object_value_type(sub)}>"
             return sub.get("type", "string")
     return prop.get("type", "string")
 

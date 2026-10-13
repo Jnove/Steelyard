@@ -84,21 +84,19 @@ __all__ = [
 
 # —— 常量 —— #
 
-#: 规则 ID 的两种形态：
+#: 规则 ID 的形态：
 #:
 #: * **国家层面标准**（默认册 ``GB``）：一个大写前缀字母 + 短横线 + 两位数字。
-#:   前缀对应 ``rules/`` 下的文件：C=compliance、Q=quality、S=structure、K=construction、G=green。
+#:   前缀 C=compliance、Q=quality、S=structure、K=construction、G=green。
 #: * **地方标准**（省级册）：两字母地区码 + 短横线 + 同一个维度字母 + 短横线 + 两位数字，
 #:   例如 ``ZJ-S-01``（浙江省册的结构规则）。地区码见 ``app/engine/regions.py``。
-#:
-#: **X 留给运行期自定义规则**（见 ``app/custom/rules.py``）：它们不来自任何文件、
-#: 不进 git、不参与 CI 校验，用一个独立前缀才能在任何列表里一眼区分开。
-#: 本仓库当前这条路径还没启用，所以模式里**不含 X**——文件里写 X-01 会被直接拒绝
-#: （这正是我们要的：X- 只能出现在运行期，不能落进 ``rules/*.yaml``）。
+#: * **X** 是运行期自定义规则的保留前缀（见 ``app/custom/rules.py``）：模式里允许它，
+#:   但 ``scripts/check_rules.py`` 会禁止它出现在 ``rules/*.yaml`` 里——X- 只能来自
+#:   界面上临时加的规则，不能落进 git。
 #:
 #: 为什么地方规则要带地区码：多省的同类规则会撞号（两位数只有 99 个），
 #: 而报告里每条结论都要能顺着编号回查来源——``ZJ-S-01`` 一眼就知道出自浙江册。
-RULE_ID_PATTERN = r"^(?:[CQSKG]|[A-Z]{2}-[CQSKG])-\d{2}$"
+RULE_ID_PATTERN = r"^(?:[CQSKGX]|[A-Z]{2}-[CQSKG])-\d{2}$"
 
 #: 表达式里允许调用的函数。**只有这五个**，其余一律报错。
 #: 不放 ``sum`` / ``sorted`` 之类是因为规则里用不到，而每多一个就多一份出错与滥用的可能。
@@ -309,8 +307,13 @@ class AnalyzedExpression:
         return not self.problems
 
 
-def known_field_names() -> frozenset[str]:
-    """全部可在表达式里引用的名字：项目层字段 + 方案层字段 + 派生量。
+def known_field_names(extra: Iterable[str] = ()) -> frozenset[str]:
+    """全部可在表达式里引用的名字：项目层 + 方案层 + 派生量（+ 调用方补充的名字）。
+
+    Args:
+        extra: 额外允许引用的名字。**运行期自定义字段**从这里传进来
+            （见 ``app/custom/fields.py`` 的 ``known_names``）：内建规则不该引用它们
+            ——``check_rules`` 是纯文件校验、看不到覆盖层——但自定义规则可以。
 
     Raises:
         RuntimeError: 项目层与方案层出现同名字段。命名空间是直接合并的，
@@ -324,7 +327,7 @@ def known_field_names() -> frozenset[str]:
             f"项目层与方案层存在同名字段 {sorted(overlap)}，命名空间无法直接合并；"
             "请在 app/models/params.py 里给其中一个改名"
         )
-    return frozenset(project | scheme | derived_names())
+    return frozenset(project | scheme | derived_names() | set(extra))
 
 
 def _suggest(name: str, candidates: Iterable[str]) -> str:
@@ -932,21 +935,35 @@ class Namespace:
         return tuple(missing)
 
 
-def build_namespace(project: ProjectParams, scheme: SchemeParams) -> Namespace:
-    """合并项目层字段、方案层字段与派生量，构成表达式命名空间。
+def build_namespace(
+    project: ProjectParams, scheme: SchemeParams, *, custom_names: Iterable[str] | None = None
+) -> Namespace:
+    """合并项目层字段、方案层字段、派生量与自定义字段，构成表达式命名空间。
 
     字段名不重复（由 :func:`known_field_names` 在加载阶段保证），所以直接合并。
+
+    ``SchemeParams.custom`` 里的**自定义字段**（运行期覆盖层，见 ``app/custom/``）
+    在这里摊平到顶层：规则作者不必写 ``custom['my_field']``，直接写 ``my_field``。
+    用 ``setdefault`` 合并，所以**内建字段永远优先**，自定义字段不可能把它顶掉
+    （注册表写入时也已拒绝与内建重名，这里是第二道保险）。
     """
     values: dict[str, Any] = {**project.model_dump(), **scheme.model_dump()}
+    custom = values.get("custom")
+    if isinstance(custom, dict):
+        for key, value in custom.items():
+            if custom_names is None or key in custom_names:
+                values.setdefault(str(key), value)
     derived = compute_derived(values)
     values.update({name: dv.value for name, dv in derived.items()})
     return Namespace(values=values, derived=derived)
 
 
-def _eval_expression(expression: str, namespace: Namespace) -> Any:
+def _eval_expression(
+    expression: str, namespace: Namespace, known: frozenset[str] | None = None
+) -> Any:
     """求值一个表达式。调用方负责先判缺数据，所以这里不处理 ``None`` 参与运算的情况。"""
     # 求值入口也检查白名单，防止直接构造 RuleSet 绕过文件加载时的静态检查。
-    analyzed = analyze_expression(expression, "expression")
+    analyzed = analyze_expression(expression, "expression", known)
     if not analyzed.ok:
         raise InvalidExpression("；".join(problem.message for problem in analyzed.problems))
     evaluator = _make_evaluator(namespace.values)
@@ -1029,7 +1046,7 @@ def _applicability(
     if missing:
         return "unknown", missing
     try:
-        return ("yes" if _eval_expression(rule.when, namespace) else "no"), ()
+        return ("yes" if _eval_expression(rule.when, namespace, known) else "no"), ()
     except (InvalidExpression, TypeError, ValueError, ZeroDivisionError):
         # when 求值出错按"判不了"处理，而不是让整次评估失败。
         return "unknown", ()
@@ -1082,7 +1099,7 @@ def _evaluate_hard(rule: RuleDef, namespace: Namespace, known: frozenset[str]) -
         )
 
     try:
-        passed = bool(_eval_expression(rule.check or "", namespace))
+        passed = bool(_eval_expression(rule.check or "", namespace, known))
     except ZeroDivisionError:
         return ComplianceItem(
             **common,
@@ -1155,7 +1172,7 @@ def _evaluate_metric(rule: RuleDef, namespace: Namespace, known: frozenset[str])
         )
 
     try:
-        raw = _eval_expression(rule.value, namespace)
+        raw = _eval_expression(rule.value, namespace, known)
     except (InvalidExpression, TypeError, ValueError, ZeroDivisionError):
         return MetricResult(**common, status="insufficient_data", value=None, score=None)
 
@@ -1217,6 +1234,8 @@ def evaluate(
     project: ProjectParams,
     schemes: Sequence[SchemeInput],
     rules: RuleSet,
+    *,
+    known: frozenset[str] | None = None,
 ) -> list[EvalResult]:
     """对每个方案跑一遍全部规则。
 
@@ -1231,11 +1250,12 @@ def evaluate(
 
     本函数是纯函数：不读数据库、不调大模型、不依赖时间或随机数。
     """
-    known = known_field_names()
+    known = known if known is not None else known_field_names()
+    custom_names = known - known_field_names()
     results: list[EvalResult] = []
 
     for scheme in schemes:
-        namespace = build_namespace(project, scheme.params)
+        namespace = build_namespace(project, scheme.params, custom_names=custom_names)
 
         compliance = [_evaluate_hard(rule, namespace, known) for rule in rules.hard_rules]
         metrics = {rule.id: _evaluate_metric(rule, namespace, known) for rule in rules.metric_rules}
