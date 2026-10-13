@@ -42,7 +42,7 @@ class TestTemplateGeneration:
             for r in range(2, ws.max_row + 1)
             if ws.cell(row=r, column=name_col).value
         }
-        # 6 个项目字段全部出现（新增字段时这里要一起更新）
+        # 项目字段全部出现（新增字段时这里要一起更新）
         assert names == {
             "site_area",
             "far_max",
@@ -50,6 +50,10 @@ class TestTemplateGeneration:
             "height_max",
             "climate_zone",
             "seismic_intensity",
+            # 「地区册」机制加的两个：项目所在地，以及启用的标准册
+            # （默认只有 GB，加进省级地区码后该省的地方规则才参与评估）
+            "province",
+            "standard_packs",
         }
 
     def test_scheme_sheet_has_six_columns_and_all_fields(self, tmp_path) -> None:

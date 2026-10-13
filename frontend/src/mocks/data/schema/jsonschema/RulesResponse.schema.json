@@ -53,9 +53,15 @@
       "description": "``rules/*.yaml`` 里一条规则的正式定义。\n\n两类规则共用 ``id`` / ``name`` / ``type`` / ``source``，其余字段按 ``type`` 分：\n\n- ``hard``（硬约束）：``check`` 必填，可选 ``message`` / ``severity``；\n- ``metric``（评分指标）：``dimension`` / ``value`` / ``scoring`` 必填，\n  ``weight_in_dimension`` 默认 1。\n\n``extra=\"forbid\"`` 是刻意的：规则由非程序员编写，字段名打错时宁可直接报错，\n也不要静默忽略——静默忽略会让一条规则看起来生效了其实没生效。",
       "properties": {
         "id": {
-          "description": "规则编号，形如 C-03；全局唯一。前缀 C/Q/S/K/G 对应 rules/ 下的五个文件",
-          "pattern": "^[CQSKG]-\\d{2}$",
+          "description": "规则编号：国家层面标准形如 C-03（全局唯一），地方标准形如 ZJ-S-01（地区码 + 维度字母 + 两位数字）",
+          "pattern": "^(?:[CQSKG]|[A-Z]{2}-[CQSKG])-\\d{2}$",
           "title": "Id",
+          "type": "string"
+        },
+        "pack": {
+          "default": "GB",
+          "description": "规则所属的「册」：GB 是国家标准册（永远生效），其余是省级册（默认关闭，由项目选择）。地方规则的 ID 地区码必须与本字段一致",
+          "title": "Pack",
           "type": "string"
         },
         "name": {

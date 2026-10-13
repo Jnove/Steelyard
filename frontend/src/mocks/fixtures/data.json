@@ -1,5 +1,5 @@
 {
-  "fixture_id": "c2e9b41b6d8d89adb508c12e6e50e3165f9d11fabb9f510a70b46b8944ddd3de",
+  "fixture_id": "4f2b4847dc76ddceff2b984ce10d144addc8a1761bbe48f06293f687bf0648b5",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -12,27 +12,29 @@
     "backend/app/agents/tools.py": "3ca916006a797adfa031ef88d67268a6848cf0ce68826c1b971c4760b64a85b5",
     "backend/app/api/__init__.py": "e61363389bcff57bfd5ddd9ff8cd10b8c6fdaecbf149e9aec7b7608f4af6305c",
     "backend/app/api/agents.py": "05edb1e18b159620dcea4213bec711c554f1e98c553f044a1f3aa3708219b924",
-    "backend/app/api/evaluate.py": "02269c95d32fc513fa036e49baedc96238094c748a7a55c185fe8c4af663130b",
+    "backend/app/api/evaluate.py": "1e620cd59efb6de9f512238ec22214763e71e0530e5c25f6f3e82196eaba7870",
     "backend/app/api/projects.py": "d1149e11f1aed03ec3a9361dbc40339efc9285a762acdb1075b080e2517f66cd",
     "backend/app/api/rank.py": "d43691440a35a03be9352f6a34506fe38bf4aace4128804179a0a9d34bcc751d",
     "backend/app/api/rules.py": "8f07de6ed90ab0a1d42f010a45cec16275e730400eaab5ab21d9755aa5d984f8",
     "backend/app/api/schema.py": "55bf2e288fafe34880489764a2f530861555e05806f068989bbf2b28c2bd7e0c",
     "backend/app/api/schemes.py": "8dc15cbca733d96e949785f6f48a3f0d3d5c8d98cfa06fa8dc41d9bb7fab78cc",
+    "backend/app/api/standards.py": "46f99592722d6247fc7602908cce8b0a3c7e1122fc0f1723d9c0d113035b9e21",
     "backend/app/config.py": "b2b86238500b2a566900ea8044ca8cdf1ab76395305b178f31f8924f83314082",
     "backend/app/db.py": "2d59f9a1748ef5fa19ccace231fd02ad8bbd3ca33da8b20accba62a5d0f2c625",
     "backend/app/engine/__init__.py": "83887cdb1f4f0f9dd021986db8de509f55f9b857a33f18b52a95119bd84fd482",
     "backend/app/engine/mcdm.py": "efdaf57b7282583298096224e88d9842043a44f3a514f52e4e20a919ee24e8ed",
     "backend/app/engine/metrics.py": "0273ac714ec5ebc123bff15b3dda21839862336d5a78ff89f23893221adf45f0",
-    "backend/app/engine/rules.py": "239eff91bb6ca3a73d872a033a90eb8d4bb9ff7c3f6f2337a4694dec1406b439",
+    "backend/app/engine/regions.py": "7c81ec763628b56230c936ce05759ed35a0f720ae91daabe3f4f39382ac0a254",
+    "backend/app/engine/rules.py": "be58b779f25fa92b5a1cd842bb536a0587b97a172e6876735c82a50cc211c33a",
     "backend/app/engine/scoring.py": "c8bfdec44e428a96ab106089643e1de5185fce4ce5bacb8e2b417a1a4976ea26",
     "backend/app/engine/weights.py": "ce2e765e6b7f780fe36cacaa1084ad799595b90aae95fd801616faefe92a9e8f",
     "backend/app/excel/__init__.py": "a85d4a74036c4cdf454ec4cce162fcbbef17d844a5486243280cfa9caec0d502",
-    "backend/app/excel/io.py": "1df5459bc1984952a5f651cbf9e23aa0ea6c22c5f0162f63b16ce0912c410aea",
-    "backend/app/main.py": "9b3b69e8af380bf519be09b86e48aa0f0c0f0a70eeb51f160d3af1bd6cad6fe5",
+    "backend/app/excel/io.py": "42f303b27fe43e1f78496a4196d977685a540ef890df6a6de8a067d1044e5e28",
+    "backend/app/main.py": "160482fcfd722b72c7f4a5ef1792955c2dec181afbf79ca87225a393cdf97995",
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "7d02f5768a3cfb99c8967e962ec2102521f03ee84a2b5336008829e6869540bc",
+    "backend/app/models/params.py": "db6f46a74a78b0322c1446374b7cfd5c07a5f332c29ab3b7805461b0d8d26a11",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/meta.py": "4660242f106ea07d9f6f4886d9af49588306ad3d931da7aeb3e9ea48ea52593b",
@@ -41,8 +43,9 @@
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
     "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
     "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
-    "rules/structure.yaml": "70434ee0111b8837025b065e81d08392054476f8c45a8dd1f3e8273492c11a7b",
+    "rules/structure.yaml": "3f56e9c0206b711e6b3fd97b63d56812da3145e60299c095153ef9fd558f6e63",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
+    "rules/zj_mic.yaml": "1e59bd42fb824e7c613cd07fc610bf574d427c64470a2e644bdea67569480424",
     "data/schemes/mock/A_高品质.json": "e0e84802b5bdda1d9d3a732520e3d872bd85408c595a54176593daddb37aa54f",
     "data/schemes/mock/B_不合规.json": "e9744ebcb4455cb00ab0c00cd8a254b80358d1b62066ce5548babba8913604af",
     "data/schemes/mock/C_MiC高标准化.json": "6e0436811fcb754d42edc9a515fe5df7e0a3a5b704d557fb0b51271f72480c11",
@@ -51,7 +54,7 @@
     "data/schemes/mock/E_被支配.json": "4defc2cf39ee4e24de45da4508889427c2628e4f78d5b5f0b5b30ea263c69e95",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
     "scripts/export_frontend_fixtures.py": "ed3a80d94a723a0538e944f6f0a04b7c82528780dcdd39ab5475341890a728b7",
-    "data/schemes/方案录入模板.xlsx": "0734fdd9320505f5b33faf2699895e676722d64ace0e2db94e2a24c94aa58c32"
+    "data/schemes/方案录入模板.xlsx": "acf493bfeb3b15444f7602c4dafff8c3639ac3e2c319f07bfebaac3f61d6102d"
   },
   "grid_step": 10,
   "projects": [
@@ -64,7 +67,9 @@
         "density_max": 0.22,
         "height_max": 54.0,
         "climate_zone": "夏热冬冷",
-        "seismic_intensity": "6度(0.05g)"
+        "seismic_intensity": "6度(0.05g)",
+        "province": null,
+        "standard_packs": null
       },
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
@@ -384,7 +389,7 @@
   ],
   "evaluation": {
     "project_id": 1,
-    "rule_count": 35,
+    "rule_count": 33,
     "results": [
       {
         "scheme_id": "1",
@@ -533,30 +538,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "高宽比不超过限值（提示） 通过"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -976,30 +957,6 @@
             "message": "高宽比不超过限值（提示） 通过"
           },
           {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
-          },
-          {
             "rule_id": "S-10",
             "name": "规则性超限提示（表2 不规则项三项及以上）",
             "status": "passed",
@@ -1415,30 +1372,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "本方案不适用该规则（适用条件：structure_type == '框架' or structure_type == '框架-剪力墙' or structure_type == '剪力墙'）"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "passed",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "MiC 建筑最大适用高度（6 度区） 通过"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -1858,30 +1791,6 @@
             "message": "高宽比不超过限值（提示） 通过"
           },
           {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
-          },
-          {
             "rule_id": "S-10",
             "name": "规则性超限提示（表2 不规则项三项及以上）",
             "status": "passed",
@@ -2297,30 +2206,6 @@
             "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
             "missing_fields": [],
             "message": "高宽比不超过限值（提示） 通过"
-          },
-          {
-            "rule_id": "S-08",
-            "name": "MiC 建筑最大适用高度（6 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'）"
-          },
-          {
-            "rule_id": "S-09",
-            "name": "MiC 建筑最大适用高度（7 度区）",
-            "status": "not_applicable",
-            "severity": "error",
-            "value": null,
-            "limit": null,
-            "formula": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-            "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-            "missing_fields": [],
-            "message": "本方案不适用该规则（适用条件：structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'）"
           },
           {
             "rule_id": "S-10",
@@ -5684,6 +5569,93 @@
             "6度(0.05g)",
             "7度(0.10g)"
           ]
+        },
+        {
+          "name": "province",
+          "label": "所在省份",
+          "description": "项目所在省级行政区（两字母地区码，如 ZJ）。用于提示「所选的地方册是否与项目所在地一致」",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "string",
+          "required": false,
+          "constraints": {},
+          "enum": [
+            "BJ",
+            "TJ",
+            "HE",
+            "SX",
+            "NM",
+            "LN",
+            "JL",
+            "HL",
+            "SH",
+            "JS",
+            "ZJ",
+            "AH",
+            "FJ",
+            "JX",
+            "SD",
+            "HA",
+            "HB",
+            "HN",
+            "GD",
+            "GX",
+            "HI",
+            "CQ",
+            "SC",
+            "GZ",
+            "YN",
+            "XZ",
+            "SN",
+            "GS",
+            "QH",
+            "NX",
+            "XJ"
+          ]
+        },
+        {
+          "name": "standard_packs",
+          "label": "适用标准册",
+          "description": "适用的规则册；留空＝只用国家标准（GB）。GB 永远生效、不能去掉；加进省级地区码后，该省的地方规则才会参与评估",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "array<string>",
+          "required": false,
+          "constraints": {},
+          "options": [
+            "GB",
+            "BJ",
+            "TJ",
+            "HE",
+            "SX",
+            "NM",
+            "LN",
+            "JL",
+            "HL",
+            "SH",
+            "JS",
+            "ZJ",
+            "AH",
+            "FJ",
+            "JX",
+            "SD",
+            "HA",
+            "HB",
+            "HN",
+            "GD",
+            "GX",
+            "HI",
+            "CQ",
+            "SC",
+            "GZ",
+            "YN",
+            "XZ",
+            "SN",
+            "GS",
+            "QH",
+            "NX",
+            "XJ"
+          ]
         }
       ]
     },
@@ -6124,13 +6096,14 @@
     }
   },
   "rules": {
-    "rule_count": 35,
-    "hard_count": 19,
+    "rule_count": 37,
+    "hard_count": 21,
     "metric_count": 16,
     "rules": [
       {
         "definition": {
           "id": "C-01",
+          "pack": "GB",
           "name": "建筑总高不超过项目限高",
           "type": "hard",
           "source": "项目参数（height_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第8、39条）：住宅必须满足安全疏散、防火蔓延控制和灭火救援条件。",
@@ -6148,6 +6121,7 @@
       {
         "definition": {
           "id": "C-02",
+          "pack": "GB",
           "name": "项目容积率不超过上限",
           "type": "hard",
           "source": "项目参数（far_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第1、2条）：住宅项目总图应落实完整建设体系，项目规模应经过调查研究和科学预测确定。",
@@ -6165,6 +6139,7 @@
       {
         "definition": {
           "id": "C-03",
+          "pack": "GB",
           "name": "建筑密度不超过上限",
           "type": "hard",
           "source": "项目参数（density_max）；规范衔接依据：《住宅项目规范》GB 55038-2025，条文号需按项目所在地规划条件和正式文本核对；原文依据（专业判断第11、28条）：集中绿地是住宅项目必要公共环境要素，节地与土地利用应以集约、高效和减少生态扰动为目标。",
@@ -6182,6 +6157,7 @@
       {
         "definition": {
           "id": "C-04",
+          "pack": "GB",
           "name": "新建住宅层高下限",
           "type": "hard",
           "source": "《住宅项目规范》GB 55038-2025，第4.1.2条；原文依据：新建住宅建筑的层高不应低于3.00m。专业判断对应第17条。",
@@ -6199,6 +6175,7 @@
       {
         "definition": {
           "id": "C-05",
+          "pack": "GB",
           "name": "十二层及以上或入户楼面超过33m的住宅每单元至少两台电梯",
           "type": "hard",
           "source": "《住宅项目规范》GB 55038-2025，第4.2.4条第2、3款；原文依据：最高入户层为十二层及十二层以上，或最高入户层楼面距室外设计地面高度超过33m的住宅建筑，每个住宅单元应至少设置2台电梯；设有电梯的住宅单元，应至少有1台电梯满足规定尺寸要求。专业判断对应第26条。",
@@ -6216,6 +6193,7 @@
       {
         "definition": {
           "id": "C-06",
+          "pack": "GB",
           "name": "住宅结构体系取值合法",
           "type": "hard",
           "source": "《工程结构通用规范》GB 55001-2021 与《建筑与市政工程抗震通用规范》GB 55002-2021；条文号：待按正式文本核对；原文依据（专业判断第2、19、40条）：结构体系必须具有清晰、连续、可靠的传力路径，抗震体系应具有明确的抗侧力体系。",
@@ -6233,6 +6211,7 @@
       {
         "definition": {
           "id": "C-07",
+          "pack": "GB",
           "name": "MiC 方案装配率基本门槛",
           "type": "hard",
           "source": "《装配式建筑评价标准》GB/T 51129-2017，第3.0.3条第1-4项；原文依据：装配式建筑应同时满足主体结构部分评价分值不低于20分、围护墙和内隔墙部分评价分值不低于10分、采用全装修、装配率不低于50%。系统当前仅能自动校验装配率，其他三项需人工复核。",
@@ -6250,6 +6229,7 @@
       {
         "definition": {
           "id": "C-08",
+          "pack": "GB",
           "name": "四层及以上或入户楼面超过9m的住宅每单元至少一台电梯",
           "type": "hard",
           "source": "《住宅项目规范》GB 55038-2025，第4.2.4条第1款；按最高入户层层序或楼面实际高度判断，数据不足时不得判为通过。官方摘录：https://ghzrzyw.beijing.gov.cn/biaozhunguanli/bzzl/202506/P020250609570099619169.pdf 第9页。",
@@ -6267,6 +6247,7 @@
       {
         "definition": {
           "id": "K-01",
+          "pack": "GB",
           "name": "标准层重复率（越大越好）",
           "type": "metric",
           "source": "经验规则（施工组）：标准层重复率越高，模板与爬架的周转次数越多、工期越短、工人重复作业的熟练度与安全性越高；低于 0.50 视为标准化程度不足，0.95 以上接近全标准层。分段点为组内取值，非规范条文",
@@ -6300,6 +6281,7 @@
       {
         "definition": {
           "id": "K-02",
+          "pack": "GB",
           "name": "预制构件种类数（越少越好）",
           "type": "metric",
           "source": "经验规则（施工组）：构件种类数决定模具套数、堆放场地与现场吊装工序数量，种类越少越利于施工组织与质量稳定；8 种以内视为高度标准化。分段点为组内取值，非规范条文",
@@ -6333,6 +6315,7 @@
       {
         "definition": {
           "id": "G-01",
+          "pack": "GB",
           "name": "预估装配率",
           "type": "metric",
           "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。",
@@ -6366,6 +6349,7 @@
       {
         "definition": {
           "id": "G-02",
+          "pack": "GB",
           "name": "标准层重复率",
           "type": "metric",
           "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
@@ -6399,6 +6383,7 @@
       {
         "definition": {
           "id": "G-03",
+          "pack": "GB",
           "name": "预制构件种类数",
           "type": "metric",
           "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
@@ -6432,6 +6417,7 @@
       {
         "definition": {
           "id": "G-04",
+          "pack": "GB",
           "name": "体形系数",
           "type": "metric",
           "source": "《建筑节能与可再生能源利用通用规范》GB 55015-2021；条文号：待按正式文本核对；原文依据（专业判断第6-12条）：建筑体形和围护结构应作为首要节能控制对象。",
@@ -6465,6 +6451,7 @@
       {
         "definition": {
           "id": "G-05",
+          "pack": "GB",
           "name": "楼层效率",
           "type": "metric",
           "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
@@ -6498,6 +6485,7 @@
       {
         "definition": {
           "id": "Q-01",
+          "pack": "GB",
           "name": "得房率",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；专业判断第6条：住宅建筑应同时满足安全性、适用性和耐久性。评分点为项目偏好口径，非规范强制限值。",
@@ -6531,6 +6519,7 @@
       {
         "definition": {
           "id": "Q-02",
+          "pack": "GB",
           "name": "南向房间比例",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第33条）：每套住宅至少应有一个卧室或起居室满足日照标准。比例评分是品质偏好指标，不替代日照核验。",
@@ -6564,6 +6553,7 @@
       {
         "definition": {
           "id": "Q-03",
+          "pack": "GB",
           "name": "窗地比",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第33-35条）：住宅应具备直接采光条件，自然通风开口面积应按房间和阳台关系计算。评分点为项目偏好口径。",
@@ -6597,6 +6587,7 @@
       {
         "definition": {
           "id": "Q-04",
+          "pack": "GB",
           "name": "每单元电梯数",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第26条）：住宅电梯配置与建筑高度、入户层数直接挂钩。硬性最低配置另见 C-05。",
@@ -6630,6 +6621,7 @@
       {
         "definition": {
           "id": "Q-05",
+          "pack": "GB",
           "name": "单栋户数",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
@@ -6663,6 +6655,7 @@
       {
         "definition": {
           "id": "Q-06",
+          "pack": "GB",
           "name": "标准层交通规模",
           "type": "metric",
           "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
@@ -6696,6 +6689,7 @@
       {
         "definition": {
           "id": "S-01",
+          "pack": "GB",
           "name": "结构风险特征加权指数（越少越好）",
           "type": "metric",
           "source": "经验规则（结构组）：按风险类型对结构安全与专项论证的影响加权——大悬挑、深基坑、超限构件各 3 分（均直接触发专项论证或专门研究），高大空间、高支模各 2 分，超长结构、不规则建筑、复杂地质各 1 分，满分 16 分。权重与分段点为组内取值，非规范条文",
@@ -6733,6 +6727,7 @@
       {
         "definition": {
           "id": "S-02",
+          "pack": "GB",
           "name": "钢结构方案须申报人工复核事项（条件硬约束）",
           "type": "hard",
           "source": "GB 55006—2021 第4.6.4条：需调整构造措施时，或对于新型结构、构件、连接节点，应通过计算分析和试验验证保证安全要求；第5.3节：体形复杂的大跨度钢结构应采用整体模型计算，并作非线性整体稳定分析与时程分析。本条据此要求钢结构方案显式申报复核事项",
@@ -6750,6 +6745,7 @@
       {
         "definition": {
           "id": "S-03",
+          "pack": "GB",
           "name": "结构体系适用性（越大越好）",
           "type": "metric",
           "source": "经验规则（结构组）：住宅结构选型按适用性分档——剪力墙 100（高层住宅主流体系）、框架-剪力墙 95、MiC 85、钢结构 80（二者在住宅中需专项论证）、框架 60（不适用于 16~18 层住宅）。分档参照《超限高层建筑工程抗震设防专项审查技术要点》（建质〔2015〕67号）附件1 表1 的高度超限判定阈值：6 度区框架 60m、框架-抗震墙 130m、抗震墙 140m，框架体系的适用高度明显偏低。分档为组内取值，非规范条文",
@@ -6779,6 +6775,7 @@
       {
         "definition": {
           "id": "S-04",
+          "pack": "GB",
           "name": "建筑总高（越小越好）",
           "type": "metric",
           "source": "经验规则（结构组）：结构风险、抗震要求与单位造价总体随高度上升，故越小越好。分段点以《超限高层建筑工程抗震设防专项审查技术要点》（建质〔2015〕67号）附件1 表1 的高度超限判定阈值为锚点（6 度区抗震墙 140m、框架 60m），140m 归零。分段点为组内取值，非规范条文",
@@ -6816,6 +6813,7 @@
       {
         "definition": {
           "id": "S-05",
+          "pack": "GB",
           "name": "建筑高度不超结构体系最大适用高度（6 度区）",
           "type": "hard",
           "source": "浙江省《超限高层建筑工程抗震设计导则》（浙江省住房和城乡建设厅，2024-01-10 发布）第3.2.2条 表3.2.2：6 度区混凝土结构最大适用高度 框架 60m、框架-剪力墙 130m、剪力墙 140m；钢结构框架 110m。该组数值与 JGJ 3—2010 第3.3.1条 表3.3.1-1（A 级高度）的 6 度列一致；房屋高度超过 A 级限值即属 B 级高度，按建质〔2015〕67号 应做超限高层抗震设防专项审查。杭州钱塘区按该导则附录A 表A 为 6 度（0.05g）第一组",
@@ -6833,6 +6831,7 @@
       {
         "definition": {
           "id": "S-06",
+          "pack": "GB",
           "name": "建筑高度不超结构体系最大适用高度（7 度区）",
           "type": "hard",
           "source": "浙江省《超限高层建筑工程抗震设计导则》第3.2.2条 表3.2.2：7 度区混凝土结构最大适用高度 框架 50m、框架-剪力墙 120m、剪力墙 120m；钢结构框架 110m。与 JGJ 3—2010 第3.3.1条 表3.3.1-1 的 7 度列一致（该表 7 度不区分 0.10g/0.15g）。杭州上城、拱墅、西湖、临平四区按该导则附录A 表A 为 7 度（0.10g）",
@@ -6850,6 +6849,7 @@
       {
         "definition": {
           "id": "S-07",
+          "pack": "GB",
           "name": "高宽比不超过限值（提示）",
           "type": "hard",
           "source": "JGJ 3—2010 第3.3.2条 表3.3.2「钢筋混凝土高层建筑结构适用的最大高宽比」：6 度、7 度区 框架 4、板柱-剪力墙 5、框架-剪力墙与剪力墙 6、框架-核心筒 7、筒中筒 8（数值已按原表逐格核对）。条文用词为「不宜」，条文说明明确该限值不是必须满足、主要影响经济性，故本条只作提示",
@@ -6866,41 +6866,8 @@
       },
       {
         "definition": {
-          "id": "S-08",
-          "name": "MiC 建筑最大适用高度（6 度区）",
-          "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
-          "when": "structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'",
-          "check": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
-          "message": "建筑总高 {height} m 超过浙江省《混凝土模块化建筑技术导则》表6.1.8 对 6 度区该 MiC 体系的最大适用高度",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "structure.yaml"
-      },
-      {
-        "definition": {
-          "id": "S-09",
-          "name": "MiC 建筑最大适用高度（7 度区）",
-          "type": "hard",
-          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
-          "when": "structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'",
-          "check": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
-          "message": "建筑总高 {height} m 超过浙江省《混凝土模块化建筑技术导则》表6.1.8 对 7 度区该 MiC 体系的最大适用高度",
-          "severity": "error",
-          "dimension": null,
-          "value": null,
-          "scoring": null,
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "structure.yaml"
-      },
-      {
-        "definition": {
           "id": "S-10",
+          "pack": "GB",
           "name": "规则性超限提示（表2 不规则项三项及以上）",
           "type": "hard",
           "source": "《超限高层建筑工程抗震设防专项审查技术要点》建质〔2015〕67号 附件1 表2：同时具有下列三项及三项以上不规则的高层建筑工程（不论高度是否大于表1）——1a 扭转不规则（考虑偶然偏心的扭转位移比大于1.2）、2a 凹凸不规则（平面凹凸尺寸大于相应边长30%等）、3 楼板不连续（有效宽度小于50%、开洞面积大于30%、错层大于梁高）、4a 刚度突变（相邻层刚度变化大于70%，或连续三层变化大于80%）、4b 尺寸突变（竖向构件收进位置高于结构高度20%且收进大于25%，或外挑大于10%和4m）、5 构件间断、6 承载力突变（相邻层受剪承载力变化大于80%）、7 局部不规则。注：序号 a、b 不重复计算不规则项",
@@ -6918,6 +6885,7 @@
       {
         "definition": {
           "id": "S-11",
+          "pack": "GB",
           "name": "特殊不规则超限提示（表4 任一项）",
           "type": "hard",
           "source": "《超限高层建筑工程抗震设防专项审查技术要点》建质〔2015〕67号 附件1 表4：具有下列某一项不规则的高层建筑工程（不论高度是否大于表1）——1 高位转换（7度超过5层，8度超过3层）；2 厚板转换（7~9度设防）；3 复杂连接；4 多重复杂（同时具有转换层、加强层、错层、连体和多塔等复杂类型中的3种）。表3 的「显著不规则」另需核定，暂未纳入",
@@ -6935,6 +6903,7 @@
       {
         "definition": {
           "id": "S-12",
+          "pack": "GB",
           "name": "楼板厚度下限",
           "type": "hard",
           "source": "GB 55038—2025 第5.0.4条：新建住宅建筑的钢筋混凝土结构实心楼板厚度不应小于100mm（全文强制）",
@@ -6952,6 +6921,7 @@
       {
         "definition": {
           "id": "S-13",
+          "pack": "GB",
           "name": "结构设计工作年限下限",
           "type": "hard",
           "source": "GB 55038—2025 第2.2.6条 表2.2.6：住宅建筑结构的设计工作年限不应低于50年（全文强制）",
@@ -6969,6 +6939,7 @@
       {
         "definition": {
           "id": "S-14",
+          "pack": "GB",
           "name": "混凝土强度等级下限",
           "type": "hard",
           "source": "GB 55008—2021 第2.0.2条 第1款：钢筋混凝土结构构件的混凝土强度等级不应低于C25（全文强制；同款还有 素混凝土C20、预应力混凝土楼板C30、其他预应力C40、钢-混凝土组合结构C30）。同条第2~4款另规定：承受重复荷载、抗震等级不低于二级、采用500MPa及以上钢筋时不应低于C30 —— 这三项需要额外字段，本系统暂未采集；且设计工作年限大于50年时最低强度等级还应提高",
@@ -6982,6 +6953,78 @@
           "weight_in_dimension": 1.0
         },
         "source_file": "structure.yaml"
+      },
+      {
+        "definition": {
+          "id": "ZJ-S-01",
+          "pack": "ZJ",
+          "name": "浙江省 MiC 混凝土强度等级下限",
+          "type": "hard",
+          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30（原文逐行核对）。注意与国标 S-14 的区别：后者是钢筋混凝土结构的通用下限 C25，本条是模块化建筑的更高要求",
+          "when": "structure_type == 'MiC'",
+          "check": "concrete_grade >= 30",
+          "message": "模块化建筑的混凝土强度等级 C{concrete_grade} 低于浙江省导则要求的 C30",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "zj_mic.yaml"
+      },
+      {
+        "definition": {
+          "id": "ZJ-S-02",
+          "pack": "ZJ",
+          "name": "浙江省 MiC 最大高宽比（提示）",
+          "type": "hard",
+          "source": "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示",
+          "when": "structure_type == 'MiC'",
+          "check": "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))",
+          "message": "高宽比 {height_width_ratio} 超过浙江省导则表6.1.10 对该 MiC 体系的最大值（框架类 4、剪力墙与框架-剪力墙类 6）",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "zj_mic.yaml"
+      },
+      {
+        "definition": {
+          "id": "ZJ-S-03",
+          "pack": "ZJ",
+          "name": "浙江省 MiC 建筑最大适用高度（6 度区）",
+          "type": "hard",
+          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举",
+          "when": "structure_type == 'MiC' and seismic_intensity == '6度(0.05g)'",
+          "check": "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))",
+          "message": "建筑总高 {height} m 超过浙江省导则表6.1.8 对 6 度区该 MiC 体系的最大适用高度",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "zj_mic.yaml"
+      },
+      {
+        "definition": {
+          "id": "ZJ-S-04",
+          "pack": "ZJ",
+          "name": "浙江省 MiC 建筑最大适用高度（7 度区）",
+          "type": "hard",
+          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比本系统尚未采集",
+          "when": "structure_type == 'MiC' and seismic_intensity == '7度(0.10g)'",
+          "check": "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))",
+          "message": "建筑总高 {height} m 超过浙江省导则表6.1.8 对 7 度区该 MiC 体系的最大适用高度",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "zj_mic.yaml"
       }
     ],
     "derived_quantities": [
@@ -7082,7 +7125,7 @@
   "imports": [
     {
       "filename": "demo-import.xlsx",
-      "sha256": "c388f2cc8d8bbc63a5795870b799e3444b0395b575e7d7f8c9127d3d3e89bce1",
+      "sha256": "7de6d8a6af8fbac1c78ae33c76dc972f1e96f846faa03e9a4a9692f86b36b022",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7320,7 +7363,7 @@
     },
     {
       "filename": "demo-invalid.xlsx",
-      "sha256": "12d0f58ee87a3dd75559e61950ed8596dcd4837d47bc73f1f4393ef66ca99bd5",
+      "sha256": "d981469b243b258a5e14b316b75a6543d5efa11fd67cac0c14b97bfef87e0248",
       "schemes": [
         {
           "name": "A 高品质",
@@ -7569,7 +7612,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "0734fdd9320505f5b33faf2699895e676722d64ace0e2db94e2a24c94aa58c32",
+      "sha256": "acf493bfeb3b15444f7602c4dafff8c3639ac3e2c319f07bfebaac3f61d6102d",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -7582,7 +7625,9 @@
       "density_max": null,
       "height_max": null,
       "climate_zone": null,
-      "seismic_intensity": null
+      "seismic_intensity": null,
+      "province": null,
+      "standard_packs": null
     },
     "scheme": {
       "structure_type": null,
@@ -7750,6 +7795,108 @@
           "group": "基本信息",
           "label": "抗震设防烈度",
           "title": "Seismic Intensity",
+          "unit": "—"
+        },
+        "province": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "项目所在省级行政区（两字母地区码，如 ZJ）。用于提示「所选的地方册是否与项目所在地一致」",
+          "enum": [
+            "BJ",
+            "TJ",
+            "HE",
+            "SX",
+            "NM",
+            "LN",
+            "JL",
+            "HL",
+            "SH",
+            "JS",
+            "ZJ",
+            "AH",
+            "FJ",
+            "JX",
+            "SD",
+            "HA",
+            "HB",
+            "HN",
+            "GD",
+            "GX",
+            "HI",
+            "CQ",
+            "SC",
+            "GZ",
+            "YN",
+            "XZ",
+            "SN",
+            "GS",
+            "QH",
+            "NX",
+            "XJ"
+          ],
+          "group": "基本信息",
+          "label": "所在省份",
+          "title": "Province",
+          "unit": "—"
+        },
+        "standard_packs": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "适用的规则册；留空＝只用国家标准（GB）。GB 永远生效、不能去掉；加进省级地区码后，该省的地方规则才会参与评估",
+          "group": "基本信息",
+          "label": "适用标准册",
+          "options": [
+            "GB",
+            "BJ",
+            "TJ",
+            "HE",
+            "SX",
+            "NM",
+            "LN",
+            "JL",
+            "HL",
+            "SH",
+            "JS",
+            "ZJ",
+            "AH",
+            "FJ",
+            "JX",
+            "SD",
+            "HA",
+            "HB",
+            "HN",
+            "GD",
+            "GX",
+            "HI",
+            "CQ",
+            "SC",
+            "GZ",
+            "YN",
+            "XZ",
+            "SN",
+            "GS",
+            "QH",
+            "NX",
+            "XJ"
+          ],
+          "title": "Standard Packs",
           "unit": "—"
         }
       },

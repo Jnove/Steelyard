@@ -22,6 +22,7 @@ from app.api import rank as rank_api
 from app.api import rules as rules_api
 from app.api import schema as schema_api
 from app.api import schemes as schemes_api
+from app.api import standards as standards_api
 from app.config import get_settings
 from app.db import init_db
 from app.engine.rules import RuleLoadError, get_ruleset
@@ -76,6 +77,7 @@ def create_app() -> FastAPI:
     app.include_router(schema_api.router, prefix="/api")
     app.include_router(evaluate_api.router, prefix="/api")
     app.include_router(rules_api.router, prefix="/api")
+    app.include_router(standards_api.router, prefix="/api")
     app.include_router(rank_api.router, prefix="/api")
     app.include_router(agents_api.router, prefix="/api")
 

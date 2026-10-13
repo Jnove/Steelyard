@@ -16,6 +16,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlmodel import Session, select
 
 from app.db import get_session
+from app.engine.regions import GB_PACK
 from app.engine.rules import RuleLoadError, SchemeInput, evaluate, get_ruleset
 from app.models import EvalResult, EvalResultRow, Project, ProjectParams, Scheme, SchemeParams
 
@@ -89,6 +90,11 @@ def evaluate_project(
         ) from exc
 
     project_params = ProjectParams.model_validate(project.params or {})
+
+    # 按项目选中的**册**筛选规则：留空＝只用国家标准（GB）。
+    # GB 永远在内；省级册只有项目显式开启才参与——地方条例的适用范围就是那一省，
+    # 不该顺手影响别的项目。见 app/engine/regions.py 与 docs/design-regional-packs.md。
+    ruleset = ruleset.select_packs(project_params.standard_packs or [GB_PACK])
     inputs = [
         SchemeInput(
             scheme_id=str(scheme.id),

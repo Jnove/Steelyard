@@ -15,6 +15,14 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from app.engine.regions import (
+    GB_PACK,
+    PROVINCE_BY_CODE,
+    PROVINCE_CODES,
+    is_region_code,
+    pack_options,
+)
+
 # —— 枚举与预设选项 —— #
 
 StructureType = Literal["剪力墙", "框架-剪力墙", "框架", "钢结构", "MiC"]
@@ -164,11 +172,69 @@ class ProjectParams(BaseModel):
         description="抗震设防烈度（浙江全省最高为 7 度 0.10g）",
         json_schema_extra=_meta("—", "基本信息", "抗震设防烈度", enum=list(SEISMIC_INTENSITIES)),
     )
+    province: str | None = Field(
+        None,
+        description=(
+            "项目所在省级行政区（两字母地区码，如 ZJ）。"
+            "用于提示「所选的地方册是否与项目所在地一致」"
+        ),
+        json_schema_extra=_meta("—", "基本信息", "所在省份", enum=list(PROVINCE_CODES)),
+    )
+    standard_packs: list[str] | None = Field(
+        None,
+        description=(
+            "适用的规则册；留空＝只用国家标准（GB）。GB 永远生效、不能去掉；"
+            "加进省级地区码后，该省的地方规则才会参与评估"
+        ),
+        json_schema_extra=_meta("—", "基本信息", "适用标准册", options=pack_options()),
+    )
 
     @field_validator("density_max", mode="before")
     @classmethod
     def _check_density_max(cls, v: object) -> object:
         return _reject_percentage(v)
+
+    @field_validator("province")
+    @classmethod
+    def _check_province(cls, v: str | None) -> str | None:
+        """省份必须是注册表里的地区码。"""
+        if v is None:
+            return None
+        code = v.strip().upper()
+        if code not in PROVINCE_BY_CODE:
+            raise ValueError(
+                f"未知的省份代码「{v}」；可用的是 {len(PROVINCE_CODES)} 个省级行政区"
+                "（见 backend/app/engine/regions.py）"
+            )
+        return code
+
+    @field_validator("standard_packs")
+    @classmethod
+    def _check_standard_packs(cls, v: list[str] | None) -> list[str] | None:
+        """册必须都是已知的，且**必须包含 GB**（留空表示"只用国标"）。
+
+        去重并保持顺序。GB 不在列表里时**直接报错**，而不是悄悄替你补上——
+        静默补上会让人以为自己关掉了国标，实际没有。国家标准是所有项目的底线。
+
+        这里刻意把"留空"与"给了列表"分开：留空沿用"只用国标"，
+        列表则必须显式含 ``GB``。这样新项目不会因为多了一个默认值字段，
+        就被前端当成"参数已经填过了"（前端按"字段是否全为空"判断新建项目）。
+        """
+        if v is None:
+            return None
+        codes = list(dict.fromkeys(v))
+        unknown = [c for c in codes if not is_region_code(c)]
+        if unknown:
+            raise ValueError(
+                f"未知的标准册 {unknown}；可用 GB 或省级地区码"
+                f"（共 {len(PROVINCE_CODES)} 个省级行政区）"
+            )
+        if GB_PACK not in codes:
+            raise ValueError(
+                f"标准册必须包含 {GB_PACK}：国家标准是底线，不能关掉。"
+                '要加地方册请把地区码一起写进来，例如 ["GB", "ZJ"]'
+            )
+        return codes
 
 
 class SchemeParams(BaseModel):

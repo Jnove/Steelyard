@@ -435,9 +435,11 @@ def _translate_pydantic_error(
             code="BAD_RULE_ID",
             message=f"规则 ID「{raw_input}」格式不对",
             fix=(
-                "必须是一个大写字母 + 短横线 + 两位数字，例如 C-03、Q-01、K-12。"
-                "前缀按文件选：compliance 用 C，quality 用 Q，structure 用 S，"
-                "construction 用 K，green 用 G"
+                "国家层面标准：一个大写前缀字母 + 短横线 + 两位数字，例如 C-03、Q-01、K-12"
+                "（前缀按维度选：合规 C、品质 Q、结构 S、施工 K、绿色 G）。"
+                "地方标准：地区码 + 短横线 + 同一个维度字母 + 短横线 + 两位数字，"
+                "例如 ZJ-S-01（浙江册的结构规则），且 pack 必须与地区码一致。"
+                "X- 是运行期自定义规则的保留前缀，文件里不能使用"
             ),
             line=_line_of(rule_node, loc),
         )

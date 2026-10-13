@@ -13,9 +13,13 @@ export type HardCount = number;
  */
 export type MetricCount = number;
 /**
- * 规则编号，形如 C-03；全局唯一。前缀 C/Q/S/K/G 对应 rules/ 下的五个文件
+ * 规则编号：国家层面标准形如 C-03（全局唯一），地方标准形如 ZJ-S-01（地区码 + 维度字母 + 两位数字）
  */
 export type Id = string;
+/**
+ * 规则所属的「册」：GB 是国家标准册（永远生效），其余是省级册（默认关闭，由项目选择）。地方规则的 ID 地区码必须与本字段一致
+ */
+export type Pack = string;
 /**
  * 规则中文名，给前端与报告看
  */
@@ -128,6 +132,7 @@ export interface RuleRead {
  */
 export interface RuleDef {
   id: Id;
+  pack?: Pack;
   name: Name;
   type: Type;
   source: Source;

@@ -585,6 +585,11 @@ def _project_field_parser(
         if value_type == "number":
             return _parse_dict(raw, label, lambda v, _k: _parse_ratio(v, label))
         return _parse_dict(raw, label, lambda v, _k: _parse_string(v, label))
+    if typ.startswith("array<"):
+        # 项目层的列表字段（例如 standard_packs：适用标准册）。
+        # 导出写的是逗号分隔文本，这里读回列表；缺失这个分支时"导出再解析"会直接报错
+        # ——方案层解析器一直有这个分支，项目层原先没有，加列表字段时才会暴露。
+        return _parse_list(raw, label)
     raise ValueError(f"【{label}】字段类型 {typ} 暂未支持")
 
 
