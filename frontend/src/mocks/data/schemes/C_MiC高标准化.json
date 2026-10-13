@@ -29,7 +29,11 @@
     "irregularity_items": [],
     "daylight_factor": 0.024,
     "sunlight_hours": 2.2,
-    "green_ratio": 0.36
+    "green_ratio": 0.36,
+    "excavation_depth": 4.5,
+    "formwork_height": 4.5,
+    "scaffold_type": "附着式升降脚手架",
+    "scaffold_height": 54
   },
   "_design_notes": {
     "intent": "演示 MiC 高标准化路线：标准层重复率 0.95、构件种类仅 8 种、装配率 0.75，几乎没有风险特征。",

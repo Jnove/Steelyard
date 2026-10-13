@@ -505,6 +505,83 @@
           "type": "array",
           "unit": "—"
         },
+        "excavation_depth": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "基坑开挖深度（用于危大工程判定：≥3m 须专项施工方案，≥5m 须专家论证）",
+          "group": "施工与安全",
+          "label": "基坑开挖深度",
+          "title": "Excavation Depth",
+          "unit": "m"
+        },
+        "formwork_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "混凝土模板支撑搭设高度（用于危大工程判定：≥5m 须专项方案，≥8m 须专家论证）",
+          "group": "施工与安全",
+          "label": "模板支撑高度",
+          "title": "Formwork Height",
+          "unit": "m"
+        },
+        "scaffold_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "落地式钢管脚手架",
+                "附着式升降脚手架",
+                "悬挑式脚手架"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "外脚手架形式（附着式升降与悬挑式一律属危大工程）",
+          "enum": [
+            "落地式钢管脚手架",
+            "附着式升降脚手架",
+            "悬挑式脚手架"
+          ],
+          "group": "施工与安全",
+          "label": "脚手架形式",
+          "title": "Scaffold Type",
+          "unit": "—"
+        },
+        "scaffold_height": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
+          "group": "施工与安全",
+          "label": "脚手架搭设高度",
+          "title": "Scaffold Height",
+          "unit": "m"
+        },
         "prefab_ratio_est": {
           "anyOf": [
             {

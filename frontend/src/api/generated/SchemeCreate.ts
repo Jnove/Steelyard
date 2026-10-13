@@ -132,6 +132,23 @@ export type ComponentTypes = number | null;
  */
 export type RiskFeatures = string[];
 /**
+ * 基坑开挖深度（用于危大工程判定：≥3m 须专项施工方案，≥5m 须专家论证）
+ */
+export type ExcavationDepth = number | null;
+/**
+ * 混凝土模板支撑搭设高度（用于危大工程判定：≥5m 须专项方案，≥8m 须专家论证）
+ */
+export type FormworkHeight = number | null;
+/**
+ * 外脚手架形式（附着式升降与悬挑式一律属危大工程）
+ */
+export type ScaffoldType = (("落地式钢管脚手架" | "附着式升降脚手架" | "悬挑式脚手架") | null) &
+  ("落地式钢管脚手架" | "附着式升降脚手架" | "悬挑式脚手架");
+/**
+ * 脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）
+ */
+export type ScaffoldHeight = number | null;
+/**
  * 预估装配率
  */
 export type PrefabRatioEst = number | null;
@@ -187,6 +204,10 @@ export interface SchemeParams {
   std_floor_repeat?: StdFloorRepeat;
   component_types?: ComponentTypes;
   risk_features?: RiskFeatures;
+  excavation_depth?: ExcavationDepth;
+  formwork_height?: FormworkHeight;
+  scaffold_type?: ScaffoldType;
+  scaffold_height?: ScaffoldHeight;
   prefab_ratio_est?: PrefabRatioEst;
   green_ratio?: GreenRatio;
 }

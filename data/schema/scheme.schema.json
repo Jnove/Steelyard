@@ -313,6 +313,51 @@
       ]
     },
     {
+      "name": "excavation_depth",
+      "label": "基坑开挖深度",
+      "description": "基坑开挖深度（用于危大工程判定：≥3m 须专项施工方案，≥5m 须专家论证）",
+      "unit": "m",
+      "group": "施工与安全",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "formwork_height",
+      "label": "模板支撑高度",
+      "description": "混凝土模板支撑搭设高度（用于危大工程判定：≥5m 须专项方案，≥8m 须专家论证）",
+      "unit": "m",
+      "group": "施工与安全",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
+      "name": "scaffold_type",
+      "label": "脚手架形式",
+      "description": "外脚手架形式（附着式升降与悬挑式一律属危大工程）",
+      "unit": "—",
+      "group": "施工与安全",
+      "type": "string",
+      "required": false,
+      "constraints": {},
+      "enum": [
+        "落地式钢管脚手架",
+        "附着式升降脚手架",
+        "悬挑式脚手架"
+      ]
+    },
+    {
+      "name": "scaffold_height",
+      "label": "脚手架搭设高度",
+      "description": "脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
+      "unit": "m",
+      "group": "施工与安全",
+      "type": "number",
+      "required": false,
+      "constraints": {}
+    },
+    {
       "name": "prefab_ratio_est",
       "label": "预估装配率",
       "description": "预估装配率",

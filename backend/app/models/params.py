@@ -100,6 +100,25 @@ GROUP_ORDER: tuple[str, ...] = (
     "绿色低碳",
 )
 
+ScaffoldType = Literal["落地式钢管脚手架", "附着式升降脚手架", "悬挑式脚手架"]
+"""外脚手架形式。
+
+只收这三类，因为它们对应**不同的危大工程门槛**（依据：住建部令第37号《危险性较大的
+分部分项工程安全管理规定》配套的建办质〔2018〕31号 附件1/附件2）：
+
+- 落地式钢管脚手架：搭设高度 ≥24 m 须编专项施工方案，≥50 m 须专家论证；
+- 附着式升降脚手架、悬挑式脚手架：**一律属于危大工程**（无高度门槛），
+  其中附着式提升高度 ≥150 m、悬挑式分段架体高度 ≥20 m 还须专家论证。
+
+前者有阈值可判，后两者是"只要采用就成立"，因此本系统只对落地式做阈值判定，
+其余两类在规则文件头部说明里交代，避免对每个方案都刷一条同义提示。
+"""
+SCAFFOLD_TYPES: tuple[str, ...] = (
+    "落地式钢管脚手架",
+    "附着式升降脚手架",
+    "悬挑式脚手架",
+)
+
 
 def _meta(unit: str, group: str, label: str, **extra: object) -> dict[str, object]:
     """拼装 ``json_schema_extra`` 片段，统一字段元信息格式。"""
@@ -361,6 +380,31 @@ class SchemeParams(BaseModel):
             "风险特征",
             options=RISK_FEATURE_OPTIONS,
         ),
+    )
+    excavation_depth: float | None = Field(
+        None,
+        description="基坑开挖深度（用于危大工程判定：≥3m 须专项施工方案，≥5m 须专家论证）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "基坑开挖深度"),
+    )
+    formwork_height: float | None = Field(
+        None,
+        description="混凝土模板支撑搭设高度（用于危大工程判定：≥5m 须专项方案，≥8m 须专家论证）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "模板支撑高度"),
+    )
+    scaffold_type: ScaffoldType | None = Field(
+        None,
+        description="外脚手架形式（附着式升降与悬挑式一律属危大工程）",
+        json_schema_extra=_meta(
+            "—", "施工与安全", "脚手架形式", enum=list(SCAFFOLD_TYPES)
+        ),
+    )
+    scaffold_height: float | None = Field(
+        None,
+        description="脚手架搭设高度（落地式：≥24m 须专项方案，≥50m 须专家论证）",
+        gt=0,
+        json_schema_extra=_meta("m", "施工与安全", "脚手架搭设高度"),
     )
 
     # —— 绿色低碳 —— #

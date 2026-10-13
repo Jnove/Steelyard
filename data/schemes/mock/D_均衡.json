@@ -28,7 +28,11 @@
     "irregularity_items": [],
     "daylight_factor": 0.028,
     "sunlight_hours": 2.8,
-    "green_ratio": 0.40
+    "green_ratio": 0.40,
+    "excavation_depth": 4.5,
+    "formwork_height": 4.5,
+    "scaffold_type": "附着式升降脚手架",
+    "scaffold_height": 51
   },
   "_design_notes": {
     "intent": "中庸偏上：四个维度均衡得分，作为比选的对照基准。",

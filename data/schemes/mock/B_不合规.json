@@ -28,7 +28,11 @@
     "irregularity_items": [],
     "daylight_factor": 0.022,
     "sunlight_hours": 2.0,
-    "green_ratio": 0.35
+    "green_ratio": 0.35,
+    "excavation_depth": 4.5,
+    "formwork_height": 4.5,
+    "scaffold_type": "落地式钢管脚手架",
+    "scaffold_height": 49
   },
   "_design_notes": {
     "intent": "演示硬约束标红（**故意不合规，不要修**）：层高 2.9 m 低于 GB 55038—2025 第4.1.2条的 3.00 m；17 层只配 1 台电梯，违反第4.2.4条（12 层及以上每单元至少 2 台）。其余指标中等。",

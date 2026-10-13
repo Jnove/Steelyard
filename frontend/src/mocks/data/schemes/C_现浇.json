@@ -28,7 +28,11 @@
     "irregularity_items": ["局部不规则"],
     "daylight_factor": 0.025,
     "sunlight_hours": 2.2,
-    "green_ratio": 0.37
+    "green_ratio": 0.37,
+    "excavation_depth": 4.5,
+    "formwork_height": 4.5,
+    "scaffold_type": "附着式升降脚手架",
+    "scaffold_height": 54
   },
   "_design_notes": {
     "intent": "C 方案改为现浇剪力墙后的对照版，用于演示'改用 MiC 会怎样'。",

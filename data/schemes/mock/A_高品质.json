@@ -28,7 +28,11 @@
     "irregularity_items": ["凹凸不规则", "局部不规则"],
     "daylight_factor": 0.032,
     "sunlight_hours": 2.5,
-    "green_ratio": 0.38
+    "green_ratio": 0.38,
+    "excavation_depth": 4.5,
+    "formwork_height": 4.5,
+    "scaffold_type": "附着式升降脚手架",
+    "scaffold_height": 52.8
   },
   "_design_notes": {
     "intent": "高品质定位：层高 3.3 m、得房率 0.82、南向比例 0.85，走现浇剪力墙路线，户型与立面定制化程度高。",

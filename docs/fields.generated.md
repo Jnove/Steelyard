@@ -75,6 +75,10 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `std_floor_repeat` | 标准层重复率 | — | number | 否 | — |
 | `component_types` | 预制构件种类 | 种 | integer | 否 | — |
 | `risk_features` | 风险特征 | — | array<string> | 否 | 预设：大悬挑 / 高大空间 / 深基坑 / 高支模 / 超长结构 / 不规则建筑 / 超限构件 / 复杂地质；— |
+| `excavation_depth` | 基坑开挖深度 | m | number | 否 | — |
+| `formwork_height` | 模板支撑高度 | m | number | 否 | — |
+| `scaffold_type` | 脚手架形式 | — | string | 否 | 取值：落地式钢管脚手架 / 附着式升降脚手架 / 悬挑式脚手架；— |
+| `scaffold_height` | 脚手架搭设高度 | m | number | 否 | — |
 
 #### 绿色低碳
 
