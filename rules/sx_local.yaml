@@ -40,6 +40,6 @@
   pack: SX
   name: 山西宜居住宅绿地率下限
   type: hard
-  check: "green_ratio >= 0.30"
-  message: "绿地率 {green_ratio} 低于山西省《宜居住宅建设标准》表4.2.1 要求的 30%"
+  check: "green_ratio >= (0.35 if sx_land_use_class == '高层Ⅰ类' else 0.30)"
+  message: "绿地率 {green_ratio} 低于山西表4.2.1声明类别 {sx_land_use_class} 的限值（高层Ⅰ类35%，其余已收录类别30%）；类别须专业核定"
   source: "同上 表4.2.1「宜居住宅居住区用地控制指标」：低层 绿地率 30%、多层Ⅰ类 30%、多层Ⅱ类 30%、高层Ⅰ类 35%（表内另有容积率与建筑密度上限，需按层数档判定，本系统暂未收）。官方 PDF 去空格逐字核对，2026-10-13"

@@ -8,9 +8,19 @@
   pack: LN
   name: 辽宁好房子层高下限
   type: hard
-  check: "floor_height >= (3.15 if has_fresh_air else 3.0)"
-  message: "层高 {floor_height} m 低于辽宁省审查要点要求（不应小于 3.0 m；设地热采暖、管道式新风或集中式中央空调时不宜小于 3.15 m）"
+  check: "floor_height >= 3.0"
+  message: "层高 {floor_height} m 低于辽宁省审查要点的 3.0 m 下限"
   source: "《辽宁省「好房子」施工图设计文件技术审查要点（试行）》第4.1.2条：住宅层高不应小于3.0m；设有地热采暖、管道式新风或集中式中央空调系统的住宅，层高不宜小于3.15m；卧室、起居室的室内净高不低于2.60m（官方 PDF 去空格逐字核对，2026-10-13）"
+
+- id: LN-Q-04
+  pack: LN
+  name: 辽宁设新风等系统时层高建议
+  type: hard
+  severity: warning
+  when: "has_fresh_air"
+  check: "floor_height >= 3.15"
+  message: "设新风等系统时，辽宁审查要点建议层高不宜小于3.15m；请复核，不因此排除方案"
+  source: "同上 第4.1.2条的「不宜小于3.15m」为建议性条件，保持原PR数值，仅作warning提示"
 
 - id: LN-Q-02
   pack: LN
