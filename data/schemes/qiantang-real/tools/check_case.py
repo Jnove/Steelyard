@@ -74,6 +74,8 @@ def _default_case() -> Path:
     """默认案例目录：脚本所在目录本身（随案例走），否则回落到仓库内的真实案例。"""
     if (HERE.parent / PROJECT_FILE).is_file():
         return HERE.parent
+    if HERE.parent.name == "tools" and (HERE.parent.parent / PROJECT_FILE).is_file():
+        return HERE.parent.parent
     backend = BACKEND
     assert backend is not None
     return backend.parent / "data" / "schemes" / "qiantang-real"
@@ -216,7 +218,13 @@ def main(argv: list[str] | None = None) -> int:
         errors = _failed(result.compliance, "error")
         warnings = _failed(result.compliance, "warning")
         insufficient = _insufficient(result.compliance)
-        verdict = "✗ 被剔除排名" if errors else "✓ 通过"
+        verdict = (
+            "✗ 被剔除排名"
+            if errors
+            else "? 未发现硬约束失败，仍有数据不足"
+            if insufficient
+            else "✓ 已输入范围内通过"
+        )
         print(f"\n【{result.scheme_name}】{verdict}")
         print(
             f"  error 未通过 {len(errors)} 条、warning 未通过 {len(warnings)} 条、"

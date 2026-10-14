@@ -1,0 +1,47 @@
+{
+  "_note": "真实项目公开资料与待复核记录分开标注；方案数值为演示自拟，不是该项目的批准或建成方案",
+  "name": "临平区东湖北路公租房 · 演示对比",
+  "params": {
+    "site_area": 24911,
+    "far_max": 2.5,
+    "density_max": 0.22,
+    "height_max": 54,
+    "climate_zone": "夏热冬冷",
+    "seismic_intensity": "7度(0.10g)",
+    "province": "ZJ",
+    "standard_packs": [
+      "GB",
+      "ZJ"
+    ]
+  },
+  "_field_status": {
+    "site_area": "历史公示记录24911；本次原页面不可访问，待复核",
+    "far_max": "历史公示记录上限2.5；本次原页面不可访问，待复核",
+    "density_max": "历史公示记录上限22%；本次原页面不可访问，待复核",
+    "height_max": "历史公示记录上限54m；本次原页面不可访问，待复核",
+    "seismic_intensity": "演示假设：沿用候选清单的7度，须以本项目设防文件确认",
+    "climate_zone": "杭州夏热冬冷；地区输入，非本项目许可字段"
+  },
+  "_public_facts": {
+    "above_ground_gfa": 62204.46,
+    "total_gfa": 107828.95,
+    "underground_gfa": 45624.49
+  },
+  "_design_notes": {
+    "purpose": "18层54m边界与钱塘项目规模对照。规划字段来自仓库历史记录，默认版为待复核演示口径，严格版全部留空。",
+    "scheme_status": "所有方案参数均为演示自拟，包括沿公开规模设定的面积和户数；未做工程验证。",
+    "planning_scope": "公开实际面积/容积率不是规划上限；缺失条件不得按已合规解释。"
+  },
+  "_sources": [
+    {
+      "url": "https://www.governbond.org.cn/uploadFiles/33/attachFiles/202408/04d8d993-6d0e-44c0-93a8-7e25183cc8c2.pdf",
+      "page": 38,
+      "checked_at": "2026-10-14",
+      "status": "已读取公开债券披露正文；仅用于公开规模参考"
+    },
+    {
+      "url": "https://www.linping.gov.cn/art/2022/6/8/art_1229594559_4042121.html",
+      "status": "仓库候选清单历史记录，本次页面不可访问，数值待复核"
+    }
+  ]
+}
