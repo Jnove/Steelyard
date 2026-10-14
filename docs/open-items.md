@@ -183,7 +183,14 @@ FakeLLM、确定性引擎回归与本地浏览器测试不能替代真实模型�
 - [ ] **G-05 分母口径**：`footprint * floors / gfa` 中 `footprint` 是全项目基底合计，
       本案例算出 1.63 > 1 被判数据异常。修法：公式改为 `footprint * floors / (gfa / buildings)`
       或明确要求填「折算基底」。
-- [ ] 改这三条中任何一条都会改变现有样例与前端快照的分数，需同步重跑
+- [ ] **`S-29` 在混凝土方案上误报缺字段**：该规则的 `when` 是
+      `structure_type == '钢结构' and steel_system == '框架' and ...`，混凝土方案本不适用，
+      但引擎的缺字段检查会连同**短路分支**里引用的 `steel_system` 一起报出，
+      于是剪力墙 / 框架-剪力墙 / MiC 方案上都会出现一条「S-29 缺 steel_system」。
+      实测见 `data/schemes/qiantang-real/_check-verified.txt` 与 `_check.txt`。
+      修法二选一：① 只对「`when` 判定为适用」的规则报缺字段；② 给该类规则增加
+      「结构体系不匹配时不参与缺字段检查」的语义。**不影响判定结果，只影响提示噪音。**
+- [ ] 改这几条中任何一条都会改变现有样例与前端快照的分数，需同步重跑
       `export_frontend_fixtures.py` 并更新 `frontend/src/mocks/fixtures/data.json`。
 
 ### 2.4 运行期「自定义添加」的收尾

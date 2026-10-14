@@ -1,0 +1,33 @@
+{
+  "_note": "本文件是项目参数变体：只填有公开出处的字段（方案数值为演示自拟，不在此文件内）",
+  "name": "钱塘区前进公租房一期 · 仅公开数据版项目参数",
+  "_purpose": "用于 scripts/check_demo_case.py --params project_verified.json。目的是演示『只提供项目能提供的数据』时系统会怎么表现——缺的字段应当显示为「数据不足」，而不是被当成通过，也不该由演示数据去补。",
+  "_usage": "uv run --project backend python scripts/check_demo_case.py --case data/schemes/qiantang-real --params project_verified.json",
+  "params": {
+    "site_area": 43117,
+    "far_max": 2.5,
+    "density_max": null,
+    "height_max": null,
+    "climate_zone": "夏热冬冷",
+    "seismic_intensity": "6度(0.05g)",
+    "province": "ZJ",
+    "standard_packs": [
+      "GB",
+      "ZJ"
+    ]
+  },
+  "_field_status": {
+    "site_area": "【公开】43,117 m²，建设用地规划许可地字第330114202200045号申报口径",
+    "far_max": "【公开·推定】107,749 / 43,117 = 2.499。注意这是由批准地上建筑面积反推的『实际值』，作为『上限』使用是保守做法；上限真值仍需规划条件原件。",
+    "density_max": "【缺】规划条件未在公开文件正文中给出（在许可附件的图片里）。置空 → C-03 应显示「数据不足」。",
+    "height_max": "【缺】同上。置空 → C-01 应显示「数据不足」。**不要**为了跑通演示而在这里填一个假设值：限高是规划条件，猜出来的数字会让「通过」变成假结论。",
+    "climate_zone": "【公开·规范】浙江属夏热冬冷；杭州在 GB 50180—2018 表4.0.2 中属 Ⅲ 建筑气候区",
+    "seismic_intensity": "【公开】6 度（0.05g），浙江省《超限高层建筑工程抗震设计导则》附录 A + 杭州网 2024-04-04 报道",
+    "province / standard_packs": "【规则口径】浙江项目，GB 永远生效 + ZJ 册用于 MiC 地方条款"
+  },
+  "_expected_effect": {
+    "硬约束": "C-01（限高）与 C-03（密度）因缺 height_max / density_max 转为「数据不足」，会被计入方案的 compliance 但**不判失败**；其余硬约束照常判定。",
+    "维度得分": "C-01 / C-03 属合规门槛，不影响四维分数；因此方案间的四维比较仍然成立。",
+    "演示话术": "『地块的规划条件我们只拿到用地面积与批准建筑面积，限高与密度上限还没拿到——系统不会替我们猜，它把这两条标成数据不足。』这比填一个假限高更经得起评委追问。"
+  }
+}

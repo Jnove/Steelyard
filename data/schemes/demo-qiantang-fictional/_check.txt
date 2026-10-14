@@ -1,6 +1,6 @@
 ﻿案例目录：..\data\schemes\demo-qiantang-fictional
 项目：杭州钱塘 · 保障性租赁住房 · 装配式决策演示案例（虚构）
-适用标准册：GB、ZJ（可用规则 37 条）
+适用标准册：GB、ZJ（可用规则 58 条）
 方案数：6（含 What-if 副本 0）
 
 ==============================================================================
@@ -8,22 +8,119 @@
 ==============================================================================
 
 【A 品质优先 · 现浇剪力墙】✓ 通过
-  error 未通过 0 条、warning 未通过 0 条、数据不足 0 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 15 条
+    ? [K-03] 缺字段：excavation_depth
+    ? [K-04] 缺字段：formwork_height
+    ? [K-05] 缺字段：scaffold_height、scaffold_type
+    ? [K-06] 缺字段：retaining_type
+    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
+    ? [K-08] 缺字段：excavation_working_life
+    ? [K-09] 缺字段：brace_type
+    ? [K-10] 缺字段：brace_type
+    ? [S-17] 缺字段：foundation_type
+    ? [S-18] 缺字段：foundation_working_life
+    ? [S-22] 缺字段：shear_wall_thickness、structural_height_classification
+    ? [S-25] 缺字段：foundation_type
+    ? [S-27] 缺字段：has_staggered_floor
+    ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
+    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【B 工业化优先 · MiC 模块化】✓ 通过
-  error 未通过 0 条、warning 未通过 0 条、数据不足 0 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 14 条
+    ? [K-03] 缺字段：excavation_depth
+    ? [K-04] 缺字段：formwork_height
+    ? [K-05] 缺字段：scaffold_height、scaffold_type
+    ? [K-06] 缺字段：retaining_type
+    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
+    ? [K-08] 缺字段：excavation_working_life
+    ? [K-09] 缺字段：brace_type
+    ? [K-10] 缺字段：brace_type
+    ? [S-17] 缺字段：foundation_type
+    ? [S-18] 缺字段：foundation_working_life
+    ? [S-25] 缺字段：foundation_type
+    ? [S-27] 缺字段：has_staggered_floor
+    ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
+    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【B′ MiC 改现浇 · What-if 对照】✓ 通过
-  error 未通过 0 条、warning 未通过 0 条、数据不足 0 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+    ? [K-03] 缺字段：excavation_depth
+    ? [K-04] 缺字段：formwork_height
+    ? [K-05] 缺字段：scaffold_height、scaffold_type
+    ? [K-06] 缺字段：retaining_type
+    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
+    ? [K-08] 缺字段：excavation_working_life
+    ? [K-09] 缺字段：brace_type
+    ? [K-10] 缺字段：brace_type
+    ? [S-17] 缺字段：foundation_type
+    ? [S-18] 缺字段：foundation_working_life
+    ? [S-22] 缺字段：shear_wall_thickness、structural_height_classification
+    ? [S-23] 缺字段：frame_beam_width
+    ? [S-24] 缺字段：frame_column_shape、frame_column_size
+    ? [S-25] 缺字段：foundation_type
+    ? [S-27] 缺字段：has_staggered_floor
+    ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
+    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【C 均衡基准 · 现浇框架-剪力墙】✓ 通过
-  error 未通过 0 条、warning 未通过 0 条、数据不足 0 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+    ? [K-03] 缺字段：excavation_depth
+    ? [K-04] 缺字段：formwork_height
+    ? [K-05] 缺字段：scaffold_height、scaffold_type
+    ? [K-06] 缺字段：retaining_type
+    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
+    ? [K-08] 缺字段：excavation_working_life
+    ? [K-09] 缺字段：brace_type
+    ? [K-10] 缺字段：brace_type
+    ? [S-17] 缺字段：foundation_type
+    ? [S-18] 缺字段：foundation_working_life
+    ? [S-22] 缺字段：shear_wall_thickness、structural_height_classification
+    ? [S-23] 缺字段：frame_beam_width
+    ? [S-24] 缺字段：frame_column_shape、frame_column_size
+    ? [S-25] 缺字段：foundation_type
+    ? [S-27] 缺字段：has_staggered_floor
+    ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
+    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【D 常规做法 · 现浇框架-剪力墙】✓ 通过
-  error 未通过 0 条、warning 未通过 0 条、数据不足 0 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+    ? [K-03] 缺字段：excavation_depth
+    ? [K-04] 缺字段：formwork_height
+    ? [K-05] 缺字段：scaffold_height、scaffold_type
+    ? [K-06] 缺字段：retaining_type
+    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
+    ? [K-08] 缺字段：excavation_working_life
+    ? [K-09] 缺字段：brace_type
+    ? [K-10] 缺字段：brace_type
+    ? [S-17] 缺字段：foundation_type
+    ? [S-18] 缺字段：foundation_working_life
+    ? [S-22] 缺字段：shear_wall_thickness、structural_height_classification
+    ? [S-23] 缺字段：frame_beam_width
+    ? [S-24] 缺字段：frame_column_shape、frame_column_size
+    ? [S-25] 缺字段：foundation_type
+    ? [S-27] 缺字段：has_staggered_floor
+    ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
+    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【E 低配对照 · 现浇框架-剪力墙】✓ 通过
-  error 未通过 0 条、warning 未通过 0 条、数据不足 0 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+    ? [K-03] 缺字段：excavation_depth
+    ? [K-04] 缺字段：formwork_height
+    ? [K-05] 缺字段：scaffold_height、scaffold_type
+    ? [K-06] 缺字段：retaining_type
+    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
+    ? [K-08] 缺字段：excavation_working_life
+    ? [K-09] 缺字段：brace_type
+    ? [K-10] 缺字段：brace_type
+    ? [S-17] 缺字段：foundation_type
+    ? [S-18] 缺字段：foundation_working_life
+    ? [S-22] 缺字段：shear_wall_thickness、structural_height_classification
+    ? [S-23] 缺字段：frame_beam_width
+    ? [S-24] 缺字段：frame_column_shape、frame_column_size
+    ? [S-25] 缺字段：foundation_type
+    ? [S-27] 缺字段：has_staggered_floor
+    ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
+    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 ==============================================================================
 二、四维得分与指标明细

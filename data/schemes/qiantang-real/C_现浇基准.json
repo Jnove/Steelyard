@@ -42,7 +42,30 @@
       "深基坑"
     ],
     "prefab_ratio_est": 0.35,
-    "green_ratio": 0.33
+    "green_ratio": 0.33,
+    "structural_height_classification": "高层",
+    "shear_wall_thickness": 180,
+    "foundation_type": "桩筏基础",
+    "foundation_depth": 8.0,
+    "foundation_working_life": 50,
+    "foundation_concrete_grade": 30,
+    "raft_rebar_ratio": 0.2,
+    "frame_beam_width": 250,
+    "frame_column_shape": "矩形",
+    "frame_column_size": 600,
+    "has_staggered_floor": false,
+    "has_out_of_plane_staggered_wall": false,
+    "steel_system": null,
+    "excavation_depth": 6.0,
+    "excavation_working_life": 2,
+    "formwork_height": 5.4,
+    "scaffold_type": "落地式钢管脚手架",
+    "scaffold_height": 75.0,
+    "retaining_type": "排桩",
+    "retaining_wall_two_in_one": false,
+    "retaining_concrete_grade": 30,
+    "brace_type": "混凝土内支撑",
+    "brace_concrete_grade": 30
   },
   "_design_notes": {
     "data_status": "**方案层全部为演示自拟**。它存在的意义是提供一个「常规做法」，让 A 与 B 的取舍有参照物。",
@@ -52,6 +75,8 @@
     "self_consistency": "gfa 106,000 = 8 栋 × 25 层 × 530 m²/层；与 A 同基底（footprint 6896 m²）→ G-05 = 1.63（口径缺陷同 A）。总高 75.0 m；高宽比 75.0 / 26 = 2.88。",
     "code_check": "C-01 75.0 ≤ 80（暂定限高）✓；C-02 2.46 ≤ 2.5 ✓；C-03 0.16 ≤ 0.22 ✓；C-04 3.0 ≥ 3.0 ✓；C-05 3 台 ✓；S-05 框架-剪力墙 6 度区 130 m ✓；S-07 高宽比 2.88 ≤ 6 ✓；S-12/S-13/S-14 ✓。",
     "lift_input": "与 A、B 相同：72.0 m，演示假设。",
-    "assumptions_to_verify": "① 户型配比 472/550/550 为演示取值；② 得房率 0.79、装配率 0.35、构件 18 种均为演示取值；③ 绿地率 0.33 低于公开的 35%，用于演示「绿地率未达标」在绿色维度上的代价；④ envelope_area 45,000 m² 按 8 栋（约 50 m × 14 m 平面、每栋外墙约 128 m × 75 m ≈ 9,600 m²）估算，不含屋面。"
+    "assumptions_to_verify": "① 户型配比 472/550/550 为演示取值；② 得房率 0.79、装配率 0.35、构件 18 种均为演示取值；③ 绿地率 0.33 低于公开的 35%，用于演示「绿地率未达标」在绿色维度上的代价；④ envelope_area 45,000 m² 按 8 栋（约 50 m × 14 m 平面、每栋外墙约 128 m × 75 m ≈ 9,600 m²）估算，不含屋面。",
+    "new_fields_status": "新增字段与 A 同口径，便于把差异归结到「体系与产业化选择」而不是「填表口径」：structural_height_classification=高层；shear_wall_thickness=180 mm（**框架-剪力墙的墙厚按 180 取值，低于 A 的 200**；S-22 对高层要求 ≥160 mm，两者都通过）；foundation_type=桩筏基础、埋深 8 m、基础工作年限 50 年、基础混凝土 C30；excavation_depth=6 m（由公开的地下室规模推断）、基坑工作年限 2 年；formwork_height=5.4 m；scaffold_type=落地式钢管脚手架、scaffold_height=75 m（与 A 相同，会触发 K-05 提示）；retaining_type=排桩 C30；brace_type=混凝土内支撑 C30；无错层。",
+    "k05_note": "A 与 C 都取落地式脚手架，因此都会收到 K-05「≥50 m 须专家论证」的 warning；B 取附着式则不触发。三条提示的差异本身就是演示内容，不是数据缺陷。"
   }
 }

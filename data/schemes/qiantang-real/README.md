@@ -88,16 +88,48 @@
 ## 四、怎么验证与导入
 
 ```powershell
-# 只读检查（硬约束 + 四维得分 + 帕累托 + 角色排名）
+# 1) 只读检查（硬约束 + 四维得分 + 帕累托 + 角色排名）
 uv run --project backend python scripts/check_demo_case.py --case data/schemes/qiantang-real
 make case-check            # 同一条命令的 Makefile 写法
 
-# 换个口径：只按国标判（去掉浙江省册）
+# 2) 只用「项目能提供的公开数据」再跑一遍（缺的字段显示为数据不足）
+uv run --project backend python scripts/check_demo_case.py --case data/schemes/qiantang-real --params project_verified.json
+
+# 3) 换个口径：只按国标判（去掉浙江省册）
 uv run --project backend python scripts/check_demo_case.py --case data/schemes/qiantang-real --packs GB
 
-# 导入本地 Demo 库
+# 4) 导入本地 Demo 库
 uv run --project backend python scripts/seed_mock.py --mock-dir data/schemes/qiantang-real
 ```
+
+三份证据文件由上述命令生成，不要手改：`_check.txt`（默认参数）、
+`_check-verified.txt`（仅公开数据）、`_check-gb.txt`（只按国标）。
+
+---
+
+## 四点五、缺数据不挡路：规则引擎对「数据不足」的处理
+
+公开资料凑不齐全部字段是常态，所以本案例专门留了一个**只用公开数据**的参数变体
+[`project_verified.json`](project_verified.json)：密度上限与建筑限高**故意留空**，
+不填假设值。用 `--params project_verified.json` 跑出来的结果是：
+
+| 现象 | 说明 |
+| --- | --- |
+| C-01（限高）、C-03（密度）显示 **「数据不足」**，**不是**「通过」 | 引擎原则：缺字段 → 数据不足；不会因为没填就默认合规 |
+| 其余硬约束、四维得分、帕累托、角色排名**照常输出** | 缺的是项目层门槛字段，不阻塞方案比选 |
+| 三个方案都收到 K-03（基坑 6 m ≥ 5 m 须专家论证）**warning** | 危大工程提示，**不剔除排名**；取值来自公开的地下室规模推断 |
+| A、C 另收到 K-05（落地式脚手架 75 m ≥ 50 m 须专家论证）warning | B 取附着式升降脚手架，不触发——同一地块、不同施工组织，提示不同 |
+
+演示话术建议：**「限高和密度上限我们还没拿到原件，系统不会替我们猜，它把这两条标成
+数据不足；能判的先判完，判不了的老实说判不了。」** 这比填一个假限高更经得起追问。
+
+目前仍会显示「数据不足」的两处，都**不是**本案例的数据缺陷，而是规则侧的待改项
+（已记入 [未决事项 2.3.1](../../docs/open-items.md)）：
+
+- `S-29`（钢结构高层不应采用单跨框架）在**混凝土方案**上也会报「缺 steel_system」：
+  它的 `when` 已经排除了混凝土结构，但缺字段检查在短路分支里仍然报出。
+- `shear_wall_thickness` 在 MiC 方案上留空是**故意的**：模块墙厚度由模数与模块规格
+  控制，不属于「现场剪力墙截面厚度」这一口径；填一个编造值不如让它显示数据不足。
 
 ---
 

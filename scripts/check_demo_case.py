@@ -54,7 +54,7 @@ class CaseError(SystemExit):
     """案例目录本身有问题（缺文件、JSON 坏、字段不合法）。"""
 
 
-def _load_json(path: Path) -> dict[str, Any]:
+def _load_json(path: Path, require_name: bool = True) -> dict[str, Any]:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except FileNotFoundError as exc:
@@ -63,7 +63,8 @@ def _load_json(path: Path) -> dict[str, Any]:
         raise CaseError(f"ERROR · {path.name} 不是合法 JSON：{exc}") from exc
     if not isinstance(payload, dict):
         raise CaseError(f"ERROR · {path.name} 顶层必须是对象")
-    for key in REQUIRED_TOP_KEYS:
+    required = REQUIRED_TOP_KEYS if require_name else ("_note", "params")
+    for key in required:
         if key not in payload:
             raise CaseError(f"ERROR · {path.name} 缺少顶层字段 {key!r}")
     note = str(payload.get("_note", ""))
@@ -85,7 +86,7 @@ def load_case(case_dir: Path) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     rest = sorted(
         p
         for p in case_dir.glob("*.json")
-        if p.name not in {PROJECT_FILE, WHATIF_FILE} and not p.name.startswith("_")
+        if not p.name.startswith(("_", "project")) and p.name != WHATIF_FILE
     )
     if not rest:
         raise CaseError(f"ERROR · {case_dir} 下没有方案 JSON")
@@ -121,12 +122,31 @@ def main(argv: list[str] | None = None) -> int:
         help='覆盖项目的 standard_packs，例如 --packs GB（只按国标判）',
     )
     parser.add_argument("--json", type=Path, default=None, help="把完整结果另存为 JSON")
+    parser.add_argument(
+        "--params",
+        type=Path,
+        default=None,
+        help=(
+            "用另一个同目录下的项目参数文件覆盖 project.json 的 params，"
+            "例如 --params project_verified.json（只填有公开出处的字段，"
+            "用来演示「数据不足」怎么显示）"
+        ),
+    )
     args = parser.parse_args(argv)
 
     project_payload, scheme_payloads = load_case(args.case)
 
     # —— 参数校验 —— #
     params_raw = dict(project_payload["params"])
+    if args.params is not None:
+        override_path = args.params
+        if not override_path.is_absolute():
+            override_path = args.case / override_path
+        override_payload = _load_json(override_path, require_name=False)
+        params_raw.update(override_payload.get("params", {}))
+        project_payload["name"] = (
+            f"{project_payload['name']} ［参数变体：{override_path.name}］"
+        )
     if args.packs is not None:
         params_raw["standard_packs"] = list(args.packs)
     try:

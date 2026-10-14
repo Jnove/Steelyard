@@ -118,14 +118,16 @@ def discover_layout(mock_dir: Path) -> tuple[tuple[str, ...], str | None]:
 
     - 除 ``project.json`` 外，所有 ``*.json`` 都是方案，按文件名排序即写入顺序；
     - 文件名里含 ``whatif`` 的当作 what-if 副本，其余为正式方案；
-    - 以 ``_`` 开头的文件忽略（``_check.json`` 之类是产物，不是数据）。
+    - 以 ``_`` 开头的文件忽略（``_check.json`` 之类是产物，不是数据）；
+    - 以 ``project`` 开头的文件都当项目层配置（``project.json`` 及其参数变体
+      ``project_verified.json`` 等），不作为方案导入。
 
     名称为 ``whatif.json``（老样例的 ``C_现浇.json`` 除外）时也能识别。
     """
     names = sorted(
         p.name
         for p in mock_dir.glob("*.json")
-        if p.name != PROJECT_FILE and not p.name.startswith("_")
+        if not p.name.startswith(("_", "project"))
     )
     if not names:
         raise SystemExit(f"ERROR · {mock_dir} 下没有方案 JSON")
