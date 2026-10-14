@@ -17,8 +17,12 @@ from sqlmodel import Session, select
 
 from app.custom import fields as fields_service
 from app.custom.errors import CustomAddError
-from app.custom.rules import ruleset_with_custom
-from app.custom.signature import SIGNATURE_KEY, require_rules_signature, rules_signature
+from app.custom.signature import (
+    SIGNATURE_KEY,
+    project_rules_signature,
+    project_ruleset,
+    require_rules_signature,
+)
 from app.db import get_session
 from app.engine.rules import RuleLoadError, SchemeInput, evaluate
 from app.models import EvalResult, EvalResultRow, Project, ProjectParams, Scheme, SchemeParams
@@ -68,6 +72,7 @@ def evaluate_project(
     重复调用是幂等的：同一项目的旧结果会先删掉再写新的，不会越评越多行。
     """
     project = _require_project(session, project_id)
+    project_params = ProjectParams.model_validate(project.params or {})
 
     statement = select(Scheme).where(Scheme.project_id == project_id)
     if not include_whatif:
@@ -83,7 +88,7 @@ def evaluate_project(
     try:
         # 内建规则 + 覆盖层的自定义规则（见 app/custom/rules.py）。
         # 没有自定义规则时返回的就是内建集合本身，行为与纯内建完全一致。
-        ruleset = ruleset_with_custom(session)
+        ruleset = project_ruleset(session, project_params)
     except RuleLoadError as exc:
         # 规则写错了是规则作者的问题，不是调用方的问题，用 500 并把中文原因带出来。
         raise HTTPException(
@@ -105,7 +110,6 @@ def evaluate_project(
             },
         ) from exc
 
-    project_params = ProjectParams.model_validate(project.params or {})
     inputs = [
         SchemeInput(
             scheme_id=str(scheme.id),
@@ -123,7 +127,7 @@ def evaluate_project(
             {"code": p.code, "message": p.message, "fix": p.fix} for p in exc.problems
         ]}) from exc
     results = evaluate(project_params, inputs, ruleset, known=fields_service.known_names(session))
-    signature = rules_signature(session, ruleset=ruleset)
+    signature = project_rules_signature(session, project_params)
 
     # 先清掉本项目的旧结果，保证同一方案只有一行最新结果。
     for stale in session.exec(
@@ -157,7 +161,7 @@ def evaluate_project(
 )
 def get_last_evaluation(project_id: int, session: SessionDep) -> EvaluateResponse:
     """取已落库的评估结果。没评估过就返回空列表，由前端提示"请先评估"。"""
-    _require_project(session, project_id)
+    project = _require_project(session, project_id)
     rows = session.exec(
         select(EvalResultRow)
         .where(EvalResultRow.project_id == project_id)
@@ -165,9 +169,13 @@ def get_last_evaluation(project_id: int, session: SessionDep) -> EvaluateRespons
     ).all()
     if not rows:
         return EvaluateResponse(project_id=project_id, rule_count=0, results=[])
-    ruleset = ruleset_with_custom(session)
-    signature = rules_signature(session, ruleset=ruleset)
+    params = ProjectParams.model_validate(project.params or {})
+    ruleset = project_ruleset(session, params)
+    signature = project_rules_signature(session, params)
     for row in rows:
         require_rules_signature(row.result, signature)
+        scheme = session.get(Scheme, row.scheme_id)
+        if scheme is None or max(project.updated_at.replace(tzinfo=None), scheme.updated_at.replace(tzinfo=None)) > row.created_at.replace(tzinfo=None):
+            raise HTTPException(409, detail="项目或方案参数已变更，请先重新评估")
     results = [EvalResult.model_validate(row.result) for row in rows]
     return EvaluateResponse(project_id=project_id, rule_count=len(ruleset.rules), results=results)

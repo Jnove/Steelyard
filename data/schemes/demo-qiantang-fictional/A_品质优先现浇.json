@@ -1,0 +1,52 @@
+{
+  "_note": "虚构数据，仅供开发与演示调试，不得用于工程验证、专业结论或答辩证据",
+  "name": "A 品质优先 · 现浇剪力墙",
+  "params": {
+    "structure_type": "剪力墙",
+    "mic_system": null,
+    "units": 240,
+    "unit_mix": {
+      "两室": 120,
+      "三室": 120
+    },
+    "floor_height": 3.3,
+    "inner_area_ratio": 0.82,
+    "south_room_ratio": 0.85,
+    "window_floor_ratio": 0.28,
+    "window_wall_ratio": {
+      "南": 0.45,
+      "北": 0.27,
+      "东": 0.25,
+      "西": 0.25
+    },
+    "elevators_per_unit": 2,
+    "highest_occupied_floor": 15,
+    "highest_occupied_floor_height": 46.2,
+    "daylight_factor": 0.032,
+    "sunlight_hours": 3.2,
+    "gfa": 38400,
+    "footprint": 3600,
+    "buildings": 4,
+    "floors": 15,
+    "envelope_area": 29800,
+    "volume": 95040,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "min_plan_width": 18,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.65,
+    "component_types": 20,
+    "risk_features": [],
+    "prefab_ratio_est": 0.25,
+    "green_ratio": 0.38
+  },
+  "_design_notes": {
+    "role_in_demo": "品质维度的上限。层高 3.3 m、得房率 0.82、南向比例 0.85、窗地比 0.28 全部顶到评分满分点，代价是几乎不装配（0.25）、构件种类多达 20 种、标准层重复率只有 0.65。",
+    "expected_verdict": "全部硬约束通过。在「住户」视角下应当排前；在「施工单位」或「开发企业」视角下会被 B 反超——这是角色权重演示的主戏。",
+    "code_check": "C-01 总高 15 × 3.3 = 49.5 m ≤ 51 m ✓；C-02 容积率 38400 / 18000 = 2.13 ≤ 2.5 ✓；C-03 密度 3600 / 18000 = 0.20 ≤ 0.22 ✓（本案例最贴近密度上限的一套）；C-04 层高 3.3 ≥ 3.0 ✓；C-05 最高入户层 15 ≥ 12 → 每单元至少 2 台，已填 2 ✓；S-05 剪力墙 6 度区 140 m，49.5 m ✓；S-07 高宽比 49.5 / 18 = 2.75 ≤ 6 ✓；S-12 / S-13 / S-14 ✓。",
+    "gfa_consistency": "gfa 38,400 = 4 栋 × 15 层 × 640 m²（每层计容面积）；基底 3600 m² = 4 栋 × 900 m²（每栋基底），故 footprint × floors = 54,000 > gfa 是正常的：楼层效率 G-05 = footprint × floors / gfa = 1.41 > 1，会显示为数据存疑。**这是本案例唯一一处「口径没对齐」的字段**，原因见案例 README「已知口径问题」一节；要干净的 G-05，把 footprint 改成 2560（= 38400 / 15）再让专业组核对。",
+    "lift_input": "虚构假设：首层入户楼面与室外设计地面齐平，最高入户层取总层数，楼面高度按 (floors - 1) × floor_height = 14 × 3.3 = 46.2 m 填写。真实项目必须填图纸或实测数据。",
+    "shape_coef_input": "envelope_area 29800 m²、volume 95040 m³ 为虚构取值，体形系数约 0.313（G-04 约 78 分）。推导：4 栋按 40 m × 22.5 m 平面（每栋基底 900 m²）估算，每栋外墙 125 m × 49.5 m = 6,188 m²，4 栋合计 24,750 m²；因 A 每层计容 640 m² 而基底仅 900 m²，进深与层高都更大，故本字段取 29,800 m² 作为偏不利的取值，不靠调字段去抬分数。"
+  }
+}

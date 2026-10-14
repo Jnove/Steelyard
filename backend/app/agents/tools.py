@@ -18,8 +18,12 @@ from app.api.evaluate import evaluate_project, get_last_evaluation
 from app.api.rank import RankRequest, _resolve_weights, rank_project
 from app.config import get_settings
 from app.custom import fields as fields_service
-from app.custom.rules import ruleset_with_custom
-from app.custom.signature import SIGNATURE_KEY, require_rules_signature, rules_signature
+from app.custom.signature import (
+    SIGNATURE_KEY,
+    project_rules_signature,
+    project_ruleset,
+    require_rules_signature,
+)
 from app.custom.templates import list_templates
 from app.engine.weights import get_role_templates
 from app.models import EvalResult, Project, ProjectParams, Scheme, SchemeParams
@@ -139,7 +143,7 @@ class AgentTools:
                     ],
                     "rules": self.rule_definitions(),
                     "custom_fields": [row.model_dump(mode="json") for row in fields_service.list_fields(session)],
-                    "rules_signature": rules_signature(session),
+                    "rules_signature": project_rules_signature(session, ProjectParams.model_validate(project.params or {})),
                 }
             )
 
@@ -171,7 +175,8 @@ class AgentTools:
 
     def rule_definitions(self) -> list[dict[str, Any]]:
         with Session(self.engine) as session:
-            return [rule.model_dump(mode="json") for rule in ruleset_with_custom(session).rules]
+            params = ProjectParams.model_validate(self._require_project(session).params or {})
+            return [rule.model_dump(mode="json") for rule in project_ruleset(session, params).rules]
 
     def scheme_count(self, include_whatif: bool) -> int:
         with Session(self.engine) as session:
@@ -204,7 +209,8 @@ class AgentTools:
             self._require_project(session)
             row = session.get(AgentResultRow, project_id)
             if row:
-                require_rules_signature(row.evaluation, rules_signature(session))
+                params = ProjectParams.model_validate(self._require_project(session).params or {})
+                require_rules_signature(row.evaluation, project_rules_signature(session, params))
                 if row.fingerprint != self.fingerprint(row.include_whatif):
                     raise HTTPException(409, "项目数据或规则已变更，请先重新评估")
                 public_evaluation = {key: value for key, value in row.evaluation.items() if key != SIGNATURE_KEY}
@@ -312,7 +318,8 @@ class AgentTools:
 
     def explain_metric(self, rule_id: str) -> dict[str, Any]:
         with Session(self.engine) as session:
-            rules = ruleset_with_custom(session).rules
+            params = ProjectParams.model_validate(self._require_project(session).params or {})
+            rules = project_ruleset(session, params).rules
         for rule in rules:
             if rule.id == rule_id:
                 result = rule.model_dump(mode="json")
@@ -341,7 +348,11 @@ def record_evaluation(
     row = session.get(AgentResultRow, project_id) or AgentResultRow(
         project_id=project_id, fingerprint=""
     )
-    row.evaluation = {**evaluation, SIGNATURE_KEY: signature if signature is not None else rules_signature(session)}
+    project = session.get(Project, project_id)
+    if project is None:
+        raise HTTPException(404, detail=f"项目 {project_id} 不存在")
+    params = ProjectParams.model_validate(project.params or {})
+    row.evaluation = {**evaluation, SIGNATURE_KEY: signature if signature is not None else project_rules_signature(session, params)}
     row.ranking = {}
     row.include_whatif = include_whatif
     row.fingerprint = AgentTools(session.get_bind(), project_id).fingerprint(include_whatif)
@@ -359,7 +370,11 @@ def record_ranking(
     """记录 REST 权重滑杆或智能体产生的最新排名，保留同一候选集合的证据。"""
     row = session.get(AgentResultRow, project_id)
     tools = AgentTools(session.get_bind(), project_id)
-    signature = rules_signature(session)
+    project = session.get(Project, project_id)
+    if project is None:
+        raise HTTPException(404, detail=f"项目 {project_id} 不存在")
+    params = ProjectParams.model_validate(project.params or {})
+    signature = project_rules_signature(session, params)
     if row:
         require_rules_signature(row.evaluation, signature)
     if row and row.fingerprint != tools.fingerprint(row.include_whatif):
@@ -367,7 +382,7 @@ def record_ranking(
     row = row or AgentResultRow(project_id=project_id, fingerprint="")
     row.evaluation = {
         "project_id": project_id,
-        "rule_count": len(ruleset_with_custom(session).rules),
+        "rule_count": len(project_ruleset(session, params).rules),
         "results": [result.model_dump(mode="json") for _, result in pairs],
         SIGNATURE_KEY: signature,
     }

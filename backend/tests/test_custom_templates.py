@@ -10,9 +10,9 @@ from __future__ import annotations
 
 import pytest
 from app.config import get_settings
-from app.custom.signature import SIGNATURE_KEY, rules_signature
+from app.custom.signature import SIGNATURE_KEY, project_rules_signature
 from app.engine.mcdm import CRITERION_ORDER
-from app.models import DimensionScores, EvalResult, EvalResultRow, Project, Scheme
+from app.models import DimensionScores, EvalResult, EvalResultRow, Project, ProjectParams, Scheme
 from fastapi.testclient import TestClient
 from sqlalchemy.engine import Engine
 from sqlmodel import Session
@@ -58,7 +58,7 @@ def _seed(engine: Engine) -> tuple[int, list[int]]:
                 dimension_scores=DimensionScores(**dict(zip(CRITERION_ORDER, values, strict=True))),
             )
             session.add(
-                EvalResultRow(project_id=project.id, scheme_id=scheme.id, result={**result.model_dump(), SIGNATURE_KEY: rules_signature(session)})
+                EvalResultRow(project_id=project.id, scheme_id=scheme.id, result={**result.model_dump(), SIGNATURE_KEY: project_rules_signature(session, ProjectParams())})
             )
         session.commit()
         return project.id, ids

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Checkbox, Collapse, Form, Input, InputNumber, Select, Space, Tooltip } from 'antd'
+import { Alert, Button, Checkbox, Collapse, Form, Input, InputNumber, Select, Space, Tag, Tooltip } from 'antd'
 import type { FieldMetadata, FieldSchema } from '../api/types'
 
 export interface SchemaFormValues {
@@ -55,7 +55,7 @@ export function RequestErrors({ error, title = '操作未完成' }: { error: unk
 
 export function orderedFields(schema: FieldSchema): FieldMetadata[] {
   // custom 是存储容器；运行期 schema 已把其中的字段展开成独立输入项。
-  const fields = schema.fields.filter((field) => field.name !== 'custom')
+  const fields = schema.fields.filter((field) => field.name !== 'custom' && !field.hidden)
   const groups = [...new Set([
     ...(schema.group_order ?? []),
     ...fields.map((field) => field.group || '其他参数'),
@@ -85,7 +85,12 @@ export function schemaSubmitParams(schema: FieldSchema, raw: Record<string, unkn
     ...Object.entries(isRecord(previous) ? previous : {}),
     ...fields.filter((field) => field.custom).map((field) => [field.name, parseSchemaValue(field, raw[field.name])]),
   ])
-  const builtin = Object.fromEntries(fields.filter((field) => !field.custom).map((field) => [field.name, parseSchemaValue(field, raw[field.name])]))
+  const hidden = original ? schema.fields.filter(field => field.hidden && !field.custom && field.name !== 'custom')
+    .flatMap(field => {
+      const value = schemaFieldValue(original, field)
+      return value === undefined ? [] : [[field.name, value] as const]
+    }) : []
+  const builtin = Object.fromEntries([...hidden, ...fields.filter((field) => !field.custom).map((field) => [field.name, parseSchemaValue(field, raw[field.name])])])
   // 编辑时保留已删除定义或暂未返回定义的值；添加普通方案无需凭空添加容器。
   return fields.some((field) => field.custom) || isRecord(previous) ? { ...builtin, custom } : builtin
 }
@@ -107,10 +112,12 @@ function isEmpty(value: unknown): boolean {
 
 export function parseSchemaValue(field: FieldMetadata, value: unknown): unknown {
   const type = fieldType(field)
-  if (isEmpty(value)) return type.startsWith('array') && !field.custom && !field.empty_means_unknown ? [] : null
+  if (isEmpty(value)) return type.startsWith('array') && !field.custom && !field.empty_means_unknown && !field.required_options?.length ? [] : null
   if (type.startsWith('object') && typeof value === 'string') return JSON.parse(value) as unknown
   if (type === 'boolean' && typeof value === 'string') return value === 'true'
   if (type.startsWith('array') && Array.isArray(value)) {
+    // 标准册空清单采用默认册；不影响不规则项明确 [] 的“已核对”语义。
+    if (field.required_options?.length && value.length === 0) return null
     return value.map((item: unknown) => {
       if (type.includes('<number>') || type.includes('<integer>')) {
         return typeof item === 'string' && item.trim() ? Number(item) : item
@@ -119,6 +126,12 @@ export function parseSchemaValue(field: FieldMetadata, value: unknown): unknown 
     })
   }
   return value
+}
+
+/** 用于选择控件及 Form normalize：必选项始终在界面上显示，不能被移除。 */
+export function normalizeRequiredOptions(field: FieldMetadata, value: unknown): unknown {
+  if (!field.required_options?.length || !fieldType(field).startsWith('array')) return value
+  return [...new Set([...field.required_options, ...(Array.isArray(value) ? value : [])])]
 }
 
 function numericErrors(value: number, constraints: Record<string, unknown>): string[] {
@@ -174,6 +187,9 @@ export function validateSchemaField(field: FieldMetadata, raw: unknown): string[
     if (typeof constraints.minItems === 'number' && value.length < constraints.minItems) errors.push(`至少选择 ${constraints.minItems} 项`)
     if (typeof constraints.maxItems === 'number' && value.length > constraints.maxItems) errors.push(`最多选择 ${constraints.maxItems} 项`)
     if (field.enum && value.some((item: unknown) => !field.enum?.some((option) => option === item))) errors.push('请选择列表中的有效选项')
+    for (const required of field.required_options ?? []) {
+      if (!value.includes(required)) errors.push(`必须保留 ${required}，该选项始终生效`)
+    }
     const allowedOptions = field.options
     if (field.allow_custom_options === false && Array.isArray(allowedOptions)
       && value.some((item: unknown) => !allowedOptions.some(option => (typeof option === 'string' ? option : option.value) === item))) errors.push('请选择已核定的列表选项')
@@ -184,6 +200,24 @@ export function validateSchemaField(field: FieldMetadata, raw: unknown): string[
     if (typeof constraints.maxLength === 'number' && value.length > constraints.maxLength) errors.push(`最多输入 ${constraints.maxLength} 个字符`)
   }
   return errors
+}
+
+function RequiredOptionsListInput({ field, options, value, onChange }: {
+  field: FieldMetadata; options: { label: string; value: string }[];
+  value?: string[] | null; onChange?: (value: string[]) => void;
+}) {
+  const required = field.required_options ?? []
+  return <Select mode="multiple" style={{ width: '100%' }}
+    value={normalizeRequiredOptions(field, value) as string[]}
+    options={options.map(option => ({ ...option, disabled: required.includes(option.value) }))}
+    placeholder="选择适用的地方标准册"
+    onChange={onChange}
+    tagRender={({ label, value: option, closable, onClose }) => <Tag
+      closable={closable && !required.includes(String(option))}
+      onClose={onClose} style={{ marginInlineEnd: 4 }}
+      onMouseDown={event => { event.preventDefault(); event.stopPropagation() }}>
+      {label}{required.includes(String(option)) ? '（始终生效）' : ''}
+    </Tag>} />
 }
 
 function DeclaredListInput({ value, onChange, options }: {
@@ -209,6 +243,8 @@ function renderInput(field: FieldMetadata) {
     return [{ label: String(option), value: typeof option === 'boolean' ? String(option) : option }]
   })
   if (type === 'boolean') return <Select allowClear options={[{ label: '是', value: 'true' }, { label: '否', value: 'false' }]} placeholder="请选择" />
+  if (type.startsWith('array') && field.required_options?.length) return <RequiredOptionsListInput field={field}
+    options={options.map(option => ({ label: String(option.label), value: String(option.value) }))} />
   if (type.startsWith('array') && field.empty_means_unknown) return <DeclaredListInput options={options.map(option => ({ label: String(option.label), value: String(option.value) }))} />
   if (type.startsWith('array')) return <Select mode={field.enum || field.allow_custom_options === false ? 'multiple' : 'tags'} allowClear options={options} placeholder={field.allow_custom_options === false ? '请选择已核定的预设项' : '选择预设项，或输入后按回车添加'} />
   if (field.enum || field.options) return <Select allowClear showSearch optionFilterProp="label" options={options} placeholder="请选择" />
@@ -251,7 +287,8 @@ export default function SchemaForm({ schema, nameLabel, initialValues, pending =
               name={['params', field.name]}
               label={<Space size={4}>{field.label}{field.description && <Tooltip title={field.description}><span tabIndex={0} aria-label={`${field.label}说明`}>ⓘ</span></Tooltip>}</Space>}
               required={field.required}
-              extra={fieldType(field).startsWith('object') ? `填写 JSON 对象${field.unit && field.unit !== '—' ? `，数值单位：${field.unit}` : ''}${field.required ? '。' : '；可留空。'}` : undefined}
+              normalize={field.required_options?.length ? value => normalizeRequiredOptions(field, value) : undefined}
+              extra={field.required_options?.length ? '标记“始终生效”的标准册不可关闭；地方标准仅在选择后参与评估。' : fieldType(field).startsWith('object') ? `填写 JSON 对象${field.unit && field.unit !== '—' ? `，数值单位：${field.unit}` : ''}${field.required ? '。' : '；可留空。'}` : undefined}
               rules={[{ validator: async (_, raw: unknown) => {
                 const errors = validateSchemaField(field, raw)
                 if (errors.length) throw new Error(errors.join('；'))

@@ -1,0 +1,70 @@
+# 浙江省册（pack: ZJ）：浙江省地方标准与地方导则里的规则。
+#
+# **为什么单独成册**：地方条例的适用范围就是这一省，别的项目未必适用——所以它
+# **默认关闭**，由项目在 `standard_packs` 里显式开启（默认只有 `GB`）。
+# 设计与分工见 docs/design-regional-packs.md。
+#
+# **编号约定**：地方规则 ID = 地区码 + 维度字母 + 两位数字，如 `ZJ-S-01`；
+# 地区码表见 app/engine/regions.py。文件里出现 `X-` 会被 check_rules 直接报错
+# （那是运行期自定义规则的位置）。
+#
+# **依据**：浙江省住房和城乡建设厅公开文件。本文件的数值均由**官方 PDF 正文逐行核对**
+# 得到，条号与表号可直接对照原文；不是二手转录。
+
+- id: ZJ-S-01
+  pack: ZJ
+  name: 浙江省 MiC 混凝土强度等级下限
+  type: hard
+  when: "structure_type == 'MiC'"
+  check: "concrete_grade >= 30"
+  message: "模块化建筑的混凝土强度等级 C{concrete_grade} 低于浙江省导则要求的 C30"
+  source: "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第4.1.2条：模块化建筑的混凝土强度等级不应低于 C30（原文逐行核对）。注意与国标 S-14 的区别：后者是钢筋混凝土结构的通用下限 C25，本条是模块化建筑的更高要求"
+
+- id: ZJ-S-02
+  pack: ZJ
+  name: 浙江省 MiC 最大高宽比（提示）
+  type: hard
+  # 导则第6.1.10条用词是「宜」，故只作提示。表内 6 度列与 7 度列数值相同，不必按烈度分支。
+  when: "structure_type == 'MiC'"
+  check: "height_width_ratio <= (4 if mic_system == '模块化框架结构' else (4 if mic_system == '模块化箱模框架结构' else 6))"
+  message: "高宽比 {height_width_ratio} 超过浙江省导则表6.1.10 对该 MiC 体系的最大值（框架类 4、剪力墙与框架-剪力墙类 6）"
+  severity: warning
+  source: "浙江省《混凝土模块化建筑技术导则》第6.1.10条 表6.1.10「模块化结构适用的最大高宽比」：模块化框架结构 4、模块化全预制剪力墙结构 6、模块化叠合剪力墙结构 6、模块化箱模框架结构 4、模块化箱模框架-剪力墙结构 6、模块化箱模剪力墙结构 6（6 度与 7 度列相同，数值已按官方 PDF 正文逐行核对）。条文用词为「宜」，故本条只作提示"
+
+- id: ZJ-S-03
+  pack: ZJ
+  name: 浙江省 MiC 建筑最大适用高度（6 度区）
+  type: hard
+  # MiC 的最大适用高度按体系类型分档，所以必须填 mic_system 才能判；
+  # 没填时本条判为「数据不足」，不会误判为通过。
+  when: "structure_type == 'MiC' and mic_system != '模块化全预制剪力墙结构' and seismic_intensity == '6度(0.05g)'"
+  check: "height <= (30 if mic_system == '模块化框架结构' else (130 if mic_system == '模块化全预制剪力墙结构' else (90 if mic_system == '模块化叠合剪力墙结构' else (60 if mic_system == '模块化箱模框架结构' else (130 if mic_system == '模块化箱模框架-剪力墙结构' else 140)))))"
+  message: "建筑总高 {height} m 超过浙江省导则表6.1.8 对 6 度区该 MiC 体系的最大适用高度"
+  source: "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10 印发）第6.1.8条 表6.1.8「模块化建筑的最大适用高度（m）」6 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）130、模块化叠合剪力墙结构 90、模块化箱模框架结构 60、模块化箱模框架-剪力墙结构 130、模块化箱模剪力墙结构（全部落地）140。表注 3：超过表内高度的房屋应进行专门研究和论证并采取有效加强措施。表中「部分框支剪力墙」两行需框支层信息，未纳入 mic_system 枚举"
+
+- id: ZJ-S-04
+  pack: ZJ
+  name: 浙江省 MiC 建筑最大适用高度（7 度区）
+  type: hard
+  when: "structure_type == 'MiC' and mic_system != '模块化全预制剪力墙结构' and seismic_intensity == '7度(0.10g)'"
+  check: "height <= (30 if mic_system == '模块化框架结构' else (110 if mic_system == '模块化全预制剪力墙结构' else (80 if mic_system == '模块化叠合剪力墙结构' else (50 if mic_system == '模块化箱模框架结构' else (120 if mic_system == '模块化箱模框架-剪力墙结构' else 120)))))"
+  message: "建筑总高 {height} m 超过浙江省导则表6.1.8 对 7 度区该 MiC 体系的最大适用高度"
+  source: "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号）第6.1.8条 表6.1.8 7 度列：模块化框架结构 30、模块化全预制剪力墙结构（全部落地）110、模块化叠合剪力墙结构 80、模块化箱模框架结构 50、模块化箱模框架-剪力墙结构 120、模块化箱模剪力墙结构（全部落地）120。注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取表中括号内数值（6 度 120、7 度 100），该剪力比由 mic_precast_wall_shear_ratio 声明，具体括号条件另见 ZJ-S-05/S-06"
+
+- id: ZJ-S-05
+  pack: ZJ
+  name: 浙江全预制剪力墙高度（6度、含括号条件）
+  type: hard
+  when: "structure_type == 'MiC' and mic_system == '模块化全预制剪力墙结构' and seismic_intensity == '6度(0.05g)'"
+  check: "height <= (120 if mic_precast_wall_shear_ratio > 0.8 else 130)"
+  message: "全预制剪力墙高度 {height} m 不满足6度区已声明剪力比条件的表列值；请专业复核"
+  source: "TODO(专业组)：沿用本PR ZJ-S-03/S-04 source所述表6.1.8及括号条件：6度130m、预制墙底剪力占比大于80%时120m。新增程序条件尚待专业组复核官方原表，缺剪力比保持数据不足"
+
+- id: ZJ-S-06
+  pack: ZJ
+  name: 浙江全预制剪力墙高度（7度、含括号条件）
+  type: hard
+  when: "structure_type == 'MiC' and mic_system == '模块化全预制剪力墙结构' and seismic_intensity == '7度(0.10g)'"
+  check: "height <= (100 if mic_precast_wall_shear_ratio > 0.8 else 110)"
+  message: "全预制剪力墙高度 {height} m 不满足7度区已声明剪力比条件的表列值；请专业复核"
+  source: "TODO(专业组)：沿用本PR ZJ-S-04 source所述表6.1.8及括号条件：7度110m、预制墙底剪力占比大于80%时100m。新增程序条件尚待专业组复核官方原表，缺剪力比保持数据不足"

@@ -28,6 +28,14 @@ export type MicSystem = (
     | "模块化箱模剪力墙结构"
   );
 /**
+ * 全预制剪力墙体系的预制墙底剪力占比（小数），用于浙江导则高度表括号条件；需专业核定
+ */
+export type MicPrecastWallShearRatio = number | null;
+/**
+ * 方案参数来源、缺失信息和教学推演假设；仅作数据说明，不参与评分
+ */
+export type SchemeNotes = string | null;
+/**
  * 总户数
  */
 export type Units = number | null;
@@ -79,6 +87,47 @@ export type DaylightFactor = number | null;
  * 日照标准日的日照时数（杭州为大寒日）
  */
 export type SunlightHours = number | null;
+/**
+ * 日照分析用的标准日。必须与日照时数一起填：各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）
+ */
+export type DaylightStandardDay = (("大寒日" | "冬至日") | null) & ("大寒日" | "冬至日");
+/**
+ * 套内居住空间（卧室、起居室等）总数
+ */
+export type LivingSpaceCount = number | null;
+/**
+ * 其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）
+ */
+export type DaylightRoomCount = number | null;
+/**
+ * 卧室、起居室的室内净高（与层高是两个量，不能相互替代）
+ */
+export type ClearHeight = number | null;
+/**
+ * 户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件
+ */
+export type HasFreshAir = boolean | null;
+/**
+ * 每个单元是否至少设 1 台可容纳担架的电梯
+ */
+export type HasStretcherElevator = boolean | null;
+/**
+ * 是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）
+ */
+export type HasAccessibleElevator = boolean | null;
+/**
+ * 电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）
+ */
+export type TotalElevators = number | null;
+/**
+ * 人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）
+ */
+export type PerCapitaGreen = number | null;
+/**
+ * 山西表4.2.1用地类别，须按标准原表由专业组声明，不能仅由层数猜测；未填时该绿地规则数据不足
+ */
+export type SxLandUseClass = (("低层" | "多层Ⅰ类" | "多层Ⅱ类" | "高层Ⅰ类") | null) &
+  ("低层" | "多层Ⅰ类" | "多层Ⅱ类" | "高层Ⅰ类");
 /**
  * 总建筑面积
  */
@@ -267,6 +316,8 @@ export type GreenRatio = number | null;
 export interface SchemeParams {
   structure_type?: StructureType;
   mic_system?: MicSystem;
+  mic_precast_wall_shear_ratio?: MicPrecastWallShearRatio;
+  scheme_notes?: SchemeNotes;
   units?: Units;
   unit_mix?: UnitMix;
   floor_height?: FloorHeight;
@@ -279,6 +330,16 @@ export interface SchemeParams {
   highest_occupied_floor_height?: HighestOccupiedFloorHeight;
   daylight_factor?: DaylightFactor;
   sunlight_hours?: SunlightHours;
+  daylight_standard_day?: DaylightStandardDay;
+  living_space_count?: LivingSpaceCount;
+  daylight_room_count?: DaylightRoomCount;
+  clear_height?: ClearHeight;
+  has_fresh_air?: HasFreshAir;
+  has_stretcher_elevator?: HasStretcherElevator;
+  has_accessible_elevator?: HasAccessibleElevator;
+  total_elevators?: TotalElevators;
+  per_capita_green?: PerCapitaGreen;
+  sx_land_use_class?: SxLandUseClass;
   gfa?: Gfa;
   footprint?: Footprint;
   buildings?: Buildings;

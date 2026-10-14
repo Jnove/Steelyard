@@ -1,0 +1,43 @@
+# 吉林册（pack: JL）
+#
+# **依据文件**：《吉林省好房子建设技术导则》
+#   发布：吉林省住房和城乡建设厅通告第 669 号，2025-01-02 发布，自发布之日起实施。
+#   正文来源：吉林省人民政府信息公开平台 PDF（xxgk.jl.gov.cn，P020250113332282257556.pdf），
+#   **去空格逐字核对日期：2026-10-13**。
+#
+# 吉林的日照口径严于国标：国标 Ⅱ 类气候区大城市为大寒日 2h，吉林要求**大寒日 3h**。
+
+- id: JL-Q-01
+  pack: JL
+  name: 吉林好房子层高下限
+  type: hard
+  check: "floor_height >= 3.0"
+  message: "建筑层高 {floor_height} m 低于吉林省导则要求的 3.0 m"
+  source: "《吉林省好房子建设技术导则》（吉林省住房和城乡建设厅通告第669号，2025-01-02 发布施行）第5.2.6条：建筑层高不应小于3.0m（官方 PDF 去空格逐字核对，2026-10-13）"
+
+- id: JL-Q-02
+  pack: JL
+  name: 吉林好房子日照（大寒日 3h）
+  type: hard
+  when: "daylight_standard_day == '大寒日'"
+  check: "sunlight_hours >= 3"
+  message: "日照时数 {sunlight_hours} h 低于吉林省要求的 大寒日 3 h（严于国标 2 h）"
+  source: "同上 第4.4.5条：建筑日照标准不应低于大寒日日照时数3h（官方 PDF 去空格逐字核对，2026-10-13）"
+
+- id: JL-Q-03
+  pack: JL
+  name: 吉林日照标准日核对（提示）
+  type: hard
+  severity: warning
+  when: "daylight_standard_day == '冬至日'"
+  check: "False"
+  message: "本项目日照按冬至日分析，而吉林按大寒日 3h 判定，JL-Q-02 无法给出结论；请补充大寒日日照分析"
+  source: "同上 第4.4.5条以「大寒日」为日照标准日。标准日不一致时本条只作提示——不同标准日的日照时数不能互相换算，本系统不替使用者换算"
+
+- id: JL-G-01
+  pack: JL
+  name: 吉林居住街坊集中绿地下限
+  type: hard
+  check: "per_capita_green >= 0.6"
+  message: "集中绿地 {per_capita_green} m²/人 低于吉林省导则要求的 0.6 m²/人"
+  source: "同上 第4.4.4条：居住街坊内的集中绿地不应低于0.6m²/人（官方 PDF 去空格逐字核对，2026-10-13）"

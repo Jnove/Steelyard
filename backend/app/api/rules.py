@@ -22,9 +22,11 @@ from sqlmodel import Session
 from app.config import get_settings
 from app.custom.errors import CustomAddError
 from app.custom.rules import ruleset_with_custom
+from app.custom.signature import project_ruleset
 from app.db import get_session
 from app.engine.metrics import DERIVED_QUANTITIES
 from app.engine.rules import RuleDef, RuleLoadError, reload_ruleset
+from app.models import Project, ProjectParams
 
 router = APIRouter(prefix="/rules", tags=["rules"])
 
@@ -71,8 +73,14 @@ class RulesResponse(BaseModel):
     )
 
 
-def _build_response(session: Session | None) -> RulesResponse:
-    ruleset = ruleset_with_custom(session)
+def _build_response(session: Session | None, project_id: int | None = None) -> RulesResponse:
+    if project_id is None:
+        ruleset = ruleset_with_custom(session)
+    else:
+        project = session.get(Project, project_id) if session is not None else None
+        if project is None:
+            raise HTTPException(404, detail=f"项目 {project_id} 不存在")
+        ruleset = project_ruleset(session, ProjectParams.model_validate(project.params or {}))
     return RulesResponse(
         rule_count=len(ruleset.rules),
         hard_count=len(ruleset.hard_rules),
@@ -96,20 +104,20 @@ def _build_response(session: Session | None) -> RulesResponse:
     )
 
 
-def build_rules_response(session: Session | None = None) -> RulesResponse:
+def build_rules_response(session: Session | None = None, project_id: int | None = None) -> RulesResponse:
     """构造规则清单响应。
 
     ``session=None`` 表示**只要内建规则**（不带运行期自定义规则）：构建产物脚本
     （``scripts/export_frontend_fixtures.py``）走这条路，确保提交进 git 的前端快照
     只含内建规则。HTTP 路由始终传真实 session 以合并使用者的自定义规则。
     """
-    return _build_response(session)
+    return _build_response(session, project_id)
 
 
 @router.get("", response_model=RulesResponse, summary="当前规则与派生量定义")
-def list_rules(session: SessionDep) -> RulesResponse:
+def list_rules(session: SessionDep, project_id: int | None = None) -> RulesResponse:
     try:
-        return build_rules_response(session)
+        return build_rules_response(session, project_id)
     except RuleLoadError as exc:
         raise HTTPException(
             status.HTTP_500_INTERNAL_SERVER_ERROR,
