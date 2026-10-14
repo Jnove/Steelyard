@@ -1,0 +1,55 @@
+{
+  "_note": "虚构数据，仅供开发与演示调试，不得用于工程验证、专业结论或答辩证据",
+  "name": "C 均衡基准 · 现浇框架-剪力墙",
+  "params": {
+    "structure_type": "框架-剪力墙",
+    "mic_system": null,
+    "units": 408,
+    "unit_mix": {
+      "两室": 204,
+      "三室": 204
+    },
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.78,
+    "south_room_ratio": 0.78,
+    "window_floor_ratio": 0.25,
+    "window_wall_ratio": {
+      "南": 0.42,
+      "北": 0.27,
+      "东": 0.25,
+      "西": 0.25
+    },
+    "elevators_per_unit": 2,
+    "highest_occupied_floor": 17,
+    "highest_occupied_floor_height": 48.0,
+    "daylight_factor": 0.028,
+    "sunlight_hours": 2.8,
+    "gfa": 40800,
+    "footprint": 2400,
+    "buildings": 4,
+    "floors": 17,
+    "envelope_area": 23040,
+    "volume": 122400,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "min_plan_width": 16,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.75,
+    "component_types": 16,
+    "risk_features": [
+      "深基坑"
+    ],
+    "prefab_ratio_est": 0.5,
+    "green_ratio": 0.4
+  },
+  "_design_notes": {
+    "role_in_demo": "四个维度都不极端的「常规做法」基准，用来回答「不搞装配式、也不冲品质，会得到什么结果」。",
+    "expected_verdict": "全部硬约束通过。四维得分（实测，见 `_check.txt`）：品质 75.18 / 结构 86.82 / 施工 57.78 / 绿色 84.00，四维中没有任何一维垫底，也**没有被任何方案支配**（帕累托非劣）。它的定位是「话最少但处处不犯错的常规方案」，用来衬托 A 与 B 的取舍：住户视角下它排第 2（0.673），政府 / 施工 / 设计视角下排第 3。",
+    "risk_feature_reason": "「深基坑」是构造性取值：本项目为 1.8 ha 地块、4 栋 17 层，是否真有深基坑应由施工图阶段判定，此处仅用于让结构风险指数 S-01 不为 0，从而把「风险特征」这条链路的得分差异演示出来。真实项目必须按实际判定勾选。",
+    "code_check": "C-01 51.0 ≤ 51 ✓（压线）；C-02 2.27 ≤ 2.5 ✓；C-03 0.133 ≤ 0.22 ✓；C-04 3.0 ≥ 3.0 ✓；C-05 2 台 ✓；S-05 框架-剪力墙 6 度区 130 m ✓；S-07 高宽比 51.0 / 16 = 3.19 ≤ 6 ✓；S-01 = 3（深基坑）→ 80 分；S-12/S-13/S-14 ✓。",
+    "gfa_consistency": "gfa 40,800 = 4 栋 × 17 层 × 600 m²；基底 2400 = 4 × 600 → 楼层效率 1.0。与 B 同口径，便于把差异全部归因到「设计选择」而不是「填表口径」。",
+    "lift_input": "虚构假设同 A：(floors - 1) × floor_height = 48.0 m。",
+    "shape_coef_input": "envelope_area 23040 m²、volume 122400 m³ → 体形系数约 0.188（G-04 接近满分）。推导：4 栋按 40 m × 15 m 平面估算，每栋外墙 110 m × 51 m = 5,610 m²，4 栋合计 22,440 m²，加屋面 2,400 m² 得 24,840 m²；本字段取 23,040 m²（外墙合计，不含屋面）。**注意：`envelope_area` 按定义应填「建筑外表面积」合计，但 `data/schemes/mock/` 下的历史样例填出的是约 0.10 的比值（物理上不可能），本案例不沿用该口径。**"
+  }
+}

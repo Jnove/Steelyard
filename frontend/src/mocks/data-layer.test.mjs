@@ -237,6 +237,31 @@ test('损坏存储明确报错，存储失败不会宣称写入成功', async ()
   finally { localStorage.setItem = original }
 })
 
+test('离线项目编辑明确拒绝，保留现有项目和评估，不伪造地区计算结果', async () => {
+  const other = await mock.projects.create({ name: '另一地块', params: { site_area: 100 } })
+  await mock.evaluation.run(1)
+  const before = await mock.projects.list()
+  await rejects(mock.projects.update(1, { params: { standard_packs: ['GB', 'ZJ'] } }), 501, 'MOCK_PROJECT_UPDATE_UNSUPPORTED')
+  assert.deepEqual(await mock.projects.list(), before)
+  assert.equal((await mock.evaluation.get(1)).results.length, 5)
+  assert.equal((await mock.projects.get(other.id)).params.site_area, 100)
+})
+
+test('真实项目编辑 PUT 保留项目编号和完整载荷，校验失败向表单透传', async () => {
+  const input = { name: '教学地块', params: { standard_packs: ['GB', 'ZJ'], province: 'ZJ', project_notes: '公开地块；教学推演' } }
+  const saved = { id: 7, ...input }
+  let call
+  globalThis.fetch = async (url, init) => { call = { url, init }; return Response.json(saved) }
+  assert.deepEqual(await real.projects.update(7, input), saved)
+  assert.equal(call.url, '/api/projects/7')
+  assert.equal(call.init.method, 'PUT')
+  assert.equal(call.init.headers['Content-Type'], 'application/json')
+  assert.deepEqual(JSON.parse(call.init.body), input)
+  globalThis.fetch = async () => Response.json({ detail: [{ loc: ['body', 'params', 'standard_packs'], msg: '必须包含 GB' }] }, { status: 422 })
+  await assert.rejects(real.projects.update(7, { params: { standard_packs: ['ZJ'] } }), error =>
+    error.status === 422 && error.body.detail[0].loc.at(-1) === 'standard_packs')
+})
+
 test('真实路由 JSON、multipart、ApiError、空响应和取消', async () => {
   const calls = []
   globalThis.fetch = async (url, init) => { calls.push({ url, init }); return new Response('{}', { status: 200 }) }

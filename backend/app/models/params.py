@@ -15,6 +15,14 @@ from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
+from app.engine.regions import (
+    GB_PACK,
+    PROVINCE_BY_CODE,
+    PROVINCE_CODES,
+    is_region_code,
+    pack_options,
+)
+
 # —— 枚举与预设选项 —— #
 
 StructureType = Literal["剪力墙", "框架-剪力墙", "框架", "钢结构", "MiC"]
@@ -24,6 +32,16 @@ STRUCTURE_TYPES: tuple[str, ...] = ("剪力墙", "框架-剪力墙", "框架", "
 
 ClimateZone = Literal["严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和"]
 CLIMATE_ZONES: tuple[str, ...] = ("严寒", "寒冷", "夏热冬冷", "夏热冬暖", "温和")
+
+DaylightStandardDay = Literal["大寒日", "冬至日"]
+"""日照标准日。
+
+各地口径差别很大：山西按**冬至日累计 1h**，吉林按**大寒日 3h**，
+京津冀辽按**大寒日 2h**，广东可"大寒日 3h 或冬至日 1h"二选一。
+所以"日照时数"必须和"按哪个标准日算的"一起记录——否则 2h 这个数字没法比。
+"""
+
+DAYLIGHT_STANDARD_DAYS: tuple[str, ...] = ("大寒日", "冬至日")
 
 SeismicIntensity = Literal["6度(0.05g)", "7度(0.10g)"]
 """抗震设防烈度。
@@ -241,11 +259,86 @@ class ProjectParams(BaseModel):
         description="抗震设防烈度（浙江全省最高为 7 度 0.10g）",
         json_schema_extra=_meta("—", "基本信息", "抗震设防烈度", enum=list(SEISMIC_INTENSITIES)),
     )
+    province: str | None = Field(
+        None,
+        description=(
+            "项目所在省级行政区（两字母地区码，如 ZJ）。"
+            "用于提示「所选的地方册是否与项目所在地一致」"
+        ),
+        json_schema_extra=_meta("—", "基本信息", "所在省份", enum=list(PROVINCE_CODES)),
+    )
+    standard_packs: list[str] | None = Field(
+        None,
+        description=(
+            "适用的规则册；留空＝只用国家标准（GB）。GB 永远生效、不能去掉；"
+            "加进省级地区码后，该省的地方规则才会参与评估"
+        ),
+        json_schema_extra=_meta(
+            "—", "基本信息", "适用标准册", options=pack_options(),
+            allow_custom_options=False, empty_means_unknown=True, required_options=[GB_PACK],
+        ),
+    )
+    project_notes: str | None = Field(
+        None, max_length=12000,
+        description="项目资料出处、真实资料与教学假设的边界；仅作案例说明，不参与评分",
+        json_schema_extra=_meta("—", "基本信息", "案例来源与边界"),
+    )
 
     @field_validator("density_max", mode="before")
     @classmethod
     def _check_density_max(cls, v: object) -> object:
         return _reject_percentage(v)
+
+    @field_validator("province")
+    @classmethod
+    def _check_province(cls, v: str | None) -> str | None:
+        """省份必须是注册表里的地区码。"""
+        if v is None:
+            return None
+        code = v.strip().upper()
+        if code not in PROVINCE_BY_CODE:
+            raise ValueError(
+                f"未知的省份代码「{v}」；可用的是 {len(PROVINCE_CODES)} 个省级行政区"
+                "（见 backend/app/engine/regions.py）"
+            )
+        return code
+
+    @field_validator("standard_packs")
+    @classmethod
+    def _check_standard_packs(cls, v: list[str] | None) -> list[str] | None:
+        """册必须都是已知的，且**必须包含 GB**（留空表示"只用国标"）。
+
+        去重并保持顺序。GB 不在列表里时**直接报错**，而不是悄悄替你补上——
+        静默补上会让人以为自己关掉了国标，实际没有。国家标准是所有项目的底线。
+
+        这里刻意把"留空"与"给了列表"分开：留空沿用"只用国标"，
+        列表则必须显式含 ``GB``。这样新项目不会因为多了一个默认值字段，
+        就被前端当成"参数已经填过了"（前端按"字段是否全为空"判断新建项目）。
+        """
+        if v is None:
+            return None
+        codes = list(dict.fromkeys(v))
+        unknown = [c for c in codes if not is_region_code(c)]
+        if unknown:
+            raise ValueError(
+                f"未知的标准册 {unknown}；可用 GB 或省级地区码"
+                f"（共 {len(PROVINCE_CODES)} 个省级行政区）"
+            )
+        if GB_PACK not in codes:
+            raise ValueError(
+                f"标准册必须包含 {GB_PACK}：国家标准是底线，不能关掉。"
+                '要加地方册请把地区码一起写进来，例如 ["GB", "ZJ"]'
+            )
+        return codes
+
+    @model_validator(mode="after")
+    def _check_local_pack_scope(self) -> ProjectParams:
+        local = set(self.standard_packs or []) - {GB_PACK}
+        if local and self.province is None:
+            raise ValueError("启用地方标准册前请填写项目所在省份，不能将地方规则无范围地应用到项目")
+        if local and local != {self.province}:
+            raise ValueError("地方标准册必须与项目所在省份一致；每个项目只能启用所在地的地方册")
+        return self
 
 
 class SchemeParams(BaseModel):
@@ -275,6 +368,16 @@ class SchemeParams(BaseModel):
         None,
         description="MiC 体系类型（结构体系选 MiC 时填写）",
         json_schema_extra=_meta("—", "基本信息", "MiC 体系类型", enum=list(MIC_SYSTEMS)),
+    )
+    mic_precast_wall_shear_ratio: float | None = Field(
+        None, ge=0, le=1,
+        description="全预制剪力墙体系的预制墙底剪力占比（小数），用于浙江导则高度表括号条件；需专业核定",
+        json_schema_extra=_meta("—", "基本信息", "预制墙底剪力占比"),
+    )
+    scheme_notes: str | None = Field(
+        None, max_length=12000,
+        description="方案参数来源、缺失信息和教学推演假设；仅作数据说明，不参与评分",
+        json_schema_extra=_meta("—", "基本信息", "方案数据说明"),
     )
     units: int | None = Field(
         None,
@@ -349,8 +452,69 @@ class SchemeParams(BaseModel):
     sunlight_hours: float | None = Field(
         None,
         description="日照标准日的日照时数（杭州为大寒日）",
-        gt=0,
+        ge=0,
         json_schema_extra=_meta("h", "居住品质", "日照时数"),
+    )
+    # —— 地方条文（省级规则册）用的字段：国标不判、地方判 —— #
+    daylight_standard_day: DaylightStandardDay | None = Field(
+        None,
+        description=(
+            "日照分析用的标准日。必须与日照时数一起填："
+            "各地要求的标准日不同（山西冬至日、吉林大寒日 3h、京津冀辽大寒日 2h）"
+        ),
+        json_schema_extra=_meta(
+            "—", "居住品质", "日照标准日", enum=list(DAYLIGHT_STANDARD_DAYS)
+        ),
+    )
+    living_space_count: int | None = Field(
+        None,
+        description="套内居住空间（卧室、起居室等）总数",
+        gt=0,
+        json_schema_extra=_meta("个", "居住品质", "居住空间总数"),
+    )
+    daylight_room_count: int | None = Field(
+        None,
+        description="其中满足日照标准的居住空间数（多省按「几个空间满足」判定，而不是按小时数）",
+        ge=0,
+        json_schema_extra=_meta("个", "居住品质", "满足日照空间数"),
+    )
+    clear_height: float | None = Field(
+        None,
+        description="卧室、起居室的室内净高（与层高是两个量，不能相互替代）",
+        gt=0,
+        json_schema_extra=_meta("m", "居住品质", "室内净高"),
+    )
+    has_fresh_air: bool | None = Field(
+        None,
+        description="户内是否设新风系统／中央空调／地暖——多省的层高加严条款以此为条件",
+        json_schema_extra=_meta("—", "居住品质", "设新风/中央空调"),
+    )
+    has_stretcher_elevator: bool | None = Field(
+        None,
+        description="每个单元是否至少设 1 台可容纳担架的电梯",
+        json_schema_extra=_meta("—", "居住品质", "设担架电梯"),
+    )
+    has_accessible_elevator: bool | None = Field(
+        None,
+        description="是否设无障碍电梯（部分省份要求直通地下车库或每单元一台）",
+        json_schema_extra=_meta("—", "居住品质", "设无障碍电梯"),
+    )
+    total_elevators: int | None = Field(
+        None,
+        description="电梯总台数。用来算「每台电梯服务户数」（辽宁≤60、重庆 30~60、北京≤90）",
+        gt=0,
+        json_schema_extra=_meta("台", "居住品质", "电梯总台数"),
+    )
+    per_capita_green: float | None = Field(
+        None,
+        description="人均公共／集中绿地面积（宁夏≥1.5/2.0、吉林≥0.6、湖北≥0.5）",
+        ge=0,
+        json_schema_extra=_meta("m²/人", "绿色低碳", "人均公共绿地"),
+    )
+    sx_land_use_class: Literal["低层", "多层Ⅰ类", "多层Ⅱ类", "高层Ⅰ类"] | None = Field(
+        None,
+        description="山西表4.2.1用地类别，须按标准原表由专业组声明，不能仅由层数猜测；未填时该绿地规则数据不足",
+        json_schema_extra=_meta("—", "绿色低碳", "山西用地类别", enum=["低层", "多层Ⅰ类", "多层Ⅱ类", "高层Ⅰ类"]),
     )
 
     # —— 结构与造价 —— #

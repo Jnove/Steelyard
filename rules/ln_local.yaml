@@ -1,0 +1,39 @@
+# 辽宁册（pack: LN）
+#
+# **依据文件**：《辽宁省「好房子」施工图设计文件技术审查要点（试行）》
+#   发布：辽宁省住房和城乡建设厅，2026 年 4 月。
+#   正文来源：辽宁省住建厅官网 PDF，**去空格逐字核对日期：2026-10-13**。
+
+- id: LN-Q-01
+  pack: LN
+  name: 辽宁好房子层高下限
+  type: hard
+  check: "floor_height >= (3.15 if has_fresh_air else 3.0)"
+  message: "层高 {floor_height} m 低于辽宁省审查要点要求（不应小于 3.0 m；设地热采暖、管道式新风或集中式中央空调时不宜小于 3.15 m）"
+  source: "《辽宁省「好房子」施工图设计文件技术审查要点（试行）》第4.1.2条：住宅层高不应小于3.0m；设有地热采暖、管道式新风或集中式中央空调系统的住宅，层高不宜小于3.15m；卧室、起居室的室内净高不低于2.60m（官方 PDF 去空格逐字核对，2026-10-13）"
+
+- id: LN-Q-02
+  pack: LN
+  name: 辽宁每台电梯服务户数上限
+  type: hard
+  # 户/台 = 总户数 ÷ 总台数。total_elevators 未填时判为数据不足。
+  check: "units / total_elevators <= 60"
+  message: "每台电梯服务 {units} / {total_elevators} 户，超过辽宁省要求的每台不超过 60 户"
+  source: "同上 第4.2.4条第1款：电梯数量的确定应综合考虑建筑类型、层数、服务户数、电梯速度等主要技术参数及使用者的舒适度等因素，每台电梯服务户数不应超过60户（官方 PDF 去空格逐字核对，2026-10-13）"
+
+- id: LN-Q-03
+  pack: LN
+  name: 辽宁担架电梯设置
+  type: hard
+  when: "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9"
+  check: "has_stretcher_elevator"
+  message: "最高入户层 {highest_occupied_floor} 层／楼面高 {highest_occupied_floor_height} m，按辽宁要求每个单元应至少设 1 台可容纳担架的电梯"
+  source: "同上 第4.2.4条第2款：当最高入户层为4层及4层以上时，或最高入户层楼面距室外设计地面高度超过9m时，每个单元应至少设置1台可容纳担架的电梯（官方 PDF 去空格逐字核对，2026-10-13）"
+
+- id: LN-G-01
+  pack: LN
+  name: 辽宁住区绿地率下限
+  type: hard
+  check: "green_ratio >= 0.30"
+  message: "住区绿地率 {green_ratio} 低于辽宁省审查要点要求的 30%"
+  source: "同上 第3.2.2条：住区绿地率不应小于30%（官方 PDF 去空格逐字核对，2026-10-13）"

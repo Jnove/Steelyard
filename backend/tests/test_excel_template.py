@@ -11,6 +11,7 @@
 from __future__ import annotations
 
 from app.excel import MAX_SCHEMES, SHEET_INSTRUCTIONS, SHEET_PROJECT, SHEET_SCHEMES, write_template
+from app.models import ProjectParams
 from openpyxl import load_workbook
 
 
@@ -42,15 +43,10 @@ class TestTemplateGeneration:
             for r in range(2, ws.max_row + 1)
             if ws.cell(row=r, column=name_col).value
         }
-        # 6 个项目字段全部出现（新增字段时这里要一起更新）
-        assert names == {
-            "site_area",
-            "far_max",
-            "density_max",
-            "height_max",
-            "climate_zone",
-            "seismic_intensity",
-        }
+        # 模板包含全部可见元数据字段，不维护第二份字段清单。
+        properties = ProjectParams.model_json_schema()["properties"]
+        assert names == {name for name, prop in properties.items() if not prop.get("hidden")}
+        assert {"site_area", "province", "standard_packs", "project_notes"} <= names
 
     def test_scheme_sheet_has_six_columns_and_all_fields(self, tmp_path) -> None:
         path = write_template(tmp_path / "tpl.xlsx")

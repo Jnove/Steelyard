@@ -1,0 +1,26 @@
+{
+  "_note": "虚构数据，仅用于程序行为演示，不能作为工程结论",
+  "name": "虚构地块 · 合规边界与施工提示 · 演示对比",
+  "params": {
+    "site_area": 20000,
+    "far_max": 2.5,
+    "density_max": 0.22,
+    "height_max": 54,
+    "climate_zone": "夏热冬冷",
+    "seismic_intensity": "7度(0.10g)",
+    "province": "ZJ",
+    "standard_packs": [
+      "GB",
+      "ZJ"
+    ]
+  },
+  "_field_status": {
+    "all": "全部虚构数据，用于展示程序边界，不是实际地块或规范核定证据"
+  },
+  "_public_facts": {},
+  "_design_notes": {
+    "purpose": "基准、限高超限、容积率超限、施工专家论证提示及单参数What-if恢复。",
+    "scheme_status": "所有方案参数均为演示自拟，包括沿公开规模设定的面积和户数；未做工程验证。",
+    "planning_scope": "公开实际面积/容积率不是规划上限；缺失条件不得按已合规解释。"
+  }
+}

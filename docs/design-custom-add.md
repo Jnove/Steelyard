@@ -5,7 +5,7 @@
 > 当前只有 `risk_features` 开放追加候选；`irregularity_items` 保持封闭专业清单。
 > 内建角色现有五个。现有录入表单支持 `params.custom`，动态 Excel 入口为
 > `GET /api/excel/template` 与 `GET /api/excel/projects/{id}/export`。
-> 生产自定义写接口关闭；地区选择、规则版本与地域适用性配置尚未实现。
+> 生产自定义写接口关闭；地区选择与项目规则签名已接入，见 [案例与地区集成](demo-regional-integration.md)。历史有效时期和完整地方规范覆盖仍未实现。
 >
 > 涉及四类自定义内容：**字段 / 参数、规则 / 指标、角色权重模板、枚举选项**。
 

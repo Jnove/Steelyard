@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, Field, model_validator
 from sqlmodel import Session, select
 
 from app.custom.errors import CustomAddError
-from app.custom.signature import require_rules_signature, rules_signature
+from app.custom.signature import project_rules_signature, require_rules_signature
 from app.custom.templates import list_templates, resolve_template, to_engine_template
 from app.db import get_session
 from app.engine.mcdm import (
@@ -44,7 +44,7 @@ from app.engine.weights import (
     WeightsLoadError,
     get_role_templates,
 )
-from app.models import EvalResult, EvalResultRow, Project, Scheme
+from app.models import EvalResult, EvalResultRow, Project, ProjectParams, Scheme
 
 router = APIRouter(prefix="/projects/{project_id}", tags=["rank"])
 
@@ -237,7 +237,7 @@ def _load_latest_results(
     out: list[tuple[Scheme, EvalResult]] = []
     seen: set[int] = set()
     project = _require_project(session, project_id)
-    signature = rules_signature(session)
+    signature = project_rules_signature(session, ProjectParams.model_validate(project.params or {}))
     for scheme, row in rows:
         if row.scheme_id in seen:
             continue

@@ -42,6 +42,7 @@ from app.engine.metrics import (
     compute_derived,
     derived_names,
 )
+from app.engine.regions import GB_PACK, is_region_code
 from app.engine.scoring import (
     MIN_POINTS,
     SCORE_MAX,
@@ -83,12 +84,19 @@ __all__ = [
 
 # —— 常量 —— #
 
-#: 规则 ID 格式：一个大写前缀字母 + 短横线 + 两位数字。
-#: 前缀对应 ``rules/`` 下的文件：C=compliance、Q=quality、S=structure、K=construction、G=green。
-#: **X 是运行期自定义规则的保留前缀**（见 ``app/custom/rules.py``）：它们不来自任何文件、
-#: 不进 git、不参与 CI 校验，用一个独立前缀才能在任何列表里一眼区分开。
-#: 文件里的规则请不要用 X——那是覆盖层的位置。
-RULE_ID_PATTERN = r"^[CQSKGX]-\d{2}$"
+#: 规则 ID 的形态：
+#:
+#: * **国家层面标准**（默认册 ``GB``）：一个大写前缀字母 + 短横线 + 两位数字。
+#:   前缀 C=compliance、Q=quality、S=structure、K=construction、G=green。
+#: * **地方标准**（省级册）：两字母地区码 + 短横线 + 同一个维度字母 + 短横线 + 两位数字，
+#:   例如 ``ZJ-S-01``（浙江省册的结构规则）。地区码见 ``app/engine/regions.py``。
+#: * **X** 是运行期自定义规则的保留前缀（见 ``app/custom/rules.py``）：模式里允许它，
+#:   但 ``scripts/check_rules.py`` 会禁止它出现在 ``rules/*.yaml`` 里——X- 只能来自
+#:   界面上临时加的规则，不能落进 git。
+#:
+#: 为什么地方规则要带地区码：多省的同类规则会撞号（两位数只有 99 个），
+#: 而报告里每条结论都要能顺着编号回查来源——``ZJ-S-01`` 一眼就知道出自浙江册。
+RULE_ID_PATTERN = r"^(?:[CQSKGX]|[A-Z]{2}-[CQSKG])-\d{2}$"
 
 #: 表达式里允许调用的函数。**只有这五个**，其余一律报错。
 #: 不放 ``sum`` / ``sorted`` 之类是因为规则里用不到，而每多一个就多一份出错与滥用的可能。
@@ -525,6 +533,15 @@ class ScoringDef(BaseModel):
         return points
 
 
+def _region_prefix(rule_id: str) -> str | None:
+    """取出地方规则 ID 里的地区码；国家层面与运行期规则返回 ``None``。
+
+    ``ZJ-S-01`` → ``"ZJ"``；``S-08`` → ``None``；``X-01`` → ``None``。
+    """
+    parts = rule_id.split("-")
+    return parts[0] if len(parts) == 3 else None
+
+
 class RuleDef(BaseModel):
     """``rules/*.yaml`` 里一条规则的正式定义。
 
@@ -542,7 +559,17 @@ class RuleDef(BaseModel):
 
     id: str = Field(
         pattern=RULE_ID_PATTERN,
-        description="规则编号，形如 C-03；全局唯一。前缀 C/Q/S/K/G 对应 rules/ 下的五个文件",
+        description=(
+            "规则编号：国家层面标准形如 C-03（全局唯一），地方标准形如 ZJ-S-01"
+            "（地区码 + 维度字母 + 两位数字）"
+        ),
+    )
+    pack: str = Field(
+        GB_PACK,
+        description=(
+            "规则所属的「册」：GB 是国家标准册（永远生效），其余是省级册"
+            "（默认关闭，由项目选择）。地方规则的 ID 地区码必须与本字段一致"
+        ),
     )
     name: str = Field(min_length=1, description="规则中文名，给前端与报告看")
     type: Literal["hard", "metric"] = Field(description="hard 硬约束 / metric 评分指标")
@@ -606,6 +633,35 @@ class RuleDef(BaseModel):
                 )
         return self
 
+    @model_validator(mode="after")
+    def _check_pack_matches_id(self) -> RuleDef:
+        """``pack``（册）与 ID 里的地区码必须一致，且册代码必须真实存在。
+
+        地方规则的编号形如 ``ZJ-S-01``，册就是它出自哪一省。两者不一致时，
+        报告会把结论归错来源；册代码不在注册表里时，项目永远选不中它
+        （规则等于白写）。所以这两种情况都直接拒绝加载。
+        """
+        if not is_region_code(self.pack):
+            raise ValueError(
+                f"未知的册代码 {self.pack!r}；可用 GB 或省级地区码"
+                "（见 app/engine/regions.py 的 MAINLAND_PROVINCES）"
+            )
+        region = _region_prefix(self.id)
+        if region is None:
+            if self.pack != GB_PACK:
+                raise ValueError(
+                    f"规则 ID {self.id} 没有地区码，但 pack 是 {self.pack}；"
+                    f"地方规则的 ID 应形如 {self.pack}-S-01"
+                )
+        elif region != self.pack:
+            raise ValueError(
+                f"规则 ID {self.id} 的地区码是 {region}，与 pack={self.pack} 不一致；"
+                "两者必须相同，否则报告会把来源归错"
+            )
+        if self.pack != GB_PACK and self.type == "metric":
+            raise ValueError("地方册评分指标暂未开放：需专业组先核定与国家册同维度指标的重复计权政策")
+        return self
+
     def expressions(self) -> Iterator[tuple[str, str]]:
         """遍历本条规则里的全部表达式，产出 ``(字段名, 表达式)``。"""
         if self.when is not None:
@@ -652,6 +708,29 @@ class RuleSet:
 
     def by_id(self, rule_id: str) -> RuleDef | None:
         return next((r for r in self.rules if r.id == rule_id), None)
+
+    @property
+    def packs(self) -> tuple[str, ...]:
+        """当前规则集里出现过的册（排序后），供册清单接口使用。"""
+        return tuple(sorted({r.pack for r in self.rules}))
+
+    def select_packs(self, codes: Iterable[str]) -> RuleSet:
+        """按册筛选出一个**新的**规则集。
+
+        ``GB`` 是底线，调用方应保证它总在 ``codes`` 里（``ProjectParams`` 的校验器
+        已经强制这一点）。返回新对象而不改动自身：全局缓存的那份永远包含全部册，
+        切换册不该改变它——否则一个项目开了地方册，会顺手影响另一个项目。
+        """
+        wanted = {GB_PACK, *codes}
+        rules = tuple(r for r in self.rules if r.pack in wanted)
+        if len(rules) == len(self.rules):
+            return self
+        keep = {r.id for r in rules}
+        return RuleSet(
+            rules=rules,
+            origins={k: v for k, v in self.origins.items() if k in keep},
+            todo_source_ids=tuple(i for i in self.todo_source_ids if i in keep),
+        )
 
 
 def iter_rule_files(rules_dir: Path) -> list[Path]:

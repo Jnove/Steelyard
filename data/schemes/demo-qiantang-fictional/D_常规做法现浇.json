@@ -1,0 +1,53 @@
+{
+  "_note": "虚构数据，仅供开发与演示调试，不得用于工程验证、专业结论或答辩证据",
+  "name": "D 常规做法 · 现浇框架-剪力墙",
+  "params": {
+    "structure_type": "框架-剪力墙",
+    "mic_system": null,
+    "units": 312,
+    "unit_mix": {
+      "两室": 156,
+      "三室": 156
+    },
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.78,
+    "south_room_ratio": 0.78,
+    "window_floor_ratio": 0.25,
+    "window_wall_ratio": {
+      "南": 0.42,
+      "北": 0.27,
+      "东": 0.25,
+      "西": 0.25
+    },
+    "elevators_per_unit": 2,
+    "highest_occupied_floor": 10,
+    "highest_occupied_floor_height": 27.0,
+    "daylight_factor": 0.028,
+    "sunlight_hours": 2.6,
+    "gfa": 44000,
+    "footprint": 3520,
+    "buildings": 4,
+    "floors": 10,
+    "envelope_area": 17200,
+    "volume": 132000,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "min_plan_width": 18,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.85,
+    "component_types": 9,
+    "risk_features": [],
+    "prefab_ratio_est": 0.55,
+    "green_ratio": 0.42
+  },
+  "_design_notes": {
+    "role_in_demo": "与 E 配对的对照基准：**四个维度都不低于 E**，用来演示帕累托支配（E 被 D 支配，前端应把 E 标灰）。",
+    "expected_verdict": "硬约束全部通过，楼层效率与体形系数都好看，但 10 层、层高 3.0 m、得房率 0.78，在住户视角下赢不了 A；在施工单位视角下赢不了 B。它是「另一个均衡解」，不是最优解。",
+    "code_check": "C-01 10 × 3.0 = 30.0 m ≤ 51 ✓；C-02 44000 / 18000 = 2.44 ≤ 2.5 ✓；C-03 3520 / 18000 = 0.196 ≤ 0.22 ✓；C-04 3.0 ≥ 3.0 ✓；C-05 **不适用**（最高入户层 10 < 12 且楼面 27.0 m ≤ 33 m）→ 只受 C-08 约束（≥ 1 台，已填 2 ✓）；S-05 框架-剪力墙 6 度区 130 m，30.0 m ✓；S-07 高宽比 30.0 / 18 = 1.67 ≤ 6 ✓；S-12/S-13/S-14 ✓。",
+    "demo_value": "D 是唯一「低层数、低限高压力」的方案，正好演示「住宅不是越高越省」：10 层的 S-04 得分（约 92 分）明显高于 17 层的方案，但因为户数少、得房率一般，总排名并不领先。",
+    "gfa_consistency": "gfa 44,000 = 4 栋 × 10 层 × 1100 m²（每层计容面积）；基底 3520 = 4 × 880 → G-05 楼层效率 = 3520 × 10 / 44000 = 0.80（约 70 分），口径自洽。",
+    "lift_input": "虚构假设同 A：(floors - 1) × floor_height = 9 × 3.0 = 27.0 m。",
+    "shape_coef_input": "envelope_area 17200 m²、volume 132000 m³ → 体形系数约 0.130（G-04 满分）；低层、平面较方的体型体形系数最好，与绿色维度的直觉一致。"
+  }
+}

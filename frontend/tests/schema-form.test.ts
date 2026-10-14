@@ -1,11 +1,72 @@
 import assert from 'node:assert/strict'
 import { test } from 'node:test'
-import { errorMessages, orderedFields, parseSchemaValue, recordedSchemaFields, schemaFieldValue, schemaInitialParams, schemaSubmitParams, validateSchemaField } from '../src/components/SchemaForm'
+import { createElement } from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
+import SchemaForm, { errorMessages, normalizeRequiredOptions, orderedFields, parseSchemaValue, recordedSchemaFields, schemaFieldValue, schemaInitialParams, schemaSubmitParams, validateSchemaField } from '../src/components/SchemaForm'
 import type { FieldMetadata, FieldSchema } from '../src/api/types'
 
 const field = (type: string, overrides: Partial<FieldMetadata> = {}): FieldMetadata => ({
   name: 'value', label: '测试参数', description: '', unit: '', group: '基本信息',
   type, required: false, constraints: {}, ...overrides,
+})
+
+const standards = field('array<string> | null', {
+  name: 'standard_packs', label: '适用标准册', empty_means_unknown: true,
+  allow_custom_options: false, required_options: ['GB'],
+  options: [{ value: 'GB', label: '国家标准' }, { value: 'ZJ', label: '浙江省地方标准' }],
+})
+
+test('默认标准册空值提交 null，已有国标或地方组合保持原样', () => {
+  const schema: FieldSchema = { title: '', description: '', group_order: [], fields: [standards] }
+  for (const value of [undefined, null, '', []]) {
+    assert.deepEqual(schemaSubmitParams(schema, { standard_packs: value }), { standard_packs: null })
+    assert.deepEqual(validateSchemaField(standards, value), [])
+  }
+  for (const value of [['GB'], ['GB', 'ZJ']]) {
+    const original = { standard_packs: value }
+    assert.deepEqual(schemaSubmitParams(schema, schemaInitialParams(schema, original), original), original)
+    assert.deepEqual(validateSchemaField(standards, value), [])
+  }
+  assert.deepEqual(parseSchemaValue(standards, ['ZJ']), ['ZJ'])
+  assert.ok(validateSchemaField(standards, ['ZJ']).some(message => message.includes('GB')))
+  assert.ok(validateSchemaField(standards, ['GB', 'ZZ']).length > 0)
+})
+
+test('标准册控件规范化显示锁定国标，移除地方册不会移除国标，其他清单不受影响', () => {
+  assert.deepEqual(normalizeRequiredOptions(standards, null), ['GB'])
+  assert.deepEqual(normalizeRequiredOptions(standards, ['ZJ']), ['GB', 'ZJ'])
+  assert.deepEqual(normalizeRequiredOptions(standards, ['GB', 'ZJ']), ['GB', 'ZJ'])
+  assert.deepEqual(normalizeRequiredOptions(standards, []), ['GB'])
+  assert.deepEqual(normalizeRequiredOptions(standards, ['ZJ', 'GB', 'ZJ']), ['GB', 'ZJ'])
+  const irregularity = field('array<string>', { empty_means_unknown: true })
+  assert.deepEqual(normalizeRequiredOptions(irregularity, []), [])
+  assert.equal(normalizeRequiredOptions(irregularity, null), null)
+  assert.deepEqual(parseSchemaValue(irregularity, []), [])
+})
+
+test('标准册表单初始界面显示国标且没有删除按钮，已有地方册可以删除', () => {
+  const schema: FieldSchema = { title: '', description: '', group_order: [], fields: [standards] }
+  const render = (params?: object) => renderToStaticMarkup(createElement(SchemaForm, {
+    schema, nameLabel: '项目名称', initialValues: params ? { name: '测试项目', params } : undefined,
+    onSubmit: () => {}, onCancel: () => {},
+  }))
+  const empty = render()
+  assert.ok(empty.includes('国家标准') && empty.includes('始终生效'))
+  assert.equal(empty.includes('ant-tag-close-icon'), false)
+  const regional = render({ standard_packs: ['GB', 'ZJ'] })
+  assert.ok(regional.includes('浙江省地方标准'))
+  assert.equal((regional.match(/ant-tag-close-icon/g) ?? []).length, 1)
+})
+
+test('隐藏字段不显示，编辑保存保留已有值，不从可见表单输入覆盖', () => {
+  const schema: FieldSchema = { title: '', description: '', group_order: [], fields: [
+    field('number', { name: 'floors' }), field('string', { name: 'source_id', hidden: true }),
+  ] }
+  const original = { floors: 16, source_id: 'verified-case' }
+  assert.deepEqual(orderedFields(schema).map(item => item.name), ['floors'])
+  assert.deepEqual(schemaInitialParams(schema, original), { floors: 16 })
+  assert.deepEqual(schemaSubmitParams(schema, { floors: 18, source_id: 'changed' }, original), { floors: 18, source_id: 'verified-case' })
+  assert.deepEqual(schemaSubmitParams(schema, { floors: 18 }), { floors: 18 })
 })
 
 test('声明式清单区分未核对和已核对无不规则项', () => {

@@ -24,6 +24,7 @@ _META_KEYS = (
     # main 侧的字段语义说明：
     "allow_custom_options",
     "empty_means_unknown",
+    "required_options",
 )
 
 
@@ -80,7 +81,7 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
             # 不该在表单里直接暴露，前端应按 hidden 跳过；
             # 自定义字段本身由 /api/schema 追加成独立条目（见 app/custom/fields.py）。
             field_info["hidden"] = True
-        for key in ("allow_custom_options", "empty_means_unknown"):
+        for key in ("allow_custom_options", "empty_means_unknown", "required_options"):
             if key in prop:
                 field_info[key] = prop[key]
         fields.append(field_info)

@@ -630,6 +630,26 @@ def _parse_list(value: Any, label: str) -> list[str]:
     return [p.strip() for p in parts if p.strip()]
 
 
+def _parse_bool(value: Any, label: str) -> bool:
+    """解析布尔单元格。
+
+    模板里布尔字段填「是 / 否」；同时接受「有 / 无」、``TRUE/FALSE``、``1/0``
+    以及 openpyxl 读出来的原生 ``bool``——因为同一份表可能被人手改过，
+    或者由别的工具导出。
+    """
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)) and value in (0, 1):
+        return bool(value)
+    if isinstance(value, str):
+        text = value.strip().upper()
+        if text in {"是", "有", "TRUE", "T", "YES", "Y", "1"}:
+            return True
+        if text in {"否", "无", "FALSE", "F", "NO", "N", "0"}:
+            return False
+    raise ValueError(f"【{label}】应填「是」或「否」，实际为 {value!r}")
+
+
 def _cell_value(cell: Cell) -> Any:
     """取单元格值，去掉多余空白但保留类型。"""
     v = cell.value
@@ -668,6 +688,11 @@ def _project_field_parser(
         if value_type == "number":
             return _parse_dict(raw, label, lambda v, _k: _parse_ratio(v, label))
         return _parse_dict(raw, label, lambda v, _k: _parse_string(v, label))
+    if typ.startswith("array<"):
+        # 项目层的列表字段（例如 standard_packs：适用标准册）。
+        # 导出写的是逗号分隔文本，这里读回列表；缺失这个分支时"导出再解析"会直接报错
+        # ——方案层解析器一直有这个分支，项目层原先没有，加列表字段时才会暴露。
+        return _parse_list(raw, label)
     raise ValueError(f"【{label}】字段类型 {typ} 暂未支持")
 
 
@@ -702,6 +727,7 @@ def _scheme_field_parser(
     if typ == "integer":
         return _parse_integer(raw, label)
     if typ == "boolean":
+        # 开关量（「是否设户内新风系统」这类）。地方册的层高加严条款常以它为条件。
         return _parse_bool(raw, label)
     if typ == "string":
         if "enum" in field_info:

@@ -1,0 +1,45 @@
+{
+  "_note": "真实项目公开资料与待复核记录分开标注；方案数值为演示自拟，不是该项目的批准或建成方案",
+  "name": "钱塘区下沙公租房一期 · 严格公开字段版（方案演示自拟）",
+  "params": {
+    "site_area": 25577,
+    "far_max": null,
+    "density_max": null,
+    "height_max": null,
+    "climate_zone": "夏热冬冷",
+    "seismic_intensity": null,
+    "province": "ZJ",
+    "standard_packs": [
+      "GB",
+      "ZJ"
+    ]
+  },
+  "_field_status": {
+    "site_area": "公开债券披露，PDF 第43页项目53；非规划条件原件",
+    "far_max": "缺失；不得将地上建筑面积/用地面积反推值当成容积率上限",
+    "density_max": "缺失；规划上限未取得",
+    "height_max": "缺失；规划限高未取得",
+    "seismic_intensity": "缺失：本项目设防文件未取得，严格版留空",
+    "climate_zone": "杭州夏热冬冷；地区输入，非本项目许可字段"
+  },
+  "_public_facts": {
+    "site_area": 25577,
+    "above_ground_gfa": 71585,
+    "total_gfa": 122005,
+    "non_far_stilt_gfa": 3812,
+    "underground_gfa": 46608
+  },
+  "_design_notes": {
+    "purpose": "同区规模对照与缺规划条件的诚实提示。户数1114、23层、8栋参考2024年项目报道，仍按演示方案处理。",
+    "scheme_status": "所有方案参数均为演示自拟，包括沿公开规模设定的面积和户数；未做工程验证。",
+    "planning_scope": "公开实际面积/容积率不是规划上限；缺失条件不得按已合规解释。"
+  },
+  "_sources": [
+    {
+      "url": "https://www.governbond.org.cn/uploadFiles/33/attachFiles/202505/388fa8b9-b364-4828-b9aa-0fdb2644e484.pdf",
+      "page": 43,
+      "checked_at": "2026-10-14",
+      "status": "已读取公开债券披露正文；仅用于公开规模参考"
+    }
+  ]
+}

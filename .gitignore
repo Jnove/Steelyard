@@ -7,6 +7,10 @@ venv/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+# pytest / 本地临时目录（案例检查脚本与测试会在工作区建临时目录）
+.ptmp/
+.pytest_tmp/
+tmp/
 
 # 数据库（运行时产物，不入仓）
 data/*.db

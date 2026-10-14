@@ -11,6 +11,7 @@
 | [人机协同履历表模板](人机协同履历表模板.docx) | 按实际经历填写 AI 工具使用、承担工作与人工检查 |
 | [规则编写指南](rules-guide.md) | 专业组编写、校验和提交 hard / metric 规则 |
 | [第二轮规则与自定义集成评审](rules-round2-custom-integration.md) | PR #10 / #12 的接口修复、适用边界与验证记录 |
+| [案例与地区规则集成](demo-regional-integration.md) | 案例来源、严格字段版、只追加发布、PR #13 的项目范围与缓存修复 |
 | [字段对照表](fields.generated.md) | 从元数据生成的输入字段、单位与派生量参考；不要手改 |
 | [活跃待办](open-items.md) | 初筛 P0、专业规则、角色权重、T10 和真实模型的未决事项 |
 | [专业 YAML 与 PR 合并评审](main-yaml-merge-review.md) | 建筑四个 YAML、土木 PR #8 的 CI 修复、补充修复与专业边界 |

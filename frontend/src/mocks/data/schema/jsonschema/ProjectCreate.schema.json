@@ -133,6 +133,130 @@
           "label": "抗震设防烈度",
           "title": "Seismic Intensity",
           "unit": "—"
+        },
+        "province": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "项目所在省级行政区（两字母地区码，如 ZJ）。用于提示「所选的地方册是否与项目所在地一致」",
+          "enum": [
+            "BJ",
+            "TJ",
+            "HE",
+            "SX",
+            "NM",
+            "LN",
+            "JL",
+            "HL",
+            "SH",
+            "JS",
+            "ZJ",
+            "AH",
+            "FJ",
+            "JX",
+            "SD",
+            "HA",
+            "HB",
+            "HN",
+            "GD",
+            "GX",
+            "HI",
+            "CQ",
+            "SC",
+            "GZ",
+            "YN",
+            "XZ",
+            "SN",
+            "GS",
+            "QH",
+            "NX",
+            "XJ"
+          ],
+          "group": "基本信息",
+          "label": "所在省份",
+          "title": "Province",
+          "unit": "—"
+        },
+        "standard_packs": {
+          "allow_custom_options": false,
+          "anyOf": [
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "适用的规则册；留空＝只用国家标准（GB）。GB 永远生效、不能去掉；加进省级地区码后，该省的地方规则才会参与评估",
+          "empty_means_unknown": true,
+          "group": "基本信息",
+          "label": "适用标准册",
+          "options": [
+            "GB",
+            "BJ",
+            "TJ",
+            "HE",
+            "SX",
+            "NM",
+            "LN",
+            "JL",
+            "HL",
+            "SH",
+            "JS",
+            "ZJ",
+            "AH",
+            "FJ",
+            "JX",
+            "SD",
+            "HA",
+            "HB",
+            "HN",
+            "GD",
+            "GX",
+            "HI",
+            "CQ",
+            "SC",
+            "GZ",
+            "YN",
+            "XZ",
+            "SN",
+            "GS",
+            "QH",
+            "NX",
+            "XJ"
+          ],
+          "required_options": [
+            "GB"
+          ],
+          "title": "Standard Packs",
+          "unit": "—"
+        },
+        "project_notes": {
+          "anyOf": [
+            {
+              "maxLength": 12000,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "项目资料出处、真实资料与教学假设的边界；仅作案例说明，不参与评分",
+          "group": "基本信息",
+          "label": "案例来源与边界",
+          "title": "Project Notes",
+          "unit": "—"
         }
       },
       "title": "ProjectParams",

@@ -109,7 +109,10 @@ def test_check_rules_includes_weights_for_all_entry_paths(
     # 2026-10 专业组核定后，仓库的权重模板不再有占位警告；
     # 这里只要求默认路径确实把 weights.yaml 纳入校验并且通过。
     assert "weights.yaml" in default_output
-    assert "0 个错误，0 个警告" in default_output
+    # 地方册的专业待核定来源可有警告；单独确认内建权重仍无警告。
+    builtin_weights = Path(__file__).resolve().parents[2] / "rules" / "weights.yaml"
+    assert check.main([str(builtin_weights)]) == 0
+    assert "1 个文件，0 个错误，0 个警告" in capsys.readouterr().out
     # 不互反属于错误，必须退出 1；不能把 developer 误报成缺少角色。
     a[0][1] = 3
     _write_roles(path, {"name": "互反错误", "matrix": a})

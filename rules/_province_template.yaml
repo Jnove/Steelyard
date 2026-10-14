@@ -1,0 +1,41 @@
+# 省册模板（文件名以 _ 开头 → 加载器与 check_rules 都会跳过，不会被当成规则）。
+#
+# 新增一个省册的步骤（详见 docs/design-regional-packs.md 第四节）：
+#   1. 复制本文件为 rules/<省码小写>_<主题>.yaml，例如 rules/js_sunlight.yaml；
+#   2. 把下面每条规则的 id / pack / name / source 换成该省的内容；
+#   3. 跑 python scripts/check_rules.py（会查 ID 形态、pack 与地区码一致、表达式与字段名）；
+#   4. 跑 python scripts/export_frontend_fixtures.py --grid-step 10 刷新离线快照；
+#   5. 提交。GET /api/standards/packs 里该省的 rule_count 会自动更新。
+#
+# **收录纪律**（见设计文档第三节）：
+#   · 只收**逐条核对过原文**的条文——`source` 要写到条号/表号，能对照原文；
+#   · 拿不到正文的省**就空着**，`rule_count: 0` 是诚实的状态，不要凭记忆或二手转录填数；
+#   · 文件头部写清依据文件的**名称、文号、版本与核对日期**（地方标准更新频繁）；
+#   · 地方册是**并联**国标，不替换：同一件事国标与地方都有规定时，两条都在。
+
+- id: XX-S-01                      # 地区码 + 维度字母(C/Q/S/K/G) + 两位数字；地区码表见 app/engine/regions.py
+  pack: XX                        # 必须与 id 里的地区码一致，否则拒绝加载
+  name: 该省某项要求（示例）
+  type: hard                      # hard 硬约束 / metric 评分指标
+  when: "structure_type == '剪力墙'"   # 可选守卫；为假时这条不适用
+  check: "floor_height >= 3.0"    # 只能引用系统里已有的字段名（内建字段或派生量）
+  message: "层高 {floor_height} m 低于该省要求的 3.0 m"
+  source: "《XX省住宅设计标准》DBXX/XXXX—20XX 第X.X.X条：<原文要点>（<核对日期>，官方 PDF 逐字核对）"
+
+# 评分指标写法（注意：地方册放评分指标前，要先定"与国标同维度指标如何计权"，
+# 否则同一件事会被算两遍——见设计文档第六节）：
+#
+# - id: XX-Q-01
+#   pack: XX
+#   name: 该省某项评分（示例）
+#   type: metric
+#   dimension: quality
+#   value: "daylight_factor"
+#   scoring:
+#     kind: piecewise
+#     points:
+#       - [0.02, 0]
+#       - [0.03, 60]
+#       - [0.04, 100]
+#   weight_in_dimension: 1
+#   source: "《XX省住宅设计标准》DBXX/XXXX—20XX 第X.X.X条（<核对日期>）"
