@@ -44,3 +44,13 @@ def test_publish_is_idempotent_and_never_overwrites_user_project(client):
     with pytest.raises(ValueError, match="拒绝覆盖"):
         publish(ClientApi(client), conflict)
     assert client.get(f"/api/projects/{first[0]['project_id']}").json()["params"]["site_area"] == 25577
+
+
+def test_whatif_is_stored_but_not_added_to_default_dashboard(client):
+    receipt = publish(ClientApi(client), build_plan()[3:4])[0]
+    assert receipt["schemes"] == 7
+    assert receipt["evaluated"] == 6
+    project_id = receipt["project_id"]
+    assert len(client.get(f"/api/projects/{project_id}/schemes").json()) == 6
+    assert len(client.get(f"/api/projects/{project_id}/schemes?include_whatif=true").json()) == 7
+    assert len(client.get(f"/api/projects/{project_id}/evaluate").json()["results"]) == 6

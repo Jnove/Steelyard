@@ -111,11 +111,12 @@ def publish(api: Api, plan: list[dict[str, Any]]) -> list[dict[str, Any]]:
                     raise ValueError(f"已有方案不同，拒绝覆盖：{scheme['name']}")
             else:
                 by_name[scheme["name"]] = api.call(f"/projects/{project_id}/schemes", "POST", body)
-        evaluated = api.call(f"/projects/{project_id}/evaluate?include_whatif=true", "POST", {})
-        ranking = api.call(f"/projects/{project_id}/rank", "POST", {"role": "government", "include_whatif": True})
+        # 副本保存在库中，默认看板只比较正式候选；What-if 由明确请求开启。
+        evaluated = api.call(f"/projects/{project_id}/evaluate", "POST", {})
+        ranking = api.call(f"/projects/{project_id}/rank", "POST", {"role": "government"})
         receipt.append({"case_id": case["case_id"], "project_id": project_id, "name": case["name"],
                         "schemes": len(by_name), "rule_count": evaluated["rule_count"],
-                        "ranked": len(ranking["ranking"])})
+                        "evaluated": len(evaluated["results"]), "ranked": len(ranking["ranking"])})
     return receipt
 
 
