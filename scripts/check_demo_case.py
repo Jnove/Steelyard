@@ -26,8 +26,36 @@ import sys
 from pathlib import Path
 from typing import Any
 
-ROOT = Path(__file__).resolve().parents[1]
-BACKEND = ROOT / "backend"
+
+def _find_backend(start: Path) -> Path | None:
+    """从 ``start`` 起向上找含 ``app/engine/rules.py`` 的后端目录，支持任意深度嵌套。
+
+    这样本脚本既能放在仓库的 ``scripts/`` 下，也能随案例目录一起搬走
+    （``<案例>/tools/``）而不用改一行代码。
+    """
+    for base in start.parents:
+        candidate = base / "backend"
+        if (candidate / "app" / "engine" / "rules.py").is_file():
+            return candidate
+        if base.name == "backend" and (base / "app" / "engine" / "rules.py").is_file():
+            return base
+    return None
+
+
+HERE = Path(__file__).resolve()
+PROJECT_FILE = "project.json"
+WHATIF_FILE = "whatif.json"
+REQUIRED_TOP_KEYS = ("_note", "name", "params")
+#: 顶层 ``_note`` 必须命中其中一种：虚构案例声明，或「方案数值为演示自拟」声明。
+#: 真实地块案例的项目层来自公开文件，不能强求它自称虚构；但方案层仍须声明是演示数据。
+NOTE_MARKERS = ("虚构数据", "演示自拟")
+
+BACKEND = _find_backend(HERE)
+if BACKEND is None:
+    raise SystemExit(
+        "ERROR · 找不到后端目录（应含 backend/app/engine/rules.py）。\n"
+        "本脚本需要与筑衡仓库的 backend/ 一起使用：把它放在仓库内，或与 backend/ 同级。"
+    )
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
@@ -41,13 +69,14 @@ from app.engine.rules import SchemeInput, evaluate, get_ruleset  # noqa: E402
 from app.engine.weights import load_role_templates  # noqa: E402
 from app.models.params import ProjectParams, SchemeParams  # noqa: E402
 
-DEFAULT_CASE = ROOT / "data" / "schemes" / "qiantang-real"
-PROJECT_FILE = "project.json"
-WHATIF_FILE = "whatif.json"
-REQUIRED_TOP_KEYS = ("_note", "name", "params")
-#: 顶层 ``_note`` 必须命中其中一种：虚构案例声明，或「方案数值为演示自拟」声明。
-#: 真实地块案例的项目层来自公开文件，不能强求它自称虚构；但方案层仍须声明是演示数据。
-NOTE_MARKERS = ("虚构数据", "演示自拟")
+
+def _default_case() -> Path:
+    """默认案例目录：脚本所在目录本身（随案例走），否则回落到仓库内的真实案例。"""
+    if (HERE.parent / PROJECT_FILE).is_file():
+        return HERE.parent
+    backend = BACKEND
+    assert backend is not None
+    return backend.parent / "data" / "schemes" / "qiantang-real"
 
 
 class CaseError(SystemExit):
@@ -114,7 +143,7 @@ def _fmt_scores(scores: Any) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="检查一个演示案例在规则引擎里的结论")
-    parser.add_argument("--case", type=Path, default=DEFAULT_CASE, help="案例目录")
+    parser.add_argument("--case", type=Path, default=_default_case(), help="案例目录")
     parser.add_argument(
         "--packs",
         nargs="+",

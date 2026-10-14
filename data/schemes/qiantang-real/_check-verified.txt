@@ -1,4 +1,4 @@
-﻿案例目录：..\data\schemes\qiantang-real
+﻿案例目录：data\schemes\qiantang-real
 项目：钱塘区前进公租房一期 · 真实地块演示（方案数值待核对） ［参数变体：project_verified.json］
 适用标准册：GB、ZJ（可用规则 58 条）
 方案数：3（含 What-if 副本 0）

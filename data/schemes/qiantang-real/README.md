@@ -4,6 +4,18 @@
 > 出处的项目**，但**方案层的建筑数值仍是演示自拟**。任何对外材料必须同时说明这两点，
 > 不能把示例方案说成该项目已实施的方案。
 
+> **本目录是自包含的本地案例，与仓库其它内容相互独立**：数据、工具、证据都在目录内，
+> 拷走整个 `qiantang-real/` 即可独立使用。检查工具见
+> [`tools/check_case.py`](tools/check_case.py)（说明见 [`tools/README.md`](tools/README.md)）。
+>
+> ```powershell
+> cd data/schemes/qiantang-real
+> uv run --project ..\..\..\backend python tools\check_case.py
+> uv run --project ..\..\..\backend python tools\check_case.py --params project_verified.json
+> ```
+>
+> 唯一的外部依赖是仓库的 `backend/` 与 `rules/`（规则引擎与规则文件），本目录只读它们。
+
 ---
 
 ## 一、地块从哪来（可直接引用的公开信息）
