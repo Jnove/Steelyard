@@ -1,0 +1,56 @@
+{
+  "_note": "虚构数据，仅供开发与演示调试，不得用于工程验证、专业结论或答辩证据",
+  "name": "E 低配对照 · 现浇框架-剪力墙",
+  "params": {
+    "structure_type": "框架-剪力墙",
+    "mic_system": null,
+    "units": 312,
+    "unit_mix": {
+      "两室": 156,
+      "三室": 156
+    },
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.7,
+    "south_room_ratio": 0.6,
+    "window_floor_ratio": 0.16,
+    "window_wall_ratio": {
+      "南": 0.32,
+      "北": 0.2,
+      "东": 0.18,
+      "西": 0.18
+    },
+    "elevators_per_unit": 2,
+    "highest_occupied_floor": 10,
+    "highest_occupied_floor_height": 27.0,
+    "daylight_factor": 0.022,
+    "sunlight_hours": 2.2,
+    "gfa": 44000,
+    "footprint": 3520,
+    "buildings": 4,
+    "floors": 10,
+    "envelope_area": 17200,
+    "volume": 132000,
+    "slab_thickness": 110,
+    "design_working_life": 50,
+    "min_plan_width": 18,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.6,
+    "component_types": 20,
+    "risk_features": [
+      "深基坑"
+    ],
+    "prefab_ratio_est": 0.2,
+    "green_ratio": 0.3
+  },
+  "_design_notes": {
+    "role_in_demo": "构造性反例：除了构件种类数（20 > 9，更差），**每一项数值都朝「更差」方向偏离 D**，因此四个维度得分都不高于 D —— 演示帕累托筛选时 E 应被 D 支配并标灰。",
+    "expected_verdict": "四维实测：品质 35.23 / 结构 89.63 / 施工 25.56 / 绿色 54.00。硬约束全部通过（层高 3.0、层数 10、装配率不适用 C-07），所以它**不是**违规方案，而是「合规但全面落后」的方案——被 A、B′、D 三个方案同时支配，五个角色视角下都排最后（贴近度 0.012–0.038，与第 5 名差距很大）。",
+    "dominance_note": "四个维度逐项比对：品质 35.23 < 95.07（A）；结构 89.63 < 95.07（A）且 < 95.63（D）；施工 25.56 < 33.33（A）；绿色 54.00 < 54.92（A）。没有出现「某一维反超」的假支配。",
+    "why_keep_it": "比「违规被剔除」更有说服力的演示是：系统不会只说谁对谁错，还会指出某个方案在任何一套权重下都不值得再讨论。",
+    "code_check": "C-01 30.0 ≤ 51 ✓；C-02 2.44 ≤ 2.5 ✓；C-03 0.196 ≤ 0.22 ✓；C-04 3.0 ≥ 3.0 ✓（压线）；C-05 不适用（10 层、27.0 m）；C-08 2 ≥ 1 ✓；S-01「深基坑」= 3 → 80 分；S-05/S-07 ✓；S-12 楼板 110 ≥ 100 ✓。",
+    "gfa_consistency": "与 D 完全同口径（gfa 44,000、footprint 3520、volume 132000、envelope 17200），确保「E 被 D 支配」的比较里没有填表口径差异的干扰。",
+    "lift_input": "虚构假设同 A：27.0 m。",
+    "shape_coef_input": "与 D 相同（0.130）。体形系数一致，说明 E 的绿色维度失分全部来自装配率与绿地率，而不是体型。"
+  }
+}

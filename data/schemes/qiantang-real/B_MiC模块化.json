@@ -1,0 +1,56 @@
+{
+  "_note": "方案数值为演示自拟，不得作为该公租房项目的已批准方案或工程结论；项目层参数来源见同目录 project.json 的 _design_notes",
+  "name": "B MiC 模块化方案（演示自拟）",
+  "params": {
+    "structure_type": "MiC",
+    "mic_system": "模块化全预制剪力墙结构",
+    "units": 1572,
+    "unit_mix": {
+      "一室": 524,
+      "两室": 524,
+      "三室": 524
+    },
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.76,
+    "south_room_ratio": 0.75,
+    "window_floor_ratio": 0.23,
+    "window_wall_ratio": {
+      "南": 0.4,
+      "北": 0.28,
+      "东": 0.24,
+      "西": 0.24
+    },
+    "elevators_per_unit": 3,
+    "highest_occupied_floor": 25,
+    "highest_occupied_floor_height": 72.0,
+    "daylight_factor": 0.026,
+    "sunlight_hours": 2.6,
+    "gfa": 106000,
+    "footprint": 6896,
+    "buildings": 10,
+    "floors": 25,
+    "envelope_area": 47000,
+    "volume": 318000,
+    "slab_thickness": 130,
+    "design_working_life": 50,
+    "min_plan_width": 15,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.95,
+    "component_types": 8,
+    "risk_features": [],
+    "prefab_ratio_est": 0.75,
+    "green_ratio": 0.38
+  },
+  "_design_notes": {
+    "data_status": "**方案层全部为演示自拟**。与 A、C 共用同一地块与总建筑面积，仅结构体系与产业化取值为演示设定。",
+    "role_in_demo": "真实地块上的工业化路线：MiC 模块化全预制剪力墙，装配率 0.75、构件 8 种、标准层重复率 0.95，施工友好与绿色低碳拉满；代价是得房率 0.76、窗地比 0.23，品质维度略低。",
+    "why_10_buildings": "公开口径就是 **10 栋**高层住宅（4×24F + 6×25F），本方案按 10 栋 × 25 层排布，是与项目实际形态最接近的一套：每栋约 157 户、每层约 6.3 户。",
+    "pack_dependency": "本方案是浙江省册的用武之地：C-07 装配率 ≥ 0.50（0.75 ✓）；ZJ-S-01 混凝土 ≥ C30（30 ✓）；ZJ-S-03 按 6 度区「模块化全预制剪力墙结构」限高 130 m，本方案 75.0 m ✓；ZJ-S-02 导则高宽比宜 ≤ 6，本方案 75.0 / 15 = 5.00 ✓（已接近限值）。**把标准册改成只用 GB，这几条就不参与判定**；换体系类型（如「模块化框架结构」，6 度区限高仅 30 m）立刻会分歧。",
+    "open_condition": "ZJ-S-04 表注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取括号内更小限值（6 度 120 m），该剪力比系统尚未采集，**不能据此声称 MiC 适用条件已全部核验**。",
+    "self_consistency": "gfa 106,000 = 10 栋 × 25 层 × 424 m²/层；footprint 6896 m² 与 A、C 保持一致（同一地块同一基底），故 G-05 同样为 1.63（口径缺陷同 A）。总高 25 × 3.0 = 75.0 m。",
+    "code_check": "C-01 75.0 ≤ 80（暂定限高）✓；C-02 106000 / 43117 = 2.46 ≤ 2.5 ✓；C-03 0.16 ≤ 0.22 ✓；C-04 3.0 ≥ 3.0 ✓；C-05 3 台 ✓；C-07 0.75 ≥ 0.50 ✓；S-12 130 ≥ 100 ✓、S-13 50 ≥ 50 ✓、S-14 30 ≥ 25 ✓；ZJ-S-01 30 ≥ 30 ✓、ZJ-S-02 高宽比 5.00 ≤ 6（宜）✓、ZJ-S-03 75.0 ≤ 130 ✓。S-07 不适用（MiC 不在 JGJ 3 表3.3.2 的钢筋混凝土高层范围内）。",
+    "lift_input": "与 A 相同：(floors - 1) × floor_height = 72.0 m，演示假设。",
+    "assumptions_to_verify": "① 户型配比 524/524/524 为演示取值；② 装配率 0.75、构件 8 种、重复率 0.95、得房率 0.76 均为演示取值；③ envelope_area 47,000 m² 按 10 栋板式（约 35 m × 12 m 平面、每栋外墙约 94 m × 75 m ≈ 7,050 m²，含模块接缝附加）估算，不含屋面。"
+  }
+}

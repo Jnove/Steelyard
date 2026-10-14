@@ -1,0 +1,54 @@
+{
+  "_note": "虚构数据，仅供开发与演示调试，不得用于工程验证、专业结论或答辩证据",
+  "name": "B 工业化优先 · MiC 模块化",
+  "params": {
+    "structure_type": "MiC",
+    "mic_system": "模块化全预制剪力墙结构",
+    "units": 408,
+    "unit_mix": {
+      "一室": 204,
+      "两室": 204
+    },
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.76,
+    "south_room_ratio": 0.72,
+    "window_floor_ratio": 0.25,
+    "window_wall_ratio": {
+      "南": 0.4,
+      "北": 0.28,
+      "东": 0.25,
+      "西": 0.24
+    },
+    "elevators_per_unit": 2,
+    "highest_occupied_floor": 17,
+    "highest_occupied_floor_height": 48.0,
+    "daylight_factor": 0.026,
+    "sunlight_hours": 3.0,
+    "gfa": 40800,
+    "footprint": 2400,
+    "buildings": 4,
+    "floors": 17,
+    "envelope_area": 22440,
+    "volume": 122400,
+    "slab_thickness": 130,
+    "design_working_life": 50,
+    "min_plan_width": 14,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.95,
+    "component_types": 8,
+    "risk_features": [],
+    "prefab_ratio_est": 0.75,
+    "green_ratio": 0.4
+  },
+  "_design_notes": {
+    "role_in_demo": "工业化与绿色维度的上限。标准层重复率 0.95、构件种类 8 种、装配率 0.75，且无风险特征；代价是层高 3.0 m、得房率 0.76、南向比例 0.72。",
+    "expected_verdict": "全部硬约束通过，且是「施工单位 / 开发企业」视角的偏好方案。与 A 形成最干净的取舍对：A 住得舒服但不装配，B 好造、低碳但品质一般。",
+    "pack_dependency": "**本方案是本案例的地方册演示开关**：C-07 要求 MiC 装配率 ≥ 0.50（0.75 ✓）；ZJ-S-01 要求混凝土 ≥ C30（30 ✓）；ZJ-S-03 按 6 度区「模块化全预制剪力墙结构」限高 130 m，本方案 51.0 m ✓。把项目 standard_packs 里的 ZJ 去掉，这三条地方规则就不再参与判定——同一套方案、不同的适用标准册，结论与依据都会变。",
+    "open_condition": "ZJ-S-04 表注：全预制剪力墙结构在预制墙底剪力占比大于 80% 时应取括号内更小限值（6 度 120 m、7 度 100 m），该剪力比系统尚未采集。本方案 51 m，两个限值都通过，但**不能据此声称 MiC 适用条件已全部核验**。",
+    "code_check": "C-01 17 × 3.0 = 51.0 m ≤ 51 m ✓（压线）；C-02 40800 / 18000 = 2.27 ≤ 2.5 ✓；C-03 2400 / 18000 = 0.133 ≤ 0.22 ✓；C-04 层高 3.0 ≥ 3.0 ✓（压线）；C-05 17 层 → 2 台 ✓；S-07 高宽比 51.0 / 14 = 3.64 ≤ 6 ✓；ZJ-S-02 导则高宽比宜 ≤ 6 ✓。",
+    "gfa_consistency": "gfa 40,800 = 4 栋 × 17 层 × 600 m²（每层计容面积）；基底 2400 m² = 4 栋 × 600 m²，两者一致 → G-05 楼层效率 = 1.0（满分）。这也是刻意设计的对照组：B 的口径自洽，A 的 footprint 口径存疑，谁更可信一眼看得出。",
+    "lift_input": "虚构假设同 A：(floors - 1) × floor_height = 16 × 3.0 = 48.0 m。",
+    "shape_coef_input": "envelope_area 22440 m²、volume 122400 m³ → 体形系数约 0.183（G-04 满分）。推导：4 栋按 40 m × 15 m 平面估算，每栋外墙 110 m × 51 m = 5,610 m²，4 栋合计 22,440 m²（不含屋面）。**注意：`envelope_area` 按定义应填「建筑外表面积」合计，但 `data/schemes/mock/` 下的历史样例填出的是约 0.10 的比值（物理上不可能），本案例不沿用该口径。**"
+  }
+}

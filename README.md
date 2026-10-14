@@ -111,3 +111,20 @@ make down         # docker compose 关闭
 **还没定下来的事**都记在 [docs/open-items.md](./docs/open-items.md)：
 先看初筛 P0，专业组待定的规则阈值与权重在第一部分，开发侧事项在第二部分。
 T1–T9 集成完成不表示专业规则、真实模型或比赛材料已验收。首页入口、看板结论层与玻璃体量展台见[界面实施方案](docs/liquid-glass-plan.md)；工业设计的取舍图、双方案差值图与动态指标矩阵已[接入正式看板](docs/design-comparison-integration.md)。跨页面上下文、非专业用户体验验收及完整 T10 仍是待办。
+
+## 演示数据与案例
+
+演示用的三套数据、检查工具与真实项目出处：
+
+- [data/schemes/README.md](data/schemes/README.md)：三条数据线（`mock/` 回归测试、
+  虚构六方案案例、真实地块案例）的用途与命令。
+- [真实案例：钱塘区前进公租房一期](data/schemes/qiantang-real/README.md)：
+  项目层来自规划许可（地字第330114202200045号 / 建字第330114202200066号）、EPC 信息与
+  竣工验收报道；含真值/暂定值对照、实测结论与两条必须先解决的口径问题。
+- [docs/demo-candidates.md](docs/demo-candidates.md)：三个杭州公租房项目的公开条件对比与出处。
+- `make case-check`（只读）与 `scripts/check_demo_case.py`：硬约束、四维得分、帕累托与
+  五角色排名的实算证据。
+
+**口径提醒**：在真实公租房规模（1572 户 / 10 栋 / 25 层）上实测发现，Q-05、Q-06 与
+G-05 三条指标的计分区间或公式不适用于保障房类项目，会压住品质维度的真实差异。
+详见 [未决事项 2.3.1](docs/open-items.md)，对外讲解时不得调数据凑排名。

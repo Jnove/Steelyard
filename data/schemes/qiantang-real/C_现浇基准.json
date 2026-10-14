@@ -1,0 +1,57 @@
+{
+  "_note": "方案数值为演示自拟，不得作为该公租房项目的已批准方案或工程结论；项目层参数来源见同目录 project.json 的 _design_notes",
+  "name": "C 现浇基准方案（演示自拟）",
+  "params": {
+    "structure_type": "框架-剪力墙",
+    "mic_system": null,
+    "units": 1572,
+    "unit_mix": {
+      "一室": 472,
+      "两室": 550,
+      "三室": 550
+    },
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.79,
+    "south_room_ratio": 0.76,
+    "window_floor_ratio": 0.22,
+    "window_wall_ratio": {
+      "南": 0.4,
+      "北": 0.26,
+      "东": 0.24,
+      "西": 0.24
+    },
+    "elevators_per_unit": 3,
+    "highest_occupied_floor": 25,
+    "highest_occupied_floor_height": 72.0,
+    "daylight_factor": 0.027,
+    "sunlight_hours": 2.7,
+    "gfa": 106000,
+    "footprint": 6896,
+    "buildings": 8,
+    "floors": 25,
+    "envelope_area": 45000,
+    "volume": 318000,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "min_plan_width": 26,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.7,
+    "component_types": 18,
+    "risk_features": [
+      "深基坑"
+    ],
+    "prefab_ratio_est": 0.35,
+    "green_ratio": 0.33
+  },
+  "_design_notes": {
+    "data_status": "**方案层全部为演示自拟**。它存在的意义是提供一个「常规做法」，让 A 与 B 的取舍有参照物。",
+    "role_in_demo": "常规路线：框架-剪力墙、层高 3.0 m、装配率 0.35、构件 18 种，并带一个「深基坑」风险特征。每一项都不算差，但每一项都能被 A 或 B 覆盖——这正是帕累托筛选要演示的「合规但没有竞争力」。",
+    "why_25_floors_and_68_m": "本项目的地下室面积达 7.55 万 m²（约占总建筑面积 41%），对应大体量地下车库，**深基坑在本项目上是有现实依据的**（原先把「深基坑」写成纯构造性取值是过于保守的说法）。基坑深度与支护形式仍须由施工图确认。",
+    "pack_dependency": "框架-剪力墙在 6 度区的最大适用高度是 130 m（S-05），本方案 75.0 m 通过；但结构体系适用性分档（S-03）框架-剪力墙 95 分低于剪力墙 100 分，这是 A 在结构维度胜出的原因之一。",
+    "self_consistency": "gfa 106,000 = 8 栋 × 25 层 × 530 m²/层；与 A 同基底（footprint 6896 m²）→ G-05 = 1.63（口径缺陷同 A）。总高 75.0 m；高宽比 75.0 / 26 = 2.88。",
+    "code_check": "C-01 75.0 ≤ 80（暂定限高）✓；C-02 2.46 ≤ 2.5 ✓；C-03 0.16 ≤ 0.22 ✓；C-04 3.0 ≥ 3.0 ✓；C-05 3 台 ✓；S-05 框架-剪力墙 6 度区 130 m ✓；S-07 高宽比 2.88 ≤ 6 ✓；S-12/S-13/S-14 ✓。",
+    "lift_input": "与 A、B 相同：72.0 m，演示假设。",
+    "assumptions_to_verify": "① 户型配比 472/550/550 为演示取值；② 得房率 0.79、装配率 0.35、构件 18 种均为演示取值；③ 绿地率 0.33 低于公开的 35%，用于演示「绿地率未达标」在绿色维度上的代价；④ envelope_area 45,000 m² 按 8 栋（约 50 m × 14 m 平面、每栋外墙约 128 m × 75 m ≈ 9,600 m²）估算，不含屋面。"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "_note": "虚构数据，仅供开发与演示调试，不得用于工程验证、专业结论或答辩证据",
+  "_whatif_parent": "B 工业化优先 · MiC 模块化",
+  "name": "B′ MiC 改现浇 · What-if 对照",
+  "params": {
+    "structure_type": "框架-剪力墙",
+    "mic_system": null,
+    "units": 408,
+    "unit_mix": {
+      "一室": 204,
+      "两室": 204
+    },
+    "floor_height": 3.0,
+    "inner_area_ratio": 0.74,
+    "south_room_ratio": 0.7,
+    "window_floor_ratio": 0.22,
+    "window_wall_ratio": {
+      "南": 0.4,
+      "北": 0.28,
+      "东": 0.25,
+      "西": 0.24
+    },
+    "elevators_per_unit": 2,
+    "highest_occupied_floor": 17,
+    "highest_occupied_floor_height": 48.0,
+    "daylight_factor": 0.026,
+    "sunlight_hours": 2.6,
+    "gfa": 40800,
+    "footprint": 2400,
+    "buildings": 4,
+    "floors": 17,
+    "envelope_area": 18150,
+    "volume": 122400,
+    "slab_thickness": 120,
+    "design_working_life": 50,
+    "min_plan_width": 16,
+    "concrete_grade": 30,
+    "irregularity_items": [],
+    "std_floor_repeat": 0.7,
+    "component_types": 10,
+    "risk_features": [],
+    "prefab_ratio_est": 0.3,
+    "green_ratio": 0.34
+  },
+  "_design_notes": {
+    "role_in_demo": "What-if 副本：父方案是「B 工业化优先 · MiC 模块化」，把结构体系从 MiC 模块化全预制剪力墙改成现浇框架-剪力墙，其余条件尽量保持不变。用来回答「如果这个项目不用 MiC，会怎样」。",
+    "expected_verdict": "仍然全部满足硬约束——说明改现浇并不会让方案违规，代价全在评分上：装配率 0.75 → 0.30（G-01 由 100 分掉到 20 分），标准层重复率 0.95 → 0.70，绿色维度从 100.00 掉到 68.00、施工友好从 100.00 掉到 61.11、品质从 68.84 掉到 61.44；结构维度因换成框架-剪力墙反而略升（88.82 → 92.82）。",
+    "measured_verdict": "四维实测：品质 61.44 / 结构 92.82 / 施工 61.11 / 绿色 68.00。**该副本被 D（常规做法）完全支配**——在原 17 层、4 栋的条件下改成现浇后，D 用 10 层、4 栋就拿到不低于它的四维得分，这正是 What-if 的价值：它把「改掉 MiC 之后还值不值得建到这个高度」这个问题变成可比较的数字。",
+    "whatif_behavior": "系统创建副本，原方案 B 保持不变；前端默认列表不显示副本，需要 include_whatif=true 或从 B 的详情页进入对照视图。",
+    "code_check": "C-01 51.0 ≤ 51 ✓；C-02 2.27 ≤ 2.5 ✓；C-03 0.133 ≤ 0.22 ✓；C-04 3.0 ≥ 3.0 ✓；C-05 17 层 → 2 台 ✓；C-07 不适用（非 MiC）；S-05 框架-剪力墙 130 m ✓；S-07 高宽比 51.0 / 16 = 3.19 ≤ 6 ✓；ZJ-S-01/03/04 不再适用（非 MiC）。",
+    "gfa_consistency": "与 B 完全同口径（gfa 40,800、footprint 2400、volume 122,400、buildings 4、floors 17），唯一变动的就是结构体系及其连带字段，保证 What-if 的差异可归因。",
+    "shape_coef_input": "envelope_area 18150 m²、volume 122400 m³ → 体形系数 0.148（G-04 满分）。"
+  }
+}
