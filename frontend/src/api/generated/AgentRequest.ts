@@ -23,6 +23,7 @@ export type Value =
   | unknown[]
   | null;
 export type RuleId = string | null;
+export type SchemeId1 = number | null;
 
 export interface AgentRequest {
   message?: Message;
@@ -33,6 +34,7 @@ export interface AgentRequest {
   include_whatif?: IncludeWhatif;
   change?: SchemeChange | null;
   rule_id?: RuleId;
+  scheme_id?: SchemeId1;
 }
 export interface HistoryMessage {
   role: Role;

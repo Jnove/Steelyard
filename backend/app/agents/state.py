@@ -35,6 +35,7 @@ class AgentRequest(BaseModel):
     include_whatif: bool = False
     change: SchemeChange | None = None
     rule_id: str | None = None
+    scheme_id: int | None = Field(None, gt=0)
 
     @model_validator(mode="after")
     def validate_weights(self) -> AgentRequest:

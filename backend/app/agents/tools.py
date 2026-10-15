@@ -167,6 +167,7 @@ class AgentTools:
                 "custom_templates": custom_templates,
                 "provider": get_settings().llm_provider,
                 "model": get_settings().llm_model,
+                "reasoning_effort": get_settings().llm_reasoning_effort,
                 "templates": templates,
                 "prompts": prompts,
                 "include_whatif": request.include_whatif,

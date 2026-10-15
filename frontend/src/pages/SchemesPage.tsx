@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Alert, Button, Empty, Modal, Result, Skeleton, Table, Tag, Tooltip, Typography, Upload, message } from 'antd'
+import { Alert, Button, Empty, Modal, Result, Skeleton, Space, Table, Tag, Tooltip, Typography, Upload, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -15,6 +15,8 @@ import type { SchemaFormValues } from '../components/SchemaForm'
 import { IconPlay, IconPlus, IconUpload } from '../components/Icons'
 import { parameterSummary } from '../utils/scheme-presentation'
 import { tokens } from '../theme'
+import DeleteConfirm from '../components/DeleteConfirm'
+import { clearDeletedData } from '../utils/deletion-cache'
 
 function getSchemePresentation(scheme: Scheme) {
   return { ...parameterSummary(scheme.params), color: tokens.chart[Math.abs(scheme.id - 1) % tokens.chart.length] }
@@ -60,6 +62,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
   const navigate = useNavigate()
   const [messageApi, messageContext] = message.useMessage()
   const [editing, setEditing] = useState<Scheme | 'new' | null>(null)
+  const [deletingScheme, setDeletingScheme] = useState<Scheme>()
   const [fileError, setFileError] = useState<string | null>(null)
   const projectQuery = useQuery({ queryKey: ['project', projectId], queryFn: () => projects.get(projectId) })
   const schemeQuery = useQuery({ queryKey: ['schemes', projectId], queryFn: () => schemes.list(projectId) })
@@ -102,7 +105,15 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       navigate(`/projects/${projectId}/dashboard`)
     },
   })
-  const busy = saveScheme.isPending || importSchemes.isPending || evaluate.isPending
+  const deleteScheme = useMutation({
+    mutationFn: (scheme: Scheme) => schemes.remove(projectId, scheme.id),
+    onSuccess: async (_, scheme) => {
+      await clearDeletedData(queryClient, projectId, scheme.id)
+      setDeletingScheme(undefined)
+      void messageApi.success('方案已删除，请重新评估查看最新比选结果。')
+    },
+  })
+  const busy = saveScheme.isPending || importSchemes.isPending || evaluate.isPending || deleteScheme.isPending
   const importedCount = importSchemes.data?.created?.length ?? 0
   const importErrors = importSchemes.data?.errors ?? []
   const canEdit = Boolean(projectQuery.data && schemaQuery.data && !busy)
@@ -172,12 +183,15 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
         return schemaQuery.data ? <Tag color="cyan">{count} / {rows.length} 项完整</Tag> : <Typography.Text type="secondary">—</Typography.Text>
       },
     },
-    { title: '操作', key: 'actions', render: (_, scheme) => <Button disabled={!canEdit} onClick={() => openEditor(scheme)} aria-label={`编辑${scheme.name}`}>编辑参数</Button> },
+    { title: '操作', key: 'actions', render: (_, scheme) => <Space><Button disabled={!canEdit} onClick={() => openEditor(scheme)} aria-label={`编辑${scheme.name}`}>编辑参数</Button><Tooltip title={USE_MOCK ? '离线快照不支持删除方案，请连接后端。' : undefined}><span><Button danger disabled={USE_MOCK || busy || !projectQuery.data} onClick={() => { deleteScheme.reset(); setDeletingScheme(scheme) }} aria-label={`删除方案${scheme.name}`}>删除</Button></span></Tooltip></Space> },
   ]
 
   return (
     <>
       {messageContext}
+      <DeleteConfirm kind="方案" name={deletingScheme?.name} pending={deleteScheme.isPending} error={deleteScheme.error}
+        onConfirm={() => { if (deletingScheme && !deleteScheme.isPending) deleteScheme.mutate(deletingScheme) }}
+        onCancel={() => setDeletingScheme(undefined)} />
       <header className="page-heading">
         <div>
           <p className="eyebrow"><Link to="/projects">项目工作台</Link> / 方案参数录入与比选</p>

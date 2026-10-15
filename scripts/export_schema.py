@@ -28,6 +28,7 @@ if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
 from app.agents.state import AgentOutput, AgentRequest  # noqa: E402
+from app.agents.suggestions import QuestionSuggestions  # noqa: E402
 from app.api.evaluate import EvaluateResponse  # noqa: E402
 from app.api.projects import ProjectCreate, ProjectRead  # noqa: E402
 from app.api.rank import RankRequest, RankResponse  # noqa: E402
@@ -52,6 +53,7 @@ JSON_SCHEMA_MODELS = (
     RankResponse,
     AgentRequest,
     AgentOutput,
+    QuestionSuggestions,
 )
 
 

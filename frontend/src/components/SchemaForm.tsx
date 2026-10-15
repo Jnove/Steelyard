@@ -237,10 +237,11 @@ function renderInput(field: FieldMetadata) {
   const type = fieldType(field)
   const unit = field.unit && field.unit !== '—' ? field.unit : undefined
   const source = field.enum ?? (Array.isArray(field.options) ? field.options : Object.entries(field.options ?? {}).map(([value, label]) => ({ value, label })))
+  const labels = !Array.isArray(field.options) ? field.options : undefined
   const options = source.flatMap((option) => {
     if (option === null) return []
     if (typeof option === 'object') return [option]
-    return [{ label: String(option), value: typeof option === 'boolean' ? String(option) : option }]
+    return [{ label: labels?.[String(option)] ?? String(option), value: typeof option === 'boolean' ? String(option) : option }]
   })
   if (type === 'boolean') return <Select allowClear options={[{ label: '是', value: 'true' }, { label: '否', value: 'false' }]} placeholder="请选择" />
   if (type.startsWith('array') && field.required_options?.length) return <RequiredOptionsListInput field={field}

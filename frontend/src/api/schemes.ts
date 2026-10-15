@@ -1,6 +1,10 @@
-import { request, USE_MOCK } from './client'
+import { ApiError, request, USE_MOCK } from './client'
 import type { ImportResponse, Scheme, SchemeCreate, WithDemo } from './types'
 export const schemes = {
+  async remove(id: number, schemeId: number): Promise<void> {
+    if (USE_MOCK) throw new ApiError(501, { detail: '离线快照不支持删除方案，请连接后端。' })
+    return request(`/projects/${id}/schemes/${schemeId}`, { method: 'DELETE' })
+  },
   async list(id: number): Promise<Scheme[]> {
     if (USE_MOCK) return (await import('../mocks')).schemes.list(id)
     return request(`/projects/${id}/schemes`)

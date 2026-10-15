@@ -23,7 +23,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `height_max` | 限高上限 | m | number | 否 | — |
 | `climate_zone` | 气候分区 | — | string | 否 | 取值：严寒 / 寒冷 / 夏热冬冷 / 夏热冬暖 / 温和；— |
 | `seismic_intensity` | 抗震设防烈度 | — | string | 否 | 取值：6度(0.05g) / 7度(0.10g)；— |
-| `province` | 所在省份 | — | string | 否 | 取值：BJ / TJ / HE / SX / NM / LN / JL / HL / SH / JS / ZJ / AH / FJ / JX / SD / HA / HB / HN / GD / GX / HI / CQ / SC / GZ / YN / XZ / SN / GS / QH / NX / XJ；— |
+| `province` | 所在省份 | — | string | 否 | 取值：BJ / TJ / HE / SX / NM / LN / JL / HL / SH / JS / ZJ / AH / FJ / JX / SD / HA / HB / HN / GD / GX / HI / CQ / SC / GZ / YN / XZ / SN / GS / QH / NX / XJ；预设：BJ / TJ / HE / SX / NM / LN / JL / HL / SH / JS / ZJ / AH / FJ / JX / SD / HA / HB / HN / GD / GX / HI / CQ / SC / GZ / YN / XZ / SN / GS / QH / NX / XJ；— |
 | `standard_packs` | 适用标准册 | — | array<string> | 否 | 预设：GB / BJ / TJ / HE / SX / NM / LN / JL / HL / SH / JS / ZJ / AH / FJ / JX / SD / HA / HB / HN / GD / GX / HI / CQ / SC / GZ / YN / XZ / SN / GS / QH / NX / XJ；— |
 | `project_notes` | 案例来源与边界 | — | string | 否 | — |
 

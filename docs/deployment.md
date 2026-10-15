@@ -57,6 +57,10 @@ Compose 固定 `APP_ENV=prod`、数据库 `sqlite:////app/data/zhuheng.db`，并
 
 `fake` 使用真实后端评估、排序和 SSE 链路，报告文本由确定性桩生成。要启用真实模型，直接修改服务器 `runtime.env`，增加 `LLM_PROVIDER`、`LLM_BASE_URL`、`LLM_API_KEY`、`LLM_MODEL`，随后重新部署。密钥不写入源码、artifact 或前端构建。部署的公开 SSE 验收会调用当前配置的模型；真实模式下需要可用的模型服务，失败会阻止发布并触发容器回滚。
 
+模型服务支持时可设置 `LLM_REASONING_EFFORT=low`，留空则不发送此参数；不要假定所有兼容服务都支持相同强度。参数用法见 [OpenAI Chat Completions](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create) 与 [DeepSeek 思考模式](https://api-docs.deepseek.com/guides/thinking_mode/)，最终以所配置服务实测为准。
+
+默认精简报告直接使用确定性评分、关键问题与排名摘要，仅由模型组织最终文字，不重复调用意图解析及四份维度评语；完整结果保留用于溯源。普通页面追问走只读解释，参数修改仍使用明确的假设推演入口。模型请求超过整条链路的 110 秒预算会发出中文 `error` 并关闭连接，不会持续只发心跳。思考模式的内部内容仅用于模型工具回合续接，不写进报告或 SSE。
+
 ## GitHub 配置
 
 在本仓库的 `production` environment 设置以下 Actions Secrets；不保留 repository 全局副本：

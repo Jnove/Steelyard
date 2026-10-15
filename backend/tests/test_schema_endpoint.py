@@ -98,6 +98,7 @@ class TestExportScript:
             "RankResponse",
             "AgentRequest",
             "AgentOutput",
+            "QuestionSuggestions",
         }
         assert {p.name for p in (exported_schemas / "jsonschema").iterdir()} == {
             f"{name}.schema.json" for name in names

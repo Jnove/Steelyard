@@ -12,6 +12,8 @@ import type { Project, ProjectParams } from '../api/types'
 import SchemaForm, { RequestErrors } from '../components/SchemaForm'
 import type { SchemaFormValues } from '../components/SchemaForm'
 import BuildingShowcase from '../components/BuildingShowcase'
+import DeleteConfirm from '../components/DeleteConfirm'
+import { clearDeletedData } from '../utils/deletion-cache'
 import { IconArrowRight, IconPlus, IconScale, IconShieldCheck, IconMessage } from '../components/Icons'
 
 function displayDate(value: string): string {
@@ -31,7 +33,7 @@ export function featuredProject(items: Project[] = [], selectedId?: number): Pro
 export async function clearProjectDerivedQueries(queryClient: QueryClient, projectId: number): Promise<void> {
   // 取消在途请求，避免保存前的响应重新写回缓存；仅清理本项目的派生结果。
   const predicate = (query: { queryKey: readonly unknown[] }) =>
-    ['evaluation', 'rank', 'agent', 'agent-results', 'report', 'chat'].includes(String(query.queryKey[0]))
+    ['evaluation', 'rank', 'agent', 'agent-results', 'report', 'chat', 'suggestions'].includes(String(query.queryKey[0]))
     && Number(query.queryKey[1]) === projectId
   await queryClient.cancelQueries({ predicate })
   queryClient.removeQueries({ predicate })
@@ -46,6 +48,7 @@ export default function ProjectsPage() {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [editingProject, setEditingProject] = useState<Project>()
+  const [deletingProject, setDeletingProject] = useState<Project>()
   const [selectedProjectId, setSelectedProjectId] = useState<number>()
   const [messageApi, messageContext] = message.useMessage()
   const projectQuery = useQuery({ queryKey: ['projects'], queryFn: () => projects.list() })
@@ -78,7 +81,16 @@ export default function ProjectsPage() {
       void messageApi.success('地块已更新，请重新评估候选方案后查看比选结果。')
     },
   })
-  const pending = createProject.isPending || updateProject.isPending
+  const deleteProject = useMutation({
+    mutationFn: (project: Project) => projects.remove(project.id),
+    onSuccess: async (_, project) => {
+      if (selectedProjectId === project.id) setSelectedProjectId(undefined)
+      await clearDeletedData(queryClient, project.id)
+      setDeletingProject(undefined)
+      void messageApi.success('项目及其方案已删除。')
+    },
+  })
+  const pending = createProject.isPending || updateProject.isPending || deleteProject.isPending
   const openEdit = (project: Project) => {
     if (USE_MOCK) return
     updateProject.reset(); createProject.reset(); setEditingProject(project); setOpen(true)
@@ -88,11 +100,14 @@ export default function ProjectsPage() {
     { title: '用地面积', key: 'site_area', render: (_, project) => project.params.site_area == null ? <Typography.Text type="secondary">—</Typography.Text> : `${project.params.site_area.toLocaleString('zh-CN')} m²` },
     { title: '气候分区', key: 'climate_zone', render: (_, project) => project.params.climate_zone || <Typography.Text type="secondary">—</Typography.Text> },
     { title: '最近更新', dataIndex: 'updated_at', key: 'updated_at', render: (value: string) => <span className="muted">{displayDate(value)}</span>, sorter: (left, right) => Date.parse(left.updated_at) - Date.parse(right.updated_at), defaultSortOrder: 'descend' },
-    { title: '操作', key: 'actions', render: (_, project) => <Space><Link to={`/projects/${project.id}/schemes`}>管理方案</Link><Link to={`/projects/${project.id}/dashboard`}>查看评估</Link><Tooltip title={USE_MOCK ? '离线快照不支持编辑地块或切换地区标准，请连接后端。' : '修改地块条件、来源说明和适用标准册；保存后需重新评估。'}><span><Button type="link" disabled={USE_MOCK} onClick={() => openEdit(project)}>编辑地块</Button></span></Tooltip></Space> },
+    { title: '操作', key: 'actions', render: (_, project) => <Space><Link to={`/projects/${project.id}/schemes`}>管理方案</Link><Link to={`/projects/${project.id}/dashboard`}>查看评估</Link><Tooltip title={USE_MOCK ? '离线快照不支持编辑地块或切换地区标准，请连接后端。' : '修改地块条件、来源说明和适用标准册；保存后需重新评估。'}><span><Button type="link" disabled={USE_MOCK || pending} onClick={() => openEdit(project)}>编辑地块</Button></span></Tooltip><Tooltip title={USE_MOCK ? '离线快照不支持删除项目，请连接后端。' : undefined}><span><Button type="link" danger disabled={USE_MOCK || pending} onClick={() => { deleteProject.reset(); setDeletingProject(project) }} aria-label={`删除项目${project.name}`}>删除</Button></span></Tooltip></Space> },
   ]
   const openCreate = () => { createProject.reset(); updateProject.reset(); setEditingProject(undefined); setOpen(true) }
   return <>
     {messageContext}
+    <DeleteConfirm kind="项目" name={deletingProject?.name} pending={deleteProject.isPending} error={deleteProject.error}
+      onConfirm={() => { if (deletingProject && !deleteProject.isPending) deleteProject.mutate(deletingProject) }}
+      onCancel={() => setDeletingProject(undefined)} />
     <section className="overview-hero" aria-labelledby="overview-title">
       <div className="hero-copy">
         <p className="hero-eyebrow"><span className="status-dot" />STEELYARD <span>建筑方案智能比选</span></p>

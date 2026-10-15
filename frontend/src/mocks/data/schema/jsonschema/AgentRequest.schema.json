@@ -137,6 +137,19 @@
       ],
       "default": null,
       "title": "Rule Id"
+    },
+    "scheme_id": {
+      "anyOf": [
+        {
+          "exclusiveMinimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Scheme Id"
     }
   },
   "title": "AgentRequest",

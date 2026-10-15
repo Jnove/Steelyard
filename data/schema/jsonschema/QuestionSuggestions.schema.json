@@ -1,0 +1,27 @@
+{
+  "properties": {
+    "questions": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 3,
+      "minItems": 1,
+      "title": "Questions",
+      "type": "array"
+    },
+    "source": {
+      "enum": [
+        "model",
+        "fake"
+      ],
+      "title": "Source",
+      "type": "string"
+    }
+  },
+  "required": [
+    "questions",
+    "source"
+  ],
+  "title": "QuestionSuggestions",
+  "type": "object"
+}

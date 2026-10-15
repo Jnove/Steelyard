@@ -11,6 +11,9 @@ from typing import Any
 
 from pydantic import BaseModel
 
+from app.engine.regions import PROVINCE_BY_CODE, pack_label
+from app.models.params import ProjectParams
+
 _META_KEYS = (
     "unit",
     "group",
@@ -84,6 +87,12 @@ def enriched_schema(model: type[BaseModel]) -> dict[str, Any]:
         for key in ("allow_custom_options", "empty_means_unknown", "required_options"):
             if key in prop:
                 field_info[key] = prop[key]
+        # 展示标签来自地区注册表，不改变保存值及评估使用的模型语义。
+        if model is ProjectParams:
+            if name == "province":
+                field_info["options"] = {code: province.name for code, province in PROVINCE_BY_CODE.items()}
+            elif name == "standard_packs":
+                field_info["options"] = {code: pack_label(code) for code in field_info["options"]}
         fields.append(field_info)
 
     return {

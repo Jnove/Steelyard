@@ -1,7 +1,14 @@
 /** T8 回调接口复用统一的 POST SSE 读取器。 */
 import { postSSEFrames } from './sse'
 import { API_BASE } from './base'
+import { request } from './client'
+import type { QuestionSuggestions } from './generated/QuestionSuggestions'
 export type { AgentOutput, NumberIssue } from './generated/AgentOutput'
+
+export function suggestedQuestions(projectId: number, schemeId: string | undefined, signal: AbortSignal): Promise<QuestionSuggestions> {
+  const query = schemeId ? `?scheme_id=${encodeURIComponent(schemeId)}` : ''
+  return request(`/projects/${projectId}/suggestions${query}`, { method: 'POST', signal })
+}
 
 export interface AgentEvent {
   name: string

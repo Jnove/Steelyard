@@ -52,6 +52,39 @@ def _create_scheme(
     return resp.json()
 
 
+def test_delete_parent_keeps_whatif_and_clears_only_its_project_caches(client: TestClient, engine: Engine) -> None:
+    from app.agents.storage import AgentResultRow, ReportCacheRow
+    from app.models import EvalResultRow, Scheme
+
+    with engine.connect() as connection:
+        connection.exec_driver_sql("PRAGMA foreign_keys=ON")
+    project = _create_project(client)
+    other = _create_project(client, "保留项目")
+    parent = _create_scheme(client, project["id"], "原方案")
+    child = _create_scheme(client, project["id"], "推演副本", is_whatif=True, parent_id=parent["id"])
+    preserved = _create_scheme(client, other["id"], "其他方案")
+    with Session(engine) as session:
+        for item in (project, other):
+            session.add(ReportCacheRow(key=str(item["id"]), project_id=item["id"], output={}))
+            session.add(AgentResultRow(project_id=item["id"], fingerprint="before-delete"))
+        session.add(EvalResultRow(project_id=project["id"], scheme_id=parent["id"], result={}))
+        session.add(EvalResultRow(project_id=other["id"], scheme_id=preserved["id"], result={}))
+        session.commit()
+    url = f"/api/projects/{project['id']}/schemes/{parent['id']}"
+    assert client.delete(f"/api/projects/{other['id']}/schemes/{parent['id']}").status_code == 404
+    assert client.delete(url).status_code == 204
+    assert client.delete(url).status_code == 404
+    with Session(engine) as session:
+        copy = session.get(Scheme, child["id"])
+        assert copy is not None and copy.parent_id is None and copy.is_whatif
+        assert session.get(Scheme, parent["id"]) is None
+        assert session.get(ReportCacheRow, str(project["id"])) is None
+        assert session.get(AgentResultRow, project["id"]) is None
+        assert session.get(ReportCacheRow, str(other["id"])) is not None
+        assert session.get(AgentResultRow, other["id"]) is not None
+        assert [row.scheme_id for row in session.exec(select(EvalResultRow)).all()] == [preserved["id"]]
+
+
 class TestProjectCRUD:
     def test_create_and_read(self, client: TestClient) -> None:
         project = _create_project(client)

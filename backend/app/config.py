@@ -35,6 +35,7 @@ class Settings(BaseSettings):
     llm_base_url: Annotated[str | None, Field(default=None, alias="LLM_BASE_URL")]
     llm_api_key: Annotated[str | None, Field(default=None, alias="LLM_API_KEY")]
     llm_model: Annotated[str | None, Field(default=None, alias="LLM_MODEL")]
+    llm_reasoning_effort: Annotated[str, Field(default="", alias="LLM_REASONING_EFFORT")]
 
     # —— 数据库（SQLite 即可，演示规模足够） ——
     database_url: Annotated[

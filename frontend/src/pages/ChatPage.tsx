@@ -13,6 +13,8 @@ import { API_BASE } from '../api/base'
 import { applyAgentEvent, numberSegments, type StreamContent, type ToolCall } from '../api/agent-state'
 import TraceDrawer from '../components/TraceDrawer'
 import { IconFileText } from '../components/Icons'
+import { suggestedQuestions } from '../api/agents'
+import { offlineQuestions } from '../utils/suggested-questions'
 
 type DimensionKey = 'quality' | 'structure' | 'construction' | 'green'
 type Ranking = Awaited<ReturnType<typeof ranking.run>>['ranking']
@@ -34,7 +36,6 @@ const dimensions: { key: DimensionKey; label: string }[] = [
   { key: 'quality', label: '居住品质' }, { key: 'structure', label: '结构安全' },
   { key: 'construction', label: '施工友好' }, { key: 'green', label: '绿色低碳' },
 ]
-const quickQuestions = ['当前排名第一的方案有哪些评分依据？', '当前方案有哪些合规与缺失数据问题？', '如果提高装配率，会有什么变化？']
 const statusLabels: Record<string, string> = {
   passed: '通过', failed: '未通过', insufficient_data: '数据不足', not_applicable: '不适用', scored: '已评分',
 }
@@ -51,7 +52,7 @@ function mockNarrative(kind: 'chat' | 'report', question: string, results: EvalR
   if (kind === 'report' || /第一|排名|排序/.test(question)) {
     lines.push('## 政府视角排序', '')
     if (!ranks.length) lines.push('暂无已返回的排序数据，不能判断领先方案。')
-    for (const row of [...ranks].sort((a, b) => a.rank - b.rank)) {
+    for (const row of [...ranks].sort((a, b) => a.rank - b.rank).slice(0, 1)) {
       lines.push(`- 第 ${row.rank} 名：${escapeMarkdown(row.scheme_name)}，TOPSIS 贴近度 ${displayNumber(row.closeness, 4)}。`)
     }
     lines.push('', '贴近度与名次来自排序接口；仅凭这些结果不能归因于某一项参数，也不能据此推断全部合规。', '')
@@ -62,7 +63,7 @@ function mockNarrative(kind: 'chat' | 'report', question: string, results: EvalR
       '以下仅列出当前已返回的数据，不能用于预测提高装配率后的结果。', '')
   }
   if (!current) lines.push('当前项目没有已返回的评估结果，请先在方案管理页完成评估。')
-  const included = kind === 'report' ? results : current ? [current] : []
+  const included = current ? [current] : []
   for (const result of included) {
     lines.push(`## ${escapeMarkdown(result.scheme_name || result.scheme_id)}`, '')
     for (const dimension of dimensions) {
@@ -71,16 +72,16 @@ function mockNarrative(kind: 'chat' | 'report', question: string, results: EvalR
     }
     lines.push('', '### 已返回的规则结果', '')
     if (!result.compliance?.length) lines.push('未返回合规检查项。')
-    for (const check of result.compliance ?? []) {
+    for (const check of (result.compliance ?? []).filter(check => check.status === 'failed' || check.status === 'insufficient_data').slice(0, 2)) {
       lines.push(`- ${check.rule_id} ${escapeMarkdown(check.name)}：${statusLabels[check.status] ?? check.status}。${escapeMarkdown(check.message)}`)
     }
-    for (const metric of Object.values(result.metrics ?? {})) {
+    for (const metric of Object.values(result.metrics ?? {}).slice(0, 1)) {
       lines.push(`- ${metric.rule_id} ${escapeMarkdown(metric.name)}：${displayNumber(metric.score)}${metric.score == null ? '' : ' / 100'}；${metric.status ? statusLabels[metric.status] : '状态未返回'}。`)
     }
     lines.push('')
   }
   const pending = catalog?.todo_source_ids ?? []
-  if (pending.length) lines.push(`规则目录标注的待确认出处：${pending.join('、')}。这些出处尚未落实。`, '')
+  if (pending.length) lines.push('部分规则出处仍待专业确认，完整清单见溯源。', '')
   if (!catalog) lines.push('规则目录未加载，无法核对出处是否已确认。', '')
   lines.push('点击正文中的规则编号可查看对应方案的评估依据；本演示不补充未返回的规范条文、限值或因果结论。')
   return lines.join('\n')
@@ -193,6 +194,14 @@ function ProjectChat({ projectId }: { projectId: number }) {
 
   const mockReady = evaluationQuery.isSuccess && !rankingQuery.isPending && !rulesQuery.isPending
   const canStart = !!projectId && !busy && (!isMock || mockReady)
+  const suggestionQuery = useQuery({
+    queryKey: ['suggestions', projectId, schemeId, evaluationQuery.dataUpdatedAt, rankingQuery.dataUpdatedAt],
+    queryFn: ({ signal }) => isMock
+      ? Promise.resolve({ questions: offlineQuestions(results, schemeId), source: 'fake' as const })
+      : suggestedQuestions(projectId, schemeId, signal),
+    enabled: !busy && !evaluationQuery.isPending && !rankingQuery.isPending,
+    staleTime: Infinity, retry: false, refetchOnWindowFocus: false,
+  })
   const currentEvaluation = results.find((item) => item.scheme_id === trace?.schemeId)
 
   function openTrace(ruleId: string, ownerId?: string) {
@@ -212,7 +221,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
       ? { ...item, status: 'cancelled', tools: finishTools(item.tools) } : item))
   }
 
-  async function start(kind: 'chat' | 'report', question = input, change?: SchemeChange) {
+  async function start(kind: 'chat' | 'report', question = input, change?: SchemeChange, explainOnly = !change) {
     const message = question.trim()
     // ref 同步拦截重复提交，覆盖 React 尚未更新按钮禁用状态的间隙。
     if (!canStart || active.current || (kind === 'chat' && !message)) return
@@ -241,7 +250,8 @@ function ProjectChat({ projectId }: { projectId: number }) {
         ? mockSSE(mockNarrative(kind, message, results, ranks, rulesQuery.data, schemeId),
           { mock: true, evaluation_count: results.length, ranking: ranks, note: '读取查询结果，未执行新的评估或写入' }, controller.signal)
         : postSSE(`${base}/projects/${encodeURIComponent(projectId)}/${kind}`,
-          kind === 'chat' ? { message, role: 'government', history: messages.filter(item => item.status === 'done')
+          kind === 'chat' ? { message, role: 'government', scheme_id: schemeId ? Number(schemeId) : undefined,
+            ...(explainOnly ? { intent: 'explain' } : {}), history: messages.filter(item => item.status === 'done')
             .slice(-50).map(item => ({ role: item.role, content: item.content.slice(0, 30_000) })),
             ...(change ? { intent: 'whatif', change } : {}) }
             : { role: 'government' }, controller.signal)
@@ -339,17 +349,25 @@ function ProjectChat({ projectId }: { projectId: number }) {
         <div className="section-heading">
           <div>
             <h2>对话追问与解释</h2>
-            <p className="section-subtext">选择预设决策问题，或输入任意技术指标疑问</p>
+            <p className="section-subtext">根据当前项目与所选方案建议追问，默认简洁回答</p>
           </div>
           <span className="muted" role="status">{busy ? '正在生成…' : '可追问 · 可溯源'}</span>
         </div>
         <div className="action-row" aria-label="快捷问题">
-          {quickQuestions.map((question) => <Button key={question} disabled={!canStart}
-            onClick={() => void start('chat', question)}>{question}</Button>)}
+          {suggestionQuery.data?.questions.map((question) => <Button key={question} disabled={!canStart}
+            style={{ maxWidth: '100%', whiteSpace: 'normal', height: 'auto', textAlign: 'left' }}
+            onClick={() => void start('chat', question, undefined, true)}>{question}</Button>)}
+          <Button type="text" size="small" loading={suggestionQuery.isFetching}
+            disabled={busy || suggestionQuery.isFetching || evaluationQuery.isPending || rankingQuery.isPending}
+            onClick={() => void suggestionQuery.refetch()}>刷新建议</Button>
         </div>
+        <p className="muted" role="status">{suggestionQuery.isFetching ? '正在结合项目生成建议…'
+          : suggestionQuery.isError ? '建议暂未生成，可刷新重试或直接输入追问。'
+          : suggestionQuery.data?.source === 'fake' ? '项目情境建议 · 确定性演示'
+          : suggestionQuery.data ? 'AI 建议 · 基于当前项目和所选方案' : ''}</p>
         <div className="chat-feed" ref={feed} role="log" aria-label="对话记录" aria-live="off"
           onScroll={() => { const node = feed.current; if (node) followStream.current = node.scrollHeight - node.scrollTop - node.clientHeight < 80 }}>
-          {!messages.length && <Empty description="从一个快捷问题开始，或点击右上角生成完整比选报告。" />}
+          {!messages.length && <Empty description="从一个建议问题开始，或点击右上角生成精简比选报告；需要细节时可继续追问。" />}
           {messages.map((item) => <article key={item.id} className={`chat-message ${item.role}`} data-role={item.role}>
             <div className="section-heading">
               <strong>{item.role === 'user' ? '你' : isMock ? '筑衡 · Mock 演示' : '筑衡 · 决策智能体'}</strong>

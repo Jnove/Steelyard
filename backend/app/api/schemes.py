@@ -23,7 +23,7 @@ from fastapi import (
     status,
 )
 from pydantic import BaseModel, ConfigDict, Field
-from sqlmodel import Session, or_, select
+from sqlmodel import Session, delete, or_, select
 
 from app.custom import fields as fields_service
 from app.custom.errors import CustomAddError
@@ -238,7 +238,16 @@ def delete_scheme(
             status.HTTP_404_NOT_FOUND,
             detail=f"方案 {scheme_id} 不属于项目 {project_id}",
         )
+    from app.agents.storage import AgentResultRow, ReportCacheRow
     from app.models.orm import EvalResultRow
+
+    # 推演副本保留；先解除外键，避免删除原方案留下悬空引用。
+    for child in session.exec(select(Scheme).where(Scheme.parent_id == scheme_id)).all():
+        child.parent_id = None
+        session.add(child)
+    session.flush()
+    for table in (ReportCacheRow, AgentResultRow):
+        session.exec(delete(table).where(table.project_id == project_id))
 
     for ev in session.exec(
         select(EvalResultRow).where(EvalResultRow.scheme_id == scheme_id)

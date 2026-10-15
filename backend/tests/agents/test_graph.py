@@ -7,7 +7,7 @@ from typing import Any
 
 import pytest
 from app.agents.graph import AgentGraph
-from app.agents.llm import FakeLLM, LLMResponse, ToolCall
+from app.agents.llm import FakeLLM, LLMChunk, LLMResponse, ToolCall
 from app.agents.state import AgentRequest, GraphState
 from app.agents.tools import AgentTools
 from app.models import Scheme
@@ -41,8 +41,10 @@ async def test_new_eval_full_path(engine: Engine, mock_project: tuple[int, list[
     assert nodes[8:] == ["decision", "reporter", "citation_check"]
     assert all(trace.elapsed_ms >= 0 for trace in output.traces)
     assert not output.unverified_numbers
-    for heading in ("结论", "合规问题", "各维度对比", "权衡与稳健性", "修改建议"):
+    for heading in ("结论", "关键问题", "下一步"):
         assert f"## {heading}" in output.report
+    assert len(output.report) < 1400
+    assert "首位概率" not in output.report
     assert "C-" in output.report and "source" in output.report
 
 
@@ -196,6 +198,45 @@ async def test_four_reviews_overlap(engine: Engine, mock_project: tuple[int, lis
     llm = BarrierLLM()
     output, _ = await run_graph(engine, project, AgentRequest(), llm)
     assert llm.started == 4 and not output.unverified_numbers
+
+
+@pytest.mark.asyncio
+async def test_brief_report_only_uses_model_for_final_narrative(engine: Engine, mock_project: tuple[int, list[int]]) -> None:
+    project, _ = mock_project
+    llm = FakeLLM()
+    output, _ = await run_graph(engine, project, AgentRequest(intent="new_eval"), llm)
+    assert not output.unverified_numbers
+    assert all(call[0]["content"].startswith("节点：reporter") for call in llm.calls)
+    assert len(llm.calls) == 1
+
+
+@pytest.mark.asyncio
+async def test_empty_intent_plan_has_actionable_error(engine: Engine, mock_project: tuple[int, list[int]]) -> None:
+    project, _ = mock_project
+    with pytest.raises(ValueError, match="未返回有效的意图计划"):
+        await run_graph(engine, project, AgentRequest(), FakeLLM({"coordinator": [LLMResponse()]}))
+
+
+@pytest.mark.asyncio
+async def test_tool_reasoning_is_only_forwarded_to_model(engine: Engine, mock_project: tuple[int, list[int]]) -> None:
+    class ThinkingLLM(FakeLLM):
+        round = 0
+        forwarded = False
+        async def stream(self, messages, tools):
+            self.round += 1
+            if self.round == 1:
+                yield LLMChunk(reasoning_content="internal_reasoning_marker")
+                yield LLMChunk(tool_calls=[ToolCall(id="rule", name="explain_metric", arguments={"rule_id": "K-01"})])
+                return
+            self.forwarded = any(message.get("reasoning_content") == "internal_reasoning_marker" for message in messages)
+            async for chunk in super().stream(messages, tools):
+                yield chunk
+    project, _ = mock_project
+    llm = ThinkingLLM()
+    output, events = await run_graph(engine, project, AgentRequest(), llm)
+    assert llm.forwarded and not output.unverified_numbers
+    assert "internal_reasoning_marker" not in output.report
+    assert "internal_reasoning_marker" not in str(events)
 
 
 @pytest.mark.asyncio

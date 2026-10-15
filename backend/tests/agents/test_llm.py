@@ -131,3 +131,30 @@ async def test_stream_fragments() -> None:
 def test_config_requires_model_and_key() -> None:
     with pytest.raises(ValueError):
         OpenAILLM(Settings(LLM_PROVIDER="openai", _env_file=None))
+
+
+@pytest.mark.asyncio
+async def test_reasoning_effort_and_private_stream_reasoning() -> None:
+    configured = settings()
+    configured.llm_reasoning_effort = "low"
+    calls = []
+    def handler(request: httpx.Request) -> httpx.Response:
+        body = json.loads(request.content)
+        calls.append(body)
+        if body.get("stream"):
+            deltas = [{"reasoning_content": "private reasoning"}, {"content": "简短正文"}]
+            content = "".join("data: " + json.dumps({"id": "test", "object": "chat.completion.chunk", "created": 0,
+                "model": "test-model", "choices": [{"index": 0, "delta": delta}]}) + "\n\n" for delta in deltas)
+            return httpx.Response(200, headers={"content-type": "text/event-stream"}, text=content + "data: [DONE]\n\n")
+        return httpx.Response(200, json={"id": "test", "object": "chat.completion", "created": 0, "model": "test-model",
+            "choices": [{"index": 0, "message": {"role": "assistant", "content": "简短正文"}, "finish_reason": "stop"}]})
+    llm = OpenAILLM(configured)
+    await llm.client.close()
+    llm.client = AsyncOpenAI(api_key="test", base_url="https://model.test/v1",
+                            http_client=httpx.AsyncClient(transport=httpx.MockTransport(handler)))
+    assert (await llm.chat([{"role": "user", "content": "测试"}], [])).content == "简短正文"
+    chunks = [chunk async for chunk in llm.stream([{"role": "user", "content": "测试"}], [])]
+    assert chunks[0].reasoning_content == "private reasoning" and not chunks[0].text
+    assert "".join(chunk.text for chunk in chunks) == "简短正文"
+    assert all(call["reasoning_effort"] == "low" for call in calls)
+    await llm.aclose()

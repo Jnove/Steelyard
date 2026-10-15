@@ -29,6 +29,7 @@ class LLMResponse(BaseModel):
 
 class LLMChunk(BaseModel):
     text: str = ""
+    reasoning_content: str = ""
     tool_calls: list[ToolCall] = Field(default_factory=list)
 
 
@@ -43,6 +44,10 @@ class OpenAILLM:
         if not settings.llm_api_key or not settings.llm_model:
             raise ValueError("openai 模式需要配置 LLM_API_KEY 和 LLM_MODEL")
         self.model = settings.llm_model
+        effort = settings.llm_reasoning_effort.strip().lower()
+        if effort and effort not in {"none", "minimal", "low", "medium", "high", "xhigh", "max"}:
+            raise ValueError("LLM_REASONING_EFFORT 配置无效")
+        self.request_options: dict[str, Any] = {"reasoning_effort": effort} if effort else {}
         self.client = AsyncOpenAI(
             api_key=settings.llm_api_key,
             base_url=settings.llm_base_url or None,
@@ -52,7 +57,7 @@ class OpenAILLM:
 
     async def chat(self, messages: Messages, tools: Tools) -> LLMResponse:
         response = await self.client.chat.completions.create(
-            model=self.model, messages=messages, **({"tools": tools} if tools else {})
+            model=self.model, messages=messages, **self.request_options, **({"tools": tools} if tools else {})
         )
         message = response.choices[0].message
         return LLMResponse(
@@ -68,6 +73,7 @@ class OpenAILLM:
             model=self.model,
             messages=messages,
             stream=True,
+            **self.request_options,
             **({"tools": tools} if tools else {}),
         )
         calls: dict[int, dict[str, str]] = {}
@@ -76,6 +82,9 @@ class OpenAILLM:
                 if not chunk.choices:
                     continue
                 delta = chunk.choices[0].delta
+                if getattr(delta, "reasoning_content", None):
+                    # 仅供兼容服务的工具回合续接；不作为报告文本或 SSE 输出。
+                    yield LLMChunk(reasoning_content=delta.reasoning_content)
                 if delta.content:
                     yield LLMChunk(text=delta.content)
                 for call in delta.tool_calls or []:
@@ -161,6 +170,10 @@ class FakeLLM:
             )
         if node == "reporter":
             return LLMResponse(content=render_fake_report(context))
+        if node == "suggestions":
+            from app.agents.suggestions import local_questions
+
+            return LLMResponse(content=json.dumps({"questions": local_questions(context)}, ensure_ascii=False))
         return LLMResponse(content="依据工具结果解释；缺项与待专业组确认的规则仍需核实。")
 
     async def stream(self, messages: Messages, tools: Tools) -> AsyncIterator[LLMChunk]:
@@ -172,42 +185,43 @@ class FakeLLM:
 
 
 def render_fake_report(context: dict[str, Any]) -> str:
-    """逐项复制引擎结果，不估算、不生成派生数字。"""
+    """只摘录关键引擎证据，不罗列整份规则目录。"""
     evidence = context.get("evidence", {})
     ranking = evidence.get("ranking", {}).get("ranking", [])
     results = evidence.get("evaluation", {}).get("results", [])
-    lines = ["## 结论", "离线脚本演示；虚构样例不能用作工程依据。"]
-    lines.append("按工具返回的权重排序；未指定角色或权重时使用等权演示。")
+    request = context.get("request", {})
+    selected = next((item for item in results if item["scheme_id"] == str(request.get("scheme_id"))), None)
+    selected = selected or next((item for item in results if ranking and item["scheme_id"] == ranking[0]["scheme_id"]), None)
+    selected = selected or next(iter(results), None)
+    brief_report = context.get("response_mode", "brief_report") == "brief_report"
+    lines = ["## 结论"] if brief_report else []
+    lines.append("FakeLLM 演示；以下仅摘录当前工具结果。")
     labels = {"quality": "居住品质", "structure": "结构", "construction": "施工", "green": "绿色"}
-    for item in ranking:
+    for item in ranking[:1]:
         lines.append(
             f"{item['scheme_name']}：名次 {item['rank']}，贴近度 {item['closeness']:.2f}。"
         )
-    lines += ["## 合规问题", "按规则引擎判定；规则出处含 TODO 的内容仍待专业组确认。"]
-    for result in results:
-        for item in result["compliance"]:
-            if item["status"] in ("failed", "insufficient_data"):
-                lines.append(
-                    f"{result['scheme_name']}：{item['rule_id']}，{item['message']}；source：{item['source']}。"
-                )
-    lines += ["## 各维度对比"]
-    for result in results:
+    if selected:
         lines.append(
-            f"{result['scheme_name']}："
+            f"{selected['scheme_name']}："
             + "，".join(
-                f"{labels[key]} {value:.2f}" for key, value in result["dimension_scores"].items()
+                f"{labels[key]} {value:.2f}" for key, value in selected["dimension_scores"].items()
             )
             + "。"
         )
-        for item in result["metrics"].values():
-            if item["score"] is not None:
-                lines.append(
-                    f"{item['rule_id']}：取值 {item['value']:.2f}，得分 {item['score']:.2f}；source：{item['source']}。"
-                )
+    if brief_report:
+        lines.append("## 关键问题")
+    problems = [(result, item) for result in (results if brief_report else [selected] if selected else [])
+                for item in result["compliance"] if item["status"] in ("failed", "insufficient_data")]
+    problems.sort(key=lambda pair: pair[1]["status"] != "failed")
+    for result, item in problems[:2]:
+        lines.append(f"{result['scheme_name']}：{item['rule_id']}，{item['message']}；source：{item['source']}。")
+    if not problems:
+        lines.append("此摘要未列出硬约束问题；是否可判断合规仍须结合资料覆盖与完整结果。")
     if context.get("comparison"):
         comparison = context["comparison"]
         lines.append("原方案与副本对比：")
-        for item in comparison.get("changed_metrics", []):
+        for item in comparison.get("changed_metrics", [])[:3]:
             lines.append(
                 f"{item['rule_id']}：取值 {item['before_value']} → {item['after_value']}，得分 {item['before_score']} → {item['after_score']}；source：{item['source']}。"
             )
@@ -227,20 +241,9 @@ def render_fake_report(context: dict[str, Any]) -> str:
         lines.append(
             f"规则 {rule['id']}：{rule['name']}；公式：{rule['formula']}；source：{rule['source']}。"
         )
-    lines += [
-        "## 权衡与稳健性",
-        "请结合工具提供的敏感性、帕累托与名次概率结果理解权衡；数据覆盖不足时结论不确定。",
-    ]
-    if evidence.get("ranking"):
-        lines.append("工具返回权重：" + str(evidence["ranking"]["weights_used"]["weights"]) + "。")
-        for item in ranking:
-            lines.append(
-                f"{item['scheme_name']}：首位概率 {item['first_place_probability']:.2f}；非劣方案：{'是' if item['is_non_dominated'] else '否'}。"
-            )
-    lines += [
-        "## 修改建议",
-        "优先补齐缺失输入并核对合规问题；TODO(专业组)：确认规则出处、阈值与角色权重。",
-    ]
+    if brief_report:
+        lines.append("## 下一步")
+    lines.append("先核实上述问题与缺失资料；完整规则和计算依据见看板及溯源。TODO(专业组)：核定出处、阈值与权重。")
     return "\n\n".join(lines)
 
 

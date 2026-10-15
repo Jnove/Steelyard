@@ -1,6 +1,10 @@
 import { ApiError, request, USE_MOCK } from './client'
 import type { Project, ProjectCreate } from './types'
 export const projects = {
+  async remove(id: number): Promise<void> {
+    if (USE_MOCK) throw new ApiError(501, { detail: '离线快照不支持删除项目，请连接后端。' })
+    return request(`/projects/${id}`, { method: 'DELETE' })
+  },
   async list(): Promise<Project[]> {
     if (USE_MOCK) return (await import('../mocks')).projects.list()
     return request('/projects')

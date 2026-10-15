@@ -196,3 +196,20 @@ async def test_disconnect_closes_model(
     assert (await anext(stream))["event"] == "node_start"
     await asyncio.wait_for(stream.aclose(), 3)
     assert llm.closed
+
+
+@pytest.mark.asyncio
+async def test_slow_model_terminates_with_chinese_error(engine: Engine, mock_project: tuple[int, list[int]], monkeypatch: pytest.MonkeyPatch) -> None:
+    class SlowLLM(FakeLLM):
+        closed = False
+        async def chat(self, messages, tools):
+            await asyncio.Event().wait()
+        async def aclose(self):
+            self.closed = True
+    llm = SlowLLM()
+    monkeypatch.setattr(agents, "get_llm", lambda: llm)
+    monkeypatch.setattr(agents, "AGENT_RUN_TIMEOUT_SECONDS", 0.05)
+    project, _ = mock_project
+    events = [event async for event in agents.event_stream(engine, project, AgentRequest(), None)]
+    assert events[-1]["event"] == "error" and "超时" in events[-1]["data"]
+    assert llm.closed

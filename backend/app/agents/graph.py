@@ -13,6 +13,7 @@ from langgraph.graph import END, START, StateGraph
 
 from app.agents.citation import check_citations
 from app.agents.llm import LLMClient, Messages
+from app.agents.presentation import compact_evidence
 from app.agents.state import AgentOutput, GraphState, NodeTrace, Plan
 from app.agents.tools import AgentTools, compare_whatif, tool_schemas
 from app.api.rank import RankRequest
@@ -108,6 +109,15 @@ class AgentGraph:
         return result
 
     async def coordinator(self, state: GraphState) -> dict[str, Any]:
+        if state.request.intent is not None:
+            plan = Plan(**{field: getattr(state.request, field) for field in (
+                "intent", "change", "role", "weights", "rule_id"
+            )})
+        else:
+            plan = await self.parse_intent(state)
+        return {"plan": self.validate_plan(state, plan)}
+
+    async def parse_intent(self, state: GraphState) -> Plan:
         response = await self.llm.chat(
             messages_for("coordinator", state, {"request": state.request.model_dump()}),
             [
@@ -121,12 +131,17 @@ class AgentGraph:
                 }
             ],
         )
+        if not response.tool_calls and not response.content.strip():
+            raise ValueError("模型未返回有效的意图计划，请重试或使用报告、建议问题及假设推演入口")
         if response.tool_calls:
             if len(response.tool_calls) != 1 or response.tool_calls[0].name != "dispatch_intent":
                 raise ValueError("协调节点只允许返回一个 dispatch_intent")
             plan = Plan.model_validate(response.tool_calls[0].arguments)
         else:
             plan = Plan.model_validate_json(response.content)
+        return plan
+
+    def validate_plan(self, state: GraphState, plan: Plan) -> Plan:
         # 结构化请求优先于模型解析，不能被历史消息覆盖。
         for field in ("intent", "change", "role", "weights", "rule_id"):
             value = getattr(state.request, field)
@@ -147,7 +162,7 @@ class AgentGraph:
             raise ValueError("假设推演需要明确给出 scheme_id、field 和 value")
         if plan.intent == "reweight" and plan.role is None and plan.weights is None:
             raise ValueError("改权重需要明确给出 role 或 weights")
-        return {"plan": plan}
+        return plan
 
     def rank_request(self, state: GraphState, include_whatif: bool | None = None) -> RankRequest:
         request = state.request.model_copy(
@@ -197,6 +212,10 @@ class AgentGraph:
 
     def dimension_node(self, dimension: str) -> Node:
         async def evaluate_dimension(state: GraphState) -> dict[str, Any]:
+            if state.request.intent == "new_eval" and state.request.message == "生成方案比选报告" and not state.request.history:
+                # 精简报告直接解释确定性得分，不额外发起四次重复的模型评语请求。
+                return {"comments": [{"dimension": dimension, "source": "engine-summary",
+                                      "text": "本次精简报告直接使用工具中的维度得分与数据覆盖，不单独生成模型评语。"}]}
             context = {
                 "dimension": dimension,
                 "results": [
@@ -204,9 +223,9 @@ class AgentGraph:
                         "scheme_name": item["scheme_name"],
                         "score": item["dimension_scores"][dimension],
                         "coverage": item["dimension_coverage"][dimension],
-                        "metrics": {
-                            k: v for k, v in item["metrics"].items() if v["dimension"] == dimension
-                        },
+                        "metrics": dict([
+                            (k, v) for k, v in item["metrics"].items() if v["dimension"] == dimension
+                        ][:3]),
                     }
                     for item in state.evidence["evaluation"]["results"]
                 ],
@@ -263,7 +282,8 @@ class AgentGraph:
             "token", {"node": "reporter", "attempt": attempt, "text": "", "replace": True}
         )
         context = {
-            "request": state.request.model_dump(),
+            "request": state.request.model_dump(exclude={"history"}),
+            "response_mode": "brief_report" if state.request.message == "生成方案比选报告" else "answer",
             "intent": state.plan.intent,
             "evidence": state.evidence,
             "baseline": state.baseline,
@@ -271,18 +291,22 @@ class AgentGraph:
             "comments": state.comments,
             "rewrite_numbers": [item.model_dump() for item in state.unverified_numbers],
         }
-        messages = messages_for("reporter", state, context)
         # 改权重路径只在此读取已有评估，不运行 evaluate。
         if state.plan.intent == "reweight":
             previous = await self.call("reporter", "get_result", project_id=state.project_id)
             context["evidence"] = {**previous, "ranking": state.evidence["ranking"]}
-            messages = messages_for("reporter", state, context)
-        allowed = ["get_result", "explain_metric", "search_clause"]
+        view = {**context, "evidence": compact_evidence(context["evidence"], state.plan.rule_id),
+                "baseline": compact_evidence(context["baseline"], state.plan.rule_id)}
+        messages = messages_for("reporter", state, view)
+        brief = state.request.intent == "new_eval" and state.request.message == "生成方案比选报告" and not state.request.history
+        allowed = [] if brief else ["get_result", "explain_metric", "search_clause"]
         for _ in range(4):
             text = ""
+            reasoning = ""
             calls = []
             async for chunk in self.llm.stream(messages, tool_schemas(allowed)):
                 text += chunk.text
+                reasoning += getattr(chunk, "reasoning_content", "")
                 calls.extend(chunk.tool_calls)
                 if chunk.text:
                     await self.emit(
@@ -315,6 +339,8 @@ class AgentGraph:
                     ],
                 }
             )
+            if reasoning:
+                messages[-1]["reasoning_content"] = reasoning
             for call in calls:
                 if call.name not in allowed:
                     raise ValueError("报告节点只允许查询证据，不能修改或计算数据")
@@ -324,7 +350,7 @@ class AgentGraph:
                     {
                         "role": "tool",
                         "tool_call_id": call.id,
-                        "content": json.dumps(result, ensure_ascii=False),
+                        "content": json.dumps(compact_evidence(result, state.plan.rule_id), ensure_ascii=False),
                     }
                 )
             # 工具调用时输出的过渡文本也不能拼进最终正文。

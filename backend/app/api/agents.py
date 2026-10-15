@@ -6,9 +6,10 @@ import asyncio
 import json
 import logging
 from collections.abc import AsyncIterator
+from pathlib import Path
 from typing import Annotated, Any
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.engine import Engine
 from sqlmodel import Session
 from sse_starlette.sse import EventSourceResponse
@@ -17,12 +18,46 @@ from app.agents.graph import AgentGraph
 from app.agents.llm import get_llm
 from app.agents.state import AgentOutput, AgentRequest, GraphState
 from app.agents.storage import ReportCacheRow
+from app.agents.suggestions import QuestionSuggestions, parse_questions, project_context
 from app.agents.tools import AgentTools
+from app.config import get_settings
 from app.db import get_session
 
 router = APIRouter(prefix="/projects/{project_id}", tags=["agents"])
 logger = logging.getLogger(__name__)
 SessionDep = Annotated[Session, Depends(get_session)]
+AGENT_RUN_TIMEOUT_SECONDS = 110
+
+
+@router.post("/suggestions", response_model=QuestionSuggestions, summary="按当前项目生成建议追问")
+async def suggestions(project_id: int, session: SessionDep, scheme_id: int | None = Query(None, gt=0)) -> QuestionSuggestions:
+    engine = session.get_bind()
+    tools = AgentTools(engine, project_id)
+    before = await asyncio.to_thread(tools.fingerprint, False)
+    context = await asyncio.to_thread(project_context, engine, project_id, scheme_id)
+    llm = None
+    try:
+        llm = get_llm()
+        system = (Path(__file__).parents[1] / "agents/prompts/suggestions.md").read_text(encoding="utf-8")
+        async with asyncio.timeout(30):
+            result = await llm.chat([
+                {"role": "system", "content": system},
+                {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
+            ], [])
+        if result.tool_calls:
+            raise ValueError("建议问题不允许调用工具")
+        source = "fake" if get_settings().llm_provider.strip().lower() == "fake" else "model"
+        response = parse_questions(result.content, context, source)
+        if before != await asyncio.to_thread(tools.fingerprint, False):
+            raise HTTPException(409, "生成期间项目数据已变更，请刷新建议问题")
+        return response
+    except HTTPException:
+        raise
+    except Exception:
+        raise HTTPException(503, "建议问题暂未生成，可重试或直接输入追问") from None
+    finally:
+        if llm is not None and hasattr(llm, "aclose"):
+            await llm.aclose()
 
 
 async def event_stream(
@@ -51,9 +86,10 @@ async def event_stream(
             llm = get_llm()
             tools = AgentTools(engine, project_id)
             fingerprint = await asyncio.to_thread(tools.fingerprint, payload.include_whatif)
-            output = await AgentGraph(tools, llm, emit).run(
-                GraphState(project_id=project_id, request=payload)
-            )
+            async with asyncio.timeout(AGENT_RUN_TIMEOUT_SECONDS):
+                output = await AgentGraph(tools, llm, emit).run(
+                    GraphState(project_id=project_id, request=payload)
+                )
             if output.intent != "whatif" and fingerprint != await asyncio.to_thread(
                 tools.fingerprint, payload.include_whatif
             ):
@@ -74,6 +110,8 @@ async def event_stream(
             await emit("done", output.model_dump(mode="json"))
         except asyncio.CancelledError:
             raise
+        except TimeoutError:
+            await emit("error", {"message": "模型处理超时，请稍后重试，或检查模型服务响应速度与思考模式设置"})
         except Exception as exc:
             logger.exception("智能体请求失败")
             # SDK 异常可能含服务地址等信息，网络失败只给中文通用说明。
@@ -113,7 +151,7 @@ async def report(
     payload = payload.model_copy(update={"intent": "new_eval"})
     tools = AgentTools(session.get_bind(), project_id)
     # 非标准对话/追问不命中标准报告缓存，避免忽略用户要求。
-    standard = payload.message == "生成方案比选报告" and not payload.history and not payload.rule_id
+    standard = payload.message == "生成方案比选报告" and not payload.history and not payload.rule_id and payload.scheme_id is None
     key = await asyncio.to_thread(tools.cache_key, payload.rank_request()) if standard else None
     await asyncio.to_thread(tools.fingerprint, payload.include_whatif)
     return EventSourceResponse(event_stream(session.get_bind(), project_id, payload, key), ping=15)
@@ -121,6 +159,12 @@ async def report(
 
 @router.post("/chat", summary="对话追问、假设推演与改权重（SSE）")
 async def chat(project_id: int, payload: AgentRequest, session: SessionDep) -> EventSourceResponse:
+    if payload.scheme_id is not None:
+        from app.models import Scheme
+
+        selected = session.get(Scheme, payload.scheme_id)
+        if selected is None or selected.project_id != project_id:
+            raise HTTPException(404, "所选方案不属于当前项目")
     await asyncio.to_thread(
         AgentTools(session.get_bind(), project_id).fingerprint, payload.include_whatif
     )
