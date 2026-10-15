@@ -117,8 +117,8 @@ def test_switching_packs_invalidates_every_consumer_without_touching_other_proje
 
 def test_empty_region_is_explicitly_uncollected(client):
     packs = {item["code"]: item for item in client.get("/api/standards/packs").json()}
-    assert packs["JS"]["coverage"] == "not_collected"
-    assert "不能宣称" in packs["JS"]["note"]
+    assert packs["AH"]["coverage"] == "not_collected"
+    assert "不能宣称" in packs["AH"]["note"]
     assert packs["ZJ"]["coverage"] == "partial"
 
 
