@@ -4,7 +4,11 @@ from __future__ import annotations
 from typing import Any
 
 
-def compact_evidence(evidence: dict[str, Any], rule_id: str | None = None) -> dict[str, Any]:
+def compact_evidence(evidence: Any, rule_id: str | None = None) -> Any:
+    # search_clause 的结果是列表（当前检索桩返回 []），不是评估/排名字典。
+    # 非报告结构原样保留，避免工具成功后在整理模型上下文时崩溃。
+    if not isinstance(evidence, dict):
+        return evidence
     summary = {key: value for key, value in evidence.items() if key not in ("evaluation", "ranking", "tool_queries")}
     if "evaluation" in evidence:
         evaluation = evidence["evaluation"]

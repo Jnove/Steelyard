@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import asyncio
+import json
 from typing import Any
 
 import pytest
@@ -174,6 +175,37 @@ async def test_reporter_function_call_roundtrip(
         for call in llm.calls
         for message in call
     )
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("clauses", [[], [{"title": "测试条文", "content": "模块连接需提供构造资料"}]])
+async def test_explain_clause_list_roundtrip(
+    engine: Engine, mock_project: tuple[int, list[int]], monkeypatch: pytest.MonkeyPatch,
+    clauses: list[dict[str, str]],
+) -> None:
+    project, ids = mock_project
+    await run_graph(engine, project, AgentRequest())
+    original_call = AgentTools.call
+
+    def call(self, name, arguments):
+        return clauses if name == "search_clause" else original_call(self, name, arguments)
+
+    monkeypatch.setattr(AgentTools, "call", call)
+    answer = "需补充模块连接与抗震构造资料，并由专业人员核实适用的地方标准。"
+    llm = FakeLLM({"reporter": [
+        LLMResponse(tool_calls=[ToolCall(id="clauses", name="search_clause", arguments={"query": "模块连接与抗震构造"})]),
+        LLMResponse(content=answer),
+    ]})
+    output, events = await run_graph(engine, project, AgentRequest(
+        intent="explain", scheme_id=ids[1],
+        message="MiC 模块化在浙江省地方标准下，模块连接与抗震构造还需补充哪些资料？",
+    ), llm)
+    assert output.report == answer and not output.unverified_numbers
+    assert any(name == "tool_result" and data["tool"] == "search_clause" and data["result"] == clauses
+               for name, data in events)
+    forwarded = [message for messages in llm.calls for message in messages
+                 if message["role"] == "tool" and message["tool_call_id"] == "clauses"]
+    assert forwarded and all(json.loads(message["content"]) == clauses for message in forwarded)
 
 
 @pytest.mark.asyncio
