@@ -88,7 +88,7 @@ def local_questions(context: dict[str, Any]) -> list[str]:
     """FakeLLM 的确定性演示也随项目与选中方案变化。"""
     if "项目" in context:
         name = context.get("当前方案", context["项目"])[:35]
-        issues = context.get("待补资料", []) or context.get("未通过的事项", [])
+        issues = context.get("待核实的检查", []) or context.get("未通过的事项", [])
         first = f"「{name}」还需补充哪些资料？" if issues else f"「{name}」应先核对哪些条件？"
         others = context.get("方案取舍", [])
         second = f"「{name}」与「{others[0]['相比方案'][:35]}」主要差在哪？" if others else f"「{name}」的判断还需核实哪些依据？"

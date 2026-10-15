@@ -138,13 +138,16 @@ def reader_questions(context: dict[str, Any], labels: dict[str, str]) -> dict[st
     view["建造方式"] = selected["params"].get("mic_system") or selected["params"].get("structure_type")
     current = next((row for row in context.get("evaluations", []) if row["scheme_id"] == str(selected["id"])), {})
     issues = current.get("issues", [])[:3]
-    view["待补资料"] = list(dict.fromkeys(labels.get(key, "待补充的设计参数") for item in issues for key in item.get("missing_fields", [])))[:6]
+    view["待核实的检查"] = [{"核实事项": re.split(r"[（(]|属", item.get("name", "相关检查"), maxsplit=1)[0],
+                             "待补资料": [labels.get(key, "待补充的设计参数") for key in item.get("missing_fields", [])],
+                             "目前结论": STATUS_LABELS.get(item.get("status", ""), "待核实")}
+                            for item in issues]
     if any(item["status"] == "failed" for item in issues):
         view["未通过的事项"] = [item["name"] for item in issues if item["status"] == "failed"]
     # 复用同一套基于已计算维度分数的比较，只向建议模型传入定性关系。
     evidence = {"evaluation": {"results": context.get("evaluations", [])}, "ranking": {"ranking": context.get("ranking", [])}}
     view["方案取舍"] = (context.get("tradeoffs") or reader_evidence(evidence, selected["id"], "", labels).get("主要取舍", []))[:1]
-    view["判断边界"] = "规则评价差异不代表实际抗震风险、工期变化或居住损害；资料不足时应先核实条件，不能认定已触发专项要求。"
+    view["判断边界"] = "当前方案只是正在查看的候选，尚未确定采用。缺项资料只用于对应检查，不能归因到其他指标。规则评价差异不代表实际抗震风险、工期变化或居住损害；资料不足时先核实条件，不能认定已触发专项要求。"
     return view
 
 

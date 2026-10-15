@@ -5,7 +5,7 @@ import json
 import pytest
 from app.agents.graph import AgentGraph
 from app.agents.llm import FakeLLM, LLMResponse
-from app.agents.readable import builtin_labels, humanize, reader_evidence
+from app.agents.readable import builtin_labels, humanize, reader_evidence, reader_questions
 from app.agents.state import AgentRequest, GraphState
 from app.agents.tools import AgentTools
 
@@ -16,6 +16,14 @@ def test_identifier_translation_keeps_names_numbers_and_boundaries():
     assert "基坑开挖深度" in text and "现场勘测资料" in text and "资料不足" in text
     assert "GB 55003—2021，0.82" in text and "excavation_depth_extra" in text
     assert humanize("https://source.test/quality 和 green", protected_names=("green",)) == "https://source.test/quality 和 green"
+
+
+def test_missing_data_stays_attached_to_its_own_check():
+    view = reader_questions({"project": {"name": "虚构示例"}, "standard_packs": ["国家标准"], "evaluation_status": "current",
+        "selected_scheme": {"id": 1, "name": "B 模块化候选", "params": {"structure_type": "MiC"}}, "evaluations": [
+        {"scheme_id": "1", "scheme_name": "B 模块化候选", "dimension_scores": {}, "dimension_coverage": {}, "issues": [
+            {"rule_id": "K-03", "name": "深基坑属超过一定规模的危大工程（须专家论证）", "status": "insufficient_data", "missing_fields": ["excavation_depth"]}]}]}, builtin_labels())
+    assert view["待核实的检查"] == [{"核实事项": "深基坑", "待补资料": ["基坑开挖深度"], "目前结论": "资料不足"}]
 
 
 def test_reader_summary_preserves_risk_and_comparisons_without_dumping_numbers():
