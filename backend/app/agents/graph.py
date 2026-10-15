@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 from collections.abc import Awaitable, Callable
 from pathlib import Path
 from time import perf_counter
@@ -14,6 +15,7 @@ from langgraph.graph import END, START, StateGraph
 from app.agents.citation import check_citations
 from app.agents.llm import LLMClient, Messages
 from app.agents.presentation import compact_evidence
+from app.agents.readable import detailed_request, humanize, reader_evidence
 from app.agents.state import AgentOutput, GraphState, NodeTrace, Plan
 from app.agents.tools import AgentTools, compare_whatif, tool_schemas
 from app.api.rank import RankRequest
@@ -41,7 +43,7 @@ def messages_for(name: str, state: GraphState, context: dict[str, Any]) -> Messa
     return [
         {"role": "system", "content": prompt(name)},
         *reversed(history),
-        {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
+        {"role": "user", "content": json.dumps(context, ensure_ascii=False, separators=(",", ":"))},
     ]
 
 
@@ -306,12 +308,28 @@ class AgentGraph:
         if state.plan.intent == "reweight":
             previous = await self.call("reporter", "get_result", project_id=state.project_id)
             context["evidence"] = {**previous, "ranking": state.evidence["ranking"]}
-        view = {**context, "evidence": compact_evidence(context["evidence"], state.plan.rule_id),
-                "baseline": compact_evidence(context["baseline"], state.plan.rule_id)}
+        labels = await asyncio.to_thread(self.tools.field_labels)
+        rule_names = {item["rule_id"]: item["name"] for row in context["evidence"].get("evaluation", {}).get("results", [])
+                      for item in [*row.get("compliance", []), *row.get("metrics", {}).values()]}
+        details = detailed_request(state.request.message) or state.request.rule_id is not None
+        view = {
+            "request": {"message": state.request.message}, "response_mode": context["response_mode"],
+            "reader_view": reader_evidence(context["evidence"], state.request.scheme_id, state.request.message, labels, details=details),
+            "rewrite_numbers": context["rewrite_numbers"],
+        }
+        if state.comparison:
+            field = labels.get(state.comparison.get("field", ""), "设计参数")
+            view["comparison_view"] = f"本次调整{field}，比较原方案与副本；加入副本会改变候选集合，不能仅据名次断言因果。"
+            if details:
+                view["按需查看的调整结果"] = state.comparison
         messages = messages_for("reporter", state, view)
+        messages[0]["content"] += ("\n本次按用户要求解释具体依据，参数一律使用中文名称。" if details else
+            "\n本次面向普通读者：先说影响和下一步，不抄分数、字段名、检查编号或公式。")
+        if view["response_mode"] == "answer" and not details:
+            messages[0]["content"] += "只写一段约一百字的简短答复，不用报告章节。"
         brief = state.request.intent == "new_eval" and state.request.message == "生成方案比选报告" and not state.request.history
         # 解释路径已经固定读取评估并检索条文，避免模型重复取相同证据。
-        allowed = [] if brief else ["explain_metric"] if state.plan.intent == "explain" else ["get_result", "explain_metric", "search_clause"]
+        allowed = [] if brief or state.plan.intent == "explain" and not details else ["explain_metric"] if state.plan.intent == "explain" else ["get_result", "explain_metric", "search_clause"]
         for round_index in range(3):
             text = ""
             reasoning = ""
@@ -335,7 +353,13 @@ class AgentGraph:
             if not calls:
                 if not text.strip():
                     raise ValueError("模型未生成报告文本")
-                return {"report": text, "attempt": attempt, "evidence": context["evidence"]}
+                protected_names = tuple(row["scheme_name"] for row in context["evidence"].get("evaluation", {}).get("results", []))
+                readable = text if re.search(r"字段名|英文参数|原始参数|来源原文", state.request.message) else humanize(text, labels, protected_names)
+                if not details:
+                    readable = re.sub(r"\b(?:[A-Z]+-)+\d{2}\b", lambda match: rule_names.get(match[0], match[0]), readable)
+                if readable != text:
+                    await self.emit("token", {"node": "reporter", "attempt": attempt, "text": readable, "replace": True})
+                return {"report": readable, "attempt": attempt, "evidence": context["evidence"]}
             messages.append(
                 {
                     "role": "assistant",
@@ -364,7 +388,7 @@ class AgentGraph:
                     {
                         "role": "tool",
                         "tool_call_id": call.id,
-                        "content": json.dumps(compact_evidence(result, state.plan.rule_id), ensure_ascii=False),
+                        "content": json.dumps(compact_evidence(result, state.plan.rule_id), ensure_ascii=False, separators=(",", ":")),
                     }
                 )
             # 工具调用时输出的过渡文本也不能拼进最终正文。

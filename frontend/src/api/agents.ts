@@ -5,8 +5,11 @@ import { request } from './client'
 import type { QuestionSuggestions } from './generated/QuestionSuggestions'
 export type { AgentOutput, NumberIssue } from './generated/AgentOutput'
 
-export function suggestedQuestions(projectId: number, schemeId: string | undefined, signal: AbortSignal): Promise<QuestionSuggestions> {
-  const query = schemeId ? `?scheme_id=${encodeURIComponent(schemeId)}` : ''
+export function suggestedQuestions(projectId: number, schemeId: string | undefined, signal: AbortSignal, refresh = false): Promise<QuestionSuggestions> {
+  const params = new URLSearchParams()
+  if (schemeId) params.set('scheme_id', schemeId)
+  if (refresh) params.set('refresh', 'true')
+  const query = params.size ? `?${params}` : ''
   return request(`/projects/${projectId}/suggestions${query}`, { method: 'POST', signal })
 }
 

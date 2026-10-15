@@ -79,8 +79,9 @@ def test_model_receives_actual_context_and_is_closed(client: TestClient, mock_pr
     assert response.status_code == 200, response.text
     assert llm.closed
     context = json.loads(llm.calls[0][-1]["content"])
-    assert context["selected_scheme"]["id"] == ids[2]
-    assert "selected_scheme" in llm.calls[0][0]["content"]
+    assert "当前方案" in context and "selected_scheme" not in context
+    assert context["当前方案"] == "C MiC 高标准化"
+    assert "内部字段" in llm.calls[0][0]["content"]
 
 
 @pytest.mark.parametrize("content", ["not-json", '{"questions":[]}', '{"questions":["方案得分达到998.23了吗？"]}', '{"questions":["重复的问题是什么？","重复的问题是什么？"]}'])

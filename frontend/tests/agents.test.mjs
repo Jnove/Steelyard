@@ -2,7 +2,22 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
 
-import { streamAgent } from '../src/api/agents.ts'
+import { streamAgent, suggestedQuestions } from '../src/api/agents.ts'
+
+test('建议默认允许缓存，手动刷新明确请求重新生成并保留方案范围', async () => {
+  const originalFetch = globalThis.fetch
+  const paths = []
+  globalThis.fetch = async (url, options) => {
+    paths.push(url)
+    assert.equal(options.method, 'POST')
+    return new Response(JSON.stringify({ questions: ['当前方案主要的取舍是什么？'], source: 'model' }), { headers: { 'content-type': 'application/json' } })
+  }
+  try {
+    await suggestedQuestions(8, '24', new AbortController().signal)
+    await suggestedQuestions(8, '24', new AbortController().signal, true)
+    assert.deepEqual(paths, ['/api/projects/8/suggestions?scheme_id=24', '/api/projects/8/suggestions?scheme_id=24&refresh=true'])
+  } finally { globalThis.fetch = originalFetch }
+})
 
 test('UTF-8 多字节与 CRLF 任意分块仍能读取替换、警告与最终正文', async () => {
   const originalFetch = globalThis.fetch

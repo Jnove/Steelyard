@@ -13,6 +13,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, select
 
+from app.agents.readable import builtin_labels
 from app.agents.storage import AgentResultRow
 from app.api.evaluate import evaluate_project, get_last_evaluation
 from app.api.rank import RankRequest, _resolve_weights, rank_project
@@ -114,6 +115,10 @@ class AgentTools:
     def __init__(self, engine: Engine, project_id: int) -> None:
         self.engine = engine
         self.project_id = project_id
+
+    def field_labels(self) -> dict[str, str]:
+        with Session(self.engine) as session:
+            return {**builtin_labels(), **{row.key: row.label for row in fields_service.list_fields(session)}}
 
     def _require_project(self, session: Session) -> Project:
         project = session.get(Project, self.project_id)

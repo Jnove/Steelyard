@@ -195,11 +195,15 @@ function ProjectChat({ projectId }: { projectId: number }) {
 
   const mockReady = evaluationQuery.isSuccess && !rankingQuery.isPending && !rulesQuery.isPending
   const canStart = !!projectId && !busy && (!isMock || mockReady)
+  const freshSuggestions = useRef(false)
   const suggestionQuery = useQuery({
     queryKey: ['suggestions', projectId, schemeId, evaluationQuery.dataUpdatedAt, rankingQuery.dataUpdatedAt],
-    queryFn: ({ signal }) => isMock
-      ? Promise.resolve({ questions: offlineQuestions(results, schemeId), source: 'fake' as const })
-      : suggestedQuestions(projectId, schemeId, signal),
+    queryFn: ({ signal }) => {
+      const refresh = freshSuggestions.current
+      freshSuggestions.current = false
+      return isMock ? Promise.resolve({ questions: offlineQuestions(results, schemeId), source: 'fake' as const })
+        : suggestedQuestions(projectId, schemeId, signal, refresh)
+    },
     enabled: !busy && !evaluationQuery.isPending && !rankingQuery.isPending,
     staleTime: Infinity, retry: false, refetchOnWindowFocus: false,
   })
@@ -360,7 +364,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
             onClick={() => void start('chat', question, undefined, true)}>{question}</Button>)}
           <Button type="text" size="small" loading={suggestionQuery.isFetching}
             disabled={busy || suggestionQuery.isFetching || evaluationQuery.isPending || rankingQuery.isPending}
-            onClick={() => void suggestionQuery.refetch()}>刷新建议</Button>
+            onClick={() => { freshSuggestions.current = true; void suggestionQuery.refetch() }}>刷新建议</Button>
         </div>
         <p className="muted" role="status">{suggestionQuery.isFetching ? '正在结合项目生成建议…'
           : suggestionQuery.isError ? suggestionQuery.error instanceof ApiError && suggestionQuery.error.status === 503
@@ -376,7 +380,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
               {item.role === 'assistant' && <Tag>{item.status === 'streaming' ? '生成中' : item.status === 'done' ? '已完成' : item.status === 'cancelled' ? '已停止 · 内容未完成' : '生成失败 · 内容未完成'}</Tag>}
             </div>
             {!!item.tools.length && <Collapse size="small" items={item.tools.map((tool) => ({ key: tool.id,
-              label: `${tool.name} · ${tool.status === 'running' ? '计算中…' : tool.status === 'done' ? '已完成' : '未完成'}`,
+              label: `${({ get_result: '读取评估结果', search_clause: '查找参考依据', explain_metric: '查看判断依据', evaluate: '评估方案', rank: '比较方案', update_scheme_param: '创建推演方案' } as Record<string, string>)[tool.name] ?? '处理请求'} · ${tool.status === 'running' ? '处理中…' : tool.status === 'done' ? '已完成' : '未完成'}`,
               children: <pre>{tool.result === undefined ? (tool.status === 'running' ? '等待工具返回结果…' : '工具未返回详情') : toolResultText(tool.result)}</pre>,
             }))} />}
             {item.citationWarning && <Alert type="warning" showIcon message={item.status === 'done'

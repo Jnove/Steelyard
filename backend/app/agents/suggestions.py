@@ -11,7 +11,8 @@ from sqlalchemy.engine import Engine
 from sqlmodel import Session, select
 
 from app.agents.citation import check_citations
-from app.agents.tools import AgentTools
+from app.agents.readable import builtin_labels, humanize, reader_evidence, reader_questions
+from app.agents.tools import AgentTools, digest
 from app.engine.regions import pack_label
 from app.models import Project, Scheme
 
@@ -66,10 +67,12 @@ def project_context(engine: Engine, project_id: int, scheme_id: int | None) -> d
     context["ranking"] = [{key: row[key] for key in ("scheme_id", "scheme_name", "rank")}
                           for row in evidence.get("ranking", {}).get("ranking", [])[:3]]
     weights = evidence.get("ranking", {}).get("weights_used", {})
+    context["ranking_signature"] = digest(evidence.get("ranking", {}))
     context["weights_used"] = {key: weights[key] for key in ("source", "role", "role_name") if key in weights}
     relevant = {item["scheme_id"] for item in context["ranking"][:2]}
     if selected:
         relevant.add(str(selected.id))
+        context["tradeoffs"] = reader_evidence(evidence, selected.id, "", builtin_labels()).get("主要取舍", [])
     context["evaluations"] = [{
         "scheme_id": row["scheme_id"], "scheme_name": row["scheme_name"],
         "dimension_scores": row["dimension_scores"], "dimension_coverage": row["dimension_coverage"],
@@ -83,6 +86,13 @@ def project_context(engine: Engine, project_id: int, scheme_id: int | None) -> d
 
 def local_questions(context: dict[str, Any]) -> list[str]:
     """FakeLLM 的确定性演示也随项目与选中方案变化。"""
+    if "项目" in context:
+        name = context.get("当前方案", context["项目"])[:35]
+        issues = context.get("待补资料", []) or context.get("未通过的事项", [])
+        first = f"「{name}」还需补充哪些资料？" if issues else f"「{name}」应先核对哪些条件？"
+        others = context.get("方案取舍", [])
+        second = f"「{name}」与「{others[0]['相比方案'][:35]}」主要差在哪？" if others else f"「{name}」的判断还需核实哪些依据？"
+        return [first, second]
     selected = context.get("selected_scheme")
     if not selected:
         return [f"「{context['project']['name'][:35]}」应先补充哪些地块信息？", "开始方案比选前，需要准备哪些候选方案资料？"]
@@ -101,10 +111,21 @@ def local_questions(context: dict[str, Any]) -> list[str]:
     return questions[:3]
 
 
-def parse_questions(content: str, context: dict[str, Any], source: Literal["model", "fake"]) -> QuestionSuggestions:
+def question_view(context: dict[str, Any], labels: dict[str, str] | None = None) -> dict[str, Any]:
+    return reader_questions(context, labels or builtin_labels())
+
+
+def parse_questions(content: str, context: dict[str, Any], source: Literal["model", "fake"], labels: dict[str, str] | None = None) -> QuestionSuggestions:
     fenced = re.fullmatch(r"\s*```(?:json)?\s*(.*?)\s*```\s*", content, re.DOTALL)
     raw = json.loads(fenced[1] if fenced else content)
-    response = QuestionSuggestions(questions=raw["questions"], source=source)
-    if check_citations("\n".join(response.questions), context, [], len(context["schemes"])):
+    names = {item["rule_id"]: item["name"] for row in context.get("evaluations", []) for item in row.get("issues", [])}
+    protected_names = tuple(row["name"] for row in context.get("schemes", [])) + (context.get("project", {}).get("name", ""),)
+    questions = [humanize(re.sub(r"\b(?:[A-Z]+-)+\d{2}\b", lambda match: names.get(match[0], match[0]), question), labels, protected_names)
+                 if isinstance(question, str) else question for question in raw["questions"]]
+    response = QuestionSuggestions(questions=questions, source=source)
+    if any(re.search(r"\b(?:[A-Z]+-)+\d{2}\b", question) for question in response.questions):
+        raise ValueError("建议问题含有未提供的检查编号")
+    citation_context = {key: value for key, value in context.items() if key != "ranking_signature"}
+    if check_citations("\n".join(response.questions), citation_context, [], len(context["schemes"])):
         raise ValueError("建议问题含有未提供的数值")
     return response

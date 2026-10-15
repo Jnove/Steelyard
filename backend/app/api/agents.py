@@ -12,15 +12,22 @@ from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.engine import Engine
+from sqlalchemy.exc import SQLAlchemyError
 from sqlmodel import Session
 from sse_starlette.sse import EventSourceResponse
 
+from app.agents import question_cache
 from app.agents.graph import AgentGraph
 from app.agents.llm import get_llm
 from app.agents.state import AgentOutput, AgentRequest, GraphState
 from app.agents.storage import ReportCacheRow
-from app.agents.suggestions import QuestionSuggestions, parse_questions, project_context
-from app.agents.tools import AgentTools
+from app.agents.suggestions import (
+    QuestionSuggestions,
+    parse_questions,
+    project_context,
+    question_view,
+)
+from app.agents.tools import AgentTools, digest
 from app.config import get_settings
 from app.db import get_session
 
@@ -32,29 +39,48 @@ SUGGESTION_TIMEOUT_SECONDS = 45
 
 
 @router.post("/suggestions", response_model=QuestionSuggestions, summary="按当前项目生成建议追问")
-async def suggestions(project_id: int, session: SessionDep, scheme_id: int | None = Query(None, gt=0)) -> QuestionSuggestions:
+async def suggestions(project_id: int, session: SessionDep, scheme_id: int | None = Query(None, gt=0), refresh: bool = False) -> QuestionSuggestions:
     engine = session.get_bind()
     tools = AgentTools(engine, project_id)
     before = await asyncio.to_thread(tools.fingerprint, False)
     context = await asyncio.to_thread(project_context, engine, project_id, scheme_id)
+    labels = await asyncio.to_thread(tools.field_labels)
+    view = question_view(context, labels)
+    system = (Path(__file__).parents[1] / "agents/prompts/suggestions.md").read_text(encoding="utf-8")
+    settings = get_settings()
+    key = question_cache.PREFIX + digest({"project": project_id, "scheme": scheme_id, "inputs": before,
+        "context": context, "view": view, "prompt": system, "provider": settings.llm_provider,
+        "model": settings.llm_model, "base_url": settings.llm_base_url, "effort": settings.llm_reasoning_effort,
+        "credential_signature": digest(settings.llm_api_key)})
+    if not refresh:
+        try:
+            cached = await asyncio.to_thread(question_cache.read, engine, key)
+        except SQLAlchemyError:
+            cached = None
+            logger.warning("建议缓存读取失败，本次重新生成")
+        if cached and before == await asyncio.to_thread(tools.fingerprint, False):
+            return cached
     llm = None
     started = perf_counter()
     phase = "model"
     try:
         llm = get_llm()
-        system = (Path(__file__).parents[1] / "agents/prompts/suggestions.md").read_text(encoding="utf-8")
         async with asyncio.timeout(SUGGESTION_TIMEOUT_SECONDS):
             result = await llm.chat([
                 {"role": "system", "content": system},
-                {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
+                {"role": "user", "content": json.dumps(view, ensure_ascii=False, separators=(",", ":"))},
             ], [])
         if result.tool_calls:
             raise ValueError("建议问题不允许调用工具")
         phase = "validation"
         source = "fake" if get_settings().llm_provider.strip().lower() == "fake" else "model"
-        response = parse_questions(result.content, context, source)
+        response = parse_questions(result.content, context, source, labels)
         if before != await asyncio.to_thread(tools.fingerprint, False):
             raise HTTPException(409, "生成期间项目数据已变更，请刷新建议问题")
+        try:
+            await asyncio.to_thread(question_cache.write, engine, project_id, key, response)
+        except SQLAlchemyError:
+            logger.warning("建议缓存写入失败，本次仍返回已校验结果")
         return response
     except HTTPException:
         raise

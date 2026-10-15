@@ -46,7 +46,9 @@ async def test_new_eval_full_path(engine: Engine, mock_project: tuple[int, list[
         assert f"## {heading}" in output.report
     assert len(output.report) < 1400
     assert "首位概率" not in output.report
-    assert "C-" in output.report and "source" in output.report
+    assert "source" not in output.report and "insufficient_data" not in output.report
+    evaluation = next(data["result"] for name, data in events if name == "tool_result" and data["tool"] == "evaluate")
+    assert "rule_id" in evaluation["results"][0]["compliance"][0] and "source" in evaluation["results"][0]["compliance"][0]
 
 
 @pytest.mark.asyncio
@@ -65,7 +67,7 @@ async def test_whatif_preserves_parent(engine: Engine, mock_project: tuple[int, 
         assert copies[0].parent_id == ids[2]
         assert copies[0].params["std_floor_repeat"] == 0.6
     assert output.intent == "whatif" and not output.unverified_numbers
-    assert "原方案与副本对比" in output.report and "K-01" in output.report
+    assert "原方案与副本对比" in output.report and "标准层重复率" in output.report
     assert "加入副本" in output.report
     tools = [data["tool"] for name, data in events if name == "tool_call"]
     assert tools.count("update_scheme_param") == 1
@@ -112,7 +114,8 @@ async def test_explain_history_and_rule(
         ),
         llm,
     )
-    assert output.intent == "explain" and "规则 K-01" in output.report
+    assert output.intent == "explain" and "标准层重复率" in output.report
+    assert any(name == "tool_call" and data["tool"] == "explain_metric" and data["arguments"]["rule_id"] == "K-01" for name, data in events)
     assert any(message.get("content") == "之前的问题" for call in llm.calls for message in call)
     assert "evaluate" not in [data["tool"] for name, data in events if name == "tool_call"]
 
@@ -266,7 +269,7 @@ async def test_explain_prefetches_evidence_once(engine: Engine, mock_project: tu
     class NoRedundantQueries(FakeLLM):
         async def stream(self, messages, tools):
             names = [tool["function"]["name"] for tool in tools]
-            assert names == ["explain_metric"]
+            assert names == []
             async for chunk in super().stream(messages, tools):
                 yield chunk
     project, _ = mock_project
@@ -291,7 +294,7 @@ async def test_final_reporter_round_cannot_open_more_tools(engine: Engine, mock_
     project, _ = mock_project
     await run_graph(engine, project, AgentRequest())
     llm = ToolBudgetLLM()
-    output, _ = await run_graph(engine, project, AgentRequest(intent="explain", message="解释本方案的规则依据"), llm)
+    output, _ = await run_graph(engine, project, AgentRequest(intent="explain", message="详细解释本方案的规则依据"), llm)
     assert llm.rounds == 3 and not output.unverified_numbers
 
 

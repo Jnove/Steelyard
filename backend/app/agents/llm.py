@@ -196,6 +196,9 @@ class FakeLLM:
                 ]
             )
         if node == "reporter":
+            if "reader_view" in context:
+                from app.agents.readable import render_reader_demo
+                return LLMResponse(content=render_reader_demo(context))
             return LLMResponse(content=render_fake_report(context))
         if node == "suggestions":
             from app.agents.suggestions import local_questions

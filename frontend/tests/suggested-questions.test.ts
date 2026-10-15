@@ -9,7 +9,8 @@ test('离线建议随所选方案及真实失败项变化，不固定装配率�
     { scheme_id: '2', scheme_name: '模块化候选', compliance: [] },
   ] as EvalResult[]
   const first = offlineQuestions(results, '1'), second = offlineQuestions(results, '2')
-  assert.match(first[0], /剪力墙候选.*C-01/)
+  assert.match(first[0], /剪力墙候选.*资料/)
+  assert.ok(!first.join('').includes('C-01'))
   assert.match(second[0], /模块化候选/)
   assert.notDeepEqual(first, second)
   assert.ok(first.length <= 3 && second.length <= 3)
