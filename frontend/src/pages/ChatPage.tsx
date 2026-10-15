@@ -10,6 +10,7 @@ import type { EvalResult } from '../api/types'
 import type { SchemeChange } from '../api/generated/AgentRequest'
 import { mockSSE, postSSE, streamDelay } from '../api/sse'
 import { API_BASE } from '../api/base'
+import { ApiError } from '../api/client'
 import { applyAgentEvent, numberSegments, type StreamContent, type ToolCall } from '../api/agent-state'
 import TraceDrawer from '../components/TraceDrawer'
 import { IconFileText } from '../components/Icons'
@@ -362,7 +363,8 @@ function ProjectChat({ projectId }: { projectId: number }) {
             onClick={() => void suggestionQuery.refetch()}>刷新建议</Button>
         </div>
         <p className="muted" role="status">{suggestionQuery.isFetching ? '正在结合项目生成建议…'
-          : suggestionQuery.isError ? '建议暂未生成，可刷新重试或直接输入追问。'
+          : suggestionQuery.isError ? suggestionQuery.error instanceof ApiError && suggestionQuery.error.status === 503
+            ? suggestionQuery.error.message : '建议暂未生成，可刷新重试或直接输入追问。'
           : suggestionQuery.data?.source === 'fake' ? '项目情境建议 · 确定性演示'
           : suggestionQuery.data ? 'AI 建议 · 基于当前项目和所选方案' : ''}</p>
         <div className="chat-feed" ref={feed} role="log" aria-label="对话记录" aria-live="off"

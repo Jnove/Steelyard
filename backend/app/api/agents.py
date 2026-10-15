@@ -7,6 +7,7 @@ import json
 import logging
 from collections.abc import AsyncIterator
 from pathlib import Path
+from time import perf_counter
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
@@ -27,6 +28,7 @@ router = APIRouter(prefix="/projects/{project_id}", tags=["agents"])
 logger = logging.getLogger(__name__)
 SessionDep = Annotated[Session, Depends(get_session)]
 AGENT_RUN_TIMEOUT_SECONDS = 110
+SUGGESTION_TIMEOUT_SECONDS = 45
 
 
 @router.post("/suggestions", response_model=QuestionSuggestions, summary="按当前项目生成建议追问")
@@ -36,16 +38,19 @@ async def suggestions(project_id: int, session: SessionDep, scheme_id: int | Non
     before = await asyncio.to_thread(tools.fingerprint, False)
     context = await asyncio.to_thread(project_context, engine, project_id, scheme_id)
     llm = None
+    started = perf_counter()
+    phase = "model"
     try:
         llm = get_llm()
         system = (Path(__file__).parents[1] / "agents/prompts/suggestions.md").read_text(encoding="utf-8")
-        async with asyncio.timeout(30):
+        async with asyncio.timeout(SUGGESTION_TIMEOUT_SECONDS):
             result = await llm.chat([
                 {"role": "system", "content": system},
                 {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
             ], [])
         if result.tool_calls:
             raise ValueError("建议问题不允许调用工具")
+        phase = "validation"
         source = "fake" if get_settings().llm_provider.strip().lower() == "fake" else "model"
         response = parse_questions(result.content, context, source)
         if before != await asyncio.to_thread(tools.fingerprint, False):
@@ -53,7 +58,13 @@ async def suggestions(project_id: int, session: SessionDep, scheme_id: int | Non
         return response
     except HTTPException:
         raise
-    except Exception:
+    except TimeoutError:
+        logger.warning("建议问题生成超时 (project_id=%s, elapsed_ms=%s)", project_id, int((perf_counter() - started) * 1000))
+        raise HTTPException(503, "建议生成超时，请稍后重试；也可直接输入追问") from None
+    except Exception as exc:
+        # 不记录模型内容或 SDK 异常正文，避免凭据/项目数据进入日志。
+        logger.warning("建议问题生成失败 (project_id=%s, phase=%s, error_type=%s, elapsed_ms=%s)",
+                       project_id, phase, type(exc).__name__, int((perf_counter() - started) * 1000))
         raise HTTPException(503, "建议问题暂未生成，可重试或直接输入追问") from None
     finally:
         if llm is not None and hasattr(llm, "aclose"):

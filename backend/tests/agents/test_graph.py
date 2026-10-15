@@ -7,7 +7,7 @@ import json
 from typing import Any
 
 import pytest
-from app.agents.graph import AgentGraph
+from app.agents.graph import AgentGraph, messages_for
 from app.agents.llm import FakeLLM, LLMChunk, LLMResponse, ToolCall
 from app.agents.state import AgentRequest, GraphState
 from app.agents.tools import AgentTools
@@ -197,7 +197,7 @@ async def test_explain_clause_list_roundtrip(
         LLMResponse(content=answer),
     ]})
     output, events = await run_graph(engine, project, AgentRequest(
-        intent="explain", scheme_id=ids[1],
+        intent="new_eval", scheme_id=ids[1],
         message="MiC 模块化在浙江省地方标准下，模块连接与抗震构造还需补充哪些资料？",
     ), llm)
     assert output.report == answer and not output.unverified_numbers
@@ -247,6 +247,52 @@ async def test_empty_intent_plan_has_actionable_error(engine: Engine, mock_proje
     project, _ = mock_project
     with pytest.raises(ValueError, match="未返回有效的意图计划"):
         await run_graph(engine, project, AgentRequest(), FakeLLM({"coordinator": [LLMResponse()]}))
+
+
+def test_model_history_is_bounded_without_dropping_current_question() -> None:
+    state = GraphState(project_id=1, request=AgentRequest(message="当前问题", history=[
+        {"role": "assistant", "content": "长报告" * 9000} for _ in range(12)
+    ] + [{"role": "user", "content": "最近的问题"}]))
+    messages = messages_for("reporter", state, {"request": {"message": state.request.message}})
+    history = messages[1:-1]
+    assert sum(len(item["content"]) for item in history) <= 6000
+    assert all(len(item["content"]) <= 1600 for item in history)
+    assert history[-1] == {"role": "user", "content": "最近的问题"}
+    assert json.loads(messages[-1]["content"])["request"]["message"] == "当前问题"
+
+
+@pytest.mark.asyncio
+async def test_explain_prefetches_evidence_once(engine: Engine, mock_project: tuple[int, list[int]]) -> None:
+    class NoRedundantQueries(FakeLLM):
+        async def stream(self, messages, tools):
+            names = [tool["function"]["name"] for tool in tools]
+            assert names == ["explain_metric"]
+            async for chunk in super().stream(messages, tools):
+                yield chunk
+    project, _ = mock_project
+    await run_graph(engine, project, AgentRequest())
+    output, events = await run_graph(engine, project, AgentRequest(intent="explain", message="当前方案还缺哪些资料？"), NoRedundantQueries())
+    calls = [data["tool"] for name, data in events if name == "tool_call"]
+    assert calls == ["get_result", "search_clause"] and output.report
+
+
+@pytest.mark.asyncio
+async def test_final_reporter_round_cannot_open_more_tools(engine: Engine, mock_project: tuple[int, list[int]]) -> None:
+    class ToolBudgetLLM(FakeLLM):
+        rounds = 0
+        async def stream(self, messages, tools):
+            self.rounds += 1
+            if self.rounds < 3:
+                assert tools
+                yield LLMChunk(tool_calls=[ToolCall(id=f"rule-{self.rounds}", name="explain_metric", arguments={"rule_id": "K-01"})])
+            else:
+                assert tools == []
+                yield LLMChunk(text="请先核实缺失资料，再解释本方案的取舍。")
+    project, _ = mock_project
+    await run_graph(engine, project, AgentRequest())
+    llm = ToolBudgetLLM()
+    output, _ = await run_graph(engine, project, AgentRequest(intent="explain", message="解释本方案的规则依据"), llm)
+    assert llm.rounds == 3 and not output.unverified_numbers
 
 
 @pytest.mark.asyncio

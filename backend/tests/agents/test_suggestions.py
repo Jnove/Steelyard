@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import json
 
 import pytest
@@ -25,6 +26,9 @@ def test_contextual_suggestions_are_read_only(client: TestClient, engine: Engine
     context = project_context(engine, project, ids[1])
     assert context["selected_scheme"]["name"] in " ".join(body["questions"])
     assert context["evaluation_status"] == "current"
+    assert all(set(row) == {"scheme_id", "scheme_name", "rank"} for row in context["ranking"])
+    assert all("source" not in item and "formula" not in item and "limit" not in item
+               for row in context["evaluations"] for item in row["issues"])
     different = client.post(f"/api/projects/{project}/suggestions?scheme_id={ids[0]}").json()
     assert body["questions"] != different["questions"]
     with Session(engine) as session:
@@ -113,3 +117,28 @@ def test_context_change_while_generating_is_rejected(client: TestClient, engine:
             return LLMResponse(content='{"questions":["当前方案有哪些资料需要核实？"]}')
     monkeypatch.setattr(agents, "get_llm", ChangingModel)
     assert client.post(f"/api/projects/{project}/suggestions").status_code == 409
+
+
+def test_timeout_is_identifiable_and_closes_model(client: TestClient, mock_project: tuple[int, list[int]], monkeypatch: pytest.MonkeyPatch, caplog) -> None:
+    class SlowModel(FakeLLM):
+        closed = False
+        async def chat(self, messages, tools):
+            await asyncio.Event().wait()
+        async def aclose(self):
+            self.closed = True
+    llm = SlowModel()
+    monkeypatch.setattr(agents, "get_llm", lambda: llm)
+    monkeypatch.setattr(agents, "SUGGESTION_TIMEOUT_SECONDS", 0.01)
+    project, _ = mock_project
+    response = client.post(f"/api/projects/{project}/suggestions")
+    assert response.status_code == 503 and "超时" in response.json()["detail"]
+    assert llm.closed and "建议问题生成超时" in caplog.text
+
+
+def test_validation_logging_never_contains_model_text(client: TestClient, mock_project: tuple[int, list[int]], monkeypatch: pytest.MonkeyPatch, caplog) -> None:
+    llm = FakeLLM({"suggestions": [LLMResponse(content="private_model_text_not_json")]})
+    monkeypatch.setattr(agents, "get_llm", lambda: llm)
+    project, _ = mock_project
+    response = client.post(f"/api/projects/{project}/suggestions")
+    assert response.status_code == 503 and "phase=validation" in caplog.text
+    assert "private_model_text_not_json" not in caplog.text and "private_model_text_not_json" not in response.text

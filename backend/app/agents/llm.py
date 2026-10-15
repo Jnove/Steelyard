@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import logging
 import re
 from collections.abc import AsyncIterator
 from typing import Any, Protocol
@@ -14,6 +15,7 @@ from app.config import Settings, get_settings
 
 Messages = list[dict[str, Any]]
 Tools = list[dict[str, Any]]
+logger = logging.getLogger(__name__)
 
 
 class ToolCall(BaseModel):
@@ -56,53 +58,78 @@ class OpenAILLM:
         )
 
     async def chat(self, messages: Messages, tools: Tools) -> LLMResponse:
-        response = await self.client.chat.completions.create(
-            model=self.model, messages=messages, **self.request_options, **({"tools": tools} if tools else {})
-        )
-        message = response.choices[0].message
-        return LLMResponse(
-            content=message.content or "",
-            tool_calls=[
-                ToolCall(id=c.id, name=c.function.name, arguments=json.loads(c.function.arguments))
-                for c in (message.tool_calls or [])
-            ],
-        )
+        for attempt in range(2):
+            response = await self.client.chat.completions.create(
+                model=self.model, messages=messages, **self.request_options, **({"tools": tools} if tools else {})
+            )
+            choice = response.choices[0] if response.choices else None
+            self.check_finish_reason(choice.finish_reason if choice else None)
+            message = choice.message if choice else None
+            if message and ((message.content or "").strip() or message.tool_calls):
+                return LLMResponse(
+                    content=message.content or "",
+                    tool_calls=[
+                        ToolCall(id=c.id, name=c.function.name, arguments=json.loads(c.function.arguments))
+                        for c in (message.tool_calls or [])
+                    ],
+                )
+            logger.warning("模型返回空响应 (mode=chat, attempt=%s)", attempt + 1)
+        raise ValueError("模型服务连续返回空响应，请稍后重试或检查模型服务状态")
+
+    @staticmethod
+    def check_finish_reason(reason: str | None) -> None:
+        if reason == "length":
+            raise ValueError("模型输出被服务截断，请检查输出额度与思考模式设置后重试")
+        if reason == "content_filter":
+            raise ValueError("模型服务未能回答此问题，请调整问题后重试")
 
     async def stream(self, messages: Messages, tools: Tools) -> AsyncIterator[LLMChunk]:
-        response = await self.client.chat.completions.create(
-            model=self.model,
-            messages=messages,
-            stream=True,
-            **self.request_options,
-            **({"tools": tools} if tools else {}),
-        )
-        calls: dict[int, dict[str, str]] = {}
-        try:
-            async for chunk in response:
-                if not chunk.choices:
-                    continue
-                delta = chunk.choices[0].delta
-                if getattr(delta, "reasoning_content", None):
-                    # 仅供兼容服务的工具回合续接；不作为报告文本或 SSE 输出。
-                    yield LLMChunk(reasoning_content=delta.reasoning_content)
-                if delta.content:
-                    yield LLMChunk(text=delta.content)
-                for call in delta.tool_calls or []:
-                    item = calls.setdefault(call.index, {"id": "", "name": "", "arguments": ""})
-                    if call.id:
-                        item["id"] = call.id
-                    if call.function:
-                        item["name"] += call.function.name or ""
-                        item["arguments"] += call.function.arguments or ""
-            if calls:
-                yield LLMChunk(
-                    tool_calls=[
-                        ToolCall(id=c["id"], name=c["name"], arguments=json.loads(c["arguments"]))
-                        for _, c in sorted(calls.items())
-                    ]
-                )
-        finally:
-            await response.close()
+        for attempt in range(2):
+            response = await self.client.chat.completions.create(
+                model=self.model, messages=messages, stream=True,
+                **self.request_options, **({"tools": tools} if tools else {}),
+            )
+            calls: dict[int, dict[str, str]] = {}
+            pending_reasoning = ""
+            has_text = False
+            finish_reason = None
+            try:
+                async for chunk in response:
+                    if not chunk.choices:
+                        continue
+                    choice = chunk.choices[0]
+                    finish_reason = choice.finish_reason or finish_reason
+                    delta = choice.delta
+                    pending_reasoning += getattr(delta, "reasoning_content", None) or ""
+                    if delta.content and (has_text or delta.content.strip()):
+                        if pending_reasoning:
+                            # 空响应重试的思考不续接；有效回合的思考只回传模型。
+                            yield LLMChunk(reasoning_content=pending_reasoning)
+                            pending_reasoning = ""
+                        has_text |= bool(delta.content.strip())
+                        yield LLMChunk(text=delta.content)
+                    for call in delta.tool_calls or []:
+                        item = calls.setdefault(call.index, {"id": "", "name": "", "arguments": ""})
+                        if call.id:
+                            item["id"] = call.id
+                        if call.function:
+                            item["name"] += call.function.name or ""
+                            item["arguments"] += call.function.arguments or ""
+                self.check_finish_reason(finish_reason)
+                if calls:
+                    yield LLMChunk(
+                        reasoning_content=pending_reasoning,
+                        tool_calls=[
+                            ToolCall(id=c["id"], name=c["name"], arguments=json.loads(c["arguments"]))
+                            for _, c in sorted(calls.items())
+                        ],
+                    )
+                if has_text or calls:
+                    return
+            finally:
+                await response.close()
+            logger.warning("模型返回空响应 (mode=stream, attempt=%s)", attempt + 1)
+        raise ValueError("模型服务连续返回空响应，请稍后重试或检查模型服务状态")
 
     async def aclose(self) -> None:
         await self.client.close()

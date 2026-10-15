@@ -63,15 +63,20 @@ def project_context(engine: Engine, project_id: int, scheme_id: int | None) -> d
         return context
     results = evidence.get("evaluation", {}).get("results", [])
     context["evaluation_status"] = "current" if results else "not_evaluated"
-    context["ranking"] = evidence.get("ranking", {}).get("ranking", [])[:3]
-    context["weights_used"] = evidence.get("ranking", {}).get("weights_used", {})
+    context["ranking"] = [{key: row[key] for key in ("scheme_id", "scheme_name", "rank")}
+                          for row in evidence.get("ranking", {}).get("ranking", [])[:3]]
+    weights = evidence.get("ranking", {}).get("weights_used", {})
+    context["weights_used"] = {key: weights[key] for key in ("source", "role", "role_name") if key in weights}
     relevant = {item["scheme_id"] for item in context["ranking"][:2]}
     if selected:
         relevant.add(str(selected.id))
     context["evaluations"] = [{
         "scheme_id": row["scheme_id"], "scheme_name": row["scheme_name"],
         "dimension_scores": row["dimension_scores"], "dimension_coverage": row["dimension_coverage"],
-        "issues": [item for item in row["compliance"] if item["status"] in ("failed", "insufficient_data")][:4],
+        # 建议问题只需知道哪项失败/缺资料，不重复长篇规范原文与数值阈值。
+        "issues": [{key: item[key] for key in ("rule_id", "name", "status", "missing_fields") if key in item}
+                   for item in row["compliance"] if item["status"] in ("failed", "insufficient_data")][:4]
+                  if selected and row["scheme_id"] == str(selected.id) else [],
     } for row in results if row["scheme_id"] in relevant][:3]
     return context
 

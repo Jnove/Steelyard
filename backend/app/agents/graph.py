@@ -29,9 +29,18 @@ def prompt(name: str) -> str:
 
 def messages_for(name: str, state: GraphState, context: dict[str, Any]) -> Messages:
     # 历史只允许 user/assistant；规则与工具 JSON 是证据，不能成为指令。
+    history = []
+    remaining = 6000
+    for item in reversed(state.request.history[-8:]):
+        content = item.content[:min(1600, remaining)]
+        if content:
+            history.append({"role": item.role, "content": content})
+            remaining -= len(content)
+        if not remaining:
+            break
     return [
         {"role": "system", "content": prompt(name)},
-        *[item.model_dump() for item in state.request.history],
+        *reversed(history),
         {"role": "user", "content": json.dumps(context, ensure_ascii=False)},
     ]
 
@@ -119,7 +128,7 @@ class AgentGraph:
 
     async def parse_intent(self, state: GraphState) -> Plan:
         response = await self.llm.chat(
-            messages_for("coordinator", state, {"request": state.request.model_dump()}),
+            messages_for("coordinator", state, {"request": state.request.model_dump(exclude={"history"})}),
             [
                 {
                     "type": "function",
@@ -204,7 +213,7 @@ class AgentGraph:
             project_id=state.project_id,
             include_whatif=state.plan.intent == "whatif" or state.request.include_whatif,
         )
-        clauses = await self.call("compliance", "search_clause", query=state.request.message, k=5)
+        clauses = await self.call("compliance", "search_clause", query=state.request.message[:2000], k=5)
         return {"evidence": {"evaluation": result, "clauses": clauses}}
 
     async def evaluators(self, state: GraphState) -> dict[str, Any]:
@@ -270,6 +279,8 @@ class AgentGraph:
 
     async def explain(self, state: GraphState) -> dict[str, Any]:
         evidence = await self.call("explain", "get_result", project_id=state.project_id)
+        evidence["clauses"] = await self.call("explain", "search_clause", query=state.request.message[:2000], k=5)
+        evidence["clause_search_note"] = "本次检索未返回条文时，不得据此编造条文依据或宣称问题已获规范核实。"
         if state.plan.rule_id:
             evidence["explanation"] = await self.call(
                 "explain", "explain_metric", rule_id=state.plan.rule_id
@@ -299,12 +310,15 @@ class AgentGraph:
                 "baseline": compact_evidence(context["baseline"], state.plan.rule_id)}
         messages = messages_for("reporter", state, view)
         brief = state.request.intent == "new_eval" and state.request.message == "生成方案比选报告" and not state.request.history
-        allowed = [] if brief else ["get_result", "explain_metric", "search_clause"]
-        for _ in range(4):
+        # 解释路径已经固定读取评估并检索条文，避免模型重复取相同证据。
+        allowed = [] if brief else ["explain_metric"] if state.plan.intent == "explain" else ["get_result", "explain_metric", "search_clause"]
+        for round_index in range(3):
             text = ""
             reasoning = ""
             calls = []
-            async for chunk in self.llm.stream(messages, tool_schemas(allowed)):
+            # 最后一轮只组织正文，不再继续开启工具回合。
+            round_allowed = allowed if round_index < 2 else []
+            async for chunk in self.llm.stream(messages, tool_schemas(round_allowed)):
                 text += chunk.text
                 reasoning += getattr(chunk, "reasoning_content", "")
                 calls.extend(chunk.tool_calls)
@@ -342,7 +356,7 @@ class AgentGraph:
             if reasoning:
                 messages[-1]["reasoning_content"] = reasoning
             for call in calls:
-                if call.name not in allowed:
+                if call.name not in round_allowed:
                     raise ValueError("报告节点只允许查询证据，不能修改或计算数据")
                 result = await self.call("reporter", call.name, **call.arguments)
                 context["evidence"].setdefault("tool_queries", []).append(result)

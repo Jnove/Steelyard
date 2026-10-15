@@ -59,6 +59,8 @@ Compose 固定 `APP_ENV=prod`、数据库 `sqlite:////app/data/zhuheng.db`，并
 
 模型服务支持时可设置 `LLM_REASONING_EFFORT=low`，留空则不发送此参数；不要假定所有兼容服务都支持相同强度。参数用法见 [OpenAI Chat Completions](https://developers.openai.com/api/reference/resources/chat/subresources/completions/methods/create) 与 [DeepSeek 思考模式](https://api-docs.deepseek.com/guides/thinking_mode/)，最终以所配置服务实测为准。
 
+当前 DeepSeek 兼容服务实测可用 `LLM_REASONING_EFFORT=none` 缩短简短追问与建议的等待；同一服务的其他开关可能被忽略，切换服务后应重新验证。模型返回空响应时最多重试一次；隐藏思考不作为正文，明确被截断的输出不作为成功结果。建议只接收必要的项目摘要，总预算为 45 秒；超时后页面提供重试提示，日志仅记录失败阶段、异常类型与耗时。对话历史仅保留最近的必要片段，已有结果与条文在解释节点一次读取，避免重复调用模型取同一份证据。
+
 默认精简报告直接使用确定性评分、关键问题与排名摘要，仅由模型组织最终文字，不重复调用意图解析及四份维度评语；完整结果保留用于溯源。普通页面追问走只读解释，参数修改仍使用明确的假设推演入口。模型请求超过整条链路的 110 秒预算会发出中文 `error` 并关闭连接，不会持续只发心跳。思考模式的内部内容仅用于模型工具回合续接，不写进报告或 SSE。
 
 ## GitHub 配置
