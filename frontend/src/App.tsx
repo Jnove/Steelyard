@@ -1,6 +1,8 @@
 import { lazy, Suspense } from 'react'
 import { Skeleton } from 'antd'
+import { useQuery } from '@tanstack/react-query'
 import { NavLink, Navigate, Route, Routes, useLocation } from 'react-router-dom'
+import { projects } from './api/projects'
 import ProjectsPage from './pages/ProjectsPage'
 import SchemesPage from './pages/SchemesPage'
 import { isMock } from './constants/dimensions'
@@ -12,9 +14,16 @@ const ChatPage = lazy(() => import('./pages/ChatPage'))
 export default function App() {
   const location = useLocation()
   const projectId = location.pathname.match(/projects\/(\d+)/)?.[1]
+  const showProjectName = !!projectId && /\/(dashboard|chat)\/?$/.test(location.pathname)
+  const id = Number(projectId)
+  const project = useQuery({ queryKey: ['project', id], queryFn: () => projects.get(id), enabled: showProjectName })
+  const projectName = project.data?.name ?? (project.isError ? '项目名称暂不可用' : '正在加载项目…')
   return <div className={'app-shell ' + (projectId ? 'app-shell-project' : 'app-shell-overview')}>
-    <header className="app-rail glass-surface">
-      <NavLink to="/projects" className="brand" aria-label="筑衡 · 返回项目总览"><span className="brand-mark" aria-hidden="true"><IconScale size={23} /></span><span>筑衡<small>STEELYARD</small></span></NavLink>
+    <header className={'app-rail glass-surface' + (showProjectName ? ' app-rail-with-project' : '')}>
+      <div className="rail-identity">
+        <NavLink to="/projects" className="brand" aria-label="筑衡 · 返回项目总览"><span className="brand-mark" aria-hidden="true"><IconScale size={23} /></span><span>筑衡<small>STEELYARD</small></span></NavLink>
+        {showProjectName && <span className="rail-project-name" aria-label={'当前项目：' + projectName} title={projectName}>{projectName}</span>}
+      </div>
       <nav aria-label="主导航">
         <NavLink end to="/projects"><IconLayers size={16} />项目总览</NavLink>
         {projectId && <>
