@@ -106,6 +106,15 @@ def test_parse_questions_enforces_length():
         parse_questions(json.dumps({"questions": ["长" * 121 + "？"]}), {"schemes": []}, "model")
 
 
+def test_extra_model_questions_keep_only_three_without_bypassing_checks():
+    questions = [f"当前方案的第{index}项资料还需要核实什么？" for index in ("一", "二", "三", "四", "五", "六")]
+    parsed = parse_questions(json.dumps({"questions": questions}), {"schemes": []}, "model")
+    assert parsed.questions == questions[:3] and parsed.source == "model"
+    questions[0] = "当前方案达到未经提供的998.23分了吗？"
+    with pytest.raises(ValueError, match="未提供的数值"):
+        parse_questions(json.dumps({"questions": questions}), {"schemes": []}, "model")
+
+
 def test_context_change_while_generating_is_rejected(client: TestClient, engine: Engine, mock_project: tuple[int, list[int]], monkeypatch: pytest.MonkeyPatch) -> None:
     project, _ = mock_project
     class ChangingModel(FakeLLM):

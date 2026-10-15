@@ -1,5 +1,5 @@
 {
-  "fixture_id": "db53b5d4f97f99a11e4ece55853cdbd22e637d738647f37298fad2e2c8f0b161",
+  "fixture_id": "ef658a999af41a2cd295e0121bce2621af64b8d597f3a4bf7040270b80d380ec",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
@@ -9,10 +9,10 @@
     "backend/app/agents/llm.py": "a3d0c208c415c8ca7f51a92cc4810019fd5f12204b8f6f7f98c6fcc8ce280622",
     "backend/app/agents/presentation.py": "5d8b6d01d47bc0e0509a186044c33e1370b2eda89d00a7808ebc584545fa5bb0",
     "backend/app/agents/question_cache.py": "ae7061f13869dd69864090ab521160009b2c1794cc2ad32d8f9442dfbbf5100d",
-    "backend/app/agents/readable.py": "3580f3668cfd24c9fad905af14dcd152b49ea949dc4d715ba7c8c4b2d278970d",
+    "backend/app/agents/readable.py": "c853348be7be20a0db0f52d0b4557c7225cc46a92073862782c387bed6f4f26e",
     "backend/app/agents/state.py": "b9edceb15b82271f6276bac1eda083c7b08b88f18cd733d224415b84fcd2a7e6",
     "backend/app/agents/storage.py": "868b6d6e6c648af1b3c07029fd199fe7e3dc46b878e0c578dfe8e7d0a08553bf",
-    "backend/app/agents/suggestions.py": "59c5ffab846f89e193fdda4fd6bf33b1cc8abbfbd4f056e6c0d77700cf5ecace",
+    "backend/app/agents/suggestions.py": "ba09ae3c8d7d98dbd3d85431b4290e7b90e95029b64df006bc8010a1f6db6fc5",
     "backend/app/agents/tools.py": "4a40160d5e55049930d9a3b58803ef2d9027b78e9c568f65a80634156657b27f",
     "backend/app/api/__init__.py": "e61363389bcff57bfd5ddd9ff8cd10b8c6fdaecbf149e9aec7b7608f4af6305c",
     "backend/app/api/agents.py": "fddafe35b811256d37a2d2043c5b3636ffe4997b8aca3944e4a5ccb3c84950b8",

@@ -5,7 +5,13 @@ import json
 import pytest
 from app.agents.graph import AgentGraph
 from app.agents.llm import FakeLLM, LLMResponse
-from app.agents.readable import builtin_labels, humanize, reader_evidence, reader_questions
+from app.agents.readable import (
+    builtin_labels,
+    humanize,
+    issue_view,
+    reader_evidence,
+    reader_questions,
+)
 from app.agents.state import AgentRequest, GraphState
 from app.agents.tools import AgentTools
 
@@ -24,6 +30,18 @@ def test_missing_data_stays_attached_to_its_own_check():
         {"scheme_id": "1", "scheme_name": "B 模块化候选", "dimension_scores": {}, "dimension_coverage": {}, "issues": [
             {"rule_id": "K-03", "name": "深基坑属超过一定规模的危大工程（须专家论证）", "status": "insufficient_data", "missing_fields": ["excavation_depth"]}]}]}, builtin_labels())
     assert view["待核实的检查"] == [{"核实事项": "深基坑", "待补资料": ["基坑开挖深度"], "目前结论": "资料不足"}]
+
+
+def test_question_clues_do_not_turn_dimension_scores_into_safety_findings():
+    view = reader_questions({"project": {"name": "虚构示例"}, "standard_packs": ["国家标准"], "evaluation_status": "current",
+        "selected_scheme": {"id": 1, "name": "B 候选", "params": {}}, "tradeoffs": [
+            {"相比方案": "D 常规", "当前方案较低的方面": ["结构安全"], "当前方案较高的方面": ["施工友好"],
+             "已有的具体指标线索": [{"指标": "结构体系适用性", "当前规则评价": "较低"}]}]}, builtin_labels())
+    tradeoff = view["方案取舍"][0]
+    assert tradeoff == {"相比方案": "D 常规", "已有的具体指标线索": [{"指标": "结构体系适用性", "当前规则评价": "较低"}]}
+    issue = {"name": "深基坑属超过一定规模的危大工程（须专家论证）", "status": "insufficient_data", "missing_fields": ["excavation_depth"]}
+    assert issue_view(issue, builtin_labels()) == {"检查事项": "深基坑", "判断": "资料不足", "需要补充": ["基坑开挖深度"]}
+    assert "须专家论证" in issue_view({**issue, "status": "failed"}, builtin_labels())["检查事项"]
 
 
 def test_reader_summary_preserves_risk_and_comparisons_without_dumping_numbers():

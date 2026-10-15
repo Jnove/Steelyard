@@ -120,8 +120,9 @@ def parse_questions(content: str, context: dict[str, Any], source: Literal["mode
     raw = json.loads(fenced[1] if fenced else content)
     names = {item["rule_id"]: item["name"] for row in context.get("evaluations", []) for item in row.get("issues", [])}
     protected_names = tuple(row["name"] for row in context.get("schemes", [])) + (context.get("project", {}).get("name", ""),)
+    # 模型偶尔多写几个问题；保留合同允许的前三个，不为数量问题再请求模型。
     questions = [humanize(re.sub(r"\b(?:[A-Z]+-)+\d{2}\b", lambda match: names.get(match[0], match[0]), question), labels, protected_names)
-                 if isinstance(question, str) else question for question in raw["questions"]]
+                 if isinstance(question, str) else question for question in raw["questions"][:3]]
     response = QuestionSuggestions(questions=questions, source=source)
     if any(re.search(r"\b(?:[A-Z]+-)+\d{2}\b", question) for question in response.questions):
         raise ValueError("建议问题含有未提供的检查编号")
