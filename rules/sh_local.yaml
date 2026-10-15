@@ -1,0 +1,33 @@
+# 上海册（pack: SH）
+#
+# 依据文件：《住宅设计标准》DGJ08-20-2019，2020-01-01实施。
+# 正文来源：上海市住房和城乡建设管理委员会批准通知及现行标准目录：
+# https://jsjtw.sh.gov.cn/zjw/jsgl/20191108/71452.html
+# https://zjw.sh.gov.cn/xxbz/
+# 核对日期：2026-10-15。
+
+- id: SH-Q-01
+  pack: SH
+  name: 上海住宅层高建议下限
+  type: hard
+  severity: warning
+  check: "floor_height >= 2.80"
+  message: "住宅层高 {floor_height} m 低于上海市住宅设计标准建议的 2.80 m"
+  source: "《住宅设计标准》DGJ08-20-2019 第4.8.1条：住宅层高宜为2.80m，且不应大于3.60m；该条为推荐性地方标准，系统只作 warning（上海市住建委官方批准通知，2026-10-15核对）"
+
+- id: SH-Q-02
+  pack: SH
+  name: 上海住宅层高上限
+  type: hard
+  severity: warning
+  check: "floor_height <= 3.60"
+  message: "住宅层高 {floor_height} m 超过上海市住宅设计标准的 3.60 m 上限"
+  source: "《住宅设计标准》DGJ08-20-2019 第4.8.1条：住宅层高不应大于3.60m（上海市住建委官方批准通知及现行标准目录，2026-10-15核对）"
+
+- id: SH-Q-03
+  pack: SH
+  name: 上海卧室起居室净高下限
+  type: hard
+  check: "clear_height >= 2.50"
+  message: "卧室、起居室净高 {clear_height} m 低于上海市要求的 2.50 m"
+  source: "《住宅设计标准》DGJ08-20-2019 第4.8.2条：卧室、起居室的室内净高不应低于2.50m（上海市住建委批准标准，2026-10-15核对）"

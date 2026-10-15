@@ -1,0 +1,22 @@
+# 山东册（pack: SD）
+#
+# 依据文件：《住宅设计标准》DB37/T 5323-2025，2025-07-01实施。
+# 标准状态及主管部门来源：全国标准信息公共服务平台：
+# https://std.samr.gov.cn/db/search/stdDBDetailed?id=4909497010262730E06397BE0A0A2156
+# 条文文本交叉核对日期：2026-10-15。
+
+- id: SD-Q-01
+  pack: SD
+  name: 山东住宅层高下限
+  type: hard
+  check: "floor_height >= 3.00"
+  message: "住宅层高 {floor_height} m 低于山东省要求的 3.00 m"
+  source: "《住宅设计标准》DB37/T 5323-2025 第6.8.1条：住宅层高不应低于3.00m（全国标准信息公共服务平台登记为现行，2026-10-15核对）"
+
+- id: SD-Q-02
+  pack: SD
+  name: 山东卧室起居室净高下限
+  type: hard
+  check: "clear_height >= 2.60"
+  message: "卧室、起居室净高 {clear_height} m 低于山东省要求的 2.60 m"
+  source: "《住宅设计标准》DB37/T 5323-2025 第6.8.2条：卧室、起居室室内净高不应低于2.60m（全国标准信息公共服务平台登记及标准文本，2026-10-15核对）"

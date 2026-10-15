@@ -1,0 +1,33 @@
+# 甘肃册（pack: GS）
+#
+# 依据文件：《宜居住宅设计标准》DB62/T 3279-2024，2024-11-15实施，
+# 甘肃省住房和城乡建设厅、甘肃省市场监督管理局联合发布。
+# 省级标准发布信息由甘肃省住建系统公开转发并由地方政府公开全文摘要，
+# https://www.huining.gov.cn/xxgk/xzxxgk/zcz/fdzdgknr/zfbz/art/2024/art_03d2fe196fe64119953ce6f705aa92a2.html
+# 核对日期：2026-10-15。
+
+- id: GS-Q-01
+  pack: GS
+  name: 甘肃宜居住宅层高下限
+  type: hard
+  check: "floor_height >= 3.0"
+  message: "住宅层高 {floor_height} m 低于甘肃宜居住宅标准要求的 3.0 m"
+  source: "《宜居住宅设计标准》DB62/T 3279-2024：住宅层高应大于等于3.0m（甘肃省住建系统公开发布摘要，2026-10-15核对）"
+
+- id: GS-Q-02
+  pack: GS
+  name: 甘肃设新风系统时层高建议
+  type: hard
+  severity: warning
+  when: "has_fresh_air"
+  check: "floor_height >= 3.2"
+  message: "设置户内新风系统时，甘肃标准要求层高不低于3.2m；请复核"
+  source: "《宜居住宅设计标准》DB62/T 3279-2024：户内设置新风系统时层高不应低于3.2m（甘肃省住建系统公开发布摘要，2026-10-15核对；本条按建议性复核提示处理）"
+
+- id: GS-G-01
+  pack: GS
+  name: 甘肃住区绿地率下限
+  type: hard
+  check: "green_ratio >= 0.30"
+  message: "住区绿地率 {green_ratio} 低于甘肃标准要求的 30%"
+  source: "《宜居住宅设计标准》DB62/T 3279-2024：住区绿地率不应小于30%（甘肃省住建系统公开发布摘要，2026-10-15核对）"

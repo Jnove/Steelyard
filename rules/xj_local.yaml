@@ -1,0 +1,17 @@
+# 新疆册（pack: XJ）
+#
+# 依据文件：《住宅设计标准》XJJ131-2021（自治区住房和城乡建设厅发布），
+# 及新疆住宅日照条文的官方 PDF。来源：
+# https://zjt.xinjiang.gov.cn/xjzjt/c113175/202105/080a7cc4b851496bb8f5d982c6a73d01.shtml
+# https://zjt.xinjiang.gov.cn/xjzjt/uploads/20221219121502pe0akq4mgwu.pdf
+# 核对日期：2026-10-15。
+
+- id: XJ-Q-01
+  pack: XJ
+  name: 新疆住宅大寒日日照下限（50万人以上城镇）
+  type: hard
+  severity: warning
+  when: "daylight_standard_day == '大寒日'"
+  check: "sunlight_hours >= 2"
+  message: "大寒日日照时数 {sunlight_hours} h 低于新疆50万人以上城镇要求的 2 h"
+  source: "新疆住宅设计标准相关条文表4.2.1：城镇常住人口≥50万时，住宅建筑日照标准为大寒日不小于2h（新疆住建厅官方 PDF，2026-10-15核对）。人口规模字段尚未采集，故本条只作提示，启用前须由专业组确认项目适用口径"

@@ -290,18 +290,26 @@ def test_packs_endpoint_lists_gb_and_every_province(client: TestClient) -> None:
         code: item["rule_count"] for code, item in by_code.items() if code != "GB"
     }
     assert {c: n for c, n in local_counts.items() if n} == {
-        "ZJ": 6,
-        "NX": 3,
+        "BJ": 4,
+        "TJ": 3,
         "HE": 3,
         "SX": 4,
-        "LN": 5,
+        "LN": 6,
+        "JL": 5,
+        "SH": 3,
+        "JS": 3,
+        "ZJ": 6,
+        "SD": 2,
         "HB": 4,
+        "HN": 3,
+        "GS": 3,
         "CQ": 3,
-        "JL": 4,
         "SC": 2,
+        "NX": 3,
+        "XJ": 1,
     }
     assert by_code["GB"]["rule_count"] > 0
-    # 还没有条文可收的省册：条数为 0，并写明原因（不凭记忆塞规则）
-    assert by_code["JS"]["rule_count"] == 0
-    assert by_code["JS"]["note"]
+    # 尚未取得现行、可逐条核验正文的省册仍为空，并写明原因。
+    assert by_code["AH"]["rule_count"] == 0
+    assert by_code["AH"]["note"]
     assert sum(1 for item in body if item["always_on"]) == 1

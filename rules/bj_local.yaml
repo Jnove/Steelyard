@@ -1,0 +1,41 @@
+# 北京册（pack: BJ）
+#
+# 依据文件：《住宅设计规范》DB11/1740-2020，北京市地方标准，2021-01-01实施。
+# 正文来源：北京市规划和自然资源委员会标准页面及北京市政府公开解读，
+# https://ghzrzyw.beijing.gov.cn/biaozhunguanli/bz/jzsj/202101/t20210106_2200766.html
+# https://www.beijing.gov.cn/ywdt/gzdt/202007/t20200708_1941651.html
+# 核对日期：2026-10-15。
+
+- id: BJ-Q-01
+  pack: BJ
+  name: 北京住宅层高下限
+  type: hard
+  check: "floor_height >= 2.80"
+  message: "住宅层高 {floor_height} m 低于北京市住宅设计规范要求的 2.80 m"
+  source: "《住宅设计规范》DB11/1740-2020 第5.8.1条：住宅层高不应低于2.80m（北京市规划和自然资源委员会官方标准页面及北京市政府发布解读，2026-10-15核对）"
+
+- id: BJ-Q-02
+  pack: BJ
+  name: 北京卧室起居室净高下限
+  type: hard
+  check: "clear_height >= 2.50"
+  message: "卧室、起居室净高 {clear_height} m 低于北京市要求的 2.50 m"
+  source: "《住宅设计规范》DB11/1740-2020 第5.8.2条：卧室、起居室的室内净高不应低于2.50m（北京市政府公开解读与官方标准页面，2026-10-15核对）"
+
+- id: BJ-Q-03
+  pack: BJ
+  name: 北京住宅担架电梯
+  type: hard
+  when: "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9"
+  check: "has_stretcher_elevator"
+  message: "最高入户层达到4层或楼面高度超过9m，按北京市要求每个住宅单元至少应有1台可容纳担架的电梯"
+  source: "《住宅设计规范》DB11/1740-2020 第6.4.3条：四层及以上或住户入口层楼面距室外设计地面高度超过9m的新建住宅，每个设置电梯的居住单元至少设1台可容纳担架的电梯（北京市政府公开解读，2026-10-15核对）"
+
+- id: BJ-Q-04
+  pack: BJ
+  name: 北京住宅大寒日日照
+  type: hard
+  when: "daylight_standard_day == '大寒日'"
+  check: "sunlight_hours >= 2"
+  message: "日照时数 {sunlight_hours} h 低于北京市住宅项目大寒日 2 h 要求"
+  source: "北京市保障性租赁住房项目公开设计文件引用《住宅设计规范》DB11/1740-2020 第8.1.2条：需要获得日照的居住空间日照标准不应低于大寒日日照2h（北京市政府公开项目资料，2026-10-15核对）"

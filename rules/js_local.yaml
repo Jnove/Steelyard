@@ -1,0 +1,30 @@
+# 江苏册（pack: JS）
+#
+# 依据文件：《住宅设计标准》DB32/3920-2020，2021-06-30实施。
+# 标准发布记录：全国标准信息公共服务平台（江苏省市场监督管理局公告）。
+# https://dbba.sacinfo.org.cn/snDetail/ecd995dd1286f53aaa01c471e0dfe8b24f5f9bb3509a221bacfbc7c89ecaa099
+# 条文逐项与公开标准文本交叉核对日期：2026-10-15。
+
+- id: JS-Q-01
+  pack: JS
+  name: 江苏普通住宅层高下限
+  type: hard
+  check: "floor_height >= 2.80"
+  message: "普通住宅层高 {floor_height} m 低于江苏省要求的 2.80 m"
+  source: "《住宅设计标准》DB32/3920-2020 第5.8.1条：普通住宅层高不应低于2.80m（江苏省市场监督管理局公告发布记录及标准文本，2026-10-15核对）"
+
+- id: JS-Q-02
+  pack: JS
+  name: 江苏普通住宅层高上限
+  type: hard
+  check: "floor_height <= (3.60 if floors <= 3 or has_fresh_air else 3.00)"
+  message: "普通住宅层高 {floor_height} m 超过江苏省第5.8.1条的层高上限"
+  source: "《住宅设计标准》DB32/3920-2020 第5.8.1条：普通住宅层高不应高于3.00m；低层住宅及设户式中央空调、集中新风或地暖系统的住宅层高不应高于3.60m（江苏省地方标准，2026-10-15核对）"
+
+- id: JS-Q-03
+  pack: JS
+  name: 江苏卧室起居室净高下限
+  type: hard
+  check: "clear_height >= 2.50"
+  message: "卧室、起居室净高 {clear_height} m 低于江苏省要求的 2.50 m"
+  source: "《住宅设计标准》DB32/3920-2020 第5.8.2条：卧室、起居室室内净高不应低于2.50m（江苏省地方标准，2026-10-15核对）"

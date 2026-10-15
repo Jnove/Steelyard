@@ -1,0 +1,31 @@
+# 天津册（pack: TJ）
+#
+# 依据文件：《天津市住宅设计标准》DB/T 29-22-2024，2024-09-01实施。
+# 正文来源：天津市住房和城乡建设委员会官方 PDF：
+# https://zfcxjs.tj.gov.cn/ztzl_70/bzgf/xxbz/xxbzgf/202407/W020240806366449720769.pdf
+# 核对日期：2026-10-15。
+
+- id: TJ-Q-01
+  pack: TJ
+  name: 天津住宅层高下限
+  type: hard
+  check: "floor_height >= 3.0"
+  message: "住宅层高 {floor_height} m 低于天津市住宅设计标准要求的 3.0 m"
+  source: "《天津市住宅设计标准》DB/T 29-22-2024 第5.7.1条：住宅层高不应低于3.0m（天津市住建委官方 PDF，2026-10-15核对）"
+
+- id: TJ-Q-02
+  pack: TJ
+  name: 天津卧室起居室净高下限
+  type: hard
+  check: "clear_height >= 2.50"
+  message: "卧室、起居室净高 {clear_height} m 低于天津市要求的 2.50 m"
+  source: "《天津市住宅设计标准》DB/T 29-22-2024 第5.7.2条：卧室和起居室（厅）的室内净高不应低于2.50m（天津市住建委官方 PDF，2026-10-15核对）"
+
+- id: TJ-Q-03
+  pack: TJ
+  name: 天津住宅担架电梯
+  type: hard
+  when: "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9"
+  check: "has_stretcher_elevator"
+  message: "设置电梯的住宅单元至少应有1台可容纳担架的电梯"
+  source: "《天津市住宅设计标准》DB/T 29-22-2024 第6.1.6、6.1.7条：设置电梯的住宅单元应至少设置1台可容纳担架的电梯（天津市住建委官方 PDF，2026-10-15核对）"
