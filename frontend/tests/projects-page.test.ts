@@ -2,9 +2,15 @@ import assert from 'node:assert/strict'
 import { test } from 'node:test'
 import { QueryClient } from '@tanstack/react-query'
 import type { Project } from '../src/api/types'
-import { clearProjectDerivedQueries, featuredProject } from '../src/pages/ProjectsPage'
+import { clearProjectDerivedQueries, featuredProject, isTeachingCase } from '../src/pages/ProjectsPage'
 
 const project = (id: number, name: string): Project => ({ id, name, params: {} as Project['params'], created_at: '', updated_at: '' })
+
+test('案例分类识别不同地块的教学方案，不把虚构教学数据标为真实地块', () => {
+  assert.equal(isTeachingCase(project(1, '东湖北路公租房 · 真实地块参考／教学推演（公开字段版）')), true)
+  assert.equal(isTeachingCase(project(2, '虚构教学示例')), false)
+  assert.equal(isTeachingCase(project(3, '普通项目')), false)
+})
 
 test('首页优先真实地块教学案例，用户选择优先且旧虚构案例仍可回退', () => {
   const ordinary = project(1, '日常项目'), fictional = project(3, '虚构示例'), real = project(4, '下沙公租房一期 · 建成项目'), teaching = project(8, '下沙公租房一期 · 教学方案')

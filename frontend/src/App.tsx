@@ -8,6 +8,7 @@ import SchemesPage from './pages/SchemesPage'
 import { isMock } from './constants/dimensions'
 import MockControls from './components/MockControls'
 import { IconLayers, IconMessage, IconScale, IconSliders } from './components/Icons'
+import HomeShell from './components/home/HomeShell'
 const DashboardPage = lazy(() => import('./pages/DashboardPage'))
 const ChatPage = lazy(() => import('./pages/ChatPage'))
 
@@ -18,6 +19,10 @@ export default function App() {
   const id = Number(projectId)
   const project = useQuery({ queryKey: ['project', id], queryFn: () => projects.get(id), enabled: showProjectName })
   const projectName = project.data?.name ?? (project.isError ? '项目名称暂不可用' : '正在加载项目…')
+  if (!projectId) return <HomeShell><Routes>
+    <Route path="/projects" element={<ProjectsPage />} />
+    <Route path="*" element={<Navigate to="/projects" replace />} />
+  </Routes></HomeShell>
   return <div className={'app-shell ' + (projectId ? 'app-shell-project' : 'app-shell-overview')}>
     <header className={'app-rail glass-surface' + (showProjectName ? ' app-rail-with-project' : '')}>
       <div className="rail-identity">
