@@ -18,11 +18,11 @@ const errors = [], checks = []
 page.on('pageerror', error => errors.push(error.message))
 const capture = name => page.screenshot({ path: fileURLToPath(new URL(`${name}.png`, output)), fullPage: !['scheme-form', 'trace-drawer'].includes(name) })
 try {
-  await page.goto(`${base}/projects`)
+  await page.goto(`${base}/`)
   const stage = page.getByRole('region', { name: '建筑体量展台' })
-  const projectId = await page.getByLabel('选择展台项目').inputValue()
   const choices = stage.getByRole('group', { name: '切换展示方案' }).getByRole('button')
   await expect(choices.nth(1)).toBeVisible()
+  const projectId = await page.getByLabel('选择展台项目').inputValue()
   await expect(stage).toHaveAttribute('data-renderer', /webgl|static/)
   await choices.nth(1).click()
   await expect(choices.nth(1)).toHaveAttribute('aria-pressed', 'true')
@@ -35,9 +35,25 @@ try {
     await stage.getByRole('button', { name: '复位视角' }).click()
   }
   checks.push(`首屏建筑展台、方案切换、键盘旋转与复位 (${renderer})`)
+  await page.getByRole('link', { name: '进入项目工作台', exact: true }).click()
+  await expect(page).toHaveURL(`${base}/projects`)
+  await expect(page.getByRole('region', { name: '建筑体量展台' })).toHaveCount(0)
+  await page.getByRole('link', { name: '筑衡 · 返回首页' }).click()
+  await expect(page).toHaveURL(`${base}/`)
+  checks.push('展示首页进入项目工作台，工作台不加载建筑展台，品牌入口可返回首页')
 
   for (const width of [1440, 768, 390]) {
     await page.setViewportSize({ width, height: 1000 })
+    await page.goto(`${base}/`)
+    await expect(choices.nth(1)).toBeVisible()
+    await expect(stage).toHaveAttribute('data-renderer', /webgl|static/)
+    await expect(page.getByRole('link', { name: '进入项目工作台', exact: true })).toBeInViewport()
+    await expect(page.locator('.home-sidebar')).toHaveCount(0)
+    const lines = await page.locator('h1').evaluate(element => element.getBoundingClientRect().height / parseFloat(getComputedStyle(element).lineHeight))
+    assert.ok(lines < 2.1, `landing headline wraps at ${width}`)
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false)
+    await capture(`landing-${width}`)
+    await page.screenshot({ path: fileURLToPath(new URL(`landing-${width}-fold.png`, output)) })
     for (const [route, heading] of [['', '项目总览'], ['schemes', '方案录入'], ['dashboard', '方案对比看板'], ['chat', '对话与报告']]) {
       await page.goto(`${base}/projects${route ? `/${projectId}/${route}` : ''}`)
       await expect(page.getByRole('heading', { level: 1 })).toContainText(heading)
@@ -48,10 +64,7 @@ try {
         await expect(page.locator('.chat-side .ant-progress').first()).toBeVisible()
         await expect(page.getByLabel('快捷问题').getByRole('button').first()).toBeEnabled()
       }
-      if (!route) {
-        await expect(choices.nth(1)).toBeVisible()
-        await expect(stage).toHaveAttribute('data-renderer', /webgl|static/)
-      }
+      if (!route) await expect(stage).toHaveCount(0)
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, `${route || 'home'} overflows at ${width}`)
       await capture(`${route || 'homepage'}-${width}`)
       await page.screenshot({ path: fileURLToPath(new URL(`${route || 'homepage'}-${width}-fold.png`, output)) })
@@ -125,6 +138,38 @@ try {
   await selector.selectOption(otherId)
   await expect(page).toHaveURL(new RegExp(`/projects/${otherId}/chat$`))
   checks.push('跨页面回到顶部，切换项目保留当前工作页')
+
+  const fallback = await context.newPage()
+  fallback.on('pageerror', error => errors.push(error.message))
+  await fallback.route('**/api/projects', route => route.fulfill({ status: 503, contentType: 'application/json', body: JSON.stringify({ detail: '验收模拟：展示项目暂不可用' }) }))
+  await fallback.goto(`${base}/`)
+  await expect(fallback.getByRole('alert')).toContainText('验收模拟：展示项目暂不可用')
+  await expect(fallback.getByRole('link', { name: '进入项目工作台', exact: true })).toHaveAttribute('href', `${new URL(base).pathname.replace(/\/$/, '')}/projects`.replace(/^\/\//, '/'))
+  await fallback.unroute('**/api/projects')
+  await fallback.route('**/api/projects', route => route.fulfill({ status: 200, contentType: 'application/json', body: '[]' }))
+  await fallback.reload()
+  await expect(fallback.getByText('还没有展示项目，进入工作台录入第一组候选方案。')).toBeVisible()
+  await expect(fallback.getByLabel('选择展台项目')).toHaveCount(0)
+  await fallback.close()
+  checks.push('展示数据失败或为空时保持首页可读，工作台入口仍可用')
+
+  const staticPage = await context.newPage()
+  staticPage.on('pageerror', error => errors.push(error.message))
+  await staticPage.addInitScript(() => {
+    const original = HTMLCanvasElement.prototype.getContext
+    HTMLCanvasElement.prototype.getContext = function (kind, ...args) {
+      return String(kind).includes('webgl') ? null : original.call(this, kind, ...args)
+    }
+  })
+  await staticPage.goto(`${base}/`)
+  const staticStage = staticPage.getByRole('region', { name: '建筑体量展台' })
+  await expect(staticStage.locator('.stage-float')).toBeVisible()
+  await expect(staticStage).toHaveAttribute('data-renderer', 'static')
+  await expect(staticStage.getByText('静态体量示意 · 仍可切换方案')).toBeVisible()
+  await staticStage.getByRole('group', { name: '切换展示方案' }).getByRole('button').nth(1).click()
+  await expect(staticStage.getByRole('group', { name: '切换展示方案' }).getByRole('button').nth(1)).toHaveAttribute('aria-pressed', 'true')
+  await staticPage.close()
+  checks.push('WebGL 不可用时显示静态体量，方案切换仍可用')
   assert.deepEqual(errors, [])
   await writeFile(new URL('workbench-acceptance.json', output), JSON.stringify({ checks, pageErrors: errors }, null, 2))
   console.log(JSON.stringify({ passed: checks.length, checks }, null, 2))

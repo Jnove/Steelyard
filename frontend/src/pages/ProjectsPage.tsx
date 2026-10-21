@@ -14,7 +14,6 @@ import {
   ArrowRight,
   ArrowUp,
   ArrowUpDown,
-  Box,
   ChevronLeft,
   ChevronRight,
   FolderOpen,
@@ -39,7 +38,8 @@ import { schemes } from '../api/schemes'
 import { schema } from '../api/schema'
 import type { Project, ProjectParams } from '../api/types'
 import type { SchemaFormValues } from '../components/SchemaForm'
-import BuildingShowcase from '../components/BuildingShowcase'
+import { featuredProject, isTeachingCase } from '../utils/project-presentation'
+export { featuredProject, isTeachingCase } from '../utils/project-presentation'
 import ProjectForm, { HomeErrors } from '../components/home/ProjectForm'
 import { Button } from '../components/ui/button'
 import { Input } from '../components/ui/input'
@@ -62,22 +62,6 @@ function displayDate(value: string): string {
         hour: '2-digit',
         minute: '2-digit',
       })
-}
-
-export function isTeachingCase(project: Pick<Project, 'name'>): boolean {
-  return project.name.includes('教学') && !project.name.includes('虚构')
-}
-
-export function featuredProject(
-  items: Project[] = [],
-  selectedId?: number,
-): Project | undefined {
-  return (
-    items.find((project) => project.id === selectedId) ??
-    items.find(isTeachingCase) ??
-    items.find((project) => project.name.includes('虚构')) ??
-    items[0]
-  )
 }
 
 export async function clearProjectDerivedQueries(
@@ -402,31 +386,6 @@ export default function ProjectsPage() {
             <X size={14} />
           </Button>
         </div>
-      )}
-      {featured && (
-        <section className="home-volume" key={featured.id}>
-          <div className="home-volume-heading">
-            <Box size={16} />
-            <span>参数体量预览</span>
-            <small>按已录入方案参数绘制，仅作示意</small>
-            <label className="home-volume-project">
-              展示项目
-              <select aria-label="选择展台项目" value={featured.id}
-                onChange={event => setSelectedProjectId(Number(event.target.value))}>
-                {projectQuery.data?.map(project => <option key={project.id} value={project.id}>{project.name}</option>)}
-              </select>
-            </label>
-          </div>
-          <div className="home-volume-content">
-            <BuildingShowcase
-              compact
-              schemes={schemeQuery.data ?? []}
-              pending={schemeQuery.isPending}
-              failed={schemeQuery.isError}
-              onRetry={() => void schemeQuery.refetch()}
-            />
-          </div>
-        </section>
       )}
       <div className="home-content-grid">
         <section className="home-library" aria-labelledby="projects-title">

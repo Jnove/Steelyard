@@ -32,10 +32,7 @@ try {
   await expect(
     page.getByRole('complementary', { name: '当前项目详情' }),
   ).toContainText('候选方案')
-  const stage = page.getByRole('region', { name: '建筑体量展台' })
-  await expect(stage.locator('.stage-float')).toBeVisible()
-  await expect(stage).toHaveAttribute('data-renderer', /webgl|static/)
-  assert.ok((await stage.boundingBox()).y < 400, 'building showcase remains visible above the project list')
+  await expect(page.getByRole('region', { name: '建筑体量展台' })).toHaveCount(0)
   await page.screenshot({
     path: path.join(output, 'homepage-desktop.png'),
     fullPage: true,

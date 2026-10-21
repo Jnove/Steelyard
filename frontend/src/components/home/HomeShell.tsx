@@ -77,9 +77,9 @@ export default function HomeShell({ children }: { children: ReactNode }) {
       </a>
       <aside className="home-sidebar" aria-label="工作空间导航">
         <Link
-          to="/projects"
+          to="/"
           className="home-brand"
-          aria-label="筑衡 · 返回项目总览"
+          aria-label="筑衡 · 返回首页"
         >
           <span className="home-brand-mark">
             <Scale size={23} strokeWidth={1.7} />
