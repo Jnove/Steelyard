@@ -36,6 +36,7 @@ class AgentRequest(BaseModel):
     change: SchemeChange | None = None
     rule_id: str | None = None
     scheme_id: int | None = Field(None, gt=0)
+    expected_fingerprint: str | None = Field(None, pattern=r"^[a-f0-9]{64}$")
 
     @model_validator(mode="after")
     def validate_weights(self) -> AgentRequest:
@@ -59,6 +60,19 @@ class Plan(BaseModel):
     role: str | None = None
     weights: list[float] | None = None
     rule_id: str | None = None
+
+
+class ChangeProposal(BaseModel):
+    scheme_name: str
+    field_label: str
+    before: Any
+    after: Any
+
+
+class PlanPreview(BaseModel):
+    plan: Plan
+    proposal: ChangeProposal | None = None
+    fingerprint: str
 
 
 class NodeTrace(BaseModel):

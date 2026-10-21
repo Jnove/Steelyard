@@ -15,11 +15,10 @@
 缺数据的处理原则
 ----------------
 表达式用到的字段为空时 **不抛异常**：hard 规则记 ``insufficient_data``，
-metric 规则不计分，并记下缺哪些字段。判断依据是"表达式**引用**到的字段有没有值"，
-而不是"求值时有没有真的用到"——``floors > 10 and elevators_per_unit >= 2`` 在
-``floors == 5`` 时按 Python 短路语义其实不需要电梯数，但我们仍然判为数据不足。
-这样做的理由是结果可解释：告诉规则作者"你没填 elevators_per_unit 所以这条判不了"
-比"这条有时判得了有时判不了"更容易接受，也与求值顺序无关。
+metric 规则不计分，并记下缺哪些字段。``check`` / ``value`` 保守检查所有引用字段。
+``when`` 是适用条件，按三值逻辑处理布尔分支：已知不满足的条件可以排除一条规则，
+即使其他分支缺数据。例如非钢结构方案无需填写钢结构专用参数；真正影响适用性
+判断的缺失字段仍记为数据不足。所有分支都先通过静态安全检查，再作短路判断。
 """
 
 from __future__ import annotations
@@ -659,7 +658,9 @@ class RuleDef(BaseModel):
                 "两者必须相同，否则报告会把来源归错"
             )
         if self.pack != GB_PACK and self.type == "metric":
-            raise ValueError("地方册评分指标暂未开放：需专业组先核定与国家册同维度指标的重复计权政策")
+            raise ValueError(
+                "地方册评分指标暂未开放：需专业组先核定与国家册同维度指标的重复计权政策"
+            )
         return self
 
     def expressions(self) -> Iterator[tuple[str, str]]:
@@ -1044,14 +1045,73 @@ def _applicability(
     if rule.when is None:
         return "yes", ()
     analyzed = analyze_expression(rule.when, "when", known)
+    if not analyzed.ok:
+        # 即使非法写法在不执行的分支里，也不能绕过白名单。
+        return "unknown", ()
+    tree = ast.parse(rewrite_contains(rule.when), mode="eval")
+    value, missing = _condition_truth(tree.body, namespace, known)
+    if value is None:
+        return "unknown", missing
+    return ("yes" if value else "no"), ()
+
+
+def _condition_truth(
+    node: ast.expr, namespace: Namespace, known: frozenset[str]
+) -> tuple[bool | None, tuple[str, ...]]:
+    """已通过静态检查的 when AST 的真值；None 表示尚不能确定。
+
+    只在真值上下文拆布尔节点，不把 ``and/or`` 的 Python 返回值替换为 bool
+    后参与算术或比较。原子表达式仍交给 simpleeval，并保守检查其全部依赖。
+    AND 中一个 false / OR 中一个 true 即足以判定，不受缺失分支顺序影响。
+    """
+    if isinstance(node, ast.BoolOp):
+        decisive = isinstance(node.op, ast.Or)
+        unknown = False
+        missing: set[str] = set()
+        for child in node.values:
+            value, child_missing = _condition_truth(child, namespace, known)
+            if value is decisive:
+                return decisive, ()
+            if value is None:
+                unknown = True
+                missing.update(child_missing)
+        return (None, tuple(sorted(missing))) if unknown else (not decisive, ())
+
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, ast.Not):
+        value, missing = _condition_truth(node.operand, namespace, known)
+        return (None, missing) if value is None else (not value, ())
+
+    if isinstance(node, ast.IfExp):
+        condition, missing = _condition_truth(node.test, namespace, known)
+        if condition is not None:
+            branch = node.body if condition else node.orelse
+            return _condition_truth(branch, namespace, known)
+        positive, positive_missing = _condition_truth(node.body, namespace, known)
+        negative, negative_missing = _condition_truth(node.orelse, namespace, known)
+        if positive is not None and positive == negative:
+            return positive, ()
+        return None, tuple(sorted(set(missing + positive_missing + negative_missing)))
+
+    if isinstance(node, ast.Compare) and len(node.ops) > 1:
+        # ``a < b < c`` 与对应比较的 AND 相同；后续未知项不影响已知 false。
+        comparisons = [
+            ast.Compare(left=left, ops=[op], comparators=[right])
+            for left, op, right in zip(
+                [node.left, *node.comparators[:-1]], node.ops, node.comparators, strict=True
+            )
+        ]
+        return _condition_truth(ast.BoolOp(op=ast.And(), values=comparisons), namespace, known)
+
+    expression = ast.unparse(node)
+    analyzed = analyze_expression(expression, "when", known)
     missing = namespace.missing_for(analyzed.names, analyzed.dictionary_keys)
     if missing:
-        return "unknown", missing
+        return None, missing
     try:
-        return ("yes" if _eval_expression(rule.when, namespace, known) else "no"), ()
+        return bool(_eval_expression(expression, namespace, known)), ()
     except (InvalidExpression, TypeError, ValueError, ZeroDivisionError):
         # when 求值出错按"判不了"处理，而不是让整次评估失败。
-        return "unknown", ()
+        return None, ()
 
 
 def _evaluate_hard(rule: RuleDef, namespace: Namespace, known: frozenset[str]) -> ComplianceItem:

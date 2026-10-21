@@ -202,7 +202,8 @@ def test_foundation_concrete_rule_does_not_apply_to_other_foundations(
         ("地下连续墙", True, None, "insufficient_data", ["retaining_concrete_grade"]),
         ("排桩", False, 25, "not_applicable", []),
         ("土钉墙", False, None, "not_applicable", []),
-        ("排桩", None, 25, "insufficient_data", ["retaining_wall_two_in_one"]),
+        # 非地下连续墙已足以排除本规则，无需填写两墙合一声明。
+        ("排桩", None, 25, "not_applicable", []),
     ],
 )
 def test_two_in_one_wall_rule_requires_declared_applicability(

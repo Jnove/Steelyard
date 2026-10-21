@@ -24,6 +24,7 @@ export type Value =
   | null;
 export type RuleId = string | null;
 export type SchemeId1 = number | null;
+export type ExpectedFingerprint = string | null;
 
 export interface AgentRequest {
   message?: Message;
@@ -35,6 +36,7 @@ export interface AgentRequest {
   change?: SchemeChange | null;
   rule_id?: RuleId;
   scheme_id?: SchemeId1;
+  expected_fingerprint?: ExpectedFingerprint;
 }
 export interface HistoryMessage {
   role: Role;

@@ -4,6 +4,12 @@
 
 ## 请求
 
+普通自然语言输入先调用 `POST /api/projects/{id}/plan`，请求体同 `AgentRequest`，返回 JSON（不是 SSE）：`{plan, proposal, fingerprint}`。解析只读取输入和字段元数据，不运行评估、不创建副本；`proposal` 在 What-if 时包含 `scheme_name / field_label / before / after`，其他意图为 null。前端展示预览，用户确认后将明确的 `plan` 与原请求上下文一起传给 `/chat`，无需再次让模型解析同一调整。
+
+确认 What-if 时发送 `expected_fingerprint`（来自预览的 `fingerprint`）。指纹包括项目、方案和规则；预览过期时入口返回 HTTP 409，复制事务内仍会复核，期间变更会以 SSE error 中止。页面应显示“重新预览调整”，必须再次确认，不能自动执行旧计划。旧客户端未带指纹时仍兼容，但不具备预览版本保护。此指纹用于输入一致性，不是身份认证凭据。
+
+看板与聊天按项目保存当前角色、自定义四维权重和所选方案；`role` 与 `weights` 二选一。解释按本次偏好读取排序证据，报告也使用同一偏好。自然语言明确要求新角色或权重时，以解析后的新偏好为准。
+
 报告可发送 `{}`；无角色与权重时明确采用等权演示，不代表任何专业立场。
 
 ```json
@@ -42,7 +48,7 @@ data: {"node":"coordinator","attempt":0}
 | token | `node, attempt, text, replace` | `replace=true` 时清空旧正文并用 text 替换，其他情况追加 |
 | citation_warning | `attempt, exhausted, unverified_numbers` | 当前草稿存在无法溯源数字；exhausted 表示两次重写已经耗尽 |
 | done | `report, intent, unverified_numbers, traces, cached` | 唯一权威的最终报告；必须整体替换草稿，然后按最终位置标红 |
-| error | `message` | 终止本次请求并展示中文错误；不会再发 done |
+| error | `message, status?` | 终止本次请求并展示中文错误；不会再发 done。可选 status 保留 HTTP 错误语义，409 在推演确认流程中提供重新预览入口 |
 
 token 为未校验草稿；工具调用前的过渡文字和引用重写都可能触发替换。`attempt=0` 为初稿，之后为两次重写。不要把多次草稿拼接。引用校验失败重写成功后，最终 `unverified_numbers=[]`；重写仍失败时，done 包含最终正文及问题位置。
 

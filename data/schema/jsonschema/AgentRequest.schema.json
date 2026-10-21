@@ -150,6 +150,19 @@
       ],
       "default": null,
       "title": "Scheme Id"
+    },
+    "expected_fingerprint": {
+      "anyOf": [
+        {
+          "pattern": "^[a-f0-9]{64}$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Expected Fingerprint"
     }
   },
   "title": "AgentRequest",

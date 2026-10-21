@@ -14,6 +14,8 @@ interface Props {
   projectName: string
   roleName: string
   updating: boolean
+  selectedSchemeId?: string
+  onSelectScheme?: (schemeId: string) => void
   onTrace: (selection: { evaluation: EvalResult; dimension?: DimensionKey; ruleId?: string }) => void
 }
 const views = [{ key: 'map', label: '1. 看整体' }, { key: 'pair', label: '2. 比两套' }, { key: 'matrix', label: '3. 查全表' }] as const
@@ -46,7 +48,7 @@ function Detail({ selection, scheme, ranking, onTrace }: { selection?: Compariso
   </aside>
 }
 
-export default function ComparisonWorkbench({ results, ranking, projectName, roleName, updating, onTrace }: Props) {
+export default function ComparisonWorkbench({ results, ranking, projectName, roleName, updating, onTrace, selectedSchemeId, onSelectScheme }: Props) {
   const schemes = useMemo(() => comparisonSchemes(results, ranking), [results, ranking])
   const ordered = orderSchemes(schemes, 'rank')
   const baseId = ordered[0]?.id ?? ''
@@ -55,8 +57,11 @@ export default function ComparisonWorkbench({ results, ranking, projectName, rol
   const [xAxis, setXAxis] = useState<DimensionKey>('quality')
   const [yAxis, setYAxis] = useState<DimensionKey>('construction')
   const [includeExcluded, setIncludeExcluded] = useState(false)
-  const [selectedId, setSelectedId] = useState(baseId)
-  const [pairA, setPairA] = useState(baseId)
+  const [localSelectedId, setLocalSelectedId] = useState(selectedSchemeId ?? baseId)
+  const selectedId = selectedSchemeId ?? localSelectedId
+  const setSelectedId = (id: string) => { setLocalSelectedId(id); onSelectScheme?.(id) }
+  const [pairA, setLocalPairA] = useState(selectedSchemeId ?? baseId)
+  const setPairA = (id: string) => { setLocalPairA(id); setSelectedId(id) }
   const [pairB, setPairB] = useState(ordered[1]?.id ?? '')
   const [dataset, setDataset] = useState<MatrixDataset>('scores')
   const [mode, setMode] = useState<ScoreMode>('score')
@@ -97,6 +102,7 @@ export default function ComparisonWorkbench({ results, ranking, projectName, rol
   const plotted = mapSchemes.filter(scheme => dimensionScore(scheme, xAxis) != null && dimensionScore(scheme, yAxis) != null)
 
   function traceCell(row: ComparisonRow, scheme: ComparisonScheme) {
+    setSelectedId(scheme.id)
     setSelection({ row, schemeId: scheme.id })
     if (matchMedia('(max-width: 900px)').matches) onTrace({ evaluation: scheme.evaluation, dimension: row.dimension, ruleId: row.kind === 'dimension' ? undefined : row.key })
   }
@@ -110,6 +116,7 @@ export default function ComparisonWorkbench({ results, ranking, projectName, rol
     const target = cells.current.get(`${rows[targetRow].key}:${displayed[targetColumn].id}`)
     target?.focus({ preventScroll: true })
     setSelection({ row: rows[targetRow], schemeId: displayed[targetColumn].id })
+    setSelectedId(displayed[targetColumn].id)
     const scroller = tableScroller.current
     if (target && scroller) {
       const cellRect = target.getBoundingClientRect(), rect = scroller.getBoundingClientRect()

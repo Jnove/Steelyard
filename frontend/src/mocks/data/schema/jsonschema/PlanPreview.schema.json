@@ -1,0 +1,155 @@
+{
+  "$defs": {
+    "ChangeProposal": {
+      "properties": {
+        "scheme_name": {
+          "title": "Scheme Name",
+          "type": "string"
+        },
+        "field_label": {
+          "title": "Field Label",
+          "type": "string"
+        },
+        "before": {
+          "title": "Before"
+        },
+        "after": {
+          "title": "After"
+        }
+      },
+      "required": [
+        "scheme_name",
+        "field_label",
+        "before",
+        "after"
+      ],
+      "title": "ChangeProposal",
+      "type": "object"
+    },
+    "Plan": {
+      "additionalProperties": false,
+      "properties": {
+        "intent": {
+          "enum": [
+            "new_eval",
+            "whatif",
+            "explain",
+            "reweight"
+          ],
+          "title": "Intent",
+          "type": "string"
+        },
+        "change": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/SchemeChange"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "role": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Role"
+        },
+        "weights": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Weights"
+        },
+        "rule_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Rule Id"
+        }
+      },
+      "required": [
+        "intent",
+        "change",
+        "role",
+        "weights",
+        "rule_id"
+      ],
+      "title": "Plan",
+      "type": "object"
+    },
+    "SchemeChange": {
+      "additionalProperties": false,
+      "properties": {
+        "scheme_id": {
+          "exclusiveMinimum": 0,
+          "title": "Scheme Id",
+          "type": "integer"
+        },
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "value": {
+          "title": "Value"
+        }
+      },
+      "required": [
+        "scheme_id",
+        "field",
+        "value"
+      ],
+      "title": "SchemeChange",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "plan": {
+      "$ref": "#/$defs/Plan"
+    },
+    "proposal": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ChangeProposal"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "fingerprint": {
+      "title": "Fingerprint",
+      "type": "string"
+    }
+  },
+  "required": [
+    "plan",
+    "proposal",
+    "fingerprint"
+  ],
+  "title": "PlanPreview",
+  "type": "object"
+}

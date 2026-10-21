@@ -121,6 +121,41 @@ async def test_explain_history_and_rule(
 
 
 @pytest.mark.asyncio
+async def test_explain_uses_own_preferences_after_another_ranking(engine, mock_project):
+    project, _ = mock_project
+    tools = AgentTools(engine, project)
+    tools.evaluate(project)
+    tools.rank(project, role="government")
+    for preferences, expected in [
+        ({"role": "contractor"}, tools.validate_preferences("contractor", None)),
+        ({"weights": [0.1, 0.2, 0.3, 0.4]}, [0.1, 0.2, 0.3, 0.4]),
+        ({"role": "resident"}, tools.validate_preferences("resident", None)),
+    ]:
+        _, events = await run_graph(engine, project, AgentRequest(message="解释推荐依据", intent="explain", **preferences))
+        ranked = next(data["result"] for name, data in events
+                      if name == "tool_result" and data["node"] == "explain" and data["tool"] == "rank")
+        assert ranked["weights_used"]["weights"] == pytest.approx(expected)
+        assert "evaluate" not in [data["tool"] for name, data in events if name == "tool_call"]
+
+
+@pytest.mark.asyncio
+async def test_whatif_report_focuses_changed_scheme_not_previous_selection(engine, mock_project):
+    project, ids = mock_project
+    llm = FakeLLM()
+    _, events = await run_graph(engine, project, AgentRequest(
+        message="调整方案", intent="whatif", scheme_id=ids[0],
+        change={"scheme_id": ids[2], "field": "std_floor_repeat", "value": 0.6},
+    ), llm)
+    change = next(data["result"] for name, data in events if name == "tool_result" and data["tool"] == "update_scheme_param")
+    reporter_contexts = [json.loads(call[-1]["content"]) for call in llm.calls if "节点：reporter" in call[0]["content"]]
+    assert reporter_contexts
+    for context in reporter_contexts:
+        assert context["按需查看的调整结果"]["parent_id"] == ids[2]
+        assert context["按需查看的调整结果"]["scheme_id"] == change["scheme_id"]
+        assert "假设推演" in json.dumps(context["reader_view"], ensure_ascii=False)
+
+
+@pytest.mark.asyncio
 async def test_bad_number_rewrites_successfully(
     engine: Engine, mock_project: tuple[int, list[int]]
 ) -> None:
@@ -276,7 +311,7 @@ async def test_explain_prefetches_evidence_once(engine: Engine, mock_project: tu
     await run_graph(engine, project, AgentRequest())
     output, events = await run_graph(engine, project, AgentRequest(intent="explain", message="当前方案还缺哪些资料？"), NoRedundantQueries())
     calls = [data["tool"] for name, data in events if name == "tool_call"]
-    assert calls == ["get_result", "search_clause"] and output.report
+    assert calls == ["get_result", "rank", "search_clause"] and output.report
 
 
 @pytest.mark.asyncio

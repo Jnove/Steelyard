@@ -3,7 +3,7 @@
 
 > T1–T9 已集成；本文保留团队设计与后续规划。当前接口以代码和 OpenAPI 为准，使用入口见 [docs/README.md](./docs/README.md)。T10 条文检索尚未实现，现有规则与角色权重均为待专业组核定的示例，不能作为工程验证依据。
 
-> 当前交付约束（2026-10-12 更新）：2026-10-15 24:00（UTC+8）前提交四项线上初筛材料，内部目标为 2026-10-14 12:00 冻结版本。日程与分工以 [交付计划](./docs/submission-plan.md) 为准，接手先读 [项目记忆](./memory/README.md)。近期复用 T1–T9，优先专业核定、真实模型验收和界面 P0；完整 T10 与扩充指标在初筛后重新排期。
+> 当前交付约束（2026-10-21 更新）：团队确认已通过初审，10-22 晚彩排、10-23 路演，真实模型 API 已接入；正式时长和评分细则尚未通知。近期范围、验收与专业边界见 [路演准备](./docs/roadshow-readiness.md)，接手上下文见 [项目交接记录](./memory/README.md)。[初筛交付计划](./docs/submission-plan.md)属于上一阶段记录。
 
 “筑衡”采用“交互层—智能体编排层—工具层—知识与数据层”的分层架构（见图1）。核心设计原则是：大模型负责理解需求、规划任务和解释结果；数值由确定性工具计算，合规由规则引擎判定；每一项评分和结论都能追溯到输入参数、计算公式和规范条文。这样既发挥大模型在理解和交互上的优势，又避免其在工程计算和规范判断上的“幻觉”风险。
 本项目围绕大赛“为人民建好房，为工友谋幸福”主题，选择“智能设计与方案优化”方向，开发建筑方案智能比选智能体“筑衡”。“筑衡”面向方案设计阶段，对多个候选方案依次进行规范合规初筛、多维量化评估和多准则比选，生成每项结论都可追溯的比选报告，并支持用自然语言追问、推演方案调整的影响。其中，“建好房”对应居住品质维度，“谋幸福”对应施工友好与工友安全维度，二者在同一决策框架中被显式、量化地权衡。
@@ -42,6 +42,9 @@ flowchart LR
   UI["React 前端<br/>录入·看板·对话"] -->|REST / SSE| API["FastAPI"]
   API --> ENG["确定性引擎<br/>规则·指标·评分·决策"]
   API --> AG["智能体图<br/>LangGraph"]
+  API --> PLAN["只读计划 /plan<br/>意图与参数预览"]
+  PLAN -->|待确认计划与指纹| UI
+  UI -->|确认计划 /chat| API
   AG -->|工具调用| ENG
   AG --> LLM["默认 FakeLLM<br/>可配置模型 API"]
   AG -.-> RAG["T10 规划：条文检索<br/>当前为空结果桩"]
@@ -58,7 +61,7 @@ flowchart LR
 zhuheng/
 ├── backend/app/
 │   ├── main.py              # FastAPI 入口
-│   ├── api/                 # 路由：projects, schemes, evaluate, rank, chat, report
+│   ├── api/                 # 路由：projects, schemes, evaluate, rank, plan, chat, report
 │   ├── models/              # Pydantic / SQLModel：Project, Scheme, EvalResult
 │   ├── engine/
 │   │   ├── rules.py         # 规则加载、校验、判定
@@ -135,6 +138,7 @@ zhuheng/
 | POST | `/api/projects/{id}/schemes/import` | 从 Excel 模板批量导入 |
 | POST | `/api/projects/{id}/evaluate` | 跑规则 + 指标 + 评分，返回全部分项结果 |
 | POST | `/api/projects/{id}/rank` | 按角色模板或自定义权重排序，附敏感性与帕累托结果 |
+| POST | `/api/projects/{id}/plan` | 只读解析意图与参数，返回计划、调整预览和输入指纹（JSON） |
 | POST | `/api/projects/{id}/report` | 生成比选报告（SSE 流式输出） |
 | POST | `/api/projects/{id}/chat` | 对话追问与 What-if（SSE 流式输出） |
 | GET | `/api/rules` | 返回当前规则与指标定义，前端展示“评分依据” |

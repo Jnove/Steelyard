@@ -8,6 +8,14 @@ import {
 
 const encoder = new TextEncoder()
 const signal = () => new AbortController().signal
+test('SSE errors preserve valid HTTP status for recovery and support older payloads', () => {
+  const adapt = (payload: Record<string, unknown>) => adaptProvisionalEvent({ event: 'error', data: JSON.stringify(payload) })
+  assert.deepEqual(adapt({ message: '重新预览', status: 409 }), { type: 'error', message: '重新预览', status: 409 })
+  assert.deepEqual(adapt({ message: '失败' }), { type: 'error', message: '失败' })
+  for (const status of [200, 600, 409.5, '409', null]) {
+    assert.deepEqual(adapt({ message: '失败', status }), { type: 'error', message: '失败' })
+  }
+})
 const wireEvent = (event: string, data: unknown, newline = '\n') =>
   `event: ${event}${newline}data: ${JSON.stringify(data)}${newline}${newline}`
 async function collect<T>(stream: AsyncIterable<T>) {
@@ -150,6 +158,17 @@ test('拒绝 HTML 代理响应和空流式响应体', async (t) => {
   await assert.rejects(collect(postSSE('/chat', {}, signal())), /text\/event-stream/)
   response = new Response(null, { headers: { 'Content-Type': 'text/event-stream' } })
   await assert.rejects(collect(postSSE('/chat', {}, signal())), /没有响应体/)
+})
+
+test('过期推演的 HTTP409 保留状态与中文原因，不开始消费 SSE', async (t) => {
+  t.mock.method(globalThis, 'fetch', async () => new Response(JSON.stringify({ detail: '数据已发生变化，请重新预览并确认' }),
+    { status: 409, headers: { 'Content-Type': 'application/json' } }))
+  await assert.rejects(collect(postSSE('/chat', {}, signal())), (error: unknown) => {
+    assert.ok(error instanceof Error && 'status' in error)
+    assert.equal(error.status, 409)
+    assert.match(error.message, /数据已发生变化/)
+    return true
+  })
 })
 
 test('提前断流时报告错误并保留已经收到的文本', async (t) => {

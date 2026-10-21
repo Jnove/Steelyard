@@ -51,6 +51,7 @@ class UpdateArgs(StrictModel):
     scheme_id: int = Field(gt=0)
     field: str
     value: Any
+    expected_fingerprint: str | None = Field(None, pattern=r"^[a-f0-9]{64}$")
 
 
 class ExplainArgs(StrictModel):
@@ -128,29 +129,36 @@ class AgentTools:
 
     def fingerprint(self, include_whatif: bool) -> str:
         with Session(self.engine) as session:
-            project = self._require_project(session)
-            query = select(Scheme).where(Scheme.project_id == self.project_id)
-            if not include_whatif:
-                query = query.where(Scheme.is_whatif == False)  # noqa: E712
-            schemes = session.exec(query.order_by(Scheme.id)).all()
-            return digest(
-                {
-                    "project": {"id": project.id, "name": project.name, "params": project.params},
-                    "schemes": [
-                        {
-                            "id": s.id,
-                            "name": s.name,
-                            "params": s.params,
-                            "is_whatif": s.is_whatif,
-                            "parent_id": s.parent_id,
-                        }
-                        for s in schemes
-                    ],
-                    "rules": self.rule_definitions(),
-                    "custom_fields": [row.model_dump(mode="json") for row in fields_service.list_fields(session)],
-                    "rules_signature": project_rules_signature(session, ProjectParams.model_validate(project.params or {})),
-                }
-            )
+            return self._fingerprint(session, include_whatif, self.rule_definitions())
+
+    def _fingerprint(self, session: Session, include_whatif: bool, rules: list[dict[str, Any]] | None = None) -> str:
+        project = self._require_project(session)
+        query = select(Scheme).where(Scheme.project_id == self.project_id)
+        if not include_whatif:
+            query = query.where(Scheme.is_whatif == False)  # noqa: E712
+        schemes = session.exec(query.order_by(Scheme.id)).all()
+        return digest(
+            {
+                "project": {"id": project.id, "name": project.name, "params": project.params},
+                "schemes": [
+                    {
+                        "id": s.id,
+                        "name": s.name,
+                        "params": s.params,
+                        "is_whatif": s.is_whatif,
+                        "parent_id": s.parent_id,
+                    }
+                    for s in schemes
+                ],
+                "rules": rules if rules is not None else [rule.model_dump(mode="json") for rule in project_ruleset(session, ProjectParams.model_validate(project.params or {})).rules],
+                "custom_fields": [row.model_dump(mode="json") for row in fields_service.list_fields(session)],
+                "rules_signature": project_rules_signature(session, ProjectParams.model_validate(project.params or {})),
+            }
+        )
+
+    def require_fingerprint(self, expected: str | None) -> None:
+        if expected is not None and expected != self.fingerprint(True):
+            raise HTTPException(409, "方案或规则已变更，请重新预览并确认调整")
 
     def cache_key(self, request: RankRequest) -> str:
         # 读取权重定义与提示词；同组权重归一化后共享缓存。
@@ -239,7 +247,31 @@ class AgentTools:
                     raise HTTPException(409, "评估结果早于输入修改，请先重新评估")
             return {"evaluation": evaluation.model_dump(mode="json"), "ranking": {}}
 
-    def update_scheme_param(self, scheme_id: int, field: str, value: Any) -> dict[str, Any]:
+    def planning_context(self, include_whatif: bool = False) -> dict[str, Any]:
+        """Only identity and field metadata for intent resolution; no evaluation or writes."""
+        with Session(self.engine) as session:
+            self._require_project(session)
+            query = select(Scheme).where(Scheme.project_id == self.project_id)
+            if not include_whatif:
+                query = query.where(Scheme.is_whatif == False)  # noqa: E712
+            labels = self.field_labels()
+            return {
+                "schemes": [{"scheme_id": row.id, "name": row.name} for row in session.exec(query.order_by(Scheme.id)).all()],
+                "fields": {key: {"label": labels.get(key, key), **value}
+                           for key, value in SchemeParams.model_json_schema()["properties"].items()},
+                "custom_fields": [{"key": row.key, "label": row.label, "kind": row.kind, "options": row.options}
+                                  for row in fields_service.list_fields(session)],
+            }
+
+    def validate_preferences(self, role: str | None, weights: list[float] | None) -> list[float]:
+        request = RankRequest(role=role, weights=weights if role is not None or weights is not None else [0.25] * 4)
+        with Session(self.engine) as session:
+            return _resolve_weights(request, session).weights
+
+    def _prepare_scheme_change(
+        self, session: Session, scheme_id: int, field: str, value: Any,
+    ) -> tuple[Scheme, SchemeParams, Any]:
+        """Shared read-only validation for preview and the eventual copy operation."""
         _reject_nonfinite(value)
         if field == "window_wall_ratio" and isinstance(value, dict):
             if any(
@@ -255,23 +287,41 @@ class AgentTools:
                 for count in value.values()
             ):
                 raise ValueError("各户型户数必须为非负整数")
+        self._require_project(session)
+        parent = session.get(Scheme, scheme_id)
+        if parent is None or parent.project_id != self.project_id:
+            raise ValueError("方案不属于当前项目")
+        is_custom = field in fields_service.field_keys(session)
+        if field not in SchemeParams.model_fields and not is_custom:
+            raise ValueError("字段必须是内建设计参数或已注册的自定义字段")
+        previous_custom = (parent.params or {}).get("custom", {})
+        updated = {**parent.params, field: value}
+        before = parent.params.get(field)
+        if is_custom:
+            updated = {**parent.params, "custom": {**previous_custom, field: value}}
+            before = previous_custom.get(field)
+        # 严格模式避免 bool 被当作数值；嵌套字段也经过完整模型校验。
+        params = SchemeParams.model_validate(updated, strict=True)
+        fields_service.validate_values(session, params.custom, previous=previous_custom)
+        return parent, params, before
+
+    def preview_scheme_change(self, scheme_id: int, field: str, value: Any) -> dict[str, Any]:
         with Session(self.engine) as session:
-            self._require_project(session)
-            parent = session.get(Scheme, scheme_id)
-            if parent is None or parent.project_id != self.project_id:
-                raise ValueError("方案不属于当前项目")
-            is_custom = field in fields_service.field_keys(session)
-            if field not in SchemeParams.model_fields and not is_custom:
-                raise ValueError("字段必须是内建设计参数或已注册的自定义字段")
-            previous_custom = (parent.params or {}).get("custom", {})
-            updated = {**parent.params, field: value}
-            before = parent.params.get(field)
-            if is_custom:
-                updated = {**parent.params, "custom": {**previous_custom, field: value}}
-                before = previous_custom.get(field)
-            # 严格模式避免 bool 被当作数值；嵌套字段也经过完整模型校验。
-            params = SchemeParams.model_validate(updated, strict=True)
-            fields_service.validate_values(session, params.custom, previous=previous_custom)
+            parent, _, before = self._prepare_scheme_change(session, scheme_id, field, value)
+            return {"scheme_name": parent.name, "field_label": self.field_labels().get(field, field),
+                    "before": before, "after": value}
+
+    def update_scheme_param(self, scheme_id: int, field: str, value: Any, expected_fingerprint: str | None = None) -> dict[str, Any]:
+        with Session(self.engine) as session:
+            if expected_fingerprint is not None:
+                # SQLite serializes writers until commit, closing the check/copy race.
+                # Use this same session for the fingerprint; nested sessions may roll back
+                # the shared in-memory test connection or see a different snapshot.
+                if self.engine.dialect.name == "sqlite":
+                    session.connection().exec_driver_sql("BEGIN IMMEDIATE")
+                if expected_fingerprint != self._fingerprint(session, True):
+                    raise HTTPException(409, "方案或规则已变更，请重新预览并确认调整")
+            parent, params, before = self._prepare_scheme_change(session, scheme_id, field, value)
             copy = Scheme(
                 project_id=self.project_id,
                 name=f"{parent.name}（假设推演）"[:200],

@@ -27,7 +27,7 @@ BACKEND = ROOT / "backend"
 if str(BACKEND) not in sys.path:
     sys.path.insert(0, str(BACKEND))
 
-from app.agents.state import AgentOutput, AgentRequest  # noqa: E402
+from app.agents.state import AgentOutput, AgentRequest, PlanPreview  # noqa: E402
 from app.agents.suggestions import QuestionSuggestions  # noqa: E402
 from app.api.evaluate import EvaluateResponse  # noqa: E402
 from app.api.projects import ProjectCreate, ProjectRead  # noqa: E402
@@ -53,6 +53,7 @@ JSON_SCHEMA_MODELS = (
     RankResponse,
     AgentRequest,
     AgentOutput,
+    PlanPreview,
     QuestionSuggestions,
 )
 
@@ -82,7 +83,7 @@ def main() -> int:
         schema["title"] = model.__name__
         for name, definition in schema.get("$defs", {}).items():
             definition["title"] = name
-        if model in (RankResponse, AgentOutput):
+        if model in (RankResponse, AgentOutput, PlanPreview):
             # model_dump 的响应包含默认字段；避免 TS 把 always-present 的数组当成可缺项。
             for definition in (schema, *schema.get("$defs", {}).values()):
                 if "properties" in definition:

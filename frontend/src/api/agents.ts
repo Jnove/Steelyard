@@ -3,7 +3,15 @@ import { postSSEFrames } from './sse'
 import { API_BASE } from './base'
 import { request } from './client'
 import type { QuestionSuggestions } from './generated/QuestionSuggestions'
+import type { AgentRequest } from './generated/AgentRequest'
+import type { PlanPreview } from './generated/PlanPreview'
 export type { AgentOutput, NumberIssue } from './generated/AgentOutput'
+
+export type PlanResponse = PlanPreview
+
+export function planRequest(projectId: number, body: AgentRequest, signal: AbortSignal): Promise<PlanResponse> {
+  return request(`/projects/${projectId}/plan`, { method: 'POST', body, signal })
+}
 
 export function suggestedQuestions(projectId: number, schemeId: string | undefined, signal: AbortSignal, refresh = false): Promise<QuestionSuggestions> {
   const params = new URLSearchParams()

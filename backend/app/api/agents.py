@@ -11,6 +11,7 @@ from time import perf_counter
 from typing import Annotated, Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import ValidationError
 from sqlalchemy.engine import Engine
 from sqlalchemy.exc import SQLAlchemyError
 from sqlmodel import Session
@@ -19,7 +20,7 @@ from sse_starlette.sse import EventSourceResponse
 from app.agents import question_cache
 from app.agents.graph import AgentGraph
 from app.agents.llm import get_llm
-from app.agents.state import AgentOutput, AgentRequest, GraphState
+from app.agents.state import AgentOutput, AgentRequest, GraphState, PlanPreview
 from app.agents.storage import ReportCacheRow
 from app.agents.suggestions import (
     QuestionSuggestions,
@@ -36,6 +37,59 @@ logger = logging.getLogger(__name__)
 SessionDep = Annotated[Session, Depends(get_session)]
 AGENT_RUN_TIMEOUT_SECONDS = 110
 SUGGESTION_TIMEOUT_SECONDS = 45
+PLAN_TIMEOUT_SECONDS = 45
+
+
+@router.post("/plan", response_model=PlanPreview, summary="只读解析对话意图，预览待确认的参数调整")
+async def preview_plan(project_id: int, payload: AgentRequest, session: SessionDep) -> PlanPreview:
+    from app.models import Scheme
+
+    tools = AgentTools(session.get_bind(), project_id)
+    before = await asyncio.to_thread(tools.fingerprint, True)
+    if payload.scheme_id is not None:
+        selected = session.get(Scheme, payload.scheme_id)
+        if selected is None or selected.project_id != project_id:
+            raise HTTPException(404, "所选方案不属于当前项目")
+    llm = None
+
+    async def ignore_event(name: str, data: dict[str, Any]) -> None:
+        pass
+
+    try:
+        llm = get_llm()
+        async with asyncio.timeout(PLAN_TIMEOUT_SECONDS):
+            graph = AgentGraph(tools, llm, ignore_event)
+            state = GraphState(project_id=project_id, request=payload)
+            plan = (await graph.coordinator(state))["plan"]
+            resolved_weights = await asyncio.to_thread(tools.validate_preferences, plan.role, plan.weights)
+            if plan.weights is not None:
+                plan.weights = resolved_weights
+            proposal = None
+            if plan.intent == "whatif":
+                # Validate before any evaluation, ranking or copy creation.
+                selected = session.get(Scheme, plan.change.scheme_id)
+                if selected is None or selected.project_id != project_id:
+                    raise HTTPException(404, "待调整方案不属于当前项目，请重新选择方案")
+                proposal = await asyncio.to_thread(tools.preview_scheme_change, **plan.change.model_dump())
+            if before != await asyncio.to_thread(tools.fingerprint, True):
+                raise HTTPException(409, "生成计划期间项目数据已变更，请重新发送请求")
+            return PlanPreview(plan=plan, proposal=proposal, fingerprint=before)
+    except HTTPException as exc:
+        if exc.status_code == 400:
+            raise HTTPException(422, exc.detail) from None
+        raise
+    except ValidationError:
+        raise HTTPException(422, "未能形成有效计划，请明确方案、参数和目标值，并检查数值范围或权重设置") from None
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from None
+    except TimeoutError:
+        raise HTTPException(503, "理解请求超时，请稍后重试，或使用方案参数调整入口") from None
+    except Exception as exc:
+        logger.warning("计划解析失败 (project_id=%s, error_type=%s)", project_id, type(exc).__name__)
+        raise HTTPException(503, "暂时无法理解请求，请重试，或使用方案参数调整入口") from None
+    finally:
+        if llm is not None and hasattr(llm, "aclose"):
+            await llm.aclose()
 
 
 @router.post("/suggestions", response_model=QuestionSuggestions, summary="按当前项目生成建议追问")
@@ -159,7 +213,10 @@ async def event_stream(
                 if isinstance(exc, ValueError)
                 else "智能体执行失败，请检查服务日志与模型配置"
             )
-            await emit("error", {"message": message})
+            await emit("error", {
+                "message": message,
+                **({"status": exc.status_code} if isinstance(exc, HTTPException) else {}),
+            })
         finally:
             try:
                 if llm is not None and hasattr(llm, "aclose"):
@@ -196,6 +253,8 @@ async def report(
 
 @router.post("/chat", summary="对话追问、假设推演与改权重（SSE）")
 async def chat(project_id: int, payload: AgentRequest, session: SessionDep) -> EventSourceResponse:
+    if payload.expected_fingerprint is not None:
+        await asyncio.to_thread(AgentTools(session.get_bind(), project_id).require_fingerprint, payload.expected_fingerprint)
     if payload.scheme_id is not None:
         from app.models import Scheme
 

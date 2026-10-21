@@ -1,21 +1,21 @@
 {
-  "fixture_id": "ef658a999af41a2cd295e0121bce2621af64b8d597f3a4bf7040270b80d380ec",
+  "fixture_id": "14fcf320c2f83c4a256bd484d7e2d066b23c08a006b458682996c74d77fa5f05",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
     "backend/app/agents/__init__.py": "b5feb469ab8614581b42d57a76a7259934b2ed2af36cc56972912e957913c97a",
     "backend/app/agents/citation.py": "7e532e1c1fe7b33697ab5ab5b6071406ae00f27dba468586b4af2967e9034988",
-    "backend/app/agents/graph.py": "b8d87b0d24f77f842d0bda3c35e0250d2f2cfa9ab47f6a7fc4bc121cee4d98eb",
+    "backend/app/agents/graph.py": "f6cf9c4b438a5e449e15a7aa8b8ef5822f2aa92d7e88a858af9a05bc66da7978",
     "backend/app/agents/llm.py": "a3d0c208c415c8ca7f51a92cc4810019fd5f12204b8f6f7f98c6fcc8ce280622",
     "backend/app/agents/presentation.py": "5d8b6d01d47bc0e0509a186044c33e1370b2eda89d00a7808ebc584545fa5bb0",
     "backend/app/agents/question_cache.py": "ae7061f13869dd69864090ab521160009b2c1794cc2ad32d8f9442dfbbf5100d",
     "backend/app/agents/readable.py": "c853348be7be20a0db0f52d0b4557c7225cc46a92073862782c387bed6f4f26e",
-    "backend/app/agents/state.py": "b9edceb15b82271f6276bac1eda083c7b08b88f18cd733d224415b84fcd2a7e6",
+    "backend/app/agents/state.py": "09486e3e50ceee731033e41de8cca4b9a6ebd473a1236280668a571914bc1bf5",
     "backend/app/agents/storage.py": "868b6d6e6c648af1b3c07029fd199fe7e3dc46b878e0c578dfe8e7d0a08553bf",
     "backend/app/agents/suggestions.py": "ba09ae3c8d7d98dbd3d85431b4290e7b90e95029b64df006bc8010a1f6db6fc5",
-    "backend/app/agents/tools.py": "4a40160d5e55049930d9a3b58803ef2d9027b78e9c568f65a80634156657b27f",
+    "backend/app/agents/tools.py": "9ef9e509777185a1dccaace23d52383a2798250bc3285b6623356af1976eb887",
     "backend/app/api/__init__.py": "e61363389bcff57bfd5ddd9ff8cd10b8c6fdaecbf149e9aec7b7608f4af6305c",
-    "backend/app/api/agents.py": "fddafe35b811256d37a2d2043c5b3636ffe4997b8aca3944e4a5ccb3c84950b8",
+    "backend/app/api/agents.py": "266aa0270b0ca16357a81d6a6d4aa25e0442e3380bb27fe1bb0bd59d2d9b3fa6",
     "backend/app/api/custom.py": "47388d976a9d1a66a49dd6b5c3b4af623cc37ab278a429da0f13e6e53aa2d354",
     "backend/app/api/evaluate.py": "e53cb4344ce2f5859aa4fa2b172bd2b3e02957ecde2c1fd6be288e356308c3f8",
     "backend/app/api/excel.py": "fca513ffc04fba6acad4843f512a655859aff75343eb6e94ecc17198d57c0729",
@@ -43,7 +43,7 @@
     "backend/app/engine/metrics.py": "0273ac714ec5ebc123bff15b3dda21839862336d5a78ff89f23893221adf45f0",
     "backend/app/engine/regions.py": "7c81ec763628b56230c936ce05759ed35a0f720ae91daabe3f4f39382ac0a254",
     "backend/app/engine/rule_check.py": "5ecf7eba9c16021affbd298b932faa0672b3ade149de33b482fb32224862c3ff",
-    "backend/app/engine/rules.py": "97612efef1ac31b6b872f02f9348a8dd748db139807b284b942b5c0b0f7ccdc7",
+    "backend/app/engine/rules.py": "6cc16ca00d30fe9124b3d57f9671f7d97f60ebb60d08a3a323eda66e314e1ca5",
     "backend/app/engine/scoring.py": "c8bfdec44e428a96ab106089643e1de5185fce4ce5bacb8e2b417a1a4976ea26",
     "backend/app/engine/weights.py": "2f1b7de63e5a369682232aab9a3dc98655c7c2e9680c69128cde8905536a2d9a",
     "backend/app/excel/__init__.py": "a85d4a74036c4cdf454ec4cce162fcbbef17d844a5486243280cfa9caec0d502",
@@ -57,22 +57,13 @@
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/merged.py": "32815e54397f97a6bc3b4333bd79f959e0d64ccb1baee30d376e0db350c8c682",
     "backend/app/schemas/meta.py": "3468f4a138e11263d6ec31f727406e8c9e14f7acdffd103562c00714fb00b872",
-    "data/schemes/mock/A_高品质.json": "5f737a10df7842843acbbe1170c0840846fbdebd83e32e4528dba5897dfaf516",
-    "data/schemes/mock/B_不合规.json": "71ddbf892f561829f92f19113f0d9f24f2fabd2c18e243cf72d6ce1faf58564c",
-    "data/schemes/mock/C_MiC高标准化.json": "d2409f45c4717dda7fcd6d2e71e754a242a2e76a451ced08ebb26b9f626c39ea",
-    "data/schemes/mock/C_现浇.json": "1f6493ad51756eceab5db347cd5a83e52dff16a1af8fd975c52d7d5635a5bd61",
-    "data/schemes/mock/D_均衡.json": "8866b25e9155a1039ee261798547e87bedbfd627a50a89499831c01f8416a108",
-    "data/schemes/mock/E_被支配.json": "89db1634bdac5282ef1e1aaa6cb8ef26ba02a3416991e8cf835d03b723a3f67f",
-    "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
-    "scripts/export_frontend_fixtures.py": "ef289012f2bd9d6a623671a7c773e8a8f51e3ee35a3629695079a3a002baabeb",
-    "data/schemes/方案录入模板.xlsx": "360cd7b3104308c5389f0183de5918b48eb84b2a101c2ba0b6c6e6bfcc813945",
     "rules/_province_template.yaml": "c4e15f94808d603565d69cc242dfa5f4467b527cd45da69e7dd4c5634145dfd8",
     "rules/_template.yaml": "5d7740c4a23a2e802808a2882b8d05428dd9b39fe40180fe800d7fee73667c4c",
     "rules/ah_local.yaml": "3ca2ed66037105a02c4eb9658ddf5c601f9034d6a8c03f982584bb48f1151793",
     "rules/bj_local.yaml": "66ae67f2fcd8e7d26d60008f68c476dd6015718a4506088fd60e41bc68d5214d",
     "rules/compliance.yaml": "d4d1ee2de2eeb7070e5e58aac9981997d0179bca1c23ac1f63c5c8cc08906953",
-    "rules/construction_safety.yaml": "248d90abc36e4e986ca5453c1e8b7ad4a05c1a3b5b642d83dd4e080a224a40bb",
     "rules/construction.yaml": "c995bfa3349f5ec163408001f7fcbf98f4116892d88619bf86b96dceaf5e9810",
+    "rules/construction_safety.yaml": "248d90abc36e4e986ca5453c1e8b7ad4a05c1a3b5b642d83dd4e080a224a40bb",
     "rules/cq_local.yaml": "429834e3ab1e025eed6329602e3eafb369f33b5b6c07084f573c674b9bc8f1cb",
     "rules/fj_local.yaml": "250808482a1c4d64e8333189fe22dcc7a791382414e94e7119100e6b9f827b16",
     "rules/gd_local.yaml": "6f8e9c58d473b49d2f254356970084465472369963b8fe2dfeab48f8e1e68dfe",
@@ -98,17 +89,26 @@
     "rules/sd_local.yaml": "a616781be2014c3230bb968fc49ec9cad231a023f5a81b736a02fea15bad9124",
     "rules/sh_local.yaml": "0ab44dc295f5bd64bd2eca375e639ee9462d72d0bca1de6353381875151a16e4",
     "rules/sn_local.yaml": "0be5067cbacdf6940b0311f6e9ecb5edc20e15cd22d84db5d529ff2dda6c3ac2",
+    "rules/structure.yaml": "29edacdbcfb5a6a5e56a6d06f8c254b23d4e13087f3f5fccd864b79385948486",
     "rules/structure_foundation.yaml": "d96fd8830142c21e3308558bee2c5a2300d56ef1f675564578a2478ae1e8111d",
     "rules/structure_members.yaml": "737e11f3bf54f48cdf3e23ec97c69f7ef7f2957cc21381b3a66221cb9ab19ae8",
     "rules/structure_steel.yaml": "3fb4a07b0a7ee389ad3f6d55857830dce99ca167829c8dc2ec72ab9d4064ccf9",
-    "rules/structure.yaml": "29edacdbcfb5a6a5e56a6d06f8c254b23d4e13087f3f5fccd864b79385948486",
     "rules/sx_local.yaml": "2097d0d0f96bfa82d82c5fcc513c7a1f2c4da62bf5c4654dafeea0e25a0ac5ff",
     "rules/tj_local.yaml": "d31f6103f1fa565632f490e1f60c4b2817bffb7f411a48931b839858154ae7e0",
     "rules/weights.yaml": "0a6704b9af4c91e22518aba286dba23e30bcccb76e857bfef15e4c1253f14279",
     "rules/xj_local.yaml": "1d8b41d2d6958b0c1cae5c2db73a73ed552716040975443a2a518da4ed63d7aa",
     "rules/xz_local.yaml": "aae0ff0615e3b15b446251185a21b18867838146a4c44dbcd08e3c5d5df30f7e",
     "rules/yn_local.yaml": "a05803a33ad442f59be04f7979c295616851de814de5ec75047d5fc4628352a1",
-    "rules/zj_mic.yaml": "afc87bb81a348ea328fa161f2bf8d36ccb0244c84ce14c16d77bcfc045d31dcf"
+    "rules/zj_mic.yaml": "afc87bb81a348ea328fa161f2bf8d36ccb0244c84ce14c16d77bcfc045d31dcf",
+    "data/schemes/mock/A_高品质.json": "5f737a10df7842843acbbe1170c0840846fbdebd83e32e4528dba5897dfaf516",
+    "data/schemes/mock/B_不合规.json": "71ddbf892f561829f92f19113f0d9f24f2fabd2c18e243cf72d6ce1faf58564c",
+    "data/schemes/mock/C_MiC高标准化.json": "d2409f45c4717dda7fcd6d2e71e754a242a2e76a451ced08ebb26b9f626c39ea",
+    "data/schemes/mock/C_现浇.json": "1f6493ad51756eceab5db347cd5a83e52dff16a1af8fd975c52d7d5635a5bd61",
+    "data/schemes/mock/D_均衡.json": "8866b25e9155a1039ee261798547e87bedbfd627a50a89499831c01f8416a108",
+    "data/schemes/mock/E_被支配.json": "89db1634bdac5282ef1e1aaa6cb8ef26ba02a3416991e8cf835d03b723a3f67f",
+    "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
+    "scripts/export_frontend_fixtures.py": "ef289012f2bd9d6a623671a7c773e8a8f51e3ee35a3629695079a3a002baabeb",
+    "data/schemes/方案录入模板.xlsx": "360cd7b3104308c5389f0183de5918b48eb84b2a101c2ba0b6c6e6bfcc813945"
   },
   "grid_step": 10,
   "projects": [
@@ -843,16 +843,14 @@
           {
             "rule_id": "K-07",
             "name": "两墙合一地下连续墙混凝土强度等级下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": 30.0,
             "limit": ">= 30",
             "formula": "retaining_concrete_grade >= 30",
             "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
-            "missing_fields": [
-              "retaining_wall_two_in_one"
-            ],
-            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙' and retaining_wall_two_in_one）"
           },
           {
             "rule_id": "K-08",
@@ -1103,31 +1101,26 @@
           {
             "rule_id": "S-28",
             "name": "错层处平面外受力剪力墙截面厚度下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": ">= 250",
             "formula": "staggered_wall_thickness >= 250",
             "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
-            "missing_fields": [
-              "has_out_of_plane_staggered_wall"
-            ],
-            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and has_out_of_plane_staggered_wall and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
           },
           {
             "rule_id": "S-29",
             "name": "钢结构高层不应采用单跨框架",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": null,
             "formula": "not is_single_span_frame",
             "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
-            "missing_fields": [
-              "steel_system",
-              "structural_height_classification"
-            ],
-            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and steel_system == '框架' and structural_height_classification == '高层'）"
           },
           {
             "rule_id": "S-19",
@@ -1525,16 +1518,14 @@
           {
             "rule_id": "K-07",
             "name": "两墙合一地下连续墙混凝土强度等级下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": ">= 30",
             "formula": "retaining_concrete_grade >= 30",
             "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
-            "missing_fields": [
-              "retaining_wall_two_in_one"
-            ],
-            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙' and retaining_wall_two_in_one）"
           },
           {
             "rule_id": "K-08",
@@ -1781,31 +1772,26 @@
           {
             "rule_id": "S-28",
             "name": "错层处平面外受力剪力墙截面厚度下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": ">= 250",
             "formula": "staggered_wall_thickness >= 250",
             "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
-            "missing_fields": [
-              "has_out_of_plane_staggered_wall"
-            ],
-            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and has_out_of_plane_staggered_wall and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
           },
           {
             "rule_id": "S-29",
             "name": "钢结构高层不应采用单跨框架",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": null,
             "formula": "not is_single_span_frame",
             "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
-            "missing_fields": [
-              "steel_system",
-              "structural_height_classification"
-            ],
-            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and steel_system == '框架' and structural_height_classification == '高层'）"
           },
           {
             "rule_id": "S-19",
@@ -2203,16 +2189,14 @@
           {
             "rule_id": "K-07",
             "name": "两墙合一地下连续墙混凝土强度等级下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": 30.0,
             "limit": ">= 30",
             "formula": "retaining_concrete_grade >= 30",
             "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
-            "missing_fields": [
-              "retaining_wall_two_in_one"
-            ],
-            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙' and retaining_wall_two_in_one）"
           },
           {
             "rule_id": "K-08",
@@ -2461,31 +2445,26 @@
           {
             "rule_id": "S-28",
             "name": "错层处平面外受力剪力墙截面厚度下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": ">= 250",
             "formula": "staggered_wall_thickness >= 250",
             "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
-            "missing_fields": [
-              "has_out_of_plane_staggered_wall"
-            ],
-            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and has_out_of_plane_staggered_wall and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
           },
           {
             "rule_id": "S-29",
             "name": "钢结构高层不应采用单跨框架",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": null,
             "formula": "not is_single_span_frame",
             "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
-            "missing_fields": [
-              "steel_system",
-              "structural_height_classification"
-            ],
-            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and steel_system == '框架' and structural_height_classification == '高层'）"
           },
           {
             "rule_id": "S-19",
@@ -3141,31 +3120,26 @@
           {
             "rule_id": "S-28",
             "name": "错层处平面外受力剪力墙截面厚度下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": ">= 250",
             "formula": "staggered_wall_thickness >= 250",
             "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
-            "missing_fields": [
-              "has_out_of_plane_staggered_wall"
-            ],
-            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and has_out_of_plane_staggered_wall and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
           },
           {
             "rule_id": "S-29",
             "name": "钢结构高层不应采用单跨框架",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": null,
             "formula": "not is_single_span_frame",
             "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
-            "missing_fields": [
-              "steel_system",
-              "structural_height_classification"
-            ],
-            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and steel_system == '框架' and structural_height_classification == '高层'）"
           },
           {
             "rule_id": "S-19",
@@ -3563,16 +3537,14 @@
           {
             "rule_id": "K-07",
             "name": "两墙合一地下连续墙混凝土强度等级下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": 25.0,
             "limit": ">= 30",
             "formula": "retaining_concrete_grade >= 30",
             "source": "GB 55003—2021 第7.2.5条：两墙合一的地下连续墙混凝土强度等级不应低于C30；地下连续墙基坑外侧的纵向受力钢筋的混凝土保护层厚度不应小于70mm；地下连续墙墙体和槽段施工接头应满足防渗设计要求（原文逐字核对）",
-            "missing_fields": [
-              "retaining_wall_two_in_one"
-            ],
-            "message": "缺少字段 retaining_wall_two_in_one，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：retaining_type == '地下连续墙' and retaining_wall_two_in_one）"
           },
           {
             "rule_id": "K-08",
@@ -3817,31 +3789,26 @@
           {
             "rule_id": "S-28",
             "name": "错层处平面外受力剪力墙截面厚度下限",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": ">= 250",
             "formula": "staggered_wall_thickness >= 250",
             "source": "GB 55008—2021 第4.4.13条第2款：错层处平面外受力的剪力墙的承载力应适当提高，剪力墙截面厚度不应小于250mm，混凝土强度等级不应低于C30，水平和竖向分布钢筋的配筋率不应小于0.50%（原文逐字核对；分布筋配筋率需专门的配筋率字段，本系统暂未采集）",
-            "missing_fields": [
-              "has_out_of_plane_staggered_wall"
-            ],
-            "message": "缺少字段 has_out_of_plane_staggered_wall，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：has_staggered_floor and has_out_of_plane_staggered_wall and (structure_type == '剪力墙' or structure_type == '框架-剪力墙')）"
           },
           {
             "rule_id": "S-29",
             "name": "钢结构高层不应采用单跨框架",
-            "status": "insufficient_data",
+            "status": "not_applicable",
             "severity": "error",
             "value": null,
             "limit": null,
             "formula": "not is_single_span_frame",
             "source": "GB/T 50011—2010（2024年版）第8.1.5条：一、二级的钢结构房屋，宜设置偏心支撑、带竖缝钢筋混凝土抗震墙板、内藏钢支撑钢筋混凝土墙板、屈曲约束支撑等消能支撑或筒体。采用框架结构时，甲、乙类建筑和高层的丙类建筑不应采用单跨框架，多层的丙类建筑不宜采用单跨框架（原文逐字核对）",
-            "missing_fields": [
-              "steel_system",
-              "structural_height_classification"
-            ],
-            "message": "缺少字段 steel_system、structural_height_classification，无法判断本规则是否适用"
+            "missing_fields": [],
+            "message": "本方案不适用该规则（适用条件：structure_type == '钢结构' and steel_system == '框架' and structural_height_classification == '高层'）"
           },
           {
             "rule_id": "S-19",
@@ -8228,10 +8195,82 @@
     }
   },
   "rules": {
-    "rule_count": 88,
-    "hard_count": 72,
+    "rule_count": 112,
+    "hard_count": 96,
     "metric_count": 16,
     "rules": [
+      {
+        "definition": {
+          "id": "BJ-Q-01",
+          "pack": "BJ",
+          "name": "北京住宅层高下限",
+          "type": "hard",
+          "source": "《住宅设计规范》DB11/1740-2020 第5.8.1条：住宅层高不应低于2.80m（北京市规划和自然资源委员会官方标准页面及北京市政府发布解读，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height >= 2.80",
+          "message": "住宅层高 {floor_height} m 低于北京市住宅设计规范要求的 2.80 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "bj_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "BJ-Q-02",
+          "pack": "BJ",
+          "name": "北京卧室起居室净高下限",
+          "type": "hard",
+          "source": "《住宅设计规范》DB11/1740-2020 第5.8.2条：卧室、起居室的室内净高不应低于2.50m（北京市政府公开解读与官方标准页面，2026-10-15核对）",
+          "when": null,
+          "check": "clear_height >= 2.50",
+          "message": "卧室、起居室净高 {clear_height} m 低于北京市要求的 2.50 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "bj_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "BJ-Q-03",
+          "pack": "BJ",
+          "name": "北京住宅担架电梯",
+          "type": "hard",
+          "source": "《住宅设计规范》DB11/1740-2020 第6.4.3条：四层及以上或住户入口层楼面距室外设计地面高度超过9m的新建住宅，每个设置电梯的居住单元至少设1台可容纳担架的电梯（北京市政府公开解读，2026-10-15核对）",
+          "when": "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9",
+          "check": "has_stretcher_elevator",
+          "message": "最高入户层达到4层或楼面高度超过9m，按北京市要求每个住宅单元至少应有1台可容纳担架的电梯",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "bj_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "BJ-Q-04",
+          "pack": "BJ",
+          "name": "北京住宅大寒日日照",
+          "type": "hard",
+          "source": "北京市保障性租赁住房项目公开设计文件引用《住宅设计规范》DB11/1740-2020 第8.1.2条：需要获得日照的居住空间日照标准不应低于大寒日日照2h（北京市政府公开项目资料，2026-10-15核对）",
+          "when": "daylight_standard_day == '大寒日'",
+          "check": "sunlight_hours >= 2",
+          "message": "日照时数 {sunlight_hours} h 低于北京市住宅项目大寒日 2 h 要求",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "bj_local.yaml"
+      },
       {
         "definition": {
           "id": "C-01",
@@ -8814,6 +8853,60 @@
       },
       {
         "definition": {
+          "id": "GS-Q-01",
+          "pack": "GS",
+          "name": "甘肃宜居住宅层高下限",
+          "type": "hard",
+          "source": "《宜居住宅设计标准》DB62/T 3279-2024：住宅层高应大于等于3.0m（甘肃省住建系统公开发布摘要，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height >= 3.0",
+          "message": "住宅层高 {floor_height} m 低于甘肃宜居住宅标准要求的 3.0 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "gs_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "GS-Q-02",
+          "pack": "GS",
+          "name": "甘肃设新风系统时层高建议",
+          "type": "hard",
+          "source": "《宜居住宅设计标准》DB62/T 3279-2024：户内设置新风系统时层高不应低于3.2m（甘肃省住建系统公开发布摘要，2026-10-15核对；本条按建议性复核提示处理）",
+          "when": "has_fresh_air",
+          "check": "floor_height >= 3.2",
+          "message": "设置户内新风系统时，甘肃标准要求层高不低于3.2m；请复核",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "gs_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "GS-G-01",
+          "pack": "GS",
+          "name": "甘肃住区绿地率下限",
+          "type": "hard",
+          "source": "《宜居住宅设计标准》DB62/T 3279-2024：住区绿地率不应小于30%（甘肃省住建系统公开发布摘要，2026-10-15核对）",
+          "when": null,
+          "check": "green_ratio >= 0.30",
+          "message": "住区绿地率 {green_ratio} 低于甘肃标准要求的 30%",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "gs_local.yaml"
+      },
+      {
+        "definition": {
           "id": "HB-Q-01",
           "pack": "HB",
           "name": "湖北高品质住宅层高下限",
@@ -8940,6 +9033,60 @@
       },
       {
         "definition": {
+          "id": "HN-Q-01",
+          "pack": "HN",
+          "name": "湖南每台电梯服务户数上限",
+          "type": "hard",
+          "source": "《湖南省好房子建设技术导则（2026版）》第2.3.3条第2款：每台电梯服务户数不应超过60户（湖南省住建厅官方 PDF，2026-10-15核对）",
+          "when": null,
+          "check": "units / total_elevators <= 60",
+          "message": "每台电梯服务 {units} / {total_elevators} 户，超过湖南导则要求的 60 户上限",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "hn_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HN-Q-02",
+          "pack": "HN",
+          "name": "湖南住宅担架无障碍电梯",
+          "type": "hard",
+          "source": "《湖南省好房子建设技术导则（2026版）》第2.3.3条第1款：设有电梯的住宅单元每个单元至少设置1台可容纳担架的无障碍电梯（湖南省住建厅官方 PDF，2026-10-15核对）",
+          "when": "elevators_per_unit >= 1",
+          "check": "has_stretcher_elevator and has_accessible_elevator",
+          "message": "设有电梯的住宅单元，湖南导则要求至少设置1台可容纳担架的无障碍电梯",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "hn_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "HN-Q-03",
+          "pack": "HN",
+          "name": "湖南交通干线卧室起居室外窗隔声",
+          "type": "hard",
+          "source": "《湖南省好房子建设技术导则（2026版）》第2.8.1条第3款：临近交通干线的卧室、起居室外门窗 Rw+Ctr 不应小于35dB（湖南省住建厅官方 PDF，2026-10-15核对；因缺少隔声字段仅作 warning）",
+          "when": null,
+          "check": "False",
+          "message": "临近交通干线的卧室、起居室外窗应复核 Rw+Ctr 不小于35dB；系统尚未采集该字段",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "hn_local.yaml"
+      },
+      {
+        "definition": {
           "id": "JL-Q-01",
           "pack": "JL",
           "name": "吉林好房子层高下限",
@@ -9012,6 +9159,78 @@
       },
       {
         "definition": {
+          "id": "JL-Q-04",
+          "pack": "JL",
+          "name": "吉林住宅担架电梯",
+          "type": "hard",
+          "source": "《吉林省好房子建设技术导则》通告第669号第5.2.21条：四层及以上住宅或住户入口层楼面距室外设计地面高度超过9m时，每个住宅单元至少设置1台可容纳担架的电梯（吉林省住建厅/政府公开 PDF，2026-10-15核对）",
+          "when": "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9",
+          "check": "has_stretcher_elevator",
+          "message": "最高入户层达到4层或楼面高度超过9m，按吉林导则每个住宅单元至少应有1台可容纳担架的电梯",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "jl_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "JS-Q-01",
+          "pack": "JS",
+          "name": "江苏普通住宅层高下限",
+          "type": "hard",
+          "source": "《住宅设计标准》DB32/3920-2020 第5.8.1条：普通住宅层高不应低于2.80m（江苏省市场监督管理局公告发布记录及标准文本，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height >= 2.80",
+          "message": "普通住宅层高 {floor_height} m 低于江苏省要求的 2.80 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "js_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "JS-Q-02",
+          "pack": "JS",
+          "name": "江苏普通住宅层高上限",
+          "type": "hard",
+          "source": "《住宅设计标准》DB32/3920-2020 第5.8.1条：普通住宅层高不应高于3.00m；低层住宅及设户式中央空调、集中新风或地暖系统的住宅层高不应高于3.60m（江苏省地方标准，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height <= (3.60 if floors <= 3 or has_fresh_air else 3.00)",
+          "message": "普通住宅层高 {floor_height} m 超过江苏省第5.8.1条的层高上限",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "js_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "JS-Q-03",
+          "pack": "JS",
+          "name": "江苏卧室起居室净高下限",
+          "type": "hard",
+          "source": "《住宅设计标准》DB32/3920-2020 第5.8.2条：卧室、起居室室内净高不应低于2.50m（江苏省地方标准，2026-10-15核对）",
+          "when": null,
+          "check": "clear_height >= 2.50",
+          "message": "卧室、起居室净高 {clear_height} m 低于江苏省要求的 2.50 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "js_local.yaml"
+      },
+      {
+        "definition": {
           "id": "LN-Q-01",
           "pack": "LN",
           "name": "辽宁好房子层高下限",
@@ -9056,6 +9275,24 @@
           "when": null,
           "check": "units / total_elevators <= 60",
           "message": "每台电梯服务 {units} / {total_elevators} 户，超过辽宁省要求的每台不超过 60 户",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "ln_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "LN-Q-05",
+          "pack": "LN",
+          "name": "辽宁卧室起居室净高下限",
+          "type": "hard",
+          "source": "《辽宁省「好房子」施工图设计文件技术审查要点（试行）》第4.1.2条：卧室、起居室的室内净高不应低于2.60m（辽宁省住建厅官方 PDF，2026-10-15核对）",
+          "when": null,
+          "check": "clear_height >= 2.60",
+          "message": "卧室、起居室净高 {clear_height} m 低于辽宁审查要点要求的 2.60 m",
           "severity": "error",
           "dimension": null,
           "value": null,
@@ -9393,6 +9630,96 @@
           "weight_in_dimension": 1.0
         },
         "source_file": "sc_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SD-Q-01",
+          "pack": "SD",
+          "name": "山东住宅层高下限",
+          "type": "hard",
+          "source": "《住宅设计标准》DB37/T 5323-2025 第6.8.1条：住宅层高不应低于3.00m（全国标准信息公共服务平台登记为现行，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height >= 3.00",
+          "message": "住宅层高 {floor_height} m 低于山东省要求的 3.00 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sd_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SD-Q-02",
+          "pack": "SD",
+          "name": "山东卧室起居室净高下限",
+          "type": "hard",
+          "source": "《住宅设计标准》DB37/T 5323-2025 第6.8.2条：卧室、起居室室内净高不应低于2.60m（全国标准信息公共服务平台登记及标准文本，2026-10-15核对）",
+          "when": null,
+          "check": "clear_height >= 2.60",
+          "message": "卧室、起居室净高 {clear_height} m 低于山东省要求的 2.60 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sd_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SH-Q-01",
+          "pack": "SH",
+          "name": "上海住宅层高建议下限",
+          "type": "hard",
+          "source": "《住宅设计标准》DGJ08-20-2019 第4.8.1条：住宅层高宜为2.80m，且不应大于3.60m；该条为推荐性地方标准，系统只作 warning（上海市住建委官方批准通知，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height >= 2.80",
+          "message": "住宅层高 {floor_height} m 低于上海市住宅设计标准建议的 2.80 m",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sh_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SH-Q-02",
+          "pack": "SH",
+          "name": "上海住宅层高上限",
+          "type": "hard",
+          "source": "《住宅设计标准》DGJ08-20-2019 第4.8.1条：住宅层高不应大于3.60m（上海市住建委官方批准通知及现行标准目录，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height <= 3.60",
+          "message": "住宅层高 {floor_height} m 超过上海市住宅设计标准的 3.60 m 上限",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sh_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "SH-Q-03",
+          "pack": "SH",
+          "name": "上海卧室起居室净高下限",
+          "type": "hard",
+          "source": "《住宅设计标准》DGJ08-20-2019 第4.8.2条：卧室、起居室的室内净高不应低于2.50m（上海市住建委批准标准，2026-10-15核对）",
+          "when": null,
+          "check": "clear_height >= 2.50",
+          "message": "卧室、起居室净高 {clear_height} m 低于上海市要求的 2.50 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "sh_local.yaml"
       },
       {
         "definition": {
@@ -9970,6 +10297,78 @@
       },
       {
         "definition": {
+          "id": "TJ-Q-01",
+          "pack": "TJ",
+          "name": "天津住宅层高下限",
+          "type": "hard",
+          "source": "《天津市住宅设计标准》DB/T 29-22-2024 第5.7.1条：住宅层高不应低于3.0m（天津市住建委官方 PDF，2026-10-15核对）",
+          "when": null,
+          "check": "floor_height >= 3.0",
+          "message": "住宅层高 {floor_height} m 低于天津市住宅设计标准要求的 3.0 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "tj_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "TJ-Q-02",
+          "pack": "TJ",
+          "name": "天津卧室起居室净高下限",
+          "type": "hard",
+          "source": "《天津市住宅设计标准》DB/T 29-22-2024 第5.7.2条：卧室和起居室（厅）的室内净高不应低于2.50m（天津市住建委官方 PDF，2026-10-15核对）",
+          "when": null,
+          "check": "clear_height >= 2.50",
+          "message": "卧室、起居室净高 {clear_height} m 低于天津市要求的 2.50 m",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "tj_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "TJ-Q-03",
+          "pack": "TJ",
+          "name": "天津住宅担架电梯",
+          "type": "hard",
+          "source": "《天津市住宅设计标准》DB/T 29-22-2024 第6.1.6、6.1.7条：设置电梯的住宅单元应至少设置1台可容纳担架的电梯（天津市住建委官方 PDF，2026-10-15核对）",
+          "when": "highest_occupied_floor >= 4 or highest_occupied_floor_height > 9",
+          "check": "has_stretcher_elevator",
+          "message": "设置电梯的住宅单元至少应有1台可容纳担架的电梯",
+          "severity": "error",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "tj_local.yaml"
+      },
+      {
+        "definition": {
+          "id": "XJ-Q-01",
+          "pack": "XJ",
+          "name": "新疆住宅大寒日日照下限（50万人以上城镇）",
+          "type": "hard",
+          "source": "新疆住宅设计标准相关条文表4.2.1：城镇常住人口≥50万时，住宅建筑日照标准为大寒日不小于2h（新疆住建厅官方 PDF，2026-10-15核对）。人口规模字段尚未采集，故本条只作提示，启用前须由专业组确认项目适用口径",
+          "when": "daylight_standard_day == '大寒日'",
+          "check": "sunlight_hours >= 2",
+          "message": "大寒日日照时数 {sunlight_hours} h 低于新疆50万人以上城镇要求的 2 h",
+          "severity": "warning",
+          "dimension": null,
+          "value": null,
+          "scoring": null,
+          "weight_in_dimension": 1.0
+        },
+        "source_file": "xj_local.yaml"
+      },
+      {
+        "definition": {
           "id": "ZJ-S-01",
           "pack": "ZJ",
           "name": "浙江省 MiC 混凝土强度等级下限",
@@ -10046,7 +10445,7 @@
           "pack": "ZJ",
           "name": "浙江全预制剪力墙高度（6度、含括号条件）",
           "type": "hard",
-          "source": "TODO(专业组)：沿用本PR ZJ-S-03/S-04 source所述表6.1.8及括号条件：6度130m、预制墙底剪力占比大于80%时120m。新增程序条件尚待专业组复核官方原表，缺剪力比保持数据不足",
+          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10印发）第6.1.8条表6.1.8及表注：6度区模块化全预制剪力墙结构（全部落地）最大适用高度130m；预制墙底剪力占比大于80%时取括号值120m。程序条件按该表实现，正式项目仍需专业组核对框支层及剪力比口径",
           "when": "structure_type == 'MiC' and mic_system == '模块化全预制剪力墙结构' and seismic_intensity == '6度(0.05g)'",
           "check": "height <= (120 if mic_precast_wall_shear_ratio > 0.8 else 130)",
           "message": "全预制剪力墙高度 {height} m 不满足6度区已声明剪力比条件的表列值；请专业复核",
@@ -10064,7 +10463,7 @@
           "pack": "ZJ",
           "name": "浙江全预制剪力墙高度（7度、含括号条件）",
           "type": "hard",
-          "source": "TODO(专业组)：沿用本PR ZJ-S-04 source所述表6.1.8及括号条件：7度110m、预制墙底剪力占比大于80%时100m。新增程序条件尚待专业组复核官方原表，缺剪力比保持数据不足",
+          "source": "浙江省《混凝土模块化建筑技术导则》（浙建管发〔2026〕118号，2026-09-10印发）第6.1.8条表6.1.8及表注：7度区模块化全预制剪力墙结构（全部落地）最大适用高度110m；预制墙底剪力占比大于80%时取括号值100m。程序条件按该表实现，正式项目仍需专业组核对框支层及剪力比口径",
           "when": "structure_type == 'MiC' and mic_system == '模块化全预制剪力墙结构' and seismic_intensity == '7度(0.10g)'",
           "check": "height <= (100 if mic_precast_wall_shear_ratio > 0.8 else 110)",
           "message": "全预制剪力墙高度 {height} m 不满足7度区已声明剪力比条件的表列值；请专业复核",
@@ -10170,10 +10569,7 @@
         "note": "建筑总高与最小平面宽度之比；JGJ 3—2010 第3.3.2条 表3.3.2 给出上限，用词为「不宜」。"
       }
     ],
-    "todo_source_ids": [
-      "ZJ-S-05",
-      "ZJ-S-06"
-    ]
+    "todo_source_ids": []
   },
   "imports": [
     {

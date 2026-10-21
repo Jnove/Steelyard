@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Alert, Button, Empty, Segmented, Skeleton, Slider, Tag, Tooltip } from 'antd'
+import { Alert, Button, Empty, Segmented, Select, Skeleton, Slider, Tag, Tooltip } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
 import { evaluation } from '../api/evaluation'
@@ -9,6 +9,8 @@ import type { EvalResult, RankResponse } from '../api/types'
 import { dimensions, type DimensionKey, isMock } from '../constants/dimensions'
 import { tokens } from '../theme'
 import { redistributeWeights } from '../utils/weights'
+import { decisionInput, decisionLabel } from '../utils/decision-context'
+import { useDecisionContext } from '../utils/use-decision-context'
 import { evaluationSummary, scoreTradeoff } from '../utils/scheme-presentation'
 import Chart from '../components/Chart'
 import TraceDrawer from '../components/TraceDrawer'
@@ -24,7 +26,7 @@ import {
   IconUser,
 } from '../components/Icons'
 
-type RankInput = { role: string } | { weights: number[] }
+type RankInput = ReturnType<typeof decisionInput>
 
 function RankingList({ result }: { result: RankResponse }) {
   const container = useRef<HTMLDivElement>(null)
@@ -72,23 +74,26 @@ function RankingList({ result }: { result: RankResponse }) {
 export default function DashboardPage() {
   const { id: rawId } = useParams()
   const id = Number(rawId)
-  const [role, setRole] = useState('government')
-  const [weights, setWeights] = useState([.25,.25,.25,.25])
-  const [request, setRequest] = useState<RankInput>({ role: 'government' })
+  if (!Number.isSafeInteger(id) || id <= 0) return <Alert type="error" message="项目 ID 无效" />
+  return <ProjectDashboard key={id} id={id} />
+}
+
+function ProjectDashboard({ id }: { id: number }) {
+  const [context, updateContext] = useDecisionContext(id)
+  const role = context.role
+  const [weights, setWeights] = useState(context.weights ?? [.25,.25,.25,.25])
+  const request = decisionInput(context)
   const [debounced, setDebounced] = useState<RankInput>(request)
   const [trace, setTrace] = useState<{ evaluation: EvalResult; dimension?: DimensionKey; ruleId?: string }>()
   const project = useQuery({ queryKey: ['project',id], queryFn: () => projects.get(id) })
   const evaluated = useQuery({ queryKey: ['evaluation',id], queryFn: () => evaluation.get(id) })
   const roles = useQuery({ queryKey: ['roles',id], queryFn: () => ranking.roles(id) })
-  useEffect(() => { const timer = setTimeout(() => setDebounced(request), 150); return () => clearTimeout(timer) }, [request])
+  const requestKey = JSON.stringify(request)
+  useEffect(() => { const timer = setTimeout(() => setDebounced(JSON.parse(requestKey) as RankInput), 150); return () => clearTimeout(timer) }, [requestKey])
   useEffect(() => {
     const preset = roles.data?.roles.find(r => r.role === role)
     if (preset) setWeights(preset.weights)
   }, [roles.data,role])
-  useEffect(() => {
-    setRole('government'); setRequest({ role: 'government' }); setDebounced({role:'government'})
-    setTrace(undefined)
-  }, [id])
   const ranked = useQuery({
     queryKey: ['rank',id,debounced], queryFn: () => ranking.run(id,debounced),
     enabled: !!evaluated.data?.results.length,
@@ -99,12 +104,12 @@ export default function DashboardPage() {
   const sensitivity = result?.sensitivity
   const acceptability = result?.rank_acceptability
   const roleChange = (value: string | number) => {
-    const key = String(value); setRole(key)
-    setRequest(key === 'custom' ? { weights } : { role: key })
+    const key = String(value)
+    updateContext({ role: key, weights: key === 'custom' ? weights : undefined })
   }
   const changeWeight = (index: number, value: number) => {
     const next = redistributeWeights(weights,index,value / 100)
-    setWeights(next); setRole('custom'); setRequest({ weights: next })
+    setWeights(next); updateContext({ role: 'custom', weights: next })
   }
   const inputOrder = result?.scheme_order ?? []
   const nameAt = (index: number | null) => index == null ? '—' :
@@ -114,6 +119,7 @@ export default function DashboardPage() {
 
   // 动态提炼推荐结论
   const topScheme = result?.ranking?.[0]
+  const selectedSchemeId = results.find(item => item.scheme_id === context.schemeId)?.scheme_id ?? topScheme?.scheme_id ?? results[0]?.scheme_id
   const topEval = results.find(e => e.scheme_id === topScheme?.scheme_id)
   const excludedCount = result?.excluded?.length ?? 0
   const topSummary = topEval ? evaluationSummary(topEval) : undefined
@@ -135,7 +141,7 @@ export default function DashboardPage() {
       </div>
       <div className="action-row">
         <Link to={'/projects/'+id+'/schemes'}><Button>编辑方案</Button></Link>
-        <Link to={'/projects/'+id+'/chat'}><Button type="primary">讨论与报告 <IconArrowRight size={15} style={{ verticalAlign: 'middle', marginLeft: 4 }} /></Button></Link>
+        <Link to={'/projects/'+id+'/chat'} onClick={() => updateContext({ schemeId: selectedSchemeId })}><Button type="primary">讨论与报告 <IconArrowRight size={15} style={{ verticalAlign: 'middle', marginLeft: 4 }} /></Button></Link>
       </div>
     </div>
 
@@ -162,7 +168,7 @@ export default function DashboardPage() {
               </div>
             </div>
             <div className="executive-actions">
-              <Link to={`/projects/${id}/chat`}>
+              <Link to={`/projects/${id}/chat`} onClick={() => updateContext({ schemeId: topScheme.scheme_id })}>
                 <Button type="primary" size="large">
                   <IconMessage size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
                   向 AI 追问推荐依据
@@ -216,8 +222,16 @@ export default function DashboardPage() {
         <Segmented value={role} onChange={roleChange} options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
         <span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span>
       </div>
+      <div className="action-row" style={{ marginBottom: 16 }} aria-label="当前讨论上下文">
+        <Tag>{decisionLabel(context)}</Tag>
+        <Select aria-label="选择讨论方案" value={selectedSchemeId} style={{ minWidth: 220 }}
+          options={results.map(item => ({ value: item.scheme_id, label: item.scheme_name }))}
+          onChange={schemeId => updateContext({ schemeId })} />
+        <span className="muted">讨论与报告沿用当前视角、权重和所选方案。</span>
+      </div>
 
       {result && <ComparisonWorkbench key={id} results={results} ranking={result} projectName={project.data?.name ?? '当前项目'}
+        selectedSchemeId={selectedSchemeId} onSelectScheme={schemeId => updateContext({ schemeId })}
         roleName={roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role_name ?? '当前权重'} updating={ranked.isFetching} onTrace={setTrace} />}
 
       <div className="dashboard-top">

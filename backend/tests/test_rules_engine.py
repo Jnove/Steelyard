@@ -484,7 +484,7 @@ def test_todo_source_ids_are_reported(tmp_path: Path) -> None:
     免得测试和种子规则的占位状态绑死。
     """
     (tmp_path / "compliance.yaml").write_text(
-        '- id: C-01\n  name: 占位规则\n  type: hard\n'
+        "- id: C-01\n  name: 占位规则\n  type: hard\n"
         '  check: "floor_height >= 3.0"\n  source: "TODO(专业组)：待补"\n',
         encoding="utf-8",
     )
@@ -660,6 +660,103 @@ def test_metric_when_false_is_not_applicable(ruleset: object) -> None:
     result = _evaluate_one(_scheme(floors=5), ruleset)
     assert result.metrics["Q-01"].status == "not_applicable"
     assert result.metrics["Q-01"].score is None
+
+
+@pytest.mark.parametrize(
+    "when, status, missing",
+    [
+        ("structure_type == '钢结构' and steel_system == '框架'", "not_applicable", []),
+        ("steel_system == '框架' and structure_type == '钢结构'", "not_applicable", []),
+        ("structure_type == '剪力墙' or steel_system == '框架'", "passed", []),
+        ("steel_system == '框架' or structure_type == '剪力墙'", "passed", []),
+        (
+            "structure_type == '剪力墙' and steel_system == '框架'",
+            "insufficient_data",
+            ["steel_system"],
+        ),
+        (
+            "structure_type == '钢结构' or steel_system == '框架'",
+            "insufficient_data",
+            ["steel_system"],
+        ),
+        ("not (steel_system == '框架' and floors < 7)", "passed", []),
+        (
+            "(floors < 7 or steel_system == '框架') and structure_type == '钢结构'",
+            "not_applicable",
+            [],
+        ),
+        ("floors < 7 and window_wall_ratio['南'] <= 0.4", "not_applicable", []),
+        (
+            "floors > 7 and window_wall_ratio['南'] <= 0.4",
+            "insufficient_data",
+            ["window_wall_ratio['南']"],
+        ),
+        ("floors < 7 and shape_coef <= 0.4", "not_applicable", []),
+        ("floors > 7 and shape_coef <= 0.4", "insufficient_data", ["volume"]),
+        ("floors > 7 if structure_type == '剪力墙' else steel_system == '框架'", "passed", []),
+        ("False if steel_system == '框架' else False", "not_applicable", []),
+        ("True if steel_system == '框架' else False", "insufficient_data", ["steel_system"]),
+        ("floors < 7 < volume", "not_applicable", []),
+        ("floors > 7 > volume", "insufficient_data", ["volume"]),
+        ("steel_system != '框架'", "insufficient_data", ["steel_system"]),
+        (
+            "steel_system == '框架' or mic_system == '模块'",
+            "insufficient_data",
+            ["mic_system", "steel_system"],
+        ),
+        ("floors > 7 and (1 / 0 > 1)", "insufficient_data", []),
+        ("floors < 7 and (1 / 0 > 1)", "not_applicable", []),
+    ],
+)
+def test_when_three_valued_conditions(when: str, status: str, missing: list[str]) -> None:
+    """无关分支不要求补数据，真正决定适用性的缺失仍必须报告。"""
+    rules = RuleSet(
+        rules=(RuleDef.model_validate(_hard(when=when)),),
+        origins={},
+    )
+    result = _evaluate_one(_scheme(volume=None, window_wall_ratio={"北": 0.2}), rules)
+    item = _compliance(result, "C-01")
+    assert item.status == status
+    assert item.missing_fields == missing
+
+
+def test_when_boolean_operands_keep_python_value_semantics_in_comparisons() -> None:
+    rules = RuleSet(
+        rules=(RuleDef.model_validate(_hard(when="(floors or 0) == 18")),),
+        origins={},
+    )
+    assert _compliance(_evaluate_one(_scheme(floors=18), rules), "C-01").status == "passed"
+
+
+@pytest.mark.parametrize(
+    "when",
+    [
+        "False and window_wall_ratio['南']['北'] > 0",
+        "True or window_wall_ratio.values()",
+        "False and __import__('os')",
+        "True or floor_hieght > 0",
+        "floors => 7",
+    ],
+)
+def test_when_short_circuit_cannot_bypass_static_safety_checks(when: str) -> None:
+    rules = RuleSet(rules=(RuleDef.model_validate(_hard(when=when)),), origins={})
+    item = _compliance(_evaluate_one(_scheme(), rules), "C-01")
+    assert item.status == "insufficient_data"
+
+
+def test_metric_when_short_circuit_excludes_irrelevant_missing_fields() -> None:
+    rules = RuleSet(
+        rules=(
+            RuleDef.model_validate(
+                _metric(when="structure_type == '钢结构' and steel_system == '框架'")
+            ),
+        ),
+        origins={},
+    )
+    result = _evaluate_one(_scheme(), rules)
+    assert result.metrics["K-01"].status == "not_applicable"
+    assert result.metrics["K-01"].missing_fields == []
+    assert result.metrics["K-01"].score is None
 
 
 # —— evaluate：指标 —— #

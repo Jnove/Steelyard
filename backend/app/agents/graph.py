@@ -129,8 +129,11 @@ class AgentGraph:
         return {"plan": self.validate_plan(state, plan)}
 
     async def parse_intent(self, state: GraphState) -> Plan:
+        context = await asyncio.to_thread(self.tools.planning_context, state.request.include_whatif)
         response = await self.llm.chat(
-            messages_for("coordinator", state, {"request": state.request.model_dump(exclude={"history"})}),
+            messages_for("coordinator", state, {
+                "request": state.request.model_dump(exclude={"history"}), "project_context": context,
+            }),
             [
                 {
                     "type": "function",
@@ -154,13 +157,17 @@ class AgentGraph:
 
     def validate_plan(self, state: GraphState, plan: Plan) -> Plan:
         # 结构化请求优先于模型解析，不能被历史消息覆盖。
+        # 普通对话携带的 role/weights 是当前看板上下文；明确改权重时使用新计划。
+        natural_reweight = state.request.intent is None and plan.intent == "reweight"
         for field in ("intent", "change", "role", "weights", "rule_id"):
+            if natural_reweight and field in ("role", "weights"):
+                continue
             value = getattr(state.request, field)
             if value is not None:
                 setattr(plan, field, value)
-        if state.request.role is not None:
+        if not natural_reweight and state.request.role is not None:
             plan.weights = None
-        elif state.request.weights is not None:
+        elif not natural_reweight and state.request.weights is not None:
             plan.role = None
         if (
             state.request.intent == "new_eval"
@@ -173,6 +180,8 @@ class AgentGraph:
             raise ValueError("假设推演需要明确给出 scheme_id、field 和 value")
         if plan.intent == "reweight" and plan.role is None and plan.weights is None:
             raise ValueError("改权重需要明确给出 role 或 weights")
+        if plan.intent != "whatif" and plan.change is not None:
+            raise ValueError("参数修改必须使用假设推演，请明确要调整的方案、参数和目标值")
         return plan
 
     def rank_request(self, state: GraphState, include_whatif: bool | None = None) -> RankRequest:
@@ -187,6 +196,7 @@ class AgentGraph:
         return {}
 
     async def whatif(self, state: GraphState) -> dict[str, Any]:
+        await asyncio.to_thread(self.tools.require_fingerprint, state.request.expected_fingerprint)
         baseline_eval = await self.call(
             "whatif",
             "evaluate",
@@ -202,7 +212,8 @@ class AgentGraph:
             weights=request.weights,
             include_whatif=request.include_whatif,
         )
-        change = await self.call("whatif", "update_scheme_param", **state.plan.change.model_dump())
+        change = await self.call("whatif", "update_scheme_param", **state.plan.change.model_dump(),
+                                 expected_fingerprint=state.request.expected_fingerprint)
         return {
             "baseline": {"evaluation": baseline_eval, "ranking": baseline_rank},
             "comparison": change,
@@ -281,6 +292,11 @@ class AgentGraph:
 
     async def explain(self, state: GraphState) -> dict[str, Any]:
         evidence = await self.call("explain", "get_result", project_id=state.project_id)
+        request = self.rank_request(state)
+        evidence["ranking"] = await self.call(
+            "explain", "rank", project_id=state.project_id, role=request.role,
+            weights=request.weights, include_whatif=request.include_whatif,
+        )
         evidence["clauses"] = await self.call("explain", "search_clause", query=state.request.message[:2000], k=5)
         evidence["clause_search_note"] = "本次检索未返回条文时，不得据此编造条文依据或宣称问题已获规范核实。"
         if state.plan.rule_id:
@@ -312,16 +328,16 @@ class AgentGraph:
         rule_names = {item["rule_id"]: item["name"] for row in context["evidence"].get("evaluation", {}).get("results", [])
                       for item in [*row.get("compliance", []), *row.get("metrics", {}).values()]}
         details = detailed_request(state.request.message) or state.request.rule_id is not None
+        selected_id = state.comparison.get("scheme_id") if state.plan.intent == "whatif" else state.request.scheme_id
         view = {
             "request": {"message": state.request.message}, "response_mode": context["response_mode"],
-            "reader_view": reader_evidence(context["evidence"], state.request.scheme_id, state.request.message, labels, details=details),
+            "reader_view": reader_evidence(context["evidence"], selected_id, state.request.message, labels, details=details),
             "rewrite_numbers": context["rewrite_numbers"],
         }
         if state.comparison:
             field = labels.get(state.comparison.get("field", ""), "设计参数")
             view["comparison_view"] = f"本次调整{field}，比较原方案与副本；加入副本会改变候选集合，不能仅据名次断言因果。"
-            if details:
-                view["按需查看的调整结果"] = state.comparison
+            view["按需查看的调整结果"] = state.comparison
         messages = messages_for("reporter", state, view)
         messages[0]["content"] += ("\n本次按用户要求解释具体依据，参数一律使用中文名称。" if details else
             "\n本次面向普通读者：先说影响和下一步，不抄分数、字段名、检查编号或公式。")

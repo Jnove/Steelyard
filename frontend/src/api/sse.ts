@@ -1,5 +1,6 @@
 /** SSE 传输层；真实事件按 docs/sse-events.md 的 T8 协议适配。 */
 import type { NumberIssue } from './agents'
+import { ApiError } from './client'
 export interface SSEFrame {
   event: string
   data: string
@@ -75,7 +76,7 @@ export type ChatStreamEvent =
   | { type: 'node_start'; node: string; attempt?: number }
   | { type: 'citation_warning'; exhausted: boolean; unverified_numbers: NumberIssue[] }
   | { type: 'done'; message?: string; report?: string; unverified_numbers?: NumberIssue[]; cached?: boolean }
-  | { type: 'error'; message: string }
+  | { type: 'error'; message: string; status?: number }
 
 /**
  * 将 T8 工具事件转换为页面已有的工具卡事件，兼容本地 Mock 的 tool_start/end。
@@ -124,7 +125,11 @@ export function adaptProvisionalEvent(frame: SSEFrame): ChatStreamEvent {
     }
     return { type, message: payload.message }
   }
-  if (type === 'error' && typeof payload.message === 'string') return { type, message: payload.message }
+  if (type === 'error' && typeof payload.message === 'string') return {
+    type, message: payload.message,
+    ...(typeof payload.status === 'number' && Number.isInteger(payload.status)
+      && payload.status >= 400 && payload.status <= 599 ? { status: payload.status } : {}),
+  }
   throw new Error(`无法识别 SSE 事件或字段：${String(type)}`)
 }
 
@@ -149,8 +154,14 @@ export async function* postSSEFrames(
     signal,
   })
   if (!response.ok) {
-    await response.body?.cancel()
-    throw new Error(`流式接口请求失败：HTTP ${response.status}。请检查后端是否已实现此接口。`)
+    let detail: string | undefined
+    if (response.headers.get('content-type')?.includes('application/json')) {
+      try {
+        const payload: unknown = await response.json()
+        if (payload && typeof payload === 'object' && 'detail' in payload && typeof payload.detail === 'string') detail = payload.detail
+      } catch { /* Keep the HTTP status if an error response body is malformed. */ }
+    } else await response.body?.cancel()
+    throw new ApiError(response.status, { detail: `流式接口请求失败：HTTP ${response.status}${detail ? `。${detail}` : ''}` })
   }
   if (response.headers.get('content-type')?.split(';')[0].trim().toLowerCase() !== 'text/event-stream') {
     await response.body?.cancel()
