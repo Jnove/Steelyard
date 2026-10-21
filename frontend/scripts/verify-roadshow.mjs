@@ -78,6 +78,7 @@ try {
   checks.push('自然语言解释与角色、方案上下文一致')
 
   await page.getByRole('link', { name: '查看完整比选看板', exact: true }).click()
+  await page.locator('.decision-role-options label').filter({ hasText: '自定义' }).click()
   await page.getByRole('slider', { name: '居住品质权重' }).focus()
   await page.keyboard.press('End')
   await expect(page.getByLabel('决策建议简报')).toContainText('自定义权重')

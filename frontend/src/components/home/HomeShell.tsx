@@ -145,7 +145,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
       </aside>
       <div className="home-body">
         <header className="home-topbar">
-          <div className="tw:flex tw:items-center tw:gap-3">
+          <div className="workbench-topbar-start">
             {collapsed && (
               <Button
                 variant="ghost"
@@ -156,10 +156,15 @@ export default function HomeShell({ children }: { children: ReactNode }) {
                 <PanelLeftClose size={17} />
               </Button>
             )}
-            <span className="home-breadcrumb-parent">工作空间</span>
-            <ChevronRight size={13} />
-            {projectId > 0 && <><span className="workbench-breadcrumb-project" title={current.data?.name}>{current.data?.name ?? '正在加载项目…'}</span><ChevronRight size={13} /></>}
-            <span>{pageName}</span>
+            <nav className="workbench-breadcrumb" aria-label="页面路径"><ol>
+              <li><Link className="home-breadcrumb-parent" to="/projects">工作空间</Link></li>
+              <li className="workbench-path-divider" aria-hidden="true"><ChevronRight size={13} /></li>
+              {projectId > 0 && <>
+                <li className="workbench-path-project"><Link className="workbench-breadcrumb-project" to={`/projects/${projectId}/schemes`} title={current.data?.name}>{current.data?.name ?? '正在加载项目…'}</Link></li>
+                <li className="workbench-path-divider" aria-hidden="true"><ChevronRight size={13} /></li>
+              </>}
+              <li><span aria-current="page">{pageName}</span></li>
+            </ol></nav>
           </div>
           <span className="home-mode">
             {USE_MOCK ? '离线预览 · 示例数据' : '建筑方案智能比选'}

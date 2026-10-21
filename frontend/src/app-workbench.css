@@ -66,8 +66,28 @@
 .home-theme .spec-field-col { background: transparent; }
 .home-theme .spec-field-name { font-size: 12px; }
 .home-theme .field-group-tag { color: var(--color-muted); background: var(--color-background); }
-.home-theme .role-bar { border: 1px solid var(--color-border); background: var(--color-surface); padding: 12px 15px; border-radius: 8px; margin: 0 0 14px; gap: 12px; }
-.home-theme .role-state { font-size: 11px; }
+.home-theme .role-bar { display: block; border: 1px solid #c7dfdc; border-left: 4px solid var(--color-primary); background: #f0f8f7; padding: 18px 20px; border-radius: 8px; margin: 0 0 16px; box-shadow: none; backdrop-filter: none; }
+.role-bar-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 15px; }
+.home-theme .role-bar-heading h2 { display: flex; align-items: center; gap: 9px; font-size: 18px; font-weight: 600; }
+.home-theme .role-bar-heading h2 svg { color: var(--color-primary); }
+.home-theme .role-bar-heading p { color: var(--color-muted); font-size: 12px; margin-top: 4px; }
+.home-theme .role-state { font-size: 12px; margin-left: 0; color: var(--color-primary); white-space: nowrap; padding-top: 3px; }
+.home-theme .decision-role-options { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+.home-theme .decision-role-options .ant-radio-button-wrapper { flex: 1 1 90px; min-width: 0; min-height: 42px; height: auto; padding: 9px 12px; line-height: 22px; text-align: center; border: 1px solid #c7dfdc; border-radius: 6px; background: var(--color-surface); font-size: 13px; color: var(--color-ink); box-shadow: none; }
+.home-theme .decision-role-options .ant-radio-button-wrapper::before { display: none; }
+.home-theme .decision-role-options .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) { background: var(--color-primary); color: white; border-color: var(--color-primary); box-shadow: none; font-weight: 600; }
+.home-theme .decision-role-options .ant-radio-button-wrapper:focus-within { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+.role-weight-summary { display: flex; flex-wrap: wrap; gap: 9px 25px; margin-top: 15px !important; font-size: 12px; }
+.role-weight-summary > div { display: flex; align-items: baseline; gap: 8px; }
+.role-weight-summary dt { color: var(--color-muted); }
+.role-weight-summary dd { font-weight: 600; font-variant-numeric: tabular-nums; }
+.home-theme .role-weight-note { margin-top: 9px; font-size: 11px; line-height: 1.8; color: var(--color-muted); }
+.home-theme .custom-weights-panel { margin: 0 0 16px; border-color: #c7dfdc; }
+.home-theme .custom-weights-panel .section-heading { margin-bottom: 16px; }
+.custom-weights-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 15px 28px; }
+.home-theme .custom-weights-grid .weight-control { margin: 0; }
+.custom-weight-total { font-size: 12px; color: var(--color-primary); white-space: nowrap; }
+.home-theme .custom-weight-note { font-size: 11px; margin-top: 10px; color: var(--color-muted); }
 .home-theme .executive-summary-card { border: 1px solid var(--color-border); background: var(--color-surface); padding: 19px 21px; margin: 0 0 20px; box-shadow: none; }
 .home-theme .executive-summary-card:hover { box-shadow: none; }
 .home-theme .executive-card-header { margin-bottom: 12px; padding-bottom: 13px; gap: 16px; }
@@ -79,7 +99,7 @@
 .home-theme .executive-point { border: 0; border-radius: 0; background: transparent; padding: 0; gap: 8px; font-size: 12px; }
 .home-theme .executive-point p { line-height: 1.8; font-size: 12px; }
 .home-theme .executive-point .point-icon { display: none; }
-.home-theme .dashboard-top { grid-template-columns: 245px minmax(0,1fr) minmax(240px,.9fr); gap: var(--workbench-gap); align-items: start; margin-top: var(--workbench-gap); }
+.home-theme .dashboard-top { grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); gap: var(--workbench-gap); align-items: start; margin-top: var(--workbench-gap); }
 .home-theme .weight-control { margin: 18px 0; }
 .home-theme .weight-label { font-size: 12px; }
 .home-theme .weight-label strong { font-size: 15px; }
@@ -138,6 +158,14 @@
 .workbench-project-switch label { display: block; font-size: 11px; color: var(--color-muted); margin-bottom: 6px; }
 .workbench-project-switch select { width: 100%; min-width: 0; height: 34px; background: var(--color-surface); color: var(--color-ink); border: 1px solid var(--color-border); border-radius: 5px; font-size: 12px; padding: 4px 8px; text-overflow: ellipsis; }
 .workbench-breadcrumb-project { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 28vw; color: var(--color-muted); }
+.workbench-topbar-start { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; }
+.workbench-breadcrumb { min-width: 0; }
+.workbench-breadcrumb ol { display: flex; align-items: center; gap: 9px; padding: 0; margin: 0; list-style: none; min-width: 0; }
+.workbench-breadcrumb li { flex-shrink: 0; }
+.workbench-breadcrumb .workbench-path-project { min-width: 0; flex: 0 1 auto; }
+.workbench-path-divider { display: flex; align-items: center; }
+.home-theme .workbench-breadcrumb a:hover { color: var(--color-primary); text-decoration: underline; text-underline-offset: 4px; }
+.workbench-breadcrumb a:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; border-radius: 2px; }
 .workbench-mobile-menu { display: none; }
 .home-theme .home-volume { margin: 0 0 24px; }
 .home-volume-heading { display: flex; align-items: center; gap: 9px; padding: 14px 18px; border-bottom: 1px solid var(--color-border); font-size: 12px; }
@@ -208,15 +236,16 @@
 .home-theme .comp-rule-status { border-radius: 4px; }
 .home-theme .comp-source { background: var(--color-background); border-radius: 4px; }
 @media (max-width:1300px) {
-  .home-theme .dashboard-top { grid-template-columns: 245px minmax(0,1fr); }
-  .home-theme .rank-panel { grid-column: 1 / -1; }
-  .home-theme .ranking-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap: 0 22px; }
+  .home-theme .dashboard-top { grid-template-columns: minmax(0,1.15fr) minmax(0,1fr); }
+  .home-theme .rank-panel { grid-column: auto; }
+  .home-theme .ranking-list { display: block; }
   .home-theme .comp-visual-layout, .home-theme .comp-matrix-layout { grid-template-columns: minmax(0,1fr) 220px; }
 }
 .home-theme .sensitivity-table { overflow-x: auto; }
 .home-theme .sensitivity-table table { min-width: 560px; table-layout: fixed; }
 .home-theme .sensitivity-table td { padding: 10px 8px; overflow-wrap: anywhere; }
 @media (max-width:1100px) {
+  .custom-weights-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
   .home-theme .chat-layout { grid-template-columns: minmax(0,1fr); }
   .home-theme .chat-side { position: static; display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: var(--workbench-gap); }
   .home-theme .chat-side .panel { margin-bottom: 0; }
@@ -238,15 +267,18 @@
 @media (max-width:767px) {
   .home-sidebar { padding-inline: 20px; }
   .home-topbar .home-mode { display: none; }
-  .home-topbar .home-breadcrumb-parent { display: none; }
+  .home-topbar .home-breadcrumb-parent { display: inline; }
   .workbench-breadcrumb-project { max-width: 56vw; font-size: 11px; }
-  .home-topbar .tw\:flex > svg:first-child { display: none; }
+  .workbench-breadcrumb ol { gap: 6px; }
+  .workbench-breadcrumb { font-size: 11px; }
   .home-theme .workbench-main { padding: 23px 16px; }
   .home-theme .page-heading h1 { font-size: 24px; }
   .home-theme .page-heading > .action-row { gap: 7px; }
   .home-theme .panel { padding: 16px; }
-  .home-theme .role-bar { padding: 11px; }
-  .home-theme .role-bar .ant-segmented { max-width: 100%; overflow-x: auto; }
+  .home-theme .role-bar { padding: 14px; }
+  .home-theme .role-bar-heading { flex-wrap: wrap; gap: 6px; }
+  .home-theme .role-bar-heading h2 { font-size: 17px; }
+  .home-theme .decision-role-options .ant-radio-button-wrapper { flex-basis: 85px; padding-inline: 7px; }
   .home-theme .role-state { margin-left: 0; }
   .home-theme .dashboard-top, .home-theme .analysis-grid, .home-theme .chat-layout { grid-template-columns: minmax(0,1fr); }
   .home-theme .rank-panel { grid-column: auto; }

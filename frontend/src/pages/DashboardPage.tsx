@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
-import { Alert, Button, Empty, Segmented, Select, Skeleton, Slider, Tag, Tooltip } from 'antd'
+import { Alert, Button, Empty, Radio, Select, Skeleton, Slider, Tag, Tooltip } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
 import { evaluation } from '../api/evaluation'
@@ -101,13 +101,22 @@ function ProjectDashboard({ id }: { id: number }) {
   })
   const results = evaluated.data?.results ?? []
   const result = ranked.data
+  const rankingPending = ranked.isFetching || requestKey !== JSON.stringify(debounced)
+  const preset = roles.data?.roles.find(template => template.role === role)
+  const currentWeightsUsed = result?.weights_used.role === role
+    ? result?.weights_used : undefined
+  const templateWeights = preset ?? currentWeightsUsed
   const sensitivity = result?.sensitivity
   const acceptability = result?.rank_acceptability
   const roleChange = (value: string | number) => {
     const key = String(value)
-    updateContext({ role: key, weights: key === 'custom' ? weights : undefined })
+    if (key === role) return
+    const startingWeights = preset?.weights ?? weights
+    if (key === 'custom') setWeights(startingWeights)
+    updateContext({ role: key, weights: key === 'custom' ? startingWeights : undefined })
   }
   const changeWeight = (index: number, value: number) => {
+    if (role !== 'custom') return
     const next = redistributeWeights(weights,index,value / 100)
     setWeights(next); updateContext({ role: 'custom', weights: next })
   }
@@ -115,7 +124,7 @@ function ProjectDashboard({ id }: { id: number }) {
   const nameAt = (index: number | null) => index == null ? '—' :
     results.find(e => e.scheme_id === inputOrder[index])?.scheme_name ?? '—'
   const error = evaluated.error ?? roles.error ?? ranked.error
-  const ahp = result?.weights_used.ahp
+  const ahp = templateWeights?.ahp
 
   // 动态提炼推荐结论
   const topScheme = result?.ranking?.[0]
@@ -152,14 +161,32 @@ function ProjectDashboard({ id }: { id: number }) {
 
     {!!results.length && <>
       {/* 决策视角切换栏 */}
-      <div className="role-bar">
-        <span className="role-bar-label">
-          <IconUser size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-          <strong>决策视角</strong>
-        </span>
-        <Segmented value={role} onChange={roleChange} options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
-        <span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span>
-      </div>
+      <section className="role-bar" aria-label="决策视角">
+        <div className="role-bar-heading">
+          <div><h2><IconUser size={19} />决策视角</h2><p>同一组方案，从不同关注重点出发。</p></div>
+          <span className="role-state" aria-live="polite">{rankingPending ? '正在更新排名…' : role === 'custom' ? '自定义权重 · 可调整' : '模板权重 · 只读'}</span>
+        </div>
+        <Radio.Group className="decision-role-options" aria-label="选择决策视角" value={role}
+          onChange={event => roleChange(event.target.value)} optionType="button" buttonStyle="solid"
+          options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
+        {role !== 'custom' && <>
+          <dl className="role-weight-summary" aria-label="当前视角权重">{dimensions.map((dimension, index) => <div key={dimension.key}>
+            <dt>{dimension.label}</dt><dd>{templateWeights ? `${(templateWeights.weights[index] * 100).toFixed(1)}%` : '—'}</dd>
+          </div>)}</dl>
+          <p className="role-weight-note">{templateWeights ? ahp ? `一致性 CR ${ahp.cr.toFixed(4)} · ${ahp.consistent ? '一致性检验通过（判断自洽）' : '模板需复核'}。` : '直接赋权，无两两比较矩阵。' : '等待当前视角权重。'}选择“自定义”可调整权重。</p>
+          {templateWeights?.consistency_warning && <Alert type="warning" message={templateWeights.consistency_warning} />}
+          {templateWeights?.note && <p className="role-weight-note">{templateWeights.note}</p>}
+        </>}
+      </section>
+      {role === 'custom' && <section className="panel weights-panel custom-weights-panel" aria-label="自定义评价权重">
+        <div className="section-heading"><div><h2>调整评价权重</h2><p className="section-subtext">拖动一个维度，其余按比例调整，结果随之更新。</p></div><span className="custom-weight-total">权重合计 100%</span></div>
+        <div className="custom-weights-grid">{dimensions.map((dimension, index) => <div className="weight-control" key={dimension.key}>
+          <div className="weight-label"><span><i style={{ background: dimension.color }} />{dimension.label}</span><strong className="numeric">{(weights[index] * 100).toFixed(1)}<small>%</small></strong></div>
+          <Slider min={0} max={100} step={1} value={weights[index] * 100} onChange={value => changeWeight(index, value)}
+            ariaLabelForHandle={dimension.label + '权重'} tooltip={{ formatter: value => value?.toFixed(1) + '%' }} />
+        </div>)}</div>
+        <p className="custom-weight-note">自定义采用直接赋权，不计算两两比较矩阵的一致性 CR。</p>
+      </section>}
       <div className="action-row" style={{ marginBottom: 16 }} aria-label="当前讨论上下文">
         <Tag>{decisionLabel(context)}</Tag>
         <Select aria-label="选择讨论方案" value={selectedSchemeId} style={{ minWidth: 220 }}
@@ -170,7 +197,7 @@ function ProjectDashboard({ id }: { id: number }) {
 
       {/* 核心决策简报 (Executive Recommendation Card) */}
       {result && topScheme && (
-        <section className="panel executive-summary-card" aria-label="决策建议简报">
+        <section className="panel executive-summary-card" aria-label="决策建议简报" aria-busy={rankingPending}>
           <div className="executive-card-header">
             <div className="executive-lead-title">
               <div className="executive-badge">
@@ -232,36 +259,9 @@ function ProjectDashboard({ id }: { id: number }) {
 
       {result && <ComparisonWorkbench key={id} results={results} ranking={result} projectName={project.data?.name ?? '当前项目'}
         selectedSchemeId={selectedSchemeId} onSelectScheme={schemeId => updateContext({ schemeId })}
-        roleName={roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role_name ?? '当前权重'} updating={ranked.isFetching} onTrace={setTrace} />}
+        roleName={roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role_name ?? '当前权重'} updating={rankingPending} onTrace={setTrace} />}
 
       <div className="dashboard-top">
-        <section className="panel weights-panel">
-          <div className="section-heading">
-            <h2>评价权重</h2>
-            <Tooltip title="角色模板可以直接给出权重，也可以由层次分析法（AHP）的两两比较矩阵计算；只有矩阵有一致性 CR。">
-              <span className="help-icon-wrap"><IconHelpCircle size={15} /></span>
-            </Tooltip>
-          </div>
-          <p className="muted">拖动一个维度，其余按比例调整。</p>
-          {dimensions.map((d,i) => <div className="weight-control" key={d.key}>
-            <div className="weight-label"><span><i style={{ background:d.color }} />{d.label}</span><strong className="numeric">{(weights[i]*100).toFixed(1)}<small>%</small></strong></div>
-            <Slider min={0} max={100} step={1} value={weights[i]*100} onChange={v => changeWeight(i,v)} ariaLabelForHandle={d.label+'权重'}
-              tooltip={{ formatter: v => v?.toFixed(1)+'%' }} />
-          </div>)}
-          <div className="consistency">
-            <span className="consistency-title">
-              一致性 CR
-              <Tooltip title="一致性比率用于检查两两比较矩阵的一致程度，不验证角色偏好或专业规则的正确性。">
-                <IconHelpCircle size={13} style={{ marginLeft: 4, verticalAlign: 'middle' }} />
-              </Tooltip>
-            </span>
-            <strong>{role === 'custom' ? '—' : ahp?.cr.toFixed(4) ?? '—'}</strong>
-            <p>{role === 'custom' || (result && !ahp) ? '直接赋权，无两两比较矩阵' : ahp ? ahp.consistent ? '一致性检验通过（判断自洽）' : '模板需复核' : '等待角色模板'}</p>
-          </div>
-          {result?.weights_used.consistency_warning && <Alert type="warning" message={result.weights_used.consistency_warning} />}
-          {result?.weights_used.note && <p className="muted caption">{result.weights_used.note}</p>}
-        </section>
-
         <section className="panel radar-panel">
           <div className="section-heading">
             <h2>四维表现</h2>
