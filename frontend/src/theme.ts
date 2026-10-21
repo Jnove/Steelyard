@@ -2,36 +2,41 @@ import type { ThemeConfig } from 'antd'
 
 /** 筑衡的唯一视觉配置；图表、CSS 变量和组件共用。 */
 export const tokens = {
-  primary: '#075e49', ink: '#17332d', muted: '#526962', surface: '#ffffff',
-  background: '#f4f8f6', border: '#d7e2dc', danger: '#ad3648', success: '#09694b',
-  warning: '#8c5b15', soft: '#e2f3eb', dangerSoft: '#fff0f1', transparent: 'transparent',
-  accent: '#1BE49A', accentInk: '#073d2c', glowMint: '#1BE49A', glowLilac: '#C8A7DD',
-  chart: ['#08775b', '#8370ae', '#b27532', '#427898', '#637065'],
-  dimensions: { quality: '#08775b', structure: '#8370ae', construction: '#a76d29', green: '#427898' },
+  primary: '#327473', ink: '#243635', muted: '#657572', surface: '#ffffff',
+  background: '#f8faf9', border: '#e4eae8', danger: '#ab3f46', success: '#327473',
+  warning: '#8c611e', soft: '#dbf0ef', dangerSoft: '#fcf1f2', transparent: 'transparent',
+  accent: '#9dd5d4', accentInk: '#243635', glowMint: '#9dd5d4', glowLilac: '#dbf0ef',
+  chart: ['#327473', '#53748a', '#865d30', '#6c7773', '#627f7e'],
+  dimensions: { quality: '#327473', structure: '#53748a', construction: '#986c3c', green: '#4d8278' },
   scene: { building: '#e4e9e4', facade: '#58867e', roof: '#fafcf8', plate: '#d1e9e1', edge: '#839b90', ground: '#e9eeeb', frame: '#bfd0c5', module: '#7c9891', inset: '#294b44', rooftop: '#c5d0c5' },
   glass: {
-    fill: 'rgba(255, 255, 255, .12)', content: 'rgba(255, 255, 255, .76)',
-    edge: 'rgba(255, 255, 255, .72)', blur: '12px',
-    sheen: 'linear-gradient(135deg, rgba(255,255,255,.18), rgba(255,255,255,0) 30%, rgba(255,255,255,.02) 68%, rgba(255,255,255,.12))',
-    shadow: '0 3px 7px rgba(40, 73, 59, .07), 0 24px 58px -16px rgba(38, 67, 58, .19), inset 0 1px 0 rgba(255,255,255,.96), inset 0 -1px 0 rgba(255,255,255,.36)',
-    floatShadow: '0 2px 5px rgba(47, 77, 65, .09), 0 32px 60px -16px rgba(44, 72, 60, .24), inset 0 1px 0 rgba(255,255,255,.97), inset 1px 0 0 rgba(255,255,255,.64)',
+    fill: '#ffffff', content: '#ffffff', edge: '#e4eae8', blur: '0px',
+    sheen: 'none', shadow: 'none', floatShadow: 'none',
   },
   font: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif',
   mono: '"Cascadia Code", "SFMono-Regular", monospace',
   fontSize: 14, small: 12, medium: 16, large: 20, title: 28, display: 36,
-  radius: 22, radiusSmall: 10, radiusFloat: 28, duration: 360,
+  radius: 8, radiusSmall: 6, radiusFloat: 8, duration: 180,
+}
+/** 同一方案在录入表、雷达与比较视图中使用同一种颜色，不随排序改变。 */
+export function schemeColor(id: string | number): string {
+  const numeric = Number(id)
+  const index = Number.isSafeInteger(numeric) && numeric > 0 ? numeric - 1
+    : Array.from(String(id)).reduce((sum, char) => (sum * 31 + char.charCodeAt(0)) >>> 0, 0)
+  return tokens.chart[index % tokens.chart.length]
 }
 export const theme: ThemeConfig = {
   token: { colorPrimary: tokens.primary, colorInfo: tokens.primary, colorSuccess: tokens.success,
     colorWarning: tokens.warning, colorError: tokens.danger, colorText: tokens.ink,
     colorTextSecondary: tokens.muted, colorBgLayout: tokens.background, colorBorder: tokens.border,
-    borderRadius: tokens.radiusSmall, borderRadiusLG: tokens.radius, fontSize: tokens.fontSize, fontFamily: tokens.font, controlHeight: 44 },
+    borderRadius: tokens.radiusSmall, borderRadiusLG: tokens.radius, fontSize: tokens.fontSize, fontFamily: tokens.font, controlHeight: 36 },
   components: {
     Layout: { headerBg: tokens.transparent, siderBg: tokens.transparent },
     Slider: { trackBg: tokens.primary, handleColor: tokens.primary },
-    Button: { primaryShadow: '0 6px 16px rgba(7,94,73,.18)', defaultShadow: '0 2px 3px rgba(38,67,58,.04)' },
-    Table: { headerBg: '#eef5f1', rowHoverBg: '#edf6f1', borderColor: '#e0e8e2' },
-    Segmented: { trackBg: 'rgba(224,235,229,.68)', itemSelectedBg: '#ffffff' },
+    Button: { primaryShadow: 'none', defaultShadow: 'none', controlHeightLG: 36 },
+    Table: { headerBg: tokens.surface, rowHoverBg: tokens.background, borderColor: tokens.border, fontSize: 13, cellPaddingBlock: 13 },
+    Segmented: { trackBg: tokens.background, itemSelectedBg: tokens.surface },
+    Modal: { borderRadiusLG: 10 }, Drawer: { paddingLG: 24 },
   },
 }
 export function installTheme(): void {

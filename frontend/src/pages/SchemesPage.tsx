@@ -14,12 +14,12 @@ import SchemaForm, { orderedFields, recordedSchemaFields, schemaFieldValue, Requ
 import type { SchemaFormValues } from '../components/SchemaForm'
 import { IconPlay, IconPlus, IconUpload } from '../components/Icons'
 import { parameterSummary } from '../utils/scheme-presentation'
-import { tokens } from '../theme'
+import { schemeColor } from '../theme'
 import DeleteConfirm from '../components/DeleteConfirm'
 import { clearDeletedData } from '../utils/deletion-cache'
 
 function getSchemePresentation(scheme: Scheme) {
-  return { ...parameterSummary(scheme.params), color: tokens.chart[Math.abs(scheme.id - 1) % tokens.chart.length] }
+  return { ...parameterSummary(scheme.params), color: schemeColor(scheme.id) }
 }
 
 function getGroupTag(group?: string) {
@@ -125,7 +125,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       title: '参数 / 单位',
       key: 'field',
       fixed: 'left',
-      width: 240,
+      width: 180,
       render: (_, field) => (
         <div className="spec-field-col">
           <div className="spec-field-name">
@@ -154,7 +154,11 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
         ),
         key: scheme.id,
         width: 210,
-        render: (_: unknown, field: FieldMetadata) => displayValue(schemaFieldValue(scheme.params, field), field.name),
+        align: 'right' as const,
+        render: (_: unknown, field: FieldMetadata) => {
+          const value = schemaFieldValue(scheme.params, field)
+          return <div className={typeof value === 'number' ? 'spec-value numeric' : 'spec-value'}>{displayValue(value, field.name)}</div>
+        },
       }
     }),
   ]
@@ -195,8 +199,8 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       <header className="page-heading">
         <div>
           <p className="eyebrow"><Link to="/projects">项目工作台</Link> / 方案参数录入与比选</p>
-          <h1>{projectQuery.data?.name ?? (projectQuery.isPending ? '正在加载项目…' : '方案管理')}</h1>
-          <p className="page-description">录入或批量导入候选方案，直观对照建筑品质、施工安全与绿色低碳设计参数，一键启动多准则综合评估。</p>
+          <h1>方案录入</h1>
+          <p className="page-description">维护候选方案与地块参数，比较之前先核对输入。</p>
         </div>
         <div className="action-row">
           {!USE_MOCK && <>
@@ -245,9 +249,22 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       {importSchemes.data && <><Alert showIcon type={importErrors.length ? 'warning' : 'success'} message={`已导入 ${importedCount} 个方案${importErrors.length ? `，另有 ${importErrors.length} 项问题需要处理` : ''}`} description={importSchemes.data.project_params_updated ? '已同步导入文件中的项目参数。' : undefined} /><RequestErrors error={importErrors} title="导入问题明细" /></>}
       <RequestErrors error={evaluate.error} title="评估失败，请检查参数后重试" />
 
+      {/* 候选方案列表 */}
+      <section className="panel" aria-labelledby="schemes-title">
+        <div className="section-heading">
+          <div>
+            <h2 id="schemes-title">候选方案列表</h2>
+            <p className="section-subtext">维护候选集合，支持单方案参数修改与 Excel 批量维护</p>
+          </div>
+          <span className="muted">{schemeQuery.data ? `共 ${schemeQuery.data.length} 个方案` : '录入、调整与比较'}</span>
+        </div>
+        {schemeQuery.isError && <><RequestErrors error={schemeQuery.error} title="方案列表加载失败" /><Button loading={schemeQuery.isFetching} onClick={() => void schemeQuery.refetch()}>重新加载</Button></>}
+        {schemeQuery.isPending ? <Skeleton active paragraph={{ rows: 4 }} /> : schemeQuery.data && <Table<Scheme> rowKey="id" columns={schemeColumns} dataSource={schemeQuery.data} loading={schemeQuery.isFetching} scroll={{ x: 600 }} pagination={false} locale={{ emptyText: <Empty description="还没有候选方案。手动录入，或从 Excel 一次导入多个方案。"><Button type="primary" disabled={!canEdit} onClick={() => openEditor('new')}>添加第一个方案</Button></Empty> }} />}
+      </section>
+
       {/* 方案速览卡片长廊 (Visual Schemes Gallery) */}
       {schemeQuery.data && schemeQuery.data.length > 0 && (
-        <section className="panel schemes-gallery-section" aria-label="候选方案概览">
+        <details className="scheme-overview-disclosure" aria-label="候选方案概览"><summary>查看结构与体量参数摘要</summary><div className="panel schemes-gallery-section">
           <div className="section-heading">
             <div>
               <h2>候选方案画像一览</h2>
@@ -291,21 +308,8 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
               )
             })}
           </div>
-        </section>
+        </div></details>
       )}
-
-      {/* 候选方案列表 */}
-      <section className="panel" aria-labelledby="schemes-title">
-        <div className="section-heading">
-          <div>
-            <h2 id="schemes-title">候选方案列表</h2>
-            <p className="section-subtext">维护候选集合，支持单方案参数修改与 Excel 批量维护</p>
-          </div>
-          <span className="muted">{schemeQuery.data ? `共 ${schemeQuery.data.length} 个方案` : '录入、调整与比较'}</span>
-        </div>
-        {schemeQuery.isError && <><RequestErrors error={schemeQuery.error} title="方案列表加载失败" /><Button loading={schemeQuery.isFetching} onClick={() => void schemeQuery.refetch()}>重新加载</Button></>}
-        {schemeQuery.isPending ? <Skeleton active paragraph={{ rows: 4 }} /> : schemeQuery.data && <Table<Scheme> rowKey="id" columns={schemeColumns} dataSource={schemeQuery.data} loading={schemeQuery.isFetching} scroll={{ x: 600 }} pagination={false} locale={{ emptyText: <Empty description="还没有候选方案。手动录入，或从 Excel 一次导入多个方案。"><Button type="primary" disabled={!canEdit} onClick={() => openEditor('new')}>添加第一个方案</Button></Empty> }} />}
-      </section>
 
       {/* 参数对照表 */}
       <section className="panel" aria-labelledby="comparison-title">
@@ -317,7 +321,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
           <span className="muted">同一尺度 · 精细对比</span>
         </div>
         {schemaQuery.isError && <><RequestErrors error={schemaQuery.error} title="参数定义加载失败" /><Button loading={schemaQuery.isFetching} onClick={() => void schemaQuery.refetch()}>重试参数加载</Button></>}
-        {schemaQuery.isPending || schemeQuery.isPending ? <Skeleton active paragraph={{ rows: 6 }} /> : schemaQuery.data && (schemeQuery.data ? <Table<FieldMetadata> className="comparison-table styled-spec-table" rowKey="name" columns={comparisonColumns} dataSource={rows} pagination={false} size="middle" scroll={{ x: 240 + (schemeQuery.data?.length ?? 0) * 210 }} /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="添加方案后，在这里逐项比较设计参数。" />)}
+        {schemaQuery.isPending || schemeQuery.isPending ? <Skeleton active paragraph={{ rows: 6 }} /> : schemaQuery.data && (schemeQuery.data ? <Table<FieldMetadata> className="comparison-table styled-spec-table" rowKey="name" columns={comparisonColumns} dataSource={rows} pagination={false} size="middle" scroll={{ x: 180 + (schemeQuery.data?.length ?? 0) * 210 }} /> : <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="添加方案后，在这里逐项比较设计参数。" />)}
       </section>
 
       <Modal title={editing === 'new' ? '添加候选方案' : `编辑方案 · ${editing?.name ?? ''}`} open={editing !== null} footer={null} width={900} maskClosable={false} closable={!saveScheme.isPending} keyboard={!saveScheme.isPending} onCancel={() => { if (!saveScheme.isPending) setEditing(null) }}>

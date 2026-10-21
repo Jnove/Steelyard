@@ -10,6 +10,7 @@ import './index.css'
 import './workbench.css'
 import './liquid-glass.css'
 import './home.css'
+import './app-workbench.css'
 
 installTheme()
 const client = new QueryClient({ defaultOptions: { queries: { retry: 1, staleTime: 30_000, refetchOnWindowFocus: false } } })

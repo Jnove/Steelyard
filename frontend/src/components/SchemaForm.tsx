@@ -89,6 +89,7 @@ export default function SchemaForm({ schema, nameLabel, initialValues, pending =
     <Form<SchemaFormValues>
       form={form}
       layout="vertical"
+      scrollToFirstError
       disabled={pending}
       initialValues={{ name: initialValues?.name ?? '', params: initialParams }}
       onFinish={(values) => onSubmit({ name: values.name.trim(), params: schemaSubmitParams(schema, values.params, initialValues?.params) })}

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link } from 'react-router-dom'
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'
 import {
   ArrowUpRight,
   BookOpen,
@@ -14,6 +14,9 @@ import {
   ShieldCheck,
   HardHat,
   House,
+  Menu,
+  SlidersHorizontal,
+  MessageSquare,
 } from 'lucide-react'
 import { projects } from '../../api/projects'
 import { USE_MOCK } from '../../api/client'
@@ -29,6 +32,13 @@ export default function HomeShell({ children }: { children: ReactNode }) {
   const [help, setHelp] = useState(false)
   const helpTrigger = useRef<HTMLButtonElement>(null)
   const [collapsed, setCollapsed] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const menuTrigger = useRef<HTMLButtonElement>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const projectId = Number(location.pathname.match(/\/projects\/(\d+)/)?.[1])
+  const section = location.pathname.split('/').at(-1)
+  const pageName = section === 'schemes' ? '方案录入' : section === 'dashboard' ? '对比看板' : section === 'chat' ? '对话与报告' : '项目总览'
   const query = useQuery({
     queryKey: ['projects'],
     queryFn: () => projects.list(),
@@ -36,21 +46,34 @@ export default function HomeShell({ children }: { children: ReactNode }) {
   const recent = [...(query.data ?? [])]
     .sort((a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at))
     .slice(0, 5)
+  const current = useQuery({ queryKey: ['project', projectId], queryFn: () => projects.get(projectId), enabled: Number.isSafeInteger(projectId) && projectId > 0 })
+  const destinations = [
+    { to: '/projects', label: '项目总览', icon: FolderOpen },
+    ...(projectId > 0 ? [
+      { to: `/projects/${projectId}/schemes`, label: '方案录入', icon: Layers3 },
+      { to: `/projects/${projectId}/dashboard`, label: '对比看板', icon: SlidersHorizontal },
+      { to: `/projects/${projectId}/chat`, label: '对话与报告', icon: MessageSquare },
+    ] : []),
+  ]
+  const navigation = (close?: () => void) => destinations.map(item => <NavLink end key={item.to} to={item.to} onClick={close} className={({ isActive }) => isActive ? 'home-nav-active' : ''}><item.icon size={17} /><span>{item.label}</span></NavLink>)
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
   useEffect(() => {
     const previous = document.title
-    document.title = '项目总览 · 筑衡'
+    document.title = `${pageName} · 筑衡`
     document.body.classList.add('home-active')
     return () => {
       document.body.classList.remove('home-active')
       document.title = previous
     }
-  }, [])
+  }, [pageName])
   return (
     <div
-      className={`home-theme home-shell${collapsed ? ' home-shell-collapsed' : ''}`}
+      className={`home-theme home-shell${projectId > 0 ? ' workbench-shell' : ''}${collapsed ? ' home-shell-collapsed' : ''}`}
     >
       <a href="#home-main" className="home-skip">
-        跳到项目列表
+        跳到主要内容
       </a>
       <aside className="home-sidebar" aria-label="工作空间导航">
         <Link
@@ -65,6 +88,11 @@ export default function HomeShell({ children }: { children: ReactNode }) {
             筑衡<small>STEELYARD</small>
           </span>
         </Link>
+        <Button ref={menuTrigger} className="workbench-mobile-menu" variant="ghost" size="icon" aria-label="打开页面导航" onClick={() => setMobileOpen(true)}><Menu size={20} /></Button>
+        {projectId > 0 && <div className="workbench-project-switch"><label htmlFor="workspace-project">当前项目</label><select id="workspace-project" aria-label="切换当前项目" value={projectId} onChange={event => navigate(`/projects/${event.target.value}/${section}`)}>
+          {!(query.data ?? []).some(project => project.id === projectId) && <option value={projectId}>{current.data?.name ?? '正在加载项目…'}</option>}
+          {query.data?.map(project => <option key={project.id} value={project.id}>{project.name}</option>)}
+        </select></div>}
         <div className="home-sidebar-section">
           <span>工作空间</span>
           <Button
@@ -77,11 +105,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
           </Button>
         </div>
         <nav aria-label="主导航">
-          <Link to="/projects" className="home-nav-active" aria-current="page">
-            <FolderOpen size={17} />
-            <span>项目总览</span>
-            <span className="home-nav-count">{query.data?.length ?? '—'}</span>
-          </Link>
+          {navigation()}
         </nav>
         {recent.length > 0 && (
           <>
@@ -134,13 +158,14 @@ export default function HomeShell({ children }: { children: ReactNode }) {
             )}
             <span className="home-breadcrumb-parent">工作空间</span>
             <ChevronRight size={13} />
-            <span>项目总览</span>
+            {projectId > 0 && <><span className="workbench-breadcrumb-project" title={current.data?.name}>{current.data?.name ?? '正在加载项目…'}</span><ChevronRight size={13} /></>}
+            <span>{pageName}</span>
           </div>
           <span className="home-mode">
             {USE_MOCK ? '离线预览 · 示例数据' : '建筑方案智能比选'}
           </span>
         </header>
-        <main id="home-main" className="home-main" tabIndex={-1}>
+        <main id="home-main" className={`home-main${projectId > 0 ? ' workbench-main' : ''}`} tabIndex={-1}>
           {children}
         </main>
         <footer className="home-footer">
@@ -200,6 +225,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
           </p>
         </DialogContent>
       </Dialog>
+      <Dialog open={mobileOpen} onOpenChange={setMobileOpen}><DialogContent className="workbench-mobile-navigation" onCloseAutoFocus={event => { event.preventDefault(); menuTrigger.current?.focus() }}><DialogTitle>筑衡 · 页面导航</DialogTitle><DialogDescription>{current.data?.name ?? '建筑方案智能比选工作台'}</DialogDescription><nav aria-label="页面导航">{navigation(() => setMobileOpen(false))}</nav><Button variant="outline" onClick={() => { setMobileOpen(false); setHelp(true) }}>使用指南</Button></DialogContent></Dialog>
     </div>
   )
 }

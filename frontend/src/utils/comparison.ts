@@ -1,5 +1,6 @@
 import type { EvalResult, RankResponse } from '../api/types'
 import { dimensions, type DimensionKey } from '../constants/dimensions'
+import { schemeColor } from '../theme'
 
 export type ComparisonView = 'map' | 'pair' | 'matrix'
 export type MatrixDataset = 'scores' | 'compliance'
@@ -23,8 +24,6 @@ export interface ComparisonRow {
 }
 export interface ComparisonSelection { schemeId: string; row: ComparisonRow }
 
-// 来自工业设计稿；颜色只标识方案，不表示分数或优劣。
-const palette = ['#7465ab', '#a4444d', '#4565b6', '#267b78', '#956b32', '#516e84', '#857194']
 export const finiteScore = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value)
 export const scoreText = (value: unknown) => finiteScore(value) ? value.toFixed(1) : '—'
 export function scoreDifference(value: unknown, baseline: unknown): number | null {
@@ -46,7 +45,7 @@ export function comparisonSchemes(results: EvalResult[], ranking: RankResponse):
     const ranked = ranking.ranking.find(entry => entry.scheme_id === id)
     const excluded = ranking.excluded.find(entry => entry.scheme_id === id)
     return { id, name, badge: /^[A-Za-z](?:\s|$)/.test(name) ? name[0].toUpperCase() : String(index + 1).padStart(2, '0'),
-      color: palette[index % palette.length], evaluation, ranked, excluded: !ranked,
+      color: schemeColor(id), evaluation, ranked, excluded: !ranked,
       reason: excluded?.reason ?? (!ranked ? '未参与当前排名' : undefined) }
   })
 }

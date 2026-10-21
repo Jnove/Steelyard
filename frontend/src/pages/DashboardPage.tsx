@@ -7,7 +7,7 @@ import { ranking } from '../api/ranking'
 import { projects } from '../api/projects'
 import type { EvalResult, RankResponse } from '../api/types'
 import { dimensions, type DimensionKey, isMock } from '../constants/dimensions'
-import { tokens } from '../theme'
+import { schemeColor, tokens } from '../theme'
 import { redistributeWeights } from '../utils/weights'
 import { decisionInput, decisionLabel } from '../utils/decision-context'
 import { useDecisionContext } from '../utils/use-decision-context'
@@ -137,7 +137,7 @@ function ProjectDashboard({ id }: { id: number }) {
       <div>
         <p className="eyebrow">筑衡 · 多维量化比选</p>
         <h1>方案对比看板</h1>
-        <p className="page-description">{project.data?.name ?? '正在加载项目'} · 调整关注重点，观察方案间的动态取舍与决策建议</p>
+        <p className="page-description">{project.data?.name ?? '正在加载项目'} · 比较四维得分与方案差异，沿计算依据核对取舍</p>
       </div>
       <div className="action-row">
         <Link to={'/projects/'+id+'/schemes'}><Button>编辑方案</Button></Link>
@@ -151,6 +151,23 @@ function ProjectDashboard({ id }: { id: number }) {
     {evaluated.isSuccess && !results.length && <div className="panel"><Empty description="还没有评估结果，请先录入方案并开始评估"><Link to={'/projects/'+id+'/schemes'}><Button type="primary">去录入方案</Button></Link></Empty></div>}
 
     {!!results.length && <>
+      {/* 决策视角切换栏 */}
+      <div className="role-bar">
+        <span className="role-bar-label">
+          <IconUser size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
+          <strong>决策视角</strong>
+        </span>
+        <Segmented value={role} onChange={roleChange} options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
+        <span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span>
+      </div>
+      <div className="action-row" style={{ marginBottom: 16 }} aria-label="当前讨论上下文">
+        <Tag>{decisionLabel(context)}</Tag>
+        <Select aria-label="选择讨论方案" value={selectedSchemeId} style={{ minWidth: 220 }}
+          options={results.map(item => ({ value: item.scheme_id, label: item.scheme_name }))}
+          onChange={schemeId => updateContext({ schemeId })} />
+        <span className="muted">讨论与报告沿用当前视角、权重和所选方案。</span>
+      </div>
+
       {/* 核心决策简报 (Executive Recommendation Card) */}
       {result && topScheme && (
         <section className="panel executive-summary-card" aria-label="决策建议简报">
@@ -171,7 +188,7 @@ function ProjectDashboard({ id }: { id: number }) {
               <Link to={`/projects/${id}/chat`} onClick={() => updateContext({ schemeId: topScheme.scheme_id })}>
                 <Button type="primary" size="large">
                   <IconMessage size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-                  向 AI 追问推荐依据
+                  追问推荐依据
                 </Button>
               </Link>
             </div>
@@ -212,23 +229,6 @@ function ProjectDashboard({ id }: { id: number }) {
           </div>
         </section>
       )}
-
-      {/* 决策视角切换栏 */}
-      <div className="role-bar">
-        <span className="role-bar-label">
-          <IconUser size={16} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-          <strong>决策视角</strong>
-        </span>
-        <Segmented value={role} onChange={roleChange} options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
-        <span className="role-state" aria-live="polite">{ranked.isFetching ? '正在更新排名…' : '权重合计 100%'}</span>
-      </div>
-      <div className="action-row" style={{ marginBottom: 16 }} aria-label="当前讨论上下文">
-        <Tag>{decisionLabel(context)}</Tag>
-        <Select aria-label="选择讨论方案" value={selectedSchemeId} style={{ minWidth: 220 }}
-          options={results.map(item => ({ value: item.scheme_id, label: item.scheme_name }))}
-          onChange={schemeId => updateContext({ schemeId })} />
-        <span className="muted">讨论与报告沿用当前视角、权重和所选方案。</span>
-      </div>
 
       {result && <ComparisonWorkbench key={id} results={results} ranking={result} projectName={project.data?.name ?? '当前项目'}
         selectedSchemeId={selectedSchemeId} onSelectScheme={schemeId => updateContext({ schemeId })}
@@ -271,10 +271,10 @@ function ProjectDashboard({ id }: { id: number }) {
             tooltip: {}, legend: { bottom: 0, type:'scroll' }, radar: {
               center:['50%','45%'], radius:'63%', indicator: dimensions.map(d => ({name:d.label,max:100})),
               axisName: {color:tokens.ink}, splitArea:{show:false}, splitLine:{lineStyle:{color:tokens.border}},
-            }, series: [{ type:'radar', data: results.map((e,i) => ({
+            }, series: [{ type:'radar', data: results.map(e => ({
               name:e.scheme_name || e.scheme_id, value:dimensions.map(d => e.dimension_scores?.[d.key] ?? 0),
               lineStyle:{type: (e.compliance ?? []).some(c=>c.status==='failed' && c.severity==='error') ? 'dashed' : 'solid',width:2},
-              itemStyle:{color:tokens.chart[i % tokens.chart.length]}, areaStyle:{opacity:.04}, symbolSize:4,
+              itemStyle:{color:schemeColor(e.scheme_id)}, areaStyle:{opacity:.04}, symbolSize:4,
             })) }],
           }} /><p className="chart-note">点击图例隐藏方案 · 硬约束未通过的方案用虚线显示</p>
         </section>

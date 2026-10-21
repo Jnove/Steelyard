@@ -124,7 +124,7 @@ export default function ProjectsPage() {
   const [editingProject, setEditingProject] = useState<Project>()
   const [deletingProject, setDeletingProject] = useState<Project>()
   const [selectedProjectId, setSelectedProjectId] = useState<number>()
-  const [showVolume, setShowVolume] = useState(false)
+
   const [notice, setNotice] = useState('')
   const [search, setSearch] = useState('')
   const [category, setCategory] = useState('all')
@@ -402,6 +402,31 @@ export default function ProjectsPage() {
             <X size={14} />
           </Button>
         </div>
+      )}
+      {featured && (
+        <section className="home-volume" key={featured.id}>
+          <div className="home-volume-heading">
+            <Box size={16} />
+            <span>参数体量预览</span>
+            <small>按已录入方案参数绘制，仅作示意</small>
+            <label className="home-volume-project">
+              展示项目
+              <select aria-label="选择展台项目" value={featured.id}
+                onChange={event => setSelectedProjectId(Number(event.target.value))}>
+                {projectQuery.data?.map(project => <option key={project.id} value={project.id}>{project.name}</option>)}
+              </select>
+            </label>
+          </div>
+          <div className="home-volume-content">
+            <BuildingShowcase
+              compact
+              schemes={schemeQuery.data ?? []}
+              pending={schemeQuery.isPending}
+              failed={schemeQuery.isError}
+              onRetry={() => void schemeQuery.refetch()}
+            />
+          </div>
+        </section>
       )}
       <div className="home-content-grid">
         <section className="home-library" aria-labelledby="projects-title">
@@ -751,31 +776,6 @@ export default function ProjectsPage() {
           )}
         </aside>
       </div>
-      {featured && (
-        <details
-          className="home-volume"
-          key={featured.id}
-          open={showVolume}
-          onToggle={(event) => setShowVolume(event.currentTarget.open)}
-        >
-          <summary>
-            <Box size={16} />
-            <span>参数体量预览</span>
-            <small>按已录入方案参数绘制，仅作示意</small>
-            <ChevronRight size={15} />
-          </summary>
-          <div className="home-volume-content">
-            {showVolume && (
-              <BuildingShowcase
-                schemes={schemeQuery.data ?? []}
-                pending={schemeQuery.isPending}
-                failed={schemeQuery.isError}
-                onRetry={() => void schemeQuery.refetch()}
-              />
-            )}
-          </div>
-        </details>
-      )}
       <div className="home-workspace-note">
         <MapPin size={14} />
         <span>评估范围以项目参数和已录入规则为准，结论可在看板中追溯。</span>

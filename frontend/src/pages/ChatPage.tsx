@@ -408,8 +408,8 @@ function ProjectChat({ projectId }: { projectId: number }) {
     <header className="page-heading">
       <div>
         <p className="eyebrow">筑衡 · 智能体决策解释</p>
-        <h1>把结论追问到底</h1>
-        <p className="muted">大模型组织解释，数字来自工具结果。点击规则编号查看参数、公式与当前来源，待核定条目会如实标出。</p>
+        <h1>对话与报告</h1>
+        <p className="muted">围绕当前方案追问依据、预览参数调整，或生成可追溯的比选报告。</p>
       </div>
       <div className="action-row">
         <Tag>{isMock ? '本地 Mock 演示' : '真实接口'}</Tag>
@@ -450,7 +450,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
           : suggestionQuery.data ? 'AI 建议 · 基于当前项目和所选方案' : ''}</p>
         <div className="chat-feed" ref={feed} role="log" aria-label="对话记录" aria-live="off"
           onScroll={() => { const node = feed.current; if (node) followStream.current = node.scrollHeight - node.scrollTop - node.clientHeight < 80 }}>
-          {!messages.length && <Empty description="从一个建议问题开始，或点击右上角生成精简比选报告；需要细节时可继续追问。" />}
+          {!messages.length && <div className="chat-empty"><strong>从当前方案开始讨论</strong><p>选择上方建议问题，或输入想核对的依据与调整假设。比选报告也可以从右上角生成。</p></div>}
           {messages.map((item) => <article key={item.id} className={`chat-message ${item.role}`} data-role={item.role}>
             <div className="section-heading">
               <strong>{item.role === 'user' ? '你' : isMock ? '筑衡 · Mock 演示' : '筑衡 · 决策智能体'}</strong>

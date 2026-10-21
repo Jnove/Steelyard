@@ -16,6 +16,7 @@
     "test": "tsx --test tests/*.test.ts tests/*.test.mjs src/mocks/data-layer.test.mjs",
     "test:ui": "node scripts/verify-ui.mjs",
     "test:homepage": "node scripts/verify-homepage.mjs",
+    "test:workbench": "node scripts/verify-workbench.mjs",
     "test:integration": "node scripts/verify-integration.mjs"
   },
   "dependencies": {

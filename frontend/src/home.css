@@ -4,7 +4,7 @@
 
 /* Hallmark · Workbench · custom restrained cyan · Nova density
  * pre-emit critique: P5 H5 E4 S5 R5 V4
- * Homepage tokens stay local; existing project routes retain their own theme.
+ * Shared shell tokens also frame the project workbench routes.
  * No Tailwind preflight: legacy Ant Design pages must not inherit a reset.
  */
 .home-theme {
@@ -17,7 +17,7 @@
   --home-sidebar: #f9faf9;
   --home-ink: #243635;
   --home-muted: #657572;
-  --home-subtle: #6c7a77;
+  --home-subtle: #62716e;
   --home-border: #e4eae8;
   --home-hover: #f3f6f5;
   --home-selection: #f0f8f7;
@@ -137,7 +137,7 @@ body.home-active::before {
 }
 .home-brand small {
   display: block;
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.15em;
   color: var(--home-muted);
@@ -221,7 +221,7 @@ body.home-active::before {
   display: block;
   margin-top: 3px;
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
 }
 .home-body {
   min-width: 0;
@@ -277,7 +277,7 @@ body.home-active::before {
 }
 .home-page-heading h1 > span {
   display: inline-flex;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0;
   font-weight: 400;
   padding: 2px 6px;
@@ -351,7 +351,7 @@ body.home-active::before {
   font-weight: 600;
 }
 .home-filter-tabs button > span {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   color: var(--home-subtle);
 }
@@ -481,7 +481,7 @@ body.home-active::before {
   flex-wrap: wrap;
   align-items: center;
   gap: 5px 9px;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--home-subtle);
   margin-top: 5px;
 }
@@ -495,7 +495,7 @@ body.home-active::before {
 }
 .home-area small {
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
 }
 .home-date {
   color: var(--home-muted);
@@ -538,7 +538,7 @@ body.home-active::before {
   align-items: center;
   gap: 8px;
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
 }
 .home-table-footer > div {
   display: flex;
@@ -555,7 +555,7 @@ body.home-active::before {
   align-items: center;
   gap: 8px;
   color: var(--home-muted);
-  font-size: 10px;
+  font-size: 11px;
   padding: 13px 20px;
   background: var(--home-background);
 }
@@ -600,7 +600,7 @@ body.home-active::before {
   display: inline-flex;
   margin-top: 10px;
   padding: 2px 7px;
-  font-size: 10px;
+  font-size: 11px;
   border: 1px solid var(--home-border);
   border-radius: 4px;
   color: var(--home-muted);
@@ -613,7 +613,7 @@ body.home-active::before {
 }
 .home-project-facts dt {
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
   margin-bottom: 4px;
 }
 .home-project-facts dd {
@@ -622,7 +622,7 @@ body.home-active::before {
   font-weight: 500;
 }
 .home-project-facts dd small {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   color: var(--home-muted);
 }
@@ -643,7 +643,7 @@ body.home-active::before {
 }
 .home-scheme-heading > span {
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
 }
 .home-scheme-list {
   list-style: none;
@@ -661,7 +661,7 @@ body.home-active::before {
 }
 .home-scheme-list li > span {
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
   padding-top: 2px;
   width: 18px;
   flex-shrink: 0;
@@ -676,7 +676,7 @@ body.home-active::before {
 .home-scheme-list small {
   display: block;
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
   margin-top: 3px;
 }
 .home-detail-link {
@@ -713,7 +713,7 @@ body.home-active::before {
 }
 .home-boundary {
   color: var(--home-muted);
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.8;
   padding: 11px 12px;
   background: var(--home-background);
@@ -721,7 +721,7 @@ body.home-active::before {
   margin-top: 14px !important;
 }
 .home-source {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--home-muted);
   margin-top: 10px;
 }
@@ -757,7 +757,7 @@ body.home-active::before {
 }
 .home-volume > summary small {
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
   margin-left: 5px;
 }
 .home-volume > summary > svg:last-child {
@@ -786,7 +786,7 @@ body.home-active::before {
   align-items: flex-start;
   gap: 7px;
   color: var(--home-subtle);
-  font-size: 10px;
+  font-size: 11px;
   margin-top: 20px;
 }
 .home-workspace-note svg {
@@ -799,7 +799,7 @@ body.home-active::before {
   padding: 17px 36px;
   margin-inline: 36px;
   border-top: 1px solid var(--home-border);
-  font-size: 10px;
+  font-size: 11px;
   color: var(--home-subtle);
 }
 .home-footer > div {
@@ -1007,7 +1007,7 @@ body.home-active::before {
 }
 .home-field > label > small {
   margin-left: 6px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 400;
   color: var(--home-subtle);
 }
@@ -1038,7 +1038,7 @@ body.home-active::before {
   grid-column: 1 / -1;
 }
 .home-field-help {
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.7;
   color: var(--home-muted);
 }
@@ -1067,7 +1067,7 @@ body.home-active::before {
 }
 .home-checkbox-list small {
   color: var(--home-muted);
-  font-size: 10px;
+  font-size: 11px;
   margin-left: 5px;
 }
 .home-options {
@@ -1286,7 +1286,7 @@ body.home-active::before {
     font-size: 11px;
   }
   .home-mode {
-    font-size: 10px;
+    font-size: 11px;
   }
   .home-main {
     padding: 24px 20px;
@@ -1358,7 +1358,7 @@ body.home-active::before {
     gap: 16px;
   }
   .home-preview-note {
-    font-size: 10px;
+    font-size: 11px;
     align-items: baseline;
   }
   .home-form-grid {
@@ -1386,8 +1386,11 @@ body.home-active::before {
   .home-theme *,
   .home-theme *::before,
   .home-theme *::after {
-    animation: none !important;
-    transition: none !important;
+    animation-duration: .01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    transition-delay: 0ms !important;
     scroll-behavior: auto !important;
   }
 }

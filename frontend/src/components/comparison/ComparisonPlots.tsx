@@ -2,20 +2,19 @@ import { useId } from 'react'
 import { dimensions, type DimensionKey } from '../../constants/dimensions'
 import { dimensionScore, finiteScore, scoreDifference, scoreText, signedScore, type ComparisonScheme } from '../../utils/comparison'
 
-const ink = '#29433d'
-const muted = '#596e6a'
+const ink = '#243635'
+const muted = '#657572'
 const ticks = [0, 25, 50, 75, 100]
 const shorten = (value: string, limit = 18) => Array.from(value).length > limit ? Array.from(value).slice(0, limit).join('') + '…' : value
 
 function Paint({ prefix, schemes }: { prefix: string; schemes: ComparisonScheme[] }) {
   return <defs>
-    <linearGradient id={`${prefix}-plane`} x2="1" y2="1"><stop stopColor="#ccefe5" stopOpacity=".78" /><stop offset=".5" stopColor="#ffffff" stopOpacity=".25" /><stop offset="1" stopColor="#e6d6ef" stopOpacity=".7" /></linearGradient>
-    <linearGradient id={`${prefix}-rim`} x2=".3" y2="1"><stop stopColor="#ffffff" /><stop offset="1" stopColor="#afc8c0" stopOpacity=".7" /></linearGradient>
-    <linearGradient id={`${prefix}-sheen`} x2="0" y2="1"><stop stopColor="#ffffff" stopOpacity=".8" /><stop offset="1" stopColor="#ffffff" stopOpacity="0" /></linearGradient>
-    {schemes.map((scheme, index) => <radialGradient key={scheme.id} id={`${prefix}-bead-${index}`} cx="30%" cy="20%" r="85%"><stop stopColor="#ffffff" stopOpacity=".9" /><stop offset=".42" stopColor={scheme.color} stopOpacity=".85" /><stop offset="1" stopColor={scheme.color} /></radialGradient>)}
+    <linearGradient id={`${prefix}-plane`}><stop stopColor="#ffffff" /><stop offset="1" stopColor="#ffffff" /></linearGradient>
+    <linearGradient id={`${prefix}-rim`}><stop stopColor="#e4eae8" /><stop offset="1" stopColor="#e4eae8" /></linearGradient>
+    <linearGradient id={`${prefix}-sheen`}><stop stopColor="#ffffff" stopOpacity="0" /><stop offset="1" stopColor="#ffffff" stopOpacity="0" /></linearGradient>
+    {schemes.map((scheme, index) => <radialGradient key={scheme.id} id={`${prefix}-bead-${index}`}><stop stopColor={scheme.color} /><stop offset="1" stopColor={scheme.color} /></radialGradient>)}
   </defs>
 }
-
 export function TradeoffPlot({ schemes, xAxis, yAxis, selectedId, onSelect }: {
   schemes: ComparisonScheme[]; xAxis: DimensionKey; yAxis: DimensionKey; selectedId: string; onSelect?: (id: string) => void
 }) {
@@ -32,8 +31,8 @@ export function TradeoffPlot({ schemes, xAxis, yAxis, selectedId, onSelect }: {
   return <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 850 475" role="group" aria-label="二维方案取舍图" fontFamily="Segoe UI, Microsoft YaHei, sans-serif">
     <title>{`${dimensions.find(dim => dim.key === xAxis)?.label}与${dimensions.find(dim => dim.key === yAxis)?.label}二维取舍图`}</title>
     <Paint prefix={prefix} schemes={schemes} />
-    <rect x={left} y={top} width={width} height={height} rx="18" fill={`url(#${prefix}-plane)`} stroke={`url(#${prefix}-rim)`} strokeWidth="2" />
-    <rect x={left + 1} y={top + 1} width={width - 2} height="90" rx="18" fill={`url(#${prefix}-sheen)`} />
+    <rect x={left} y={top} width={width} height={height} rx="4" fill={`url(#${prefix}-plane)`} stroke={`url(#${prefix}-rim)`} strokeWidth="2" />
+    <rect x={left + 1} y={top + 1} width={width - 2} height="90" rx="4" fill={`url(#${prefix}-sheen)`} />
     {ticks.map(tick => <g key={tick}><line x1={x(tick)} y1={top} x2={x(tick)} y2={top + height} stroke="#cadcd7" /><line x1={left} y1={y(tick)} x2={left + width} y2={y(tick)} stroke="#cadcd7" />
       <text x={x(tick)} y={top + height + 25} textAnchor="middle" fill={muted} fontSize="13">{tick}</text><text x={left - 15} y={y(tick) + 5} textAnchor="end" fill={muted} fontSize="13">{tick}</text></g>)}
     <text x={left} y="25" fill={ink} fontSize="14">{dimensions.find(dim => dim.key === yAxis)?.label} / 100 分 ↑</text>
@@ -57,7 +56,7 @@ export function TradeoffPlot({ schemes, xAxis, yAxis, selectedId, onSelect }: {
         {scheme.ranked?.is_non_dominated && <circle cx={px} cy={py} r="18" fill="none" stroke={scheme.color} strokeWidth="1.5" />}
         <circle className="comp-bead" cx={px} cy={py} r="12" fill={scheme.excluded ? '#ffffff' : `url(#${prefix}-bead-${schemes.indexOf(scheme)})`} stroke={scheme.color} strokeWidth="2" strokeDasharray={scheme.excluded ? '3 2' : undefined} />
         <text x={px} y={py + 4} textAnchor="middle" fill={scheme.excluded ? scheme.color : '#ffffff'} fontSize="11" fontWeight="600" pointerEvents="none">{scheme.badge}</text>
-        <rect x={box.x} y={box.y} width={box.width} height="28" rx="9" fill={selected ? '#e3f0eb' : '#ffffff'} fillOpacity=".94" />
+        <rect x={box.x} y={box.y} width={box.width} height="28" rx="4" fill={selected ? '#e3f0eb' : '#ffffff'} fillOpacity=".94" />
         <text x={box.x + 8} y={box.y + 19} fill={scheme.color} fontSize="14" fontWeight={selected ? 650 : 500} pointerEvents="none">{text}</text>
       </g>
     })}
@@ -79,8 +78,8 @@ export function PairPlot({ first, second, onTrace }: { first: ComparisonScheme; 
       return <g key={dim.key} className="comp-pair-row" role={onTrace ? 'button' : undefined} tabIndex={onTrace ? 0 : undefined}
         aria-label={`${dim.label}，${first.name} ${scoreText(a)} 分，${second.name} ${scoreText(b)} 分，差值 ${signedScore(delta)} 分，查看评分依据`}
         onClick={() => onTrace?.(dim.key)} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onTrace?.(dim.key) } }}>
-        <rect x="5" y={y - 41} width="830" height="83" rx="16" fill={index % 2 === 0 ? `url(#${prefix}-plane)` : '#ffffff'} fillOpacity=".6" stroke={`url(#${prefix}-rim)`} strokeWidth="1.5" />
-        <rect x="6" y={y - 40} width="828" height="27" rx="15" fill={`url(#${prefix}-sheen)`} />
+        <rect x="5" y={y - 41} width="830" height="83" rx="4" fill={index % 2 === 0 ? `url(#${prefix}-plane)` : '#ffffff'} fillOpacity=".6" stroke={`url(#${prefix}-rim)`} strokeWidth="1.5" />
+        <rect x="6" y={y - 40} width="828" height="27" rx="4" fill={`url(#${prefix}-sheen)`} />
         <text x="16" y={y + 5} fill={ink} fontSize="15">{dim.label}</text>
         <line x1={left} x2={left + width} y1={y} y2={y} stroke="#cbdcd7" strokeDasharray="3 4" />
         {ticks.map(tick => <line key={tick} x1={x(tick)} x2={x(tick)} y1={y - 28} y2={y + 28} stroke="#dae6e2" />)}

@@ -13,8 +13,8 @@ class SceneBoundary extends Component<{ children: ReactNode; fallback: ReactNode
   render() { return this.state.failed ? this.props.fallback : this.props.children }
 }
 
-export default function BuildingShowcase({ schemes, pending, failed, onRetry }: {
-  schemes: Scheme[]; pending: boolean; failed: boolean; onRetry: () => void
+export default function BuildingShowcase({ schemes, pending, failed, onRetry, compact = false }: {
+  schemes: Scheme[]; pending: boolean; failed: boolean; onRetry: () => void; compact?: boolean
 }) {
   const [selectedId, setSelectedId] = useState<number>()
   const [unavailable, setUnavailable] = useState(false)
@@ -25,7 +25,7 @@ export default function BuildingShowcase({ schemes, pending, failed, onRetry }: 
   const onReady = useCallback(() => setReady(true), [])
   const fallback = <><StaticBuildingStage model={model} label={selected ? `${selected.name} 的静态参数体量示意` : '等待方案参数的展台'} /><span className="stage-mode-note">静态体量示意 · 仍可切换方案</span></>
   const params = selected?.params
-  return <section className="building-showcase" aria-label="建筑体量展台" data-renderer={!model.volumes.length || unavailable ? 'static' : ready ? 'webgl' : 'loading'}>
+  return <section className={'building-showcase' + (compact ? ' building-showcase-compact' : '')} aria-label="建筑体量展台" data-renderer={!model.volumes.length || unavailable ? 'static' : ready ? 'webgl' : 'loading'}>
     <div className="stage-orbit" aria-hidden="true" />
     <div className="stage-heading"><span><IconLayers size={16} />方案展台</span><span className="stage-index">{selected ? `${String(schemes.indexOf(selected) + 1).padStart(2, '0')} / ${String(schemes.length).padStart(2, '0')}` : '待录入'}</span></div>
     <div className="stage-renderer">

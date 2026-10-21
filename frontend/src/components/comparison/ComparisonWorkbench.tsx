@@ -19,7 +19,7 @@ interface Props {
   onTrace: (selection: { evaluation: EvalResult; dimension?: DimensionKey; ruleId?: string }) => void
 }
 const views = [{ key: 'map', label: '1. 看整体' }, { key: 'pair', label: '2. 比两套' }, { key: 'matrix', label: '3. 查全表' }] as const
-const titles = { map: '把两项关注点，变成一张取舍地图', pair: '选两套方案，逐项看清差多少', matrix: '把比较落到每一项指标' }
+const titles = { map: '二维取舍图', pair: '双方案差值', matrix: '指标与规则总表' }
 const descriptions = { map: '每个点是一套方案。右上方表示两项得分都较高；点击方案，查看它的优势组合。', pair: '四个维度使用同一把尺。右侧差值按“方案一减方案二”计算，点击维度查看依据。', matrix: '筛选方案，展开维度或搜索指标。每一个分数和规则状态，都能继续查到输入与依据。' }
 const schemeStyle = (scheme: ComparisonScheme): CSSProperties => ({ '--scheme-color': scheme.color } as CSSProperties)
 
