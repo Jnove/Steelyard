@@ -47,9 +47,14 @@ export default function LandingPage() {
       <main id="landing-main">
         <section className="landing-hero" aria-labelledby="landing-title">
           <div className="landing-copy">
-            <h1 id="landing-title">好房子，<br />有据可选。</h1>
-            <p className="landing-intro">建筑方案智能比选，让品质、结构、施工与绿色之间的取舍看得见、说得清。</p>
-            <p className="landing-description">从候选方案出发，比较参数与四维表现，沿评分依据追问，再讨论调整的可能。</p>
+            <h1 id="landing-title">
+              <span className="landing-title-line">好房子<span className="landing-title-mark">，</span></span>
+              <span className="landing-title-line">有据可选<span className="landing-title-mark">。</span></span>
+            </h1>
+            <div className="landing-copy-deck">
+              <p className="landing-intro"><span>建筑方案</span><span>智能比选</span></p>
+              <p className="landing-description"><span>比较品质、结构、施工与绿色。</span><span>沿评分依据追问，再讨论调整。</span></p>
+            </div>
             <div className="landing-actions">
               <Button asChild><Link to="/projects">进入项目工作台 <ArrowRight size={19} /></Link></Button>
               <a className="landing-process-link" href="#workflow">了解比选流程 <ArrowDown size={17} /></a>

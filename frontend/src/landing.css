@@ -21,9 +21,17 @@ body.landing-active::before { display: none; }
 .landing-header nav a:hover, .landing-process-link:hover { color: #327473; }
 .landing-hero { max-width: 1560px; margin: auto; padding: 53px 48px 64px; display: grid; grid-template-columns: minmax(0,.82fr) minmax(0,1.18fr); gap: 40px; align-items: center; }
 .landing-copy { padding: 18px 0; min-width: 0; }
-.landing-copy h1 { font-size: clamp(60px,6.5vw,100px); font-weight: 700; letter-spacing: -.055em; line-height: 1.14; margin-bottom: 32px; }
-.landing-intro { font-size: 20px; line-height: 1.75; max-width: 490px; }
-.landing-description { font-size: 16px; line-height: 1.85; color: #657572; max-width: 470px; margin-top: 15px !important; }
+/* An architectural publication: one serif headline, a short caption beside the explanation.
+ * Use installed CJK faces so the hero does not add a web-font download. */
+.landing-copy h1 { font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif; font-size: clamp(60px,6.5vw,100px); font-weight: 700; letter-spacing: -.065em; line-height: 1.14; color: #173f3b; margin-bottom: 32px; }
+.landing-title-line { display: block; white-space: nowrap; }
+.landing-title-line + .landing-title-line { margin-top: .05em; padding-left: .18em; }
+.landing-title-mark { font-size: .62em; letter-spacing: -.12em; }
+.landing-copy-deck { display: grid; grid-template-columns: max-content minmax(0,1fr); align-items: baseline; gap: 24px; max-width: 490px; }
+.landing-intro { font-size: 20px; font-weight: 600; line-height: 1.65; color: #327473; }
+.landing-intro > span { display: block; }
+.landing-description { min-width: 0; font-size: 18px; line-height: 1.85; color: #657572; }
+.landing-description > span { display: block; }
 .landing-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 24px; margin-top: 32px; }
 .landing-actions > [data-slot=button] { height: 54px; min-height: 54px; padding: 0 23px; border: 0; border-radius: 7px; background: #327473; color: white; font-size: 16px; font-weight: 550; box-shadow: none; display: inline-flex; align-items: center; gap: 22px; transition: background 160ms ease, transform 160ms ease; }
 .landing-actions > [data-slot=button]:hover { background: #285e5d; }
@@ -83,6 +91,10 @@ body.landing-active::before { display: none; }
   .landing-page .stage-heading { left: 5px; right: 5px; }
   .landing-page .stage-switcher { width: 100%; bottom: 34px; }
   .landing-workflow, .landing-footer { padding-inline: 32px; }
+}
+@media (max-width:880px) {
+  .landing-copy-deck { grid-template-columns: minmax(0,1fr); gap: 12px; }
+  .landing-intro > span { display: inline; }
 }
 @media (max-width:800px) {
   .landing-hero { grid-template-columns: minmax(0,1fr); gap: 15px; padding-top: 28px; }
