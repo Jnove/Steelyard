@@ -66,7 +66,7 @@
 .home-theme .spec-field-col { background: transparent; }
 .home-theme .spec-field-name { font-size: var(--fontSize); }
 .home-theme .field-group-tag { color: var(--color-muted); background: var(--color-background); }
-.home-theme .role-bar { display: block; border: 0; border-block: 1px solid var(--color-border); background: transparent; padding: 12px 0 16px; border-radius: 0; margin: 0 0 20px; box-shadow: none; backdrop-filter: none; }
+.home-theme .role-bar { display: block; border: 1px solid var(--color-border); background: var(--color-surface); padding: 16px 20px; border-radius: 8px; margin: 0 0 20px; box-shadow: none; backdrop-filter: none; }
 .role-bar-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; }
 .home-theme .role-bar-controls h2 { font-size: 16px; font-weight: 600; white-space: nowrap; }
 .home-theme .role-state { font-size: var(--small); margin-left: auto; color: var(--color-muted); white-space: nowrap; }
@@ -95,7 +95,6 @@
 .home-theme .executive-card-header { margin-bottom: 12px; padding-bottom: 13px; gap: 16px; }
 .home-theme .executive-badge { font-size: var(--small); color: var(--color-muted); margin-bottom: 6px; font-weight: 400; }
 .home-theme .executive-lead-title h2 { font-size: 18px; font-weight: 600; }
-.home-theme .executive-actions .ant-btn { background: var(--color-surface); border-color: var(--color-border); color: var(--color-primary); }
 .home-theme .executive-submeta { gap: 7px; font-size: var(--fontSize); }
 .home-theme .executive-points-grid { gap: 18px; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); }
 .home-theme .executive-point { border: 0; border-radius: 0; background: transparent; padding: 0; gap: 8px; font-size: var(--fontSize); }
@@ -294,7 +293,7 @@
   .home-theme .page-heading h1 { font-size: 24px; }
   .home-theme .page-heading > .action-row { gap: 7px; }
   .home-theme .panel { padding: 16px; }
-  .home-theme .role-bar { padding: 10px 0 14px; }
+  .home-theme .role-bar { padding: 12px 14px; }
   .home-theme .role-bar-controls { gap: 8px 16px; }
   .home-theme .decision-role-options { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; order: 3; }
   .home-theme .decision-role-options .ant-radio-button-wrapper { padding-inline: 8px; }
