@@ -30,35 +30,12 @@ async def test_chat_and_retry() -> None:
         calls.append(json.loads(request.content))
         if len(calls) < 3:
             return httpx.Response(500, json={"error": {"message": "测试暂时失败"}})
-        return httpx.Response(
-            200,
-            json={
-                "id": "test",
-                "object": "chat.completion",
-                "created": 0,
-                "model": "test-model",
-                "choices": [
-                    {
-                        "index": 0,
-                        "message": {
-                            "role": "assistant",
-                            "content": "测试文本",
-                            "tool_calls": [
-                                {
-                                    "id": "call",
-                                    "type": "function",
-                                    "function": {
-                                        "name": "search_clause",
-                                        "arguments": '{"query":"规则"}',
-                                    },
-                                }
-                            ],
-                        },
-                        "finish_reason": "tool_calls",
-                    }
-                ],
-            },
-        )
+        return stream_response([
+            {"content": "测试"}, {"content": "文本"},
+            {"tool_calls": [{"index": 0, "id": "call", "type": "function",
+                             "function": {"name": "search_", "arguments": '{"query":'}}]},
+            {"tool_calls": [{"index": 0, "function": {"name": "clause", "arguments": '"规则"}'}}]},
+        ], "tool_calls")
 
     llm = OpenAILLM(settings())
     assert llm.client.timeout == 60 and llm.client.max_retries == 2
@@ -73,7 +50,9 @@ async def test_chat_and_retry() -> None:
     result = await llm.chat([{"role": "user", "content": "测试"}], [])
     assert len(calls) == 3 and calls[0]["model"] == "test-model"
     assert "tools" not in calls[0]
+    assert all(call["stream"] is True for call in calls)
     assert result.content == "测试文本" and result.tool_calls[0].arguments == {"query": "规则"}
+    assert result.tool_calls[0].name == "search_clause"
     await llm.aclose()
 
 
@@ -207,7 +186,8 @@ async def test_empty_chat_response_retries_at_most_once(recover: bool) -> None:
     def handler(request):
         nonlocal calls
         calls += 1
-        return completion_response("有效正文" if recover and calls == 2 else None)
+        assert json.loads(request.content)["stream"] is True
+        return stream_response([{"content": "有效正文"}] if recover and calls == 2 else [])
     llm = await transport_llm(handler)
     try:
         if recover:
@@ -252,7 +232,7 @@ async def test_incomplete_model_output_is_not_accepted(stream: bool, reason: str
     def handler(request):
         nonlocal calls
         calls += 1
-        return stream_response([{"content": "未完成"}], reason) if stream else completion_response("未完成", reason)
+        return stream_response([{"content": "未完成"}], reason)
     llm = await transport_llm(handler)
     try:
         with pytest.raises(ValueError, match=message):
@@ -261,5 +241,40 @@ async def test_incomplete_model_output_is_not_accepted(stream: bool, reason: str
             else:
                 await llm.chat([{"role": "user", "content": "测试"}], [])
         assert calls == 1
+    finally:
+        await llm.aclose()
+
+
+@pytest.mark.asyncio
+async def test_chat_uses_streaming_only_gateway_and_preserves_tool_contract() -> None:
+    requests = []
+    responses = []
+    tools = [{"type": "function", "function": {"name": "dispatch_intent",
+              "parameters": {"type": "object", "properties": {"intent": {"type": "string"}}}}}]
+
+    def handler(request):
+        body = json.loads(request.content)
+        requests.append(body)
+        # 复现线上网关：非流式请求返回只有 usage 的空 SSE。
+        if not body.get("stream"):
+            return httpx.Response(200, headers={"content-type": "text/event-stream"},
+                                  text='data: {"choices":[],"usage":{"completion_tokens":0}}\n\ndata: [DONE]\n\n')
+        response = stream_response([
+            {"reasoning_content": "private reasoning"},
+            {"tool_calls": [{"index": 0, "id": "plan", "type": "function",
+                             "function": {"name": "dispatch_", "arguments": '{"intent":'}}]},
+            {"tool_calls": [{"index": 0, "function": {"name": "intent", "arguments": '"explain"}'}}]},
+        ], "tool_calls")
+        responses.append(response)
+        return response
+
+    llm = await transport_llm(handler)
+    try:
+        result = await llm.chat([{"role": "user", "content": "解释方案取舍"}], tools)
+        assert len(requests) == 1 and requests[0]["stream"] is True
+        assert requests[0]["tools"] == tools
+        assert result.model_dump() == {"content": "", "tool_calls": [
+            {"id": "plan", "name": "dispatch_intent", "arguments": {"intent": "explain"}}]}
+        assert all(response.is_closed for response in responses)
     finally:
         await llm.aclose()

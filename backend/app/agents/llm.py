@@ -58,23 +58,13 @@ class OpenAILLM:
         )
 
     async def chat(self, messages: Messages, tools: Tools) -> LLMResponse:
-        for attempt in range(2):
-            response = await self.client.chat.completions.create(
-                model=self.model, messages=messages, **self.request_options, **({"tools": tools} if tools else {})
-            )
-            choice = response.choices[0] if response.choices else None
-            self.check_finish_reason(choice.finish_reason if choice else None)
-            message = choice.message if choice else None
-            if message and ((message.content or "").strip() or message.tool_calls):
-                return LLMResponse(
-                    content=message.content or "",
-                    tool_calls=[
-                        ToolCall(id=c.id, name=c.function.name, arguments=json.loads(c.function.arguments))
-                        for c in (message.tool_calls or [])
-                    ],
-                )
-            logger.warning("模型返回空响应 (mode=chat, attempt=%s)", attempt + 1)
-        raise ValueError("模型服务连续返回空响应，请稍后重试或检查模型服务状态")
+        # 部分兼容网关仅正确支持流式请求；统一传输方式，复用工具拼接与完整性校验。
+        content: list[str] = []
+        calls: list[ToolCall] = []
+        async for chunk in self.stream(messages, tools):
+            content.append(chunk.text)
+            calls.extend(chunk.tool_calls)
+        return LLMResponse(content="".join(content), tool_calls=calls)
 
     @staticmethod
     def check_finish_reason(reason: str | None) -> None:
