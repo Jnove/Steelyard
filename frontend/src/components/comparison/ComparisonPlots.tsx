@@ -34,12 +34,12 @@ export function TradeoffPlot({ schemes, xAxis, yAxis, selectedId, onSelect }: {
     <rect x={left} y={top} width={width} height={height} rx="4" fill={`url(#${prefix}-plane)`} stroke={`url(#${prefix}-rim)`} strokeWidth="2" />
     <rect x={left + 1} y={top + 1} width={width - 2} height="90" rx="4" fill={`url(#${prefix}-sheen)`} />
     {ticks.map(tick => <g key={tick}><line x1={x(tick)} y1={top} x2={x(tick)} y2={top + height} stroke="#cadcd7" /><line x1={left} y1={y(tick)} x2={left + width} y2={y(tick)} stroke="#cadcd7" />
-      <text x={x(tick)} y={top + height + 25} textAnchor="middle" fill={muted} fontSize="13">{tick}</text><text x={left - 15} y={y(tick) + 5} textAnchor="end" fill={muted} fontSize="13">{tick}</text></g>)}
-    <text x={left} y="25" fill={ink} fontSize="14">{dimensions.find(dim => dim.key === yAxis)?.label} / 100 分 ↑</text>
-    <text x={left + width} y="456" textAnchor="end" fill={ink} fontSize="14">{dimensions.find(dim => dim.key === xAxis)?.label} / 100 分 →</text>
+      <text x={x(tick)} y={top + height + 25} textAnchor="middle" fill={muted} fontSize="16">{tick}</text><text x={left - 15} y={y(tick) + 5} textAnchor="end" fill={muted} fontSize="16">{tick}</text></g>)}
+    <text x={left} y="25" fill={ink} fontSize="16">{dimensions.find(dim => dim.key === yAxis)?.label} / 100 分 ↑</text>
+    <text x={left + width} y="456" textAnchor="end" fill={ink} fontSize="16">{dimensions.find(dim => dim.key === xAxis)?.label} / 100 分 →</text>
     {points.map(({ scheme, sx, sy, px, py }) => {
       const text = shorten(scheme.name)
-      const labelWidth = Math.min(265, Array.from(text).reduce((length, char) => length + (char.charCodeAt(0) > 255 ? 14 : 8), 16))
+      const labelWidth = Math.min(305, Array.from(text).reduce((length, char) => length + (char.charCodeAt(0) > 255 ? 16 : 9), 16))
       const candidates = [[22,-35], [22,12], [-labelWidth-22,-35], [-labelWidth-22,12], [22,-67], [-labelWidth-22,44]]
       const boxes = candidates.map(([dx, dy]) => ({ x: Math.max(left + 5, Math.min(left + width - labelWidth - 5, px + dx)), y: Math.max(32, Math.min(top + height - 30, py + dy)), width: labelWidth }))
       const box = boxes.find(candidate => !labels.some(previous => collides(candidate, previous)) && !points.some(point => collides(candidate, { x: point.px - 18, y: point.py - 18, width: 36 }))) ?? boxes[0]
@@ -55,9 +55,9 @@ export function TradeoffPlot({ schemes, xAxis, yAxis, selectedId, onSelect }: {
         {selected && <circle cx={px} cy={py} r="25" fill={scheme.color} fillOpacity=".12" />}
         {scheme.ranked?.is_non_dominated && <circle cx={px} cy={py} r="18" fill="none" stroke={scheme.color} strokeWidth="1.5" />}
         <circle className="comp-bead" cx={px} cy={py} r="12" fill={scheme.excluded ? '#ffffff' : `url(#${prefix}-bead-${schemes.indexOf(scheme)})`} stroke={scheme.color} strokeWidth="2" strokeDasharray={scheme.excluded ? '3 2' : undefined} />
-        <text x={px} y={py + 4} textAnchor="middle" fill={scheme.excluded ? scheme.color : '#ffffff'} fontSize="11" fontWeight="600" pointerEvents="none">{scheme.badge}</text>
+        <text x={px} y={py + 4} textAnchor="middle" fill={scheme.excluded ? scheme.color : '#ffffff'} fontSize="14" fontWeight="600" pointerEvents="none">{scheme.badge}</text>
         <rect x={box.x} y={box.y} width={box.width} height="28" rx="4" fill={selected ? '#e3f0eb' : '#ffffff'} fillOpacity=".94" />
-        <text x={box.x + 8} y={box.y + 19} fill={scheme.color} fontSize="14" fontWeight={selected ? 650 : 500} pointerEvents="none">{text}</text>
+        <text x={box.x + 8} y={box.y + 19} fill={scheme.color} fontSize="16" fontWeight={selected ? 650 : 500} pointerEvents="none">{text}</text>
       </g>
     })}
     {!points.length && <text x="425" y="220" textAnchor="middle" fill={muted} fontSize="16">当前范围没有可绘制的两维得分</text>}
@@ -71,7 +71,7 @@ export function PairPlot({ first, second, onTrace }: { first: ComparisonScheme; 
     <title>{`${first.name}与${second.name}四维得分差值`}</title>
     <Paint prefix={prefix} schemes={[first, second]} />
     <defs><linearGradient id={`${prefix}-bridge`} gradientUnits="userSpaceOnUse" x1={left} x2={left + width}><stop stopColor={first.color} /><stop offset="1" stopColor={second.color} /></linearGradient></defs>
-    <text x="16" y="26" fill={muted} fontSize="14">评价维度</text><text x="770" y="26" textAnchor="middle" fill={muted} fontSize="14">{first.badge} − {second.badge} / 分</text>
+    <text x="16" y="26" fill={muted} fontSize="16">评价维度</text><text x="770" y="26" textAnchor="middle" fill={muted} fontSize="16">{first.badge} − {second.badge} / 分</text>
     {dimensions.map((dim, index) => {
       const y = 84 + index * 93, a = dimensionScore(first, dim.key), b = dimensionScore(second, dim.key), delta = scoreDifference(a, b)
       const same = finiteScore(delta) && Math.abs(delta) < 1e-8
@@ -80,16 +80,16 @@ export function PairPlot({ first, second, onTrace }: { first: ComparisonScheme; 
         onClick={() => onTrace?.(dim.key)} onKeyDown={event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); onTrace?.(dim.key) } }}>
         <rect x="5" y={y - 41} width="830" height="83" rx="4" fill={index % 2 === 0 ? `url(#${prefix}-plane)` : '#ffffff'} fillOpacity=".6" stroke={`url(#${prefix}-rim)`} strokeWidth="1.5" />
         <rect x="6" y={y - 40} width="828" height="27" rx="4" fill={`url(#${prefix}-sheen)`} />
-        <text x="16" y={y + 5} fill={ink} fontSize="15">{dim.label}</text>
+        <text x="16" y={y + 5} fill={ink} fontSize="16">{dim.label}</text>
         <line x1={left} x2={left + width} y1={y} y2={y} stroke="#cbdcd7" strokeDasharray="3 4" />
         {ticks.map(tick => <line key={tick} x1={x(tick)} x2={x(tick)} y1={y - 28} y2={y + 28} stroke="#dae6e2" />)}
         {finiteScore(a) && finiteScore(b) && <><line x1={x(a)} x2={x(b)} y1={y} y2={y} stroke={`url(#${prefix}-bridge)`} strokeOpacity=".55" strokeWidth="10" strokeLinecap="round" /><line x1={x(a)} x2={x(b)} y1={y - 2} y2={y - 2} stroke="#ffffff" strokeOpacity=".7" strokeWidth="1.5" /></>}
-        {finiteScore(a) && <><circle cx={x(a)} cy={y} r={same ? 12 : 10} fill={`url(#${prefix}-bead-0)`} stroke={first.color} strokeWidth="1.5" /><text x={x(a)} y={y - 20} textAnchor="middle" fill={first.color} fontSize="14">{scoreText(a)}</text></>}
-        {finiteScore(b) && <><circle cx={x(b)} cy={y} r={same ? 7 : 10} fill={`url(#${prefix}-bead-1)`} stroke={same ? '#ffffff' : second.color} strokeWidth="1.5" /><text x={x(b)} y={y + 30} textAnchor="middle" fill={second.color} fontSize="14">{scoreText(b)}</text></>}
+        {finiteScore(a) && <><circle cx={x(a)} cy={y} r={same ? 12 : 10} fill={`url(#${prefix}-bead-0)`} stroke={first.color} strokeWidth="1.5" /><text x={x(a)} y={y - 20} textAnchor="middle" fill={first.color} fontSize="16">{scoreText(a)}</text></>}
+        {finiteScore(b) && <><circle cx={x(b)} cy={y} r={same ? 7 : 10} fill={`url(#${prefix}-bead-1)`} stroke={same ? '#ffffff' : second.color} strokeWidth="1.5" /><text x={x(b)} y={y + 30} textAnchor="middle" fill={second.color} fontSize="16">{scoreText(b)}</text></>}
         <text x="770" y={y + 6} textAnchor="middle" fontSize="20" fontWeight="650" fill={!finiteScore(delta) || same ? muted : delta > 0 ? '#4165a2' : '#93662e'}>{signedScore(delta)}</text>
       </g>
     })}
-    {ticks.map(tick => <text key={tick} x={x(tick)} y="422" textAnchor="middle" fill={muted} fontSize="13">{tick}</text>)}
-    <text x={left + width} y="451" textAnchor="end" fill={muted} fontSize="13">统一评分刻度 / 0–100</text>
+    {ticks.map(tick => <text key={tick} x={x(tick)} y="422" textAnchor="middle" fill={muted} fontSize="16">{tick}</text>)}
+    <text x={left + width} y="451" textAnchor="end" fill={muted} fontSize="16">统一评分刻度 / 0–100</text>
   </svg>
 }

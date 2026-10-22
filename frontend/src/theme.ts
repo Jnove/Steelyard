@@ -6,7 +6,8 @@ export const tokens = {
   background: '#f8faf9', border: '#e4eae8', danger: '#ab3f46', success: '#327473',
   warning: '#8c611e', soft: '#dbf0ef', dangerSoft: '#fcf1f2', transparent: 'transparent',
   accent: '#9dd5d4', accentInk: '#243635', glowMint: '#9dd5d4', glowLilac: '#dbf0ef',
-  chart: ['#327473', '#53748a', '#865d30', '#6c7773', '#627f7e'],
+  // Categorical scheme identities; avoid using these colours to encode rank positions.
+  chart: ['#327473', '#b65c19', '#4169b1', '#a34d83', '#887426'],
   dimensions: { quality: '#327473', structure: '#53748a', construction: '#986c3c', green: '#4d8278' },
   scene: { building: '#e4e9e4', facade: '#58867e', roof: '#fafcf8', plate: '#d1e9e1', edge: '#839b90', ground: '#e9eeeb', frame: '#bfd0c5', module: '#7c9891', inset: '#294b44', rooftop: '#c5d0c5' },
   glass: {
@@ -15,7 +16,8 @@ export const tokens = {
   },
   font: '-apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif',
   mono: '"Cascadia Code", "SFMono-Regular", monospace',
-  fontSize: 14, small: 12, medium: 16, large: 20, title: 28, display: 36,
+  // Body and controls: 16px; secondary text and chart ticks: at least 14px.
+  fontSize: 16, small: 14, medium: 16, large: 20, title: 28, display: 36,
   radius: 8, radiusSmall: 6, radiusFloat: 8, duration: 180,
 }
 /** 同一方案在录入表、雷达与比较视图中使用同一种颜色，不随排序改变。 */
@@ -29,12 +31,12 @@ export const theme: ThemeConfig = {
   token: { colorPrimary: tokens.primary, colorInfo: tokens.primary, colorSuccess: tokens.success,
     colorWarning: tokens.warning, colorError: tokens.danger, colorText: tokens.ink,
     colorTextSecondary: tokens.muted, colorBgLayout: tokens.background, colorBorder: tokens.border,
-    borderRadius: tokens.radiusSmall, borderRadiusLG: tokens.radius, fontSize: tokens.fontSize, fontFamily: tokens.font, controlHeight: 36 },
+    borderRadius: tokens.radiusSmall, borderRadiusLG: tokens.radius, fontSize: tokens.fontSize, fontSizeSM: tokens.small, fontFamily: tokens.font, controlHeight: 40 },
   components: {
     Layout: { headerBg: tokens.transparent, siderBg: tokens.transparent },
     Slider: { trackBg: tokens.primary, handleColor: tokens.primary },
-    Button: { primaryShadow: 'none', defaultShadow: 'none', controlHeightLG: 36 },
-    Table: { headerBg: tokens.surface, rowHoverBg: tokens.background, borderColor: tokens.border, fontSize: 13, cellPaddingBlock: 13 },
+    Button: { primaryShadow: 'none', defaultShadow: 'none', controlHeightLG: 44 },
+    Table: { headerBg: tokens.surface, rowHoverBg: tokens.background, borderColor: tokens.border, fontSize: tokens.fontSize, cellPaddingBlock: 14 },
     Segmented: { trackBg: tokens.background, itemSelectedBg: tokens.surface },
     Modal: { borderRadiusLG: 10 }, Drawer: { paddingLG: 24 },
   },

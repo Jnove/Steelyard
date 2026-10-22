@@ -13,6 +13,7 @@ import { decisionInput, decisionLabel } from '../utils/decision-context'
 import { useDecisionContext } from '../utils/use-decision-context'
 import { evaluationSummary, scoreTradeoff } from '../utils/scheme-presentation'
 import Chart from '../components/Chart'
+import RankProbability from '../components/RankProbability'
 import TraceDrawer from '../components/TraceDrawer'
 import ComparisonWorkbench from '../components/comparison/ComparisonWorkbench'
 import {
@@ -23,7 +24,6 @@ import {
   IconCheck,
   IconHelpCircle,
   IconMessage,
-  IconUser,
 } from '../components/Icons'
 
 type RankInput = ReturnType<typeof decisionInput>
@@ -56,7 +56,7 @@ function RankingList({ result }: { result: RankResponse }) {
               </span>
               <span className="numeric">{s.closeness.toFixed(3)}</span>
             </div>
-            <div className="rank-track"><div style={{ width: s.closeness * 100 + '%' }} /></div>
+          <div className="rank-track"><div style={{ width: s.closeness * 100 + '%', background: schemeColor(s.scheme_id) }} /></div>
           </div>
         </div>
       )
@@ -162,20 +162,24 @@ function ProjectDashboard({ id }: { id: number }) {
     {!!results.length && <>
       {/* 决策视角切换栏 */}
       <section className="role-bar" aria-label="决策视角">
-        <div className="role-bar-heading">
-          <div><h2><IconUser size={19} />决策视角</h2><p>同一组方案，从不同关注重点出发。</p></div>
+        <div className="role-bar-controls">
+          <h2>决策视角</h2>
+          <Radio.Group className="decision-role-options" aria-label="选择决策视角" value={role}
+            onChange={event => roleChange(event.target.value)} optionType="button"
+            options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
           <span className="role-state" aria-live="polite">{rankingPending ? '正在更新排名…' : role === 'custom' ? '自定义权重 · 可调整' : '模板权重 · 只读'}</span>
         </div>
-        <Radio.Group className="decision-role-options" aria-label="选择决策视角" value={role}
-          onChange={event => roleChange(event.target.value)} optionType="button" buttonStyle="solid"
-          options={[...roleOptions, { label: '自定义', value: 'custom' }]} />
         {role !== 'custom' && <>
-          <dl className="role-weight-summary" aria-label="当前视角权重">{dimensions.map((dimension, index) => <div key={dimension.key}>
-            <dt>{dimension.label}</dt><dd>{templateWeights ? `${(templateWeights.weights[index] * 100).toFixed(1)}%` : '—'}</dd>
-          </div>)}</dl>
-          <p className="role-weight-note">{templateWeights ? ahp ? `一致性 CR ${ahp.cr.toFixed(4)} · ${ahp.consistent ? '一致性检验通过（判断自洽）' : '模板需复核'}。` : '直接赋权，无两两比较矩阵。' : '等待当前视角权重。'}选择“自定义”可调整权重。</p>
+          <div className="role-weight-meta">
+            <dl className="role-weight-summary" aria-label="当前视角权重">{dimensions.map((dimension, index) => <div key={dimension.key}>
+              <dt>{dimension.label}</dt><dd>{templateWeights ? `${(templateWeights.weights[index] * 100).toFixed(1)}%` : '—'}</dd>
+            </div>)}</dl>
+            <details className="role-weight-details"><summary>权重说明</summary>
+              <p className="role-weight-note">{templateWeights ? ahp ? `一致性 CR ${ahp.cr.toFixed(4)} · ${ahp.consistent ? '一致性检验通过（判断自洽）' : '模板需复核'}。` : '直接赋权，无两两比较矩阵。' : '等待当前视角权重。'}选择“自定义”可调整权重。</p>
+              {templateWeights?.note && <p className="role-weight-note">{templateWeights.note}</p>}
+            </details>
+          </div>
           {templateWeights?.consistency_warning && <Alert type="warning" message={templateWeights.consistency_warning} />}
-          {templateWeights?.note && <p className="role-weight-note">{templateWeights.note}</p>}
         </>}
       </section>
       {role === 'custom' && <section className="panel weights-panel custom-weights-panel" aria-label="自定义评价权重">
@@ -268,9 +272,9 @@ function ProjectDashboard({ id }: { id: number }) {
             <span className="muted">各方案维度得分 / 100</span>
           </div>
           <Chart height={330} label="各方案四维得分雷达图" option={{
-            tooltip: {}, legend: { bottom: 0, type:'scroll' }, radar: {
+            tooltip: { textStyle: { fontSize: tokens.fontSize } }, legend: { bottom: 0, type:'scroll', textStyle: { fontSize: tokens.small } }, radar: {
               center:['50%','45%'], radius:'63%', indicator: dimensions.map(d => ({name:d.label,max:100})),
-              axisName: {color:tokens.ink}, splitArea:{show:false}, splitLine:{lineStyle:{color:tokens.border}},
+              axisName: {color:tokens.ink,fontSize:tokens.small}, splitArea:{show:false}, splitLine:{lineStyle:{color:tokens.border}},
             }, series: [{ type:'radar', data: results.map(e => ({
               name:e.scheme_name || e.scheme_id, value:dimensions.map(d => e.dimension_scores?.[d.key] ?? 0),
               lineStyle:{type: (e.compliance ?? []).some(c=>c.status==='failed' && c.severity==='error') ? 'dashed' : 'solid',width:2},
@@ -299,12 +303,12 @@ function ProjectDashboard({ id }: { id: number }) {
         <span className="muted">确定性计算 · 每分可查</span>
       </div>
 
-      <div className="scheme-cards">{results.map((e,i) => {
+      <div className="scheme-cards">{results.map(e => {
         const hardFailures = (e.compliance ?? []).filter(c=>c.status==='failed' && c.severity==='error')
         const incomplete = (e.compliance ?? []).some(c=>c.status==='insufficient_data')
         const entry = result?.ranking.find(r=>r.scheme_id===e.scheme_id)
         const persona = evaluationSummary(e)
-        return <article className="panel scheme-card" key={e.scheme_id} style={{borderTopColor:tokens.chart[i%tokens.chart.length]}}>
+        return <article className="panel scheme-card" key={e.scheme_id} style={{borderTopColor:schemeColor(e.scheme_id)}}>
           <div className="scheme-card-top">
             <h3>{e.scheme_name}</h3>
             <span className="persona-badge-tag">{persona.title}</span>
@@ -346,21 +350,11 @@ function ProjectDashboard({ id }: { id: number }) {
         <section className="panel">
           <div className="section-heading">
             <h2>蒙特卡洛名次概率</h2>
-            <Tooltip title="在权重微小扰动下模拟数百次抽样，统计各方案取得不同排名的频率，客观呈现抗不确定性能力。">
+            <Tooltip title="蒙特卡洛抽样：在当前权重附近随机抽取多组权重，保持方案得分不变，统计每个方案获得各名次的频率。结果取决于权重抽样模型。">
               <span className="muted">{acceptability ? acceptability.samples + ' 组权重抽样' : '暂无抽样结果'} <IconHelpCircle size={14} style={{ verticalAlign: 'middle' }} /></span>
             </Tooltip>
           </div>
-          {!acceptability ? <Empty description="此组自定义权重暂无离线概率快照，请选择角色模板或连接后端" /> : <Chart label="方案获得各名次的概率" height={260} option={{
-            tooltip:{trigger:'axis',axisPointer:{type:'shadow'}}, legend:{bottom:0},
-            grid:{left:105,right:20,top:16,bottom:60},
-            xAxis:{type:'value',min:0,max:1,axisLabel:{formatter:(v:number)=>Math.round(v*100)+'%'}},
-            yAxis:{type:'category',data:inputOrder.map((_,i)=>nameAt(i)),inverse:true},
-            series:acceptability.probabilities[0]?.map((_,rank)=>({
-              name:'第 '+(rank+1)+' 名',type:'bar' as const,stack:'probability',barMaxWidth:30,
-              data:acceptability.probabilities.map(row=>row[rank]),
-            })) ?? [],
-          }} />}
-          <p className="chart-note">反映权重变化时排名的稳定性，不代表建筑质量的统计置信度。</p>
+          {!acceptability ? <Empty description="此组自定义权重暂无离线概率快照，请选择角色模板或连接后端" /> : <RankProbability ranking={result} results={results} />}
         </section>
       </div>}
 

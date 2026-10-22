@@ -8,6 +8,7 @@ import BuildingShowcase from '../components/BuildingShowcase'
 import { Button } from '../components/ui/button'
 import { featuredProject, isTeachingCase } from '../utils/project-presentation'
 import '../landing.css'
+import { IconScale, IconShieldCheck, IconMessage } from '../components/Icons'
 
 export default function LandingPage() {
   const [selectedId, setSelectedId] = useState<number>()
@@ -72,13 +73,16 @@ export default function LandingPage() {
               onRetry={() => { if (projectQuery.isError) void projectQuery.refetch(); else void schemeQuery.refetch() }} />
           </div>
         </section>
-        <section className="landing-workflow" id="workflow" aria-labelledby="workflow-title">
-          <div className="landing-workflow-heading"><h2 id="workflow-title">从方案，到有依据的选择。</h2><Link to="/projects">开始一次比选 <ArrowRight size={17} /></Link></div>
-          <ol>
-            <li><h3>录入地块与方案</h3><p>建立项目，手动填写或导入 Excel。不确定的参数可以留空。</p></li>
-            <li><h3>比较表现与取舍</h3><p>切换角色与权重，查看方案差异，追溯参数、公式与规则来源。</p></li>
-            <li><h3>追问、推演与报告</h3><p>围绕当前方案解释结果；参数调整先预览，确认后再生成副本。</p></li>
-          </ol>
+
+        <section className="workflow-strip landing-workflow-strip" aria-label="比选工作流程" id="workflow" aria-labelledby="workflow-title">
+          <section><div className="landing-workflow-heading"><h2 id="workflow-title" style={{fontSize:24}}>从方案，到有依据的选择。</h2><Link to="/projects">开始一次比选 <ArrowRight size={17} /></Link></div></section>
+
+          <section className="landing-workflow-steps">
+            <div><span className="workflow-number"  style={{fontSize:14}}>01</span><IconScale size={20} /><h2 style={{fontSize:20}}>录入地块与方案</h2><p style={{fontSize:16}}>建立项目，手动填写或导入 Excel。不确定的参数可以留空。</p></div>
+            <div><span className="workflow-number" style={{fontSize:14}}>02</span><IconShieldCheck size={20}/><h3 style={{fontSize:20}}>比较表现与取舍</h3><p style={{fontSize:16}}>切换角色与权重，查看方案差异，追溯参数、公式与规则来源。</p></div>
+            <div><span className="workflow-number"  style={{fontSize:14}}>03</span><IconMessage size={20} /><h3 style={{fontSize:20}}>追问、推演与报告</h3><p style={{fontSize:16}}>围绕当前方案解释结果；参数调整先预览，确认后再生成副本。</p></div>
+          </section>
+
         </section>
       </main>
       <footer className="landing-footer"><span>筑衡 · 建筑方案决策工作台</span><span>当前规则与专业依据仍需核定</span><Link to="/projects">进入工作台 <ArrowRight size={15} /></Link></footer>
