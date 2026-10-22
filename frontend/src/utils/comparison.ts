@@ -1,6 +1,7 @@
 import type { EvalResult, RankResponse } from '../api/types'
 import { dimensions, type DimensionKey } from '../constants/dimensions'
 import { schemeColor } from '../theme'
+import { schemeNameParts } from './presentation-names'
 
 export type ComparisonView = 'map' | 'pair' | 'matrix'
 export type MatrixDataset = 'scores' | 'compliance'
@@ -114,6 +115,6 @@ export function pairSummary(first: ComparisonScheme | undefined, second: Compari
   const less = compared.filter(item => finiteScore(item.difference) && item.difference < -1e-8).map(item => item.label)
   const equal = compared.filter(item => finiteScore(item.difference) && Math.abs(item.difference) <= 1e-8).map(item => item.label)
   const missing = compared.filter(item => !finiteScore(item.difference)).map(item => item.label)
-  return [more.length ? `${first.name}在${more.join('、')}得分更高` : '', less.length ? `${second.name}在${less.join('、')}得分更高` : '',
+  return [more.length ? `${schemeNameParts(first.name).title}在${more.join('、')}得分更高` : '', less.length ? `${schemeNameParts(second.name).title}在${less.join('、')}得分更高` : '',
     equal.length ? `${equal.join('、')}得分相同` : '', missing.length ? `${missing.join('、')}缺少可比较的分数` : ''].filter(Boolean).join('；') + '。'
 }

@@ -1,5 +1,5 @@
-import { lazy, useState } from 'react'
-import { Alert, Button, Empty, Modal, Result, Skeleton, Space, Table, Tag, Tooltip, Typography, Upload, message } from 'antd'
+import { lazy, useRef, useState } from 'react'
+import { Alert, Button, Dropdown, Empty, Modal, Result, Skeleton, Space, Table, Tag, Tooltip, Typography, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -13,8 +13,10 @@ import { orderedFields, recordedSchemaFields, schemaFieldValue } from '../utils/
 import { RequestErrors } from '../components/RequestErrors'
 import DeferredContent from '../components/DeferredContent'
 import type { SchemaFormValues } from '../components/SchemaForm'
-import { IconPlay, IconPlus, IconUpload } from '../components/Icons'
+import { IconPlay, IconPlus } from '../components/Icons'
+import { ChevronDown } from 'lucide-react'
 import { parameterSummary } from '../utils/scheme-presentation'
+import { schemeNameParts } from '../utils/presentation-names'
 import { schemeColor } from '../theme'
 import DeleteConfirm from '../components/DeleteConfirm'
 import { clearDeletedData } from '../utils/deletion-cache'
@@ -48,8 +50,11 @@ function displayValue(value: unknown, fieldName?: string) {
   if (fieldName === 'std_floor_repeat' && typeof value === 'number') {
     return `${(value * 100).toFixed(0)}%`
   }
+  if (fieldName === 'scheme_notes' && typeof value === 'string' && value.length > 100) {
+    return <details className="spec-notes"><summary>查看方案假设与来源</summary><p>{value}</p></details>
+  }
   if (Array.isArray(value)) return value.map(String).join('、')
-  if (typeof value === 'object') return Object.entries(value).map(([key, item]) => `${key}：${String(item)}`).join('；')
+  if (typeof value === 'object') return <div className="spec-value-lines">{Object.entries(value).map(([key, item]) => <span key={key}>{key}：{String(item)}</span>)}</div>
   if (typeof value === 'boolean') return value ? '是' : '否'
   return typeof value === 'number' ? value.toLocaleString('zh-CN', { maximumFractionDigits: 8 }) : String(value)
 }
@@ -68,6 +73,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
   const [editing, setEditing] = useState<Scheme | 'new' | null>(null)
   const [deletingScheme, setDeletingScheme] = useState<Scheme>()
   const [fileError, setFileError] = useState<string | null>(null)
+  const importInput = useRef<HTMLInputElement>(null)
   const projectQuery = useQuery(projectOptions(projectId))
   const schemeQuery = useQuery(schemeOptions(projectId))
   const schemaQuery = useQuery(schemaOptions())
@@ -143,7 +149,8 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       return {
         title: () => (
           <div className="scheme-col-header" style={{ borderTopColor: persona.color }}>
-            <strong>{scheme.name}</strong>
+            <strong title={scheme.name}>{schemeNameParts(scheme.name).title}</strong>
+            {schemeNameParts(scheme.name).detail && <small className="name-detail">{schemeNameParts(scheme.name).detail}</small>}
             <span className="persona-micro-tag" style={{ color: persona.color, borderColor: persona.color }}>{persona.title}</span>
           </div>
         ),
@@ -167,7 +174,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
         const persona = getSchemePresentation(scheme)
         return (
           <div className="scheme-name-cell">
-            <strong style={{ color: persona.color }}>{name}</strong>
+            <div><strong title={name} style={{ color: persona.color }}>{schemeNameParts(name).title}</strong>{schemeNameParts(name).detail && <small className="name-detail">{schemeNameParts(name).detail}</small>}</div>
             <Tag>{persona.title}</Tag>
           </div>
         )
@@ -198,28 +205,26 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
           <p className="page-description">维护候选方案与地块参数，比较之前先核对输入。</p>
         </div>
         <div className="action-row">
-          {!USE_MOCK && <>
-            <Button href={`${API_BASE}/excel/template`}>下载录入模板</Button>
-            <Button disabled={!projectQuery.data || busy} href={`${API_BASE}/excel/projects/${projectId}/export`}>导出方案</Button>
-          </>}
-          <Upload
-            accept=".xlsx"
-            showUploadList={false}
+          <input ref={importInput} type="file" accept=".xlsx" className="workbench-file-input" aria-label="选择方案 Excel 文件"
             disabled={!projectQuery.data || busy}
-            beforeUpload={(file) => {
+            onChange={event => {
+              const file = event.target.files?.[0]
+              event.target.value = ''
+              if (!file) return
               setFileError(null)
               importSchemes.reset()
               if (!file.name.toLowerCase().endsWith('.xlsx')) setFileError('请选择 .xlsx 格式的 Excel 文件。')
               else if (file.size === 0) setFileError('所选文件为空，请选择包含方案参数的 Excel 文件。')
               else importSchemes.mutate(file)
-              return false
             }}
-          >
-            <Button loading={importSchemes.isPending} disabled={!projectQuery.data || busy}>
-              <IconUpload size={15} style={{ verticalAlign: 'middle', marginRight: 6 }} />
-              导入 Excel
-            </Button>
-          </Upload>
+          />
+          <Dropdown overlayClassName="scheme-transfer-menu" trigger={['click']} menu={{ items: [
+            ...(!USE_MOCK ? [{ key: 'template', label: <a href={`${API_BASE}/excel/template`}>下载录入模板</a> }] : []),
+            { key: 'import', label: '导入 Excel', disabled: !projectQuery.data || busy, onClick: () => importInput.current?.click() },
+            ...(!USE_MOCK ? [{ key: 'export', disabled: !projectQuery.data || busy, label: !projectQuery.data || busy ? '导出方案' : <a href={`${API_BASE}/excel/projects/${projectId}/export`}>导出方案</a> }] : []),
+          ] }}>
+            <Button loading={importSchemes.isPending} disabled={busy}>导入与导出 <ChevronDown size={15} /></Button>
+          </Dropdown>
           <Button disabled={!canEdit} onClick={() => openEditor('new')}>
             <IconPlus size={15} style={{ verticalAlign: 'middle', marginRight: 6 }} />
             添加方案
@@ -276,7 +281,8 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
                   <div className="scheme-overview-header">
                     <div>
                       <span className="persona-tag" style={{ color: persona.color, background: `${persona.color}15` }}>{persona.title}</span>
-                      <h4>{scheme.name}</h4>
+                      <h4 title={scheme.name}>{schemeNameParts(scheme.name).title}</h4>
+                      {schemeNameParts(scheme.name).detail && <small className="name-detail">{schemeNameParts(scheme.name).detail}</small>}
                     </div>
                     <Button size="small" disabled={!canEdit} onClick={() => openEditor(scheme)}>编辑</Button>
                   </div>

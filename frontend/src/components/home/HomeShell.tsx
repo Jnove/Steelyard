@@ -22,6 +22,7 @@ import { projects } from '../../api/projects'
 import { USE_MOCK } from '../../api/client'
 import { projectOptions } from '../../utils/project-queries'
 import { usePagePrefetch } from '../../utils/use-page-prefetch'
+import { projectNameParts } from '../../utils/presentation-names'
 import { Button } from '../ui/button'
 import {
   Dialog,
@@ -92,9 +93,9 @@ export default function HomeShell({ children }: { children: ReactNode }) {
           </span>
         </Link>
         <Button ref={menuTrigger} className="workbench-mobile-menu" variant="ghost" size="icon" aria-label="打开页面导航" onClick={() => setMobileOpen(true)}><Menu size={20} /></Button>
-        {projectId > 0 && <div className="workbench-project-switch"><label htmlFor="workspace-project">当前项目</label><select id="workspace-project" aria-label="切换当前项目" value={projectId} onChange={event => navigate(`/projects/${event.target.value}/${section}`)}>
-          {!(query.data ?? []).some(project => project.id === projectId) && <option value={projectId}>{current.data?.name ?? '正在加载项目…'}</option>}
-          {query.data?.map(project => <option key={project.id} value={project.id}>{project.name}</option>)}
+        {projectId > 0 && <div className="workbench-project-switch"><label htmlFor="workspace-project">当前项目</label><select id="workspace-project" aria-label="切换当前项目" title={current.data?.name} value={projectId} onChange={event => navigate(`/projects/${event.target.value}/${section}`)}>
+          {!(query.data ?? []).some(project => project.id === projectId) && <option value={projectId}>{current.data ? projectNameParts(current.data.name).title : '正在加载项目…'}</option>}
+          {query.data?.map(project => <option key={project.id} value={project.id} title={project.name}>{projectNameParts(project.name).title}</option>)}
         </select></div>}
         <div className="home-sidebar-section">
           <span>工作空间</span>
@@ -122,7 +123,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
                   title={project.name}
                 >
                   <FolderClosed size={15} />
-                  <span>{project.name}</span>
+                  <span>{projectNameParts(project.name).title}</span>
                 </Link>
               ))}
             </nav>
@@ -164,7 +165,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
               <li><Link className="home-breadcrumb-parent" to="/projects">工作空间</Link></li>
               <li className="workbench-path-divider" aria-hidden="true"><ChevronRight size={13} /></li>
               {projectId > 0 && <>
-                <li className="workbench-path-project"><Link className="workbench-breadcrumb-project" to={`/projects/${projectId}/schemes`} {...prefetch(`/projects/${projectId}/schemes`)} title={current.data?.name}>{current.data?.name ?? '正在加载项目…'}</Link></li>
+                <li className="workbench-path-project"><Link className="workbench-breadcrumb-project" to={`/projects/${projectId}/schemes`} {...prefetch(`/projects/${projectId}/schemes`)} title={current.data?.name}>{current.data ? projectNameParts(current.data.name).title : '正在加载项目…'}</Link></li>
                 <li className="workbench-path-divider" aria-hidden="true"><ChevronRight size={13} /></li>
               </>}
               <li><span aria-current="page">{pageName}</span></li>

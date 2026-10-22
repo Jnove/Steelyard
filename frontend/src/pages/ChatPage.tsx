@@ -20,6 +20,8 @@ import { offlineQuestions } from '../utils/suggested-questions'
 import { decisionInput, decisionLabel } from '../utils/decision-context'
 import { useDecisionContext } from '../utils/use-decision-context'
 import { plannedRequest, previewValue } from '../utils/agent-plan'
+import { schemeNameParts } from '../utils/presentation-names'
+import { schemeColor } from '../theme'
 
 type DimensionKey = 'quality' | 'structure' | 'construction' | 'green'
 type Ranking = Awaited<ReturnType<typeof ranking.run>>['ranking']
@@ -406,6 +408,21 @@ function ProjectChat({ projectId }: { projectId: number }) {
     setTimeout(() => URL.revokeObjectURL(url), 1000)
   }
 
+  const compactQuestion = (question: string) => results.reduce((text, result) => result.scheme_name
+    ? text.replaceAll(result.scheme_name, schemeNameParts(result.scheme_name).title) : text, question)
+  const questions = [...new Set([
+    ...(suggestionQuery.data?.questions ?? []),
+    '当前方案有哪些需要接受的取舍？',
+    '还缺哪些数据会影响这次比较？',
+    '当前方案的评分依据是什么？',
+    '不同决策视角为什么会选出不同方案？',
+  ])].slice(0, 4)
+  const quickQuestions = <div className={messages.length ? 'chat-quick-questions' : 'chat-starters'} aria-label="快捷问题">
+    {questions.map(question => <Button key={question} disabled={!canStart} title={question}
+      onClick={() => void prepare(question)}>{compactQuestion(question)}</Button>)}
+  </div>
+  const selectedName = results.find(item => item.scheme_id === schemeId)?.scheme_name
+
   return <>
     <header className="page-heading">
       <div>
@@ -425,7 +442,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
       description="文字使用已返回的演示评分。What-if 仅作流程示意，不计算调整后结果，不修改方案。" />}
     <div className="action-row" style={{ marginBottom: 16 }}>
       <Tag aria-label="当前决策视角">{decisionLabel(context)}</Tag>
-      <span>{results.find(item => item.scheme_id === schemeId)?.scheme_name ?? '正在读取方案'}</span>
+      <span title={selectedName}>{selectedName ? schemeNameParts(selectedName).title : '正在读取方案'}</span>
       <span className="muted">解释、报告与推演沿用此上下文。自定义权重顺序：居住品质 / 结构安全 / 施工友好 / 绿色低碳。</span>
     </div>
     <div className="chat-layout">
@@ -435,24 +452,21 @@ function ProjectChat({ projectId }: { projectId: number }) {
             <h2>对话追问与解释</h2>
             <p className="section-subtext">根据当前项目与所选方案建议追问，默认简洁回答</p>
           </div>
-          <span className="muted" role="status">{planning ? '正在理解调整要求…' : busy ? '正在生成…' : pendingPlan ? '请确认调整参数' : '可追问 · 可溯源'}</span>
+          <div className="chat-suggestion-actions"><span className="muted" role="status">{planning ? '正在理解调整要求…' : busy ? '正在生成…' : pendingPlan ? '请确认调整参数' : '可追问 · 可溯源'}</span>
+            <Button type="text" size="small" loading={suggestionQuery.isFetching}
+              disabled={busy || planning || !!pendingPlan || suggestionQuery.isFetching || evaluationQuery.isPending || rankingQuery.isPending}
+              onClick={() => { freshSuggestions.current = true; void suggestionQuery.refetch() }}>刷新建议</Button>
+          </div>
         </div>
-        <div className="action-row" aria-label="快捷问题">
-          {suggestionQuery.data?.questions.map((question) => <Button key={question} disabled={!canStart}
-            style={{ maxWidth: '100%', whiteSpace: 'normal', height: 'auto', textAlign: 'left' }}
-            onClick={() => void prepare(question)}>{question}</Button>)}
-          <Button type="text" size="small" loading={suggestionQuery.isFetching}
-            disabled={busy || planning || !!pendingPlan || suggestionQuery.isFetching || evaluationQuery.isPending || rankingQuery.isPending}
-            onClick={() => { freshSuggestions.current = true; void suggestionQuery.refetch() }}>刷新建议</Button>
-        </div>
+        {!!messages.length && quickQuestions}
         <p className="muted" role="status">{suggestionQuery.isFetching ? '正在结合项目生成建议…'
           : suggestionQuery.isError ? suggestionQuery.error instanceof ApiError && suggestionQuery.error.status === 503
             ? suggestionQuery.error.message : '建议暂未生成，可刷新重试或直接输入追问。'
           : suggestionQuery.data?.source === 'fake' ? '项目情境建议 · 确定性演示'
-          : suggestionQuery.data ? 'AI 建议 · 基于当前项目和所选方案' : ''}</p>
+          : suggestionQuery.data ? '含 AI 建议 · 基于当前项目和所选方案' : ''}</p>
         <div className="chat-feed" ref={feed} role="log" aria-label="对话记录" aria-live="off"
           onScroll={() => { const node = feed.current; if (node) followStream.current = node.scrollHeight - node.scrollTop - node.clientHeight < 80 }}>
-          {!messages.length && <div className="chat-empty"><strong>从当前方案开始讨论</strong><p>选择上方建议问题，或输入想核对的依据与调整假设。比选报告也可以从右上角生成。</p></div>}
+          {!messages.length && <div className="chat-empty"><strong>从当前方案开始讨论</strong><p>选一个问题开始，或直接输入想核对的依据与调整假设。</p>{quickQuestions}</div>}
           {messages.map((item) => <article key={item.id} className={`chat-message ${item.role}`} data-role={item.role}>
             <div className="section-heading">
               <strong>{item.role === 'user' ? '你' : isMock ? '筑衡 · Mock 演示' : '筑衡 · 决策智能体'}</strong>
@@ -540,9 +554,9 @@ function ProjectChat({ projectId }: { projectId: number }) {
           {rankingQuery.isError && <Alert type="error" message="排序加载失败" description={rankingQuery.error.message}
             action={<Button size="small" onClick={() => void rankingQuery.refetch()}>重试</Button>} />}
           {rankingQuery.isSuccess && !ranks.length && <Empty description="暂无可展示的排序结果" />}
-          {ranks.map((row) => <div key={row.scheme_id}>
-            <div className="section-heading"><span>#{row.rank} {row.scheme_name}</span><strong>{displayNumber(row.closeness, 4)}</strong></div>
-            <Progress percent={Math.max(0, Math.min(100, row.closeness * 100))} showInfo={false} size="small" />
+          {ranks.map((row) => <div className="chat-rank-item" key={row.scheme_id}>
+            <div className="chat-rank-line"><span title={row.scheme_name}>#{row.rank} {schemeNameParts(row.scheme_name).title}</span><strong>{displayNumber(row.closeness, 4)}</strong></div>
+            <Progress percent={Math.max(0, Math.min(100, row.closeness * 100))} strokeColor={schemeColor(row.scheme_id)} showInfo={false} size="small" />
           </div>)}
           <p className="muted">当前视角下正式方案的排序；本次推演副本与原方案的比较见正文。</p>
           <Link to={`/projects/${encodeURIComponent(projectId)}/dashboard`}
@@ -555,13 +569,14 @@ function ProjectChat({ projectId }: { projectId: number }) {
             action={<Button size="small" onClick={() => void evaluationQuery.refetch()}>重试</Button>} />}
           {evaluationQuery.isSuccess && !results.length && <Empty description="暂无评估结果，请先评估方案" />}
           {!!results.length && <Select aria-label="选择追问与溯源方案" value={schemeId} disabled={busy || planning || !!pendingPlan}
-            onChange={schemeId => updateContext({ schemeId })} options={results.map((item) => ({ value: item.scheme_id, label: item.scheme_name || item.scheme_id }))} />}
+            onChange={schemeId => updateContext({ schemeId })} options={results.map((item) => ({ value: item.scheme_id, label: schemeNameParts(item.scheme_name || item.scheme_id).title, title: item.scheme_name }))} />}
           <p className="muted">正文明确提到方案时，优先追溯该方案；其余规则编号使用所选方案。</p>
           {!isMock && <>
-          <p className="muted">假设调整标准层重复率（0–1），比较副本与原方案。</p>
-          <div style={{ display: 'grid', gap: 8, marginBottom: 12 }}>
-          <InputNumber aria-label="假设的标准层重复率" min={0} max={1} step={0.01}
+          <div className="chat-whatif">
+          <label htmlFor="whatif-repeat">假设的标准层重复率</label>
+          <InputNumber id="whatif-repeat" aria-label="假设的标准层重复率" aria-describedby="whatif-repeat-help" placeholder="如 0.85" min={0} max={1} step={0.01}
             value={whatifValue} onChange={setWhatifValue} disabled={busy || planning || !!pendingPlan} />
+          <small id="whatif-repeat-help">按 0–1 填写，0.85 表示 85%。先预览，再确认创建副本。</small>
           <Button disabled={!canStart || !schemeId || whatifValue == null} onClick={() => {
             if (schemeId && whatifValue != null) void prepare(
               `假设将当前方案的标准层重复率改为 ${whatifValue}，比较修改前后的指标与排名。`,

@@ -27,7 +27,8 @@ try {
   for (const [index, id] of data.scheme_order.entries()) {
     const row = distribution.locator(`li[data-scheme="${id}"]`)
     const scheme = data.ranking.find(scheme => scheme.scheme_id === id)
-    await expect(row.locator('.probability-scheme strong')).toHaveText(scheme.scheme_name)
+    await expect(row.locator('.probability-scheme strong')).toHaveAttribute('title', scheme.scheme_name)
+    await expect(row.locator('.probability-scheme strong')).not.toHaveText(/教学推演|演示自拟/)
     assert.deepEqual(await row.locator('[data-probability]').evaluateAll(cells => cells.map(cell => Number(cell.dataset.probability))), data.rank_acceptability.probabilities[index])
     assert.deepEqual(await row.locator('dd > .numeric').allTextContents(), data.rank_acceptability.probabilities[index].map(percent))
     const colour = await row.locator('.probability-scheme > i').evaluate(element => getComputedStyle(element).backgroundColor)
@@ -64,7 +65,7 @@ try {
     await expect(page.locator('.role-bar')).toHaveCSS('border-left-width', '1px')
     await expect(page.locator('.role-bar')).toHaveCSS('background-color', 'rgb(255, 255, 255)')
   }
-  checks.push('1440/1224/768/390/320px 的完整名称和百分比无遮挡；视角栏采用白底细边框')
+  checks.push('1440/1224/768/390/320px 的方案简称和百分比无遮挡，完整名称可悬停查看；视角栏采用白底细边框')
   await page.locator('.decision-role-options label').filter({ hasText: '自定义' }).click()
   await settled()
   await expect(page.getByLabel('自定义评价权重')).toBeVisible()

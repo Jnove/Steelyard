@@ -40,6 +40,7 @@ import { usePagePrefetch } from '../utils/use-page-prefetch'
 import type { Project, ProjectParams } from '../api/types'
 import type { SchemaFormValues } from '../components/SchemaForm'
 import { featuredProject, isTeachingCase } from '../utils/project-presentation'
+import { projectNameParts, schemeNameParts } from '../utils/presentation-names'
 export { featuredProject, isTeachingCase } from '../utils/project-presentation'
 import ProjectForm, { HomeErrors } from '../components/home/ProjectForm'
 import { Button } from '../components/ui/button'
@@ -218,8 +219,9 @@ export default function ProjectsPage() {
               className="home-project-name"
               onClick={() => setSelectedProjectId(row.original.id)}
               aria-pressed={row.original.id === featured?.id}
+              title={row.original.name}
             >
-              {row.original.name}
+              {projectNameParts(row.original.name).title}
             </button>
             <span className="home-project-meta">
               {isTeachingCase(row.original)
@@ -240,7 +242,7 @@ export default function ProjectsPage() {
       cell: ({ row }) => (
         <span className="home-area">
           {row.original.params.site_area == null ? (
-            '未填写'
+            <span className="empty-value" aria-label="未填写">—</span>
           ) : (
             <>
               {row.original.params.site_area.toLocaleString('zh-CN')}
@@ -600,7 +602,8 @@ export default function ProjectsPage() {
           </div>
           {featured ? (
             <>
-              <h2>{featured.name}</h2>
+              <h2 title={featured.name}>{projectNameParts(featured.name).title}</h2>
+              {projectNameParts(featured.name).detail && <p className="project-name-detail">{projectNameParts(featured.name).detail}</p>}
               <span className="home-project-kind">
                 {teaching
                   ? '教学推演 · 来源见说明'
@@ -613,7 +616,7 @@ export default function ProjectsPage() {
                   <dt>用地面积</dt>
                   <dd>
                     {featured.params.site_area == null ? (
-                      '未填写'
+                      <span className="empty-value" aria-label="未填写">—</span>
                     ) : (
                       <>
                         {featured.params.site_area.toLocaleString('zh-CN')}
@@ -624,17 +627,17 @@ export default function ProjectsPage() {
                 </div>
                 <div>
                   <dt>气候分区</dt>
-                  <dd>{featured.params.climate_zone || '未填写'}</dd>
+                  <dd>{featured.params.climate_zone || <span className="empty-value" aria-label="未填写">—</span>}</dd>
                 </div>
                 <div>
                   <dt>容积率上限</dt>
-                  <dd>{featured.params.far_max ?? '未填写'}</dd>
+                  <dd>{featured.params.far_max ?? <span className="empty-value" aria-label="未填写">—</span>}</dd>
                 </div>
                 <div>
                   <dt>建筑限高</dt>
                   <dd>
                     {featured.params.height_max == null ? (
-                      '未填写'
+                      <span className="empty-value" aria-label="未填写">—</span>
                     ) : (
                       <>
                         {featured.params.height_max}
@@ -678,7 +681,7 @@ export default function ProjectsPage() {
                     <li key={scheme.id}>
                       <span>{String(index + 1).padStart(2, '0')}</span>
                       <div>
-                        <strong>{scheme.name}</strong>
+                        <strong title={scheme.name}>{schemeNameParts(scheme.name).title}</strong>
                         <small>
                           {scheme.params.structure_type || '结构待填写'}
                           {scheme.params.floors != null

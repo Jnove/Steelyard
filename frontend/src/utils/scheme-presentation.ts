@@ -1,5 +1,6 @@
 import type { EvalResult, SchemeParams } from '../api/types'
 import { dimensions } from '../constants/dimensions'
+import { schemeNameParts } from './presentation-names'
 
 /** 展示只读取参数和当前评估；方案名称不构成工程结论。 */
 export function parameterSummary(params: SchemeParams) {
@@ -26,7 +27,7 @@ export function scoreTradeoff(selected: EvalResult | undefined, candidates: Eval
   const gaps = dimensions.flatMap(d => {
     const score = selected.dimension_scores?.[d.key]
     const alternatives = candidates.filter(e => e.scheme_id !== selected.scheme_id)
-      .map(e => ({ name: e.scheme_name || e.scheme_id, score: e.dimension_scores?.[d.key] }))
+      .map(e => ({ name: schemeNameParts(e.scheme_name || e.scheme_id).title, score: e.dimension_scores?.[d.key] }))
       .filter((e): e is typeof e & { score: number } => e.score != null && Number.isFinite(e.score))
       .sort((a, b) => b.score - a.score)
     return score != null && Number.isFinite(score) && alternatives[0] && alternatives[0].score > score

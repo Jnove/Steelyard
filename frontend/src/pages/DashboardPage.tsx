@@ -11,6 +11,7 @@ import { redistributeWeights } from '../utils/weights'
 import { decisionInput, decisionLabel } from '../utils/decision-context'
 import { useDecisionContext } from '../utils/use-decision-context'
 import { evaluationSummary, scoreTradeoff } from '../utils/scheme-presentation'
+import { projectNameParts, schemeNameParts, shortSchemeLabel } from '../utils/presentation-names'
 import Chart from '../components/Chart'
 import RankProbability from '../components/RankProbability'
 import TraceDrawer from '../components/TraceDrawer'
@@ -26,6 +27,33 @@ import {
 } from '../components/Icons'
 
 type RankInput = ReturnType<typeof decisionInput>
+
+function SchemeRadar({ results, leadingId }: { results: EvalResult[]; leadingId?: string }) {
+  const container = useRef<HTMLDivElement>(null)
+  const [width, setWidth] = useState(460)
+  useEffect(() => {
+    if (!container.current) return
+    const observer = new ResizeObserver(entries => setWidth(entries[0].contentRect.width))
+    observer.observe(container.current)
+    return () => observer.disconnect()
+  }, [])
+  const compact = width < 350
+  return <div ref={container}><Chart height={compact && results.length > 3 ? 400 : 370} label="各方案四维得分雷达图" option={{
+    tooltip: { textStyle: { fontSize: tokens.fontSize } },
+    legend: { bottom: 12, left: 8, right: 8, type: results.length > 5 ? 'scroll' : 'plain', itemGap: 16, formatter: (name: string) => shortSchemeLabel(name), tooltip: { show: true }, textStyle: { fontSize: tokens.small } },
+    radar: {
+      center: ['50%', compact && results.length > 3 ? '32%' : '40%'], radius: compact ? '50%' : '55%',
+      indicator: dimensions.map(d => ({ name: d.label, max: 100 })),
+      axisName: { color: tokens.ink, fontSize: tokens.small, formatter: (name = '') => compact ? name.slice(0, 2) + '\n' + name.slice(2) : name },
+      splitArea: { show: false }, splitLine: { lineStyle: { color: tokens.border } },
+    },
+    series: [{ type: 'radar', data: results.map(e => ({
+      name: e.scheme_name || e.scheme_id, value: dimensions.map(d => e.dimension_scores?.[d.key] ?? 0),
+      lineStyle: { type: (e.compliance ?? []).some(c => c.status === 'failed' && c.severity === 'error') ? 'dashed' : 'solid', width: e.scheme_id === leadingId ? 3 : 1.8 },
+      itemStyle: { color: schemeColor(e.scheme_id) }, areaStyle: { opacity: e.scheme_id === leadingId ? .12 : .025 }, symbolSize: e.scheme_id === leadingId ? 6 : 4,
+    })) }],
+  }} /></div>
+}
 
 function RankingList({ result }: { result: RankResponse }) {
   const container = useRef<HTMLDivElement>(null)
@@ -51,7 +79,7 @@ function RankingList({ result }: { result: RankResponse }) {
           <div className="rank-detail">
             <div className="rank-line">
               <span>
-                <strong>{s.scheme_name}</strong>
+                <strong title={s.scheme_name}>{schemeNameParts(s.scheme_name).title}</strong>
               </span>
               <span className="numeric">{s.closeness.toFixed(3)}</span>
             </div>
@@ -63,7 +91,7 @@ function RankingList({ result }: { result: RankResponse }) {
     {result.excluded.map(s => <div key={s.scheme_id} className="excluded-row">
       <div className="excluded-header">
         <IconBan size={15} style={{ color: 'var(--color-danger)' }} />
-        <strong>{s.scheme_name} · 未参与排名</strong>
+        <strong title={s.scheme_name}>{schemeNameParts(s.scheme_name).title} · 未参与排名</strong>
       </div>
       <p>{s.failed_rules.length ? '硬约束未通过：'+s.failed_rules.join('、') : s.reason}</p>
     </div>)}
@@ -145,7 +173,8 @@ function ProjectDashboard({ id }: { id: number }) {
       <div>
         <p className="eyebrow">筑衡 · 多维量化比选</p>
         <h1>方案对比看板</h1>
-        <p className="page-description">{project.data?.name ?? '正在加载项目'} · 比较四维得分与方案差异，沿计算依据核对取舍</p>
+        <p className="page-description" title={project.data?.name}>{project.data ? projectNameParts(project.data.name).title : '正在加载项目'} · 比较四维得分与方案差异，沿计算依据核对取舍</p>
+        {project.data && projectNameParts(project.data.name).detail && <p className="project-name-detail">{projectNameParts(project.data.name).detail}</p>}
       </div>
       <div className="action-row">
         <Link to={'/projects/'+id+'/schemes'}><Button>编辑方案</Button></Link>
@@ -193,7 +222,7 @@ function ProjectDashboard({ id }: { id: number }) {
       <div className="action-row" style={{ marginBottom: 16 }} aria-label="当前讨论上下文">
         <Tag>{decisionLabel(context)}</Tag>
         <Select aria-label="选择讨论方案" value={selectedSchemeId} style={{ minWidth: 220 }}
-          options={results.map(item => ({ value: item.scheme_id, label: item.scheme_name }))}
+          options={results.map(item => ({ value: item.scheme_id, label: schemeNameParts(item.scheme_name ?? item.scheme_id).title, title: item.scheme_name }))}
           onChange={schemeId => updateContext({ schemeId })} />
         <span className="muted">讨论与报告沿用当前视角、权重和所选方案。</span>
       </div>
@@ -222,7 +251,8 @@ function ProjectDashboard({ id }: { id: number }) {
                 <IconAward size={16} />
                 <span>已知条件与当前权重下的优先方案</span>
               </div>
-              <h2>{topScheme.scheme_name}</h2>
+              <h2 title={topScheme.scheme_name}>{schemeNameParts(topScheme.scheme_name).title}</h2>
+              {schemeNameParts(topScheme.scheme_name).detail && <small className="name-detail">{schemeNameParts(topScheme.scheme_name).detail}</small>}
               <div className="executive-submeta">
                 <Tag color="blue">结果视角：{roleNameMap[result.weights_used.role ?? 'custom'] ?? result.weights_used.role_name ?? result.weights_used.role}</Tag>
                 <Tag color="green">综合排名第 {topScheme.rank} 名</Tag>
@@ -285,16 +315,8 @@ function ProjectDashboard({ id }: { id: number }) {
             <h2>四维表现</h2>
             <span className="muted">各方案维度得分 / 100</span>
           </div>
-          <Chart height={330} label="各方案四维得分雷达图" option={{
-            tooltip: { textStyle: { fontSize: tokens.fontSize } }, legend: { bottom: 0, type:'scroll', textStyle: { fontSize: tokens.small } }, radar: {
-              center:['50%','45%'], radius:'63%', indicator: dimensions.map(d => ({name:d.label,max:100})),
-              axisName: {color:tokens.ink,fontSize:tokens.small}, splitArea:{show:false}, splitLine:{lineStyle:{color:tokens.border}},
-            }, series: [{ type:'radar', data: results.map(e => ({
-              name:e.scheme_name || e.scheme_id, value:dimensions.map(d => e.dimension_scores?.[d.key] ?? 0),
-              lineStyle:{type: (e.compliance ?? []).some(c=>c.status==='failed' && c.severity==='error') ? 'dashed' : 'solid',width:2},
-              itemStyle:{color:schemeColor(e.scheme_id)}, areaStyle:{opacity:.04}, symbolSize:4,
-            })) }],
-          }} /><p className="chart-note">点击图例隐藏方案 · 硬约束未通过的方案用虚线显示</p>
+          <SchemeRadar results={results} leadingId={topScheme?.scheme_id} />
+          <p className="chart-note">点击图例隐藏方案 · 硬约束未通过的方案用虚线显示</p>
         </section>
 
         <section className="panel rank-panel">
@@ -324,7 +346,8 @@ function ProjectDashboard({ id }: { id: number }) {
         const persona = evaluationSummary(e)
         return <article className="panel scheme-card" key={e.scheme_id} style={{borderTopColor:schemeColor(e.scheme_id)}}>
           <div className="scheme-card-top">
-            <h3>{e.scheme_name}</h3>
+            <div><h3 title={e.scheme_name}>{schemeNameParts(e.scheme_name ?? e.scheme_id).title}</h3>
+            {schemeNameParts(e.scheme_name ?? '').detail && <small className="name-detail">{schemeNameParts(e.scheme_name ?? '').detail}</small>}</div>
             <span className="persona-badge-tag">{persona.title}</span>
           </div>
           <p className="scheme-persona-desc">{persona.desc}</p>
