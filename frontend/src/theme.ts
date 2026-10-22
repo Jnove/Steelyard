@@ -9,7 +9,19 @@ export const tokens = {
   // Categorical scheme identities; avoid using these colours to encode rank positions.
   chart: ['#327473', '#b65c19', '#4169b1', '#a34d83', '#887426'],
   dimensions: { quality: '#327473', structure: '#53748a', construction: '#986c3c', green: '#4d8278' },
-  scene: { building: '#e4e9e4', facade: '#58867e', roof: '#fafcf8', plate: '#d1e9e1', edge: '#839b90', ground: '#e9eeeb', frame: '#bfd0c5', module: '#7c9891', inset: '#294b44', rooftop: '#c5d0c5' },
+  // 体量展台：暖白模型 + 深青玻璃 + 沙色底板；SVG 回退与 WebGL 共用同一组颜色。
+  scene: {
+    building: '#e7ddc9', facade: '#2f5b55', roof: '#fbf7ee', plate: '#d7e3d8', edge: '#9fae9f',
+    ground: '#e9ece4', frame: '#d9d1c0', module: '#7f8c81', inset: '#264a43', rooftop: '#c9c2b2',
+    body: '#e7ddc9', bodyCool: '#e3ddcf', bodyWarm: '#e9dcc3', frameBody: '#e7e0d0', neutralBody: '#f2ede2',
+    stone: '#ddd4c1', stoneEdge: '#c4baa6', terrace: '#d7e3d8', terraceEdge: '#bccbbd',
+    board: '#d2c8b6', band: '#c9c0ae', roofDeck: '#b9b2a2', louver: '#4f584f',
+    glass: '#345a5e', glassDark: '#1b2f2e', glassLight: '#6f958c',
+    glassModular: '#5f8c8c', glassFrame: '#5d878b',
+    skyTop: '#fff7e7', skyHorizon: '#e6efea', skyGround: '#c9c1b1',
+    metal: '#8e8474', metalDark: '#4c4538', plant: '#7f9b88', plantAlt: '#6a8a76',
+    trunk: '#8a7157', shadow: '#2c4a43', paper: '#fdfaf2', warm: '#d97757',
+  },
   glass: {
     fill: '#ffffff', content: '#ffffff', edge: '#e4eae8', blur: '0px',
     sheen: 'none', shadow: 'none', floatShadow: 'none',
