@@ -1,0 +1,83 @@
+{
+  "checked_at": "2026-10-22",
+  "article_url": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html",
+  "attachment_url": "https://www.qiantang.gov.cn/api-gateway/jpaas-web-server/front/document/file-download?fileUrl=/cms_files/jcms1/web3176/site/attach/0/78df19aee5864811a02f6f1b5c4c92b1.zip",
+  "attachment_sha256": "a60a72712d62b5439a37644265be3cccd2966c6b5d6ca8aef6d588dc28d2cc8e",
+  "original_filename": "公示图.JPG",
+  "original_size": [
+    14044,
+    9934
+  ],
+  "original_sha256": "3e61b1a428fbdfd8779cb91159c6e02c42f8259c9ffae9b2cd34e0974ff928b1",
+  "adopted_stage": "2022-09-02初步设计公示，非批准总平面图或竣工实测",
+  "adopted_limit": {
+    "field": "density_max",
+    "value": 0.22,
+    "location": "经济技术指标第8项备注",
+    "text": "规划要求≤22%"
+  },
+  "not_limits": {
+    "design_far": 2.8,
+    "outdoor_ground_to_parapet_m": 73.3,
+    "indoor_ground_to_roof_m": 70.2
+  },
+  "public_facts": {
+    "source_stage": "2022-09-02初步设计公示",
+    "site_area": 25577,
+    "above_ground_gfa": 71615.6,
+    "residential_gfa": 65081.71,
+    "ancillary_gfa": 6533.89,
+    "total_gfa": 112863.11,
+    "total_gfa_excludes_stilt": true,
+    "non_far_stilt_gfa": 677.2,
+    "underground_gfa": 41247.51,
+    "footprint": 5626.94,
+    "design_far": 2.8,
+    "density_max": 0.22,
+    "design_green_ratio": 0.35,
+    "planning_green_ratio_min": 0.35,
+    "units": 1114,
+    "floors_by_building": {
+      "1": 23,
+      "2": 23,
+      "3": 23,
+      "4": 22,
+      "5": 23,
+      "6": 23,
+      "7": 23,
+      "8": 23
+    },
+    "outdoor_ground_to_parapet_m": 73.3,
+    "indoor_ground_to_roof_m": 70.2
+  },
+  "remaining_missing": [
+    "far_max",
+    "height_max",
+    "seismic_intensity",
+    "mic_precast_wall_shear_ratio"
+  ],
+  "crops": [
+    {
+      "file": "2022-09-02-indicators.png",
+      "crop_box": [
+        10900,
+        5800,
+        13850,
+        9800
+      ],
+      "processing": "仅裁出核读区域，未修改图中文字或数值",
+      "sha256": "9f4f43eed3be557f1a0e5b0d0bfcd88c034d05edfe1f37cfb19d1fee7b874407"
+    },
+    {
+      "file": "2022-09-02-legend.png",
+      "crop_box": [
+        8550,
+        8200,
+        10750,
+        9630
+      ],
+      "processing": "仅裁出核读区域，未修改图中文字或数值",
+      "sha256": "17247cef34e4557c1f5395eabb9faf8e55e0fa9281dc89314fd2126a80fc2d2c"
+    }
+  ]
+}

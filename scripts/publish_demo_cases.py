@@ -36,6 +36,8 @@ def build_plan() -> list[dict[str, Any]]:
             if real else "地块和方案均为虚构教学数据，仅用于流程与边界演示。",
             "未取得或未核定的规划上限、设防和局部构件条件保持缺失，数据不足不等于合规通过。",
         ]
+        if payload["params"].get("project_notes"):
+            notes.append(payload["params"]["project_notes"])
         if case_id == "qiantang-real":
             notes.append("用地面积引自历史规划许可记录，本次许可页未能复核；批准面积比不能充作规划上限。")
             notes.append("历史来源：https://ghzy.hangzhou.gov.cn/art/2022/7/6/art_1228968732_78156.html（本次未能访问复核）")
@@ -57,7 +59,7 @@ def build_plan() -> list[dict[str, Any]]:
             schemes.append({
                 "name": item["name"] + suffix,
                 "params": SchemeParams.model_validate({
-                    **item["params"], "scheme_notes": scheme_note,
+                    **item["params"], "scheme_notes": "\n".join(filter(None, [scheme_note, item["params"].get("scheme_notes")])),
                 }).model_dump(mode="json"),
                 "parent_name": parent + suffix if parent else None,
             })

@@ -26,7 +26,7 @@ def test_public_case_plan_keeps_unknowns_and_teaching_labels():
     for item in plan[:3]:
         assert "教学" in item["name"]
         assert item["params"]["far_max"] is None
-        assert item["params"]["density_max"] is None
+        assert item["params"]["density_max"] == (0.22 if item["case_id"] == "xiasha-real" else None)
         assert item["params"]["height_max"] is None
         assert item["params"]["seismic_intensity"] is None
         assert all("教学" in scheme["name"] and scheme["params"]["scheme_notes"] for scheme in item["schemes"])

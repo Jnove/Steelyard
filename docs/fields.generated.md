@@ -26,6 +26,7 @@ CI 会跑 `gen_field_table.py --check`，结果与磁盘不一致即失败，防
 | `province` | 所在省份 | — | string | 否 | 取值：BJ / TJ / HE / SX / NM / LN / JL / HL / SH / JS / ZJ / AH / FJ / JX / SD / HA / HB / HN / GD / GX / HI / CQ / SC / GZ / YN / XZ / SN / GS / QH / NX / XJ；预设：BJ / TJ / HE / SX / NM / LN / JL / HL / SH / JS / ZJ / AH / FJ / JX / SD / HA / HB / HN / GD / GX / HI / CQ / SC / GZ / YN / XZ / SN / GS / QH / NX / XJ；— |
 | `standard_packs` | 适用标准册 | — | array<string> | 否 | 预设：GB / BJ / TJ / HE / SX / NM / LN / JL / HL / SH / JS / ZJ / AH / FJ / JX / SD / HA / HB / HN / GD / GX / HI / CQ / SC / GZ / YN / XZ / SN / GS / QH / NX / XJ；— |
 | `project_notes` | 案例来源与边界 | — | string | 否 | — |
+| `scoring_exclusions` | 暂不纳入评分的代理指标 | — | array<string> | 否 | 预设：G-05 / Q-05 / Q-06；— |
 
 ## 二、方案参数（SchemeParams）
 

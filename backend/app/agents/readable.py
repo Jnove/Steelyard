@@ -62,6 +62,20 @@ def reader_evidence(evidence: dict[str, Any], scheme_id: int | None, question: s
     selected = selected or next((row for row in rows if ranking and row["scheme_id"] == ranking[0]["scheme_id"]), None)
     selected = selected or next(iter(rows), None)
     view: dict[str, Any] = {"说明": "以下是现有资料下的节选，未列出的检查不代表通过或不存在。评价高低不等于实际安全风险、工期或舒适度变化；缺资料不等于已超限。"}
+    notes = evidence.get("data_notes", {})
+    if notes.get("project_notes"):
+        view["案例来源与边界"] = notes["project_notes"]
+    if notes.get("scoring_exclusions"):
+        view["暂不计分指标"] = notes["scoring_exclusions"]
+    if selected:
+        scheme_note = next((row.get("scheme_notes") for row in notes.get("schemes", [])
+                            if row["scheme_id"] == selected["scheme_id"]), None)
+        if scheme_note:
+            view["方案数据说明"] = scheme_note
+        view["暂不计分事项"] = [item["name"] for item in selected.get("metrics", {}).values()
+                             if item.get("status") == "not_applicable"]
+    if any(item["status"] == "insufficient_data" for row in rows for item in row.get("compliance", [])):
+        view["资料提醒"] = "仍有检查数据不足；排名仅展示已知条件下的评分与取舍，不能认定全部合规或确定最优方案。"
     if ranking:
         view["当前排序"] = [row["scheme_name"] for row in ranking[:5]]
         weights = evidence.get("ranking", {}).get("weights_used", {})
@@ -78,8 +92,6 @@ def reader_evidence(evidence: dict[str, Any], scheme_id: int | None, question: s
     if selected:
         view["当前方案"] = selected["scheme_name"]
         issues = [item for item in selected.get("compliance", []) if item["status"] in ("failed", "insufficient_data")]
-        if any(item["status"] == "insufficient_data" for item in issues):
-            view["资料提醒"] = "部分检查仍缺资料，不能认定已全部通过。"
         focus = {key for key, words in TOPICS.items() if any(word in question for word in words)}
         if focus and not details and not re.search(r"缺|补充|资料|核实|风险|安全|超限", question):
             issues = [item for item in issues if item["status"] == "failed" or issue_relevance(item, question, labels) > 0]
@@ -162,6 +174,12 @@ def render_reader_demo(context: dict[str, Any]) -> str:
     view = context["reader_view"]
     name = view.get("当前方案", "当前方案")
     lines = ["FakeLLM 演示；以下仅摘录当前工具结果。", f"{name}可先结合现有排序比较取舍。"]
+    if view.get("资料提醒"):
+        lines.append(view["资料提醒"])
+    if view.get("案例来源与边界") or view.get("方案数据说明"):
+        lines.append("方案的资料版本与教学假设见案例说明，不能作为真实工程成效。")
+    if view.get("暂不计分事项"):
+        lines.append("、".join(view["暂不计分事项"]) + "暂不计分，不能作为性能优势。")
     if view.get("未参与当前排序的方案"):
         lines.append("、".join(view["未参与当前排序的方案"]) + "未参与当前排序，需先核实排除原因。")
     for problem in view.get("需先处理的问题", [])[:2]:

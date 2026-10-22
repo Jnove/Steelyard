@@ -209,9 +209,15 @@ def main(argv: list[str] | None = None) -> int:
     print(f"项目：{project_payload['name']}")
     print(f"适用标准册：{'、'.join(packs)}（可用规则 {len(rules.rules)} 条）")
     print(f"方案数：{len(schemes)}（含 What-if 副本 {sum(1 for p in scheme_payloads if p.get('_whatif'))}）")
+    if project.project_notes:
+        print(f"案例来源与边界：{project.project_notes}")
+    if project.scoring_exclusions:
+        print("暂不计分代理指标：" + "、".join(project.scoring_exclusions))
     print()
 
     results = evaluate(project, schemes, rules)
+    if any(_insufficient(row.compliance) for row in results):
+        print("解释边界：仅展示已知条件下的评分与取舍，不能认定全部合规或确定最优方案。")
 
     # —— 逐方案：硬约束 —— #
     print("=" * 78)
@@ -257,7 +263,9 @@ def main(argv: list[str] | None = None) -> int:
                 + "、".join(f"{n}={getattr(cov, n):.2f}" for n in weak)
             )
         for rule_id, metric in sorted(result.metrics.items()):
-            if metric.status != "scored":
+            if metric.status == "not_applicable":
+                print(f"    · [{rule_id}] {metric.name}：不适用／暂不计分（不参与维度均值）")
+            elif metric.status != "scored":
                 missing = "、".join(metric.missing_fields) or "?"
                 print(f"    · [{rule_id}] {metric.name}：{metric.status}（缺 {missing}）")
             else:
@@ -272,7 +280,7 @@ def main(argv: list[str] | None = None) -> int:
 
     print()
     print("=" * 78)
-    print("三、帕累托筛选（只比较通过硬约束的方案）")
+    print("三、帕累托筛选（剔除已知硬约束失败；缺失条件仍待核查）")
     print("=" * 78)
     if excluded:
         print("已剔除：" + "、".join(r.scheme_name for r in excluded))
