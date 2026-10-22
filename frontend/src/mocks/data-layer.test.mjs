@@ -114,6 +114,13 @@ test('新项目导入真实 Excel 解析快照 → 评估 → 排序', async () 
   await rejects(mock.evaluation.run(p.id), 409, 'MOCK_EVALUATION_UNSUPPORTED')
 })
 
+test('Excel 导入保留用户已设置的代理指标排除清单', async () => {
+  const p = await mock.projects.create({ name: '已有评分边界', params: { scoring_exclusions: ['G-05'] } })
+  const imported = await mock.schemes.importExcel(p.id, new File([example], '案例.xlsx'))
+  assert.equal(imported.project_params_updated, false)
+  assert.deepEqual((await mock.projects.get(p.id)).params.scoring_exclusions, ['G-05'])
+})
+
 test('修改参数或新增方案后不复用旧评估，其他项目保持不变', async () => {
   await mock.evaluation.run(1)
   const p = await mock.projects.create({ name: '另一项目' })

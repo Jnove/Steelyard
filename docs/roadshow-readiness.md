@@ -16,7 +16,7 @@
 ### 10-22 本轮代码验收
 
 - 后端全量 755 项通过；新增下沙回归覆盖重复计权、暂不计分、补设防后 MiC 底剪力缺失、报告边界及项目隔离。
-- 前端 94 项测试、类型检查和生产构建通过；构建仍保留大于500kB产物提示。
+- 前端 95 项测试、类型检查和生产构建通过；补充快照重导出后的Excel导入回归，默认空排除清单不阻止补录地块，用户主动配置的排除项保留。构建仍保留大于500kB产物提示。
 - 13组案例已重算 `_check*.txt`，离线6方案、5角色、286个精确权重网格快照已重新导出。
 - 本机Edge与独立SQLite、FakeLLM验收下沙真实API、桌面与390px看板、报告生成及Markdown下载通过，页面无脚本异常。运行 `ROADSHOW_ALLOW_WRITE=1 ROADSHOW_BROWSER=msedge node frontend/scripts/verify-xiasha.mjs`（PowerShell需先设置对应环境变量）。截图和报告保存在忽略目录 `backend/data/xiasha-roadshow/browser/`。
 
