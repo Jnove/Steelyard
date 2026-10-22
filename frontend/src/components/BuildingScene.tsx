@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import * as THREE from 'three'
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
@@ -6,6 +6,7 @@ import type { BuildingModel, FacadeSide } from './building-model'
 import { tokens } from '../theme'
 
 interface Controller { update: (model: BuildingModel) => void; reset: () => void; dispose: () => void }
+export interface BuildingSceneHandle { reset: () => void }
 
 /** 可见时缓慢环绕；拖动、减少动态效果与不可见状态下暂停自动旋转。 */
 function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: () => void): Controller {
@@ -331,11 +332,12 @@ function createScene(host: HTMLDivElement, onUnavailable: () => void, onReady: (
   } catch (error) { dispose(); throw error }
 }
 
-export default function BuildingScene({ model, onUnavailable, onReady }: { model: BuildingModel; onUnavailable: () => void; onReady: () => void }) {
+const BuildingScene = forwardRef<BuildingSceneHandle, { model: BuildingModel; onUnavailable: () => void; onReady: () => void }>(function BuildingScene({ model, onUnavailable, onReady }, ref) {
   const host = useRef<HTMLDivElement>(null)
   const controller = useRef<Controller>()
   const latest = useRef(model)
   latest.current = model
+  useImperativeHandle(ref, () => ({ reset: () => controller.current?.reset() }), [])
   useEffect(() => {
     if (!host.current) return
     try { controller.current = createScene(host.current, onUnavailable, onReady); controller.current.update(latest.current) }
@@ -343,8 +345,6 @@ export default function BuildingScene({ model, onUnavailable, onReady }: { model
     return () => { controller.current?.dispose(); controller.current = undefined }
   }, [onUnavailable, onReady])
   useEffect(() => { controller.current?.update(model) }, [model])
-  return <>
-    <div className="building-canvas" ref={host} data-renderer="webgl" />
-    <button className="stage-reset glass-control" type="button" onClick={() => controller.current?.reset()}>复位视角</button>
-  </>
-}
+  return <div className="building-canvas" ref={host} data-renderer="webgl" />
+})
+export default BuildingScene

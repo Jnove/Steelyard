@@ -35,29 +35,32 @@ export default function LandingPage() {
     <div className="landing-page">
       <a className="landing-skip" href="#landing-main">跳到主要内容</a>
       <header className="landing-header">
-        <Link className="landing-brand" to="/" aria-label="筑衡 · 首页">
-          <span className="landing-brand-mark"><Scale size={27} strokeWidth={1.7} /></span>
-          <span>筑衡<small>Steelyard</small></span>
-        </Link>
-        <nav aria-label="首页导航">
-          <Button asChild variant="outline" className="landing-nav-help"><a href="#workflow"><BookOpen size={18} aria-hidden="true" />如何使用</a></Button>
-          <Button asChild className="landing-nav-workspace"><Link to="/projects">项目工作台 <ArrowRight size={18} aria-hidden="true" /></Link></Button>
-        </nav>
+        <div className="landing-header-inner">
+          <Link className="landing-brand" to="/" aria-label="筑衡 · 首页">
+            <span className="landing-brand-mark"><Scale size={25} strokeWidth={1.6} aria-hidden="true" /></span>
+            <span className="landing-brand-name">筑衡</span><span className="landing-brand-english">Steelyard</span>
+          </Link>
+          <nav aria-label="首页导航">
+            <Button asChild variant="ghost" className="landing-nav-help"><a href="#workflow"><BookOpen size={17} aria-hidden="true" />如何使用</a></Button>
+            <Button asChild variant="outline" className="landing-nav-workspace"><Link to="/projects">项目工作台 <ArrowRight size={18} aria-hidden="true" /></Link></Button>
+          </nav>
+        </div>
       </header>
       <main id="landing-main">
         <section className="landing-hero" aria-labelledby="landing-title">
           <div className="landing-copy">
-            <h1 id="landing-title">
+            <p className="landing-eyebrow"><span>STEELYARD</span><span aria-hidden="true">·</span>建筑方案比选智能体</p>
+            <h1 id="landing-title" aria-label="好房子，有据可选。">
               <span className="landing-title-line">好房子<span className="landing-title-mark">，</span></span>
-              <span className="landing-title-line">有据可选<span className="landing-title-mark">。</span></span>
+              <span className="landing-title-line">有据可选<span className="landing-title-mark landing-title-mark-stop">。</span></span>
             </h1>
             <div className="landing-copy-deck">
               <p className="landing-intro"><span>建筑方案</span><span>智能比选</span></p>
               <p className="landing-description"><span>比较品质、结构、施工与绿色。</span><span>沿评分依据追问，再讨论调整。</span></p>
             </div>
             <div className="landing-actions">
-              <Button asChild><Link to="/projects">进入项目工作台 <ArrowRight size={19} /></Link></Button>
-              <a className="landing-process-link" href="#workflow">了解比选流程 <ArrowDown size={17} /></a>
+              <Button asChild><Link to="/projects">进入项目工作台 <ArrowRight size={19} aria-hidden="true" /></Link></Button>
+              <a className="landing-process-link" href="#workflow">了解比选流程 <ArrowDown size={17} aria-hidden="true" /></a>
             </div>
             <div className="landing-case">
               <label htmlFor="landing-project">{caseLabel}</label>
