@@ -121,6 +121,20 @@ class AgentTools:
         with Session(self.engine) as session:
             return {**builtin_labels(), **{row.key: row.label for row in fields_service.list_fields(session)}}
 
+    def case_context(self, include_whatif: bool = False) -> dict[str, Any]:
+        """读取案例出处与教学说明，供报告解释输入性质，不参与评分。"""
+        with Session(self.engine) as session:
+            project = self._require_project(session)
+            query = select(Scheme).where(Scheme.project_id == self.project_id)
+            if not include_whatif:
+                query = query.where(Scheme.is_whatif == False)  # noqa: E712
+            return {
+                "project_notes": (project.params or {}).get("project_notes"),
+                "scoring_exclusions": (project.params or {}).get("scoring_exclusions", []),
+                "schemes": [{"scheme_id": str(row.id), "scheme_notes": (row.params or {}).get("scheme_notes")}
+                            for row in session.exec(query.order_by(Scheme.id)).all()],
+            }
+
     def _require_project(self, session: Session) -> Project:
         project = session.get(Project, self.project_id)
         if project is None:

@@ -60,6 +60,7 @@
 - id: Q-05
   name: 单栋户数
   type: metric
+  when: "'Q-05' not in scoring_exclusions"
   dimension: quality
   value: "units_per_building"
   scoring:
@@ -69,11 +70,12 @@
       - [120, 70]
       - [200, 0]
   weight_in_dimension: 1
-  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。"
+  source: "项目偏好代理指标，非规范限值；单栋总户数不能直接代表居住品质。保障房尚无单元组织、电梯服务户数与本曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。"
 
 - id: Q-06
-  name: 标准层交通规模
+  name: 每栋每层平均户数（品质代理）
   type: metric
+  when: "'Q-06' not in scoring_exclusions"
   dimension: quality
   value: "units_per_floor"
   scoring:
@@ -83,4 +85,4 @@
       - [4, 70]
       - [8, 0]
   weight_in_dimension: 1
-  source: "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。"
+  source: "项目偏好代理指标，非规范限值；units/(floors*buildings) 是每栋每层平均户数，不能解释成每单元或每台电梯服务户数。保障房尚无交通组织与曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。"

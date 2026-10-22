@@ -74,6 +74,10 @@ export type StandardPacks = string[] | null;
  * 项目资料出处、真实资料与教学假设的边界；仅作案例说明，不参与评分
  */
 export type ProjectNotes = string | null;
+/**
+ * 本项目暂不纳入评分的代理指标；仅允许 G-05、Q-05、Q-06，不能关闭硬约束。应在案例来源与边界中记录原因、资料依据和核对人；不适用项不参与维度均值。
+ */
+export type ScoringExclusions = ("G-05" | "Q-05" | "Q-06")[];
 
 /**
  * 创建项目请求体。
@@ -95,4 +99,5 @@ export interface ProjectParams {
   province?: Province;
   standard_packs?: StandardPacks;
   project_notes?: ProjectNotes;
+  scoring_exclusions?: ScoringExclusions;
 }

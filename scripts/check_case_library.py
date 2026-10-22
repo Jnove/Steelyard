@@ -39,8 +39,17 @@ def verify(slug: str, mode: str, result: dict) -> None:
         assert not by_name["F"]["blocking_rules"], by_name["F"]
         assert not by_name["D改"]["blocking_rules"], by_name["D改"]
         assert len(rows) == 7, len(rows)
-    # 新案例采用等高体量假设，G-05 不能再出现大于1的异常值。
-    if slug in SLUGS[2:]:
+    if slug == "xiasha-real":
+        for row in rows:
+            assert "G-02" not in row["metrics"] and "G-03" not in row["metrics"], row
+            for rule_id in ("G-05", "Q-05", "Q-06"):
+                assert row["metrics"][rule_id]["status"] == "not_applicable", row
+            assert "K-05" in row["warning_rules"], row
+        mic = next(row for row in rows if row["name"].startswith("B "))
+        if mode != "gb":
+            assert "ZJ-S-05" in mic["insufficient_rules"], mic
+    # 其他新案例仍保留旧教学口径，不能把这些结果当成已核定的绿色性能。
+    if slug in SLUGS[3:]:
         for row in rows:
             metric = row["metrics"].get("G-05")
             assert metric and metric["status"] == "scored", (slug, row)

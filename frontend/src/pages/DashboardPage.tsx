@@ -198,6 +198,21 @@ function ProjectDashboard({ id }: { id: number }) {
         <span className="muted">讨论与报告沿用当前视角、权重和所选方案。</span>
       </div>
 
+      {results.some(row => (row.compliance ?? []).some(item => item.status === 'insufficient_data')) && (
+        <Alert showIcon type="warning" style={{ marginBottom: 16 }}
+          message="已知条件下的评分与取舍"
+          description="仍有检查数据不足，当前排名不能认定全部合规或确定最优方案。请先补齐规划条件和结构依据。" />
+      )}
+      {!!project.data?.params.scoring_exclusions?.length && (
+        <Alert showIcon type="info" style={{ marginBottom: 16 }}
+          message={'暂不纳入评分：' + project.data.params.scoring_exclusions.join('、')}
+          description="这些代理指标的适用性尚未确认，不参与维度均值，也不能作为方案性能优势。原因见案例来源与边界。" />
+      )}
+      {project.data?.params.project_notes && <details className="panel" style={{ marginBottom: 16 }}>
+        <summary>案例来源与评分边界</summary>
+        <p style={{ whiteSpace: 'pre-wrap' }}>{project.data.params.project_notes}</p>
+      </details>}
+
       {/* 核心决策简报 (Executive Recommendation Card) */}
       {result && topScheme && (
         <section className="panel executive-summary-card" aria-label="决策建议简报" aria-busy={rankingPending}>
@@ -205,7 +220,7 @@ function ProjectDashboard({ id }: { id: number }) {
             <div className="executive-lead-title">
               <div className="executive-badge">
                 <IconAward size={16} />
-                <span>当前权重下的优先方案</span>
+                <span>已知条件与当前权重下的优先方案</span>
               </div>
               <h2>{topScheme.scheme_name}</h2>
               <div className="executive-submeta">

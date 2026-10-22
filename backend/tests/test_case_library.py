@@ -54,7 +54,10 @@ def test_strict_real_background_has_no_unverified_planning_limits(slug):
     assert len(schemes) == 3
     for scheme in schemes:
         assert "演示自拟" in scheme["_note"]
-        assert sum(scheme["params"]["unit_mix"].values()) == scheme["params"]["units"]
+        if slug == "xiasha-real":
+            assert scheme["params"]["unit_mix"] is None
+        else:
+            assert sum(scheme["params"]["unit_mix"].values()) == scheme["params"]["units"]
 
 
 @pytest.mark.parametrize("slug", ["demo-qiantang-fictional", "demo-boundaries-fictional"])

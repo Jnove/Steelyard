@@ -1,31 +1,14 @@
 案例目录：data/schemes/demo-qiantang-fictional
 项目：杭州钱塘 · 保障性租赁住房 · 装配式决策演示案例（虚构）
-适用标准册：GB（可用规则 54 条）
+适用标准册：GB（可用规则 52 条）
 方案数：6（含 What-if 副本 1）
 
+解释边界：仅展示已知条件下的评分与取舍，不能认定全部合规或确定最优方案。
 ==============================================================================
 一、硬约束逐条结论
 ==============================================================================
 
 【A 品质优先 · 现浇剪力墙】? 未发现硬约束失败，仍有数据不足
-  error 未通过 0 条、warning 未通过 0 条、数据不足 15 条
-    ? [K-03] 缺字段：excavation_depth
-    ? [K-04] 缺字段：formwork_height
-    ? [K-05] 缺字段：scaffold_height、scaffold_type
-    ? [K-06] 缺字段：retaining_type
-    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
-    ? [K-08] 缺字段：excavation_working_life
-    ? [K-09] 缺字段：brace_type
-    ? [K-10] 缺字段：brace_type
-    ? [S-17] 缺字段：foundation_type
-    ? [S-18] 缺字段：foundation_working_life
-    ? [S-22] 缺字段：shear_wall_thickness、structural_height_classification
-    ? [S-25] 缺字段：foundation_type
-    ? [S-27] 缺字段：has_staggered_floor
-    ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
-    ? [S-29] 缺字段：steel_system、structural_height_classification
-
-【B 工业化优先 · MiC 模块化】? 未发现硬约束失败，仍有数据不足
   error 未通过 0 条、warning 未通过 0 条、数据不足 14 条
     ? [K-03] 缺字段：excavation_depth
     ? [K-04] 缺字段：formwork_height
@@ -37,13 +20,27 @@
     ? [K-10] 缺字段：brace_type
     ? [S-17] 缺字段：foundation_type
     ? [S-18] 缺字段：foundation_working_life
+    ? [S-22] 缺字段：shear_wall_thickness、structural_height_classification
     ? [S-25] 缺字段：foundation_type
     ? [S-27] 缺字段：has_staggered_floor
     ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
-    ? [S-29] 缺字段：steel_system、structural_height_classification
+
+【B 工业化优先 · MiC 模块化】? 未发现硬约束失败，仍有数据不足
+  error 未通过 0 条、warning 未通过 0 条、数据不足 11 条
+    ? [K-03] 缺字段：excavation_depth
+    ? [K-04] 缺字段：formwork_height
+    ? [K-05] 缺字段：scaffold_height、scaffold_type
+    ? [K-06] 缺字段：retaining_type
+    ? [K-07] 缺字段：retaining_type、retaining_wall_two_in_one
+    ? [K-08] 缺字段：excavation_working_life
+    ? [K-09] 缺字段：brace_type
+    ? [K-10] 缺字段：brace_type
+    ? [S-17] 缺字段：foundation_type
+    ? [S-18] 缺字段：foundation_working_life
+    ? [S-25] 缺字段：foundation_type
 
 【B′ MiC 改现浇 · What-if 对照】? 未发现硬约束失败，仍有数据不足
-  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 16 条
     ? [K-03] 缺字段：excavation_depth
     ? [K-04] 缺字段：formwork_height
     ? [K-05] 缺字段：scaffold_height、scaffold_type
@@ -60,10 +57,9 @@
     ? [S-25] 缺字段：foundation_type
     ? [S-27] 缺字段：has_staggered_floor
     ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
-    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【C 均衡基准 · 现浇框架-剪力墙】? 未发现硬约束失败，仍有数据不足
-  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 16 条
     ? [K-03] 缺字段：excavation_depth
     ? [K-04] 缺字段：formwork_height
     ? [K-05] 缺字段：scaffold_height、scaffold_type
@@ -80,10 +76,9 @@
     ? [S-25] 缺字段：foundation_type
     ? [S-27] 缺字段：has_staggered_floor
     ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
-    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【D 常规做法 · 现浇框架-剪力墙】? 未发现硬约束失败，仍有数据不足
-  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 16 条
     ? [K-03] 缺字段：excavation_depth
     ? [K-04] 缺字段：formwork_height
     ? [K-05] 缺字段：scaffold_height、scaffold_type
@@ -100,10 +95,9 @@
     ? [S-25] 缺字段：foundation_type
     ? [S-27] 缺字段：has_staggered_floor
     ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
-    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 【E 低配对照 · 现浇框架-剪力墙】? 未发现硬约束失败，仍有数据不足
-  error 未通过 0 条、warning 未通过 0 条、数据不足 17 条
+  error 未通过 0 条、warning 未通过 0 条、数据不足 16 条
     ? [K-03] 缺字段：excavation_depth
     ? [K-04] 缺字段：formwork_height
     ? [K-05] 缺字段：scaffold_height、scaffold_type
@@ -120,17 +114,14 @@
     ? [S-25] 缺字段：foundation_type
     ? [S-27] 缺字段：has_staggered_floor
     ? [S-28] 缺字段：has_out_of_plane_staggered_wall、has_staggered_floor
-    ? [S-29] 缺字段：steel_system、structural_height_classification
 
 ==============================================================================
 二、四维得分与指标明细
 ==============================================================================
 
 【A 品质优先 · 现浇剪力墙】
-  quality= 93.75  structure= 95.07  construction= 33.33  green= 54.92
+  quality= 93.75  structure= 95.07  construction= 43.33  green= 54.92
     · [G-01] 预估装配率：值 0.25 → 10.0 分（green，权重 2）
-    · [G-02] 标准层重复率：值 0.65 → 35.0 分（construction，权重 2）
-    · [G-03] 预制构件种类数：值 20.0 → 0.0 分（construction，权重 1）
     · [G-04] 体形系数：值 0.3135521885521885 → 77.3 分（green，权重 2）
     · [G-05] 楼层效率：值 1.40625 → 100.0 分（green，权重 1）
     · [K-01] 标准层重复率（越大越好）：值 0.65 → 35.0 分（construction，权重 2）
@@ -140,7 +131,7 @@
     · [Q-03] 窗地比：值 0.28 → 100.0 分（quality，权重 1）
     · [Q-04] 每单元电梯数：值 2.0 → 80.0 分（quality，权重 1）
     · [Q-05] 单栋户数：值 60.0 → 100.0 分（quality，权重 1）
-    · [Q-06] 标准层交通规模：值 4.0 → 70.0 分（quality，权重 1）
+    · [Q-06] 每栋每层平均户数（品质代理）：值 4.0 → 70.0 分（quality，权重 1）
     · [S-01] 结构风险特征加权指数（越少越好）：值 0.0 → 100.0 分（structure，权重 2）
     · [S-03] 结构体系适用性（越大越好）：值 100.0 → 100.0 分（structure，权重 2）
     · [S-04] 建筑总高（越小越好）：值 49.5 → 75.3 分（structure，权重 1）
@@ -148,8 +139,6 @@
 【B 工业化优先 · MiC 模块化】
   quality= 68.84  structure= 88.82  construction=100.00  green=100.00
     · [G-01] 预估装配率：值 0.75 → 100.0 分（green，权重 2）
-    · [G-02] 标准层重复率：值 0.95 → 100.0 分（construction，权重 2）
-    · [G-03] 预制构件种类数：值 8.0 → 100.0 分（construction，权重 1）
     · [G-04] 体形系数：值 0.18333333333333332 → 100.0 分（green，权重 2）
     · [G-05] 楼层效率：值 1.0 → 100.0 分（green，权重 1）
     · [K-01] 标准层重复率（越大越好）：值 0.95 → 100.0 分（construction，权重 2）
@@ -159,16 +148,14 @@
     · [Q-03] 窗地比：值 0.25 → 88.8 分（quality，权重 1）
     · [Q-04] 每单元电梯数：值 2.0 → 80.0 分（quality，权重 1）
     · [Q-05] 单栋户数：值 102.0 → 79.0 分（quality，权重 1）
-    · [Q-06] 标准层交通规模：值 6.0 → 35.0 分（quality，权重 1）
+    · [Q-06] 每栋每层平均户数（品质代理）：值 6.0 → 35.0 分（quality，权重 1）
     · [S-01] 结构风险特征加权指数（越少越好）：值 0.0 → 100.0 分（structure，权重 2）
     · [S-03] 结构体系适用性（越大越好）：值 85.0 → 85.0 分（structure，权重 2）
     · [S-04] 建筑总高（越小越好）：值 51.0 → 74.1 分（structure，权重 1）
 
 【B′ MiC 改现浇 · What-if 对照】
-  quality= 61.44  structure= 92.82  construction= 61.11  green= 68.00
+  quality= 61.44  structure= 92.82  construction= 62.22  green= 68.00
     · [G-01] 预估装配率：值 0.3 → 20.0 分（green，权重 2）
-    · [G-02] 标准层重复率：值 0.7 → 46.7 分（construction，权重 2）
-    · [G-03] 预制构件种类数：值 10.0 → 86.7 分（construction，权重 1）
     · [G-04] 体形系数：值 0.1482843137254902 → 100.0 分（green，权重 2）
     · [G-05] 楼层效率：值 1.0 → 100.0 分（green，权重 1）
     · [K-01] 标准层重复率（越大越好）：值 0.7 → 46.7 分（construction，权重 2）
@@ -178,16 +165,14 @@
     · [Q-03] 窗地比：值 0.22 → 77.5 分（quality，权重 1）
     · [Q-04] 每单元电梯数：值 2.0 → 80.0 分（quality，权重 1）
     · [Q-05] 单栋户数：值 102.0 → 79.0 分（quality，权重 1）
-    · [Q-06] 标准层交通规模：值 6.0 → 35.0 分（quality，权重 1）
+    · [Q-06] 每栋每层平均户数（品质代理）：值 6.0 → 35.0 分（quality，权重 1）
     · [S-01] 结构风险特征加权指数（越少越好）：值 0.0 → 100.0 分（structure，权重 2）
     · [S-03] 结构体系适用性（越大越好）：值 95.0 → 95.0 分（structure，权重 2）
     · [S-04] 建筑总高（越小越好）：值 51.0 → 74.1 分（structure，权重 1）
 
 【C 均衡基准 · 现浇框架-剪力墙】
-  quality= 75.18  structure= 86.82  construction= 57.78  green= 84.00
+  quality= 75.18  structure= 86.82  construction= 63.33  green= 84.00
     · [G-01] 预估装配率：值 0.5 → 60.0 分（green，权重 2）
-    · [G-02] 标准层重复率：值 0.75 → 58.3 分（construction，权重 2）
-    · [G-03] 预制构件种类数：值 16.0 → 40.0 分（construction，权重 1）
     · [G-04] 体形系数：值 0.18823529411764706 → 100.0 分（green，权重 2）
     · [G-05] 楼层效率：值 1.0 → 100.0 分（green，权重 1）
     · [K-01] 标准层重复率（越大越好）：值 0.75 → 58.3 分（construction，权重 2）
@@ -197,16 +182,14 @@
     · [Q-03] 窗地比：值 0.25 → 88.8 分（quality，权重 1）
     · [Q-04] 每单元电梯数：值 2.0 → 80.0 分（quality，权重 1）
     · [Q-05] 单栋户数：值 102.0 → 79.0 分（quality，权重 1）
-    · [Q-06] 标准层交通规模：值 6.0 → 35.0 分（quality，权重 1）
+    · [Q-06] 每栋每层平均户数（品质代理）：值 6.0 → 35.0 分（quality，权重 1）
     · [S-01] 结构风险特征加权指数（越少越好）：值 3.0 → 85.0 分（structure，权重 2）
     · [S-03] 结构体系适用性（越大越好）：值 95.0 → 95.0 分（structure，权重 2）
     · [S-04] 建筑总高（越小越好）：值 51.0 → 74.1 分（structure，权重 1）
 
 【D 常规做法 · 现浇框架-剪力墙】
-  quality= 72.74  structure= 95.63  construction= 85.00  green= 81.20
+  quality= 72.74  structure= 95.63  construction= 85.56  green= 81.20
     · [G-01] 预估装配率：值 0.55 → 68.0 分（green，权重 2）
-    · [G-02] 标准层重复率：值 0.85 → 80.0 分（construction，权重 2）
-    · [G-03] 预制构件种类数：值 9.0 → 93.3 分（construction，权重 1）
     · [G-04] 体形系数：值 0.1303030303030303 → 100.0 分（green，权重 2）
     · [G-05] 楼层效率：值 0.8 → 70.0 分（green，权重 1）
     · [K-01] 标准层重复率（越大越好）：值 0.85 → 80.0 分（construction，权重 2）
@@ -216,16 +199,14 @@
     · [Q-03] 窗地比：值 0.25 → 88.8 分（quality，权重 1）
     · [Q-04] 每单元电梯数：值 2.0 → 80.0 分（quality，权重 1）
     · [Q-05] 单栋户数：值 78.0 → 91.0 分（quality，权重 1）
-    · [Q-06] 标准层交通规模：值 7.8 → 3.5 分（quality，权重 1）
+    · [Q-06] 每栋每层平均户数（品质代理）：值 7.8 → 3.5 分（quality，权重 1）
     · [S-01] 结构风险特征加权指数（越少越好）：值 0.0 → 100.0 分（structure，权重 2）
     · [S-03] 结构体系适用性（越大越好）：值 95.0 → 95.0 分（structure，权重 2）
     · [S-04] 建筑总高（越小越好）：值 30.0 → 88.2 分（structure，权重 1）
 
 【E 低配对照 · 现浇框架-剪力墙】
-  quality= 35.23  structure= 89.63  construction= 25.56  green= 54.00
+  quality= 35.23  structure= 89.63  construction= 35.56  green= 54.00
     · [G-01] 预估装配率：值 0.2 → 0.0 分（green，权重 2）
-    · [G-02] 标准层重复率：值 0.6 → 23.3 分（construction，权重 2）
-    · [G-03] 预制构件种类数：值 20.0 → 0.0 分（construction，权重 1）
     · [G-04] 体形系数：值 0.1303030303030303 → 100.0 分（green，权重 2）
     · [G-05] 楼层效率：值 0.8 → 70.0 分（green，权重 1）
     · [K-01] 标准层重复率（越大越好）：值 0.6 → 23.3 分（construction，权重 2）
@@ -235,13 +216,13 @@
     · [Q-03] 窗地比：值 0.16 → 14.0 分（quality，权重 1）
     · [Q-04] 每单元电梯数：值 2.0 → 80.0 分（quality，权重 1）
     · [Q-05] 单栋户数：值 78.0 → 91.0 分（quality，权重 1）
-    · [Q-06] 标准层交通规模：值 7.8 → 3.5 分（quality，权重 1）
+    · [Q-06] 每栋每层平均户数（品质代理）：值 7.8 → 3.5 分（quality，权重 1）
     · [S-01] 结构风险特征加权指数（越少越好）：值 3.0 → 85.0 分（structure，权重 2）
     · [S-03] 结构体系适用性（越大越好）：值 95.0 → 95.0 分（structure，权重 2）
     · [S-04] 建筑总高（越小越好）：值 30.0 → 88.2 分（structure，权重 1）
 
 ==============================================================================
-三、帕累托筛选（只比较通过硬约束的方案）
+三、帕累托筛选（剔除已知硬约束失败；缺失条件仍待核查）
 ==============================================================================
   · A 品质优先 · 现浇剪力墙：非劣方案
   · B 工业化优先 · MiC 模块化：非劣方案
@@ -253,8 +234,8 @@
 ==============================================================================
 四、五个角色视角下的 TOPSIS 排名
 ==============================================================================
-  政府      B(0.742) > D(0.682) > C(0.574) > A(0.486) > B′(0.431) > E(0.038)
-  开发企业    B(0.783) > D(0.721) > C(0.530) > B′(0.453) > A(0.434) > E(0.020)
-  施工单位    B(0.880) > D(0.774) > B′(0.470) > C(0.459) > A(0.260) > E(0.025)
-  住户      A(0.785) > C(0.673) > D(0.642) > B(0.601) > B′(0.441) > E(0.012)
-  设计单位    B(0.703) > D(0.672) > C(0.599) > A(0.556) > B′(0.435) > E(0.033)
+  政府      B(0.726) > D(0.665) > C(0.590) > A(0.512) > B′(0.409) > E(0.041)
+  开发企业    B(0.760) > D(0.697) > C(0.549) > A(0.475) > B′(0.416) > E(0.022)
+  施工单位    B(0.860) > D(0.748) > C(0.467) > B′(0.414) > A(0.298) > E(0.029)
+  住户      A(0.792) > C(0.675) > D(0.640) > B(0.599) > B′(0.440) > E(0.012)
+  设计单位    B(0.689) > D(0.659) > C(0.613) > A(0.581) > B′(0.419) > E(0.035)

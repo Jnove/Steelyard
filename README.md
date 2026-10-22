@@ -116,6 +116,8 @@ T1–T9 集成完成不表示专业规则、真实模型或比赛材料已验收
 
 演示数据、检查工具与真实项目出处：
 
+- **路演主案例：[下沙公租房一期](data/schemes/xiasha-real/README.md)**。已合并重复施工计权，G-05/Q-05/Q-06 在下沙暂不计分，保留规划与设防缺失；[参数核对表](data/schemes/xiasha-real/parameter-review.md)列出资料版本、教学假设及专业待签认人。排名只能解释为已知条件下的取舍。
+
 - [案例专用分支与案例库](data/schemes/CASE_BRANCH.md)：`codex/demo-cases` 中保留原钱塘案例，新增下沙一期、临平东湖北路和虚构边界案例，共 5 套、22 个方案；支持一次检查全部案例。
 
 - [data/schemes/README.md](data/schemes/README.md)：三条数据线（`mock/` 回归测试、

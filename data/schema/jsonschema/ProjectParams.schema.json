@@ -255,6 +255,28 @@
       "label": "案例来源与边界",
       "title": "Project Notes",
       "unit": "—"
+    },
+    "scoring_exclusions": {
+      "allow_custom_options": false,
+      "description": "本项目暂不纳入评分的代理指标；仅允许 G-05、Q-05、Q-06，不能关闭硬约束。应在案例来源与边界中记录原因、资料依据和核对人；不适用项不参与维度均值。",
+      "group": "基本信息",
+      "items": {
+        "enum": [
+          "G-05",
+          "Q-05",
+          "Q-06"
+        ],
+        "type": "string"
+      },
+      "label": "暂不纳入评分的代理指标",
+      "options": [
+        "G-05",
+        "Q-05",
+        "Q-06"
+      ],
+      "title": "Scoring Exclusions",
+      "type": "array",
+      "unit": "—"
     }
   },
   "title": "ProjectParams",

@@ -283,6 +283,17 @@ class ProjectParams(BaseModel):
         description="项目资料出处、真实资料与教学假设的边界；仅作案例说明，不参与评分",
         json_schema_extra=_meta("—", "基本信息", "案例来源与边界"),
     )
+    scoring_exclusions: list[Literal["G-05", "Q-05", "Q-06"]] = Field(
+        default_factory=list,
+        description=(
+            "本项目暂不纳入评分的代理指标；仅允许 G-05、Q-05、Q-06，不能关闭硬约束。"
+            "应在案例来源与边界中记录原因、资料依据和核对人；不适用项不参与维度均值。"
+        ),
+        json_schema_extra=_meta(
+            "—", "基本信息", "暂不纳入评分的代理指标",
+            options=["G-05", "Q-05", "Q-06"], allow_custom_options=False,
+        ),
+    )
 
     @field_validator("density_max", mode="before")
     @classmethod

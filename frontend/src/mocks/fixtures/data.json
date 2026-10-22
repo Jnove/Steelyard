@@ -1,19 +1,19 @@
 {
-  "fixture_id": "14fcf320c2f83c4a256bd484d7e2d066b23c08a006b458682996c74d77fa5f05",
+  "fixture_id": "bed1a89ff3e1ec17284c2cb81f1d794c3fc8700d3c58a26a2b6ef3609d7b8057",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
     "backend/app/agents/__init__.py": "b5feb469ab8614581b42d57a76a7259934b2ed2af36cc56972912e957913c97a",
     "backend/app/agents/citation.py": "7e532e1c1fe7b33697ab5ab5b6071406ae00f27dba468586b4af2967e9034988",
-    "backend/app/agents/graph.py": "f6cf9c4b438a5e449e15a7aa8b8ef5822f2aa92d7e88a858af9a05bc66da7978",
-    "backend/app/agents/llm.py": "a3d0c208c415c8ca7f51a92cc4810019fd5f12204b8f6f7f98c6fcc8ce280622",
-    "backend/app/agents/presentation.py": "5d8b6d01d47bc0e0509a186044c33e1370b2eda89d00a7808ebc584545fa5bb0",
+    "backend/app/agents/graph.py": "d9ac710ca3dbfce76ed21034afeff4d6ebe5751eace41c802b6e48f487255b72",
+    "backend/app/agents/llm.py": "31e79c6eeddac6520d5f891a930d63d8e7e9b2655c545eec9ab2eb87815c1318",
+    "backend/app/agents/presentation.py": "2899aa824ac206c212d3f60b24766b6492bf0a04b9c1c126a8f1dcb434378ac2",
     "backend/app/agents/question_cache.py": "ae7061f13869dd69864090ab521160009b2c1794cc2ad32d8f9442dfbbf5100d",
-    "backend/app/agents/readable.py": "c853348be7be20a0db0f52d0b4557c7225cc46a92073862782c387bed6f4f26e",
+    "backend/app/agents/readable.py": "23a0b6bff465ce47d1416d59bf4153a7322005c3b89e843a963f4b778a13928d",
     "backend/app/agents/state.py": "09486e3e50ceee731033e41de8cca4b9a6ebd473a1236280668a571914bc1bf5",
     "backend/app/agents/storage.py": "868b6d6e6c648af1b3c07029fd199fe7e3dc46b878e0c578dfe8e7d0a08553bf",
     "backend/app/agents/suggestions.py": "ba09ae3c8d7d98dbd3d85431b4290e7b90e95029b64df006bc8010a1f6db6fc5",
-    "backend/app/agents/tools.py": "9ef9e509777185a1dccaace23d52383a2798250bc3285b6623356af1976eb887",
+    "backend/app/agents/tools.py": "4408b67e8636ef8398141a84dd69bf0aab7fce972c177da1fc2930d84167d526",
     "backend/app/api/__init__.py": "e61363389bcff57bfd5ddd9ff8cd10b8c6fdaecbf149e9aec7b7608f4af6305c",
     "backend/app/api/agents.py": "266aa0270b0ca16357a81d6a6d4aa25e0442e3380bb27fe1bb0bd59d2d9b3fa6",
     "backend/app/api/custom.py": "47388d976a9d1a66a49dd6b5c3b4af623cc37ab278a429da0f13e6e53aa2d354",
@@ -52,7 +52,7 @@
     "backend/app/models/__init__.py": "9141eaf90378949b9a77b5fc4390748a288f234e1dde219d057f1b0ce015dbb9",
     "backend/app/models/eval.py": "f18615ca8bfa864393e5bce2ed7e732813871150232012ebe9e16b9f99515901",
     "backend/app/models/orm.py": "97d76b64931d14efa96b93b805137d3ec338e2000e9efa59476e49d4ec7ef60f",
-    "backend/app/models/params.py": "ca3b4d011c4ebd79699f882307bc6ec18b202c83040c8267bd90b009044c95c5",
+    "backend/app/models/params.py": "2b8e34f55368a2be05b6a475c96419c0e46eb7023c78ac34f04e4acb7c03947d",
     "backend/app/rag/__init__.py": "625e337a797c5be01fbb9f8d18b2d025d037e0e1eee875605184217d9c3ca23c",
     "backend/app/schemas/__init__.py": "5ef250ab17e35fa201dadeb8c590fea27d9310e4be0fc9adb32f3cde2527e76e",
     "backend/app/schemas/merged.py": "32815e54397f97a6bc3b4333bd79f959e0d64ccb1baee30d376e0db350c8c682",
@@ -67,7 +67,7 @@
     "rules/cq_local.yaml": "429834e3ab1e025eed6329602e3eafb369f33b5b6c07084f573c674b9bc8f1cb",
     "rules/fj_local.yaml": "250808482a1c4d64e8333189fe22dcc7a791382414e94e7119100e6b9f827b16",
     "rules/gd_local.yaml": "6f8e9c58d473b49d2f254356970084465472369963b8fe2dfeab48f8e1e68dfe",
-    "rules/green.yaml": "472c654ae8a486f00dd997221129e30cbc00b87143be1daa68b8af1de61311aa",
+    "rules/green.yaml": "20e84c8e225019f039d3f013ad1f423c117b64487a6ce2e0d9b09f7e8bd7ebee",
     "rules/gs_local.yaml": "26cafaba0b2664d4b3535dde1bd6164c17865f5834f4d87a594ccdea0f23fa1e",
     "rules/gx_local.yaml": "79aabe478a163004c3430dbfd8d853472e7457b43eb6e26fa96f1518fe95e29d",
     "rules/gz_local.yaml": "61498a6f66b3c5684e18b9f11df6445c33e0121c323ebe89a233831e42471760",
@@ -84,7 +84,7 @@
     "rules/nm_local.yaml": "2a00da853c68c65679ab25fbda51c5122888dfdc73b0678f3a7db249cf4b1cd4",
     "rules/nx_local.yaml": "07742b356a1079f201fe9f7874295b671db698d84a7a6031ae56cc789c257e22",
     "rules/qh_local.yaml": "585f27ecb66f1cf817361f5cdc55a1c443fe15dcda0bb8a17f23c2439b7adf4e",
-    "rules/quality.yaml": "fa6b69f2ea3d9c4d440554cdc248b5f9af34de30a26a5d324725aa93af13711d",
+    "rules/quality.yaml": "eedbfe62125fa9de064ffe2fee49b11d3e3799afc72253b030649350692950d5",
     "rules/sc_local.yaml": "41145e3ba454b7717c829945e6c30db45729bb82e14518d4ad119240ab761958",
     "rules/sd_local.yaml": "a616781be2014c3230bb968fc49ec9cad231a023f5a81b736a02fea15bad9124",
     "rules/sh_local.yaml": "0ab44dc295f5bd64bd2eca375e639ee9462d72d0bca1de6353381875151a16e4",
@@ -108,7 +108,7 @@
     "data/schemes/mock/E_被支配.json": "89db1634bdac5282ef1e1aaa6cb8ef26ba02a3416991e8cf835d03b723a3f67f",
     "data/schemes/mock/project.json": "13525a80368a39570bd7b635f9db8f4957bc6d99f90d7653a83fbbb6f3a871d3",
     "scripts/export_frontend_fixtures.py": "ef289012f2bd9d6a623671a7c773e8a8f51e3ee35a3629695079a3a002baabeb",
-    "data/schemes/方案录入模板.xlsx": "360cd7b3104308c5389f0183de5918b48eb84b2a101c2ba0b6c6e6bfcc813945"
+    "data/schemes/方案录入模板.xlsx": "18e5957c968cddc671baefbc408128f2d40d225ac927334f6aeb25413201557d"
   },
   "grid_step": 10,
   "projects": [
@@ -124,7 +124,8 @@
         "seismic_intensity": "6度(0.05g)",
         "province": null,
         "standard_packs": null,
-        "project_notes": null
+        "project_notes": null,
+        "scoring_exclusions": []
       },
       "created_at": "2026-01-01T00:00:00Z",
       "updated_at": "2026-01-01T00:00:00Z"
@@ -690,7 +691,7 @@
   ],
   "evaluation": {
     "project_id": 1,
-    "rule_count": 54,
+    "rule_count": 52,
     "results": [
       {
         "scheme_id": "1",
@@ -1196,30 +1197,6 @@
             "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。",
             "missing_fields": []
           },
-          "G-02": {
-            "rule_id": "G-02",
-            "name": "标准层重复率",
-            "status": "scored",
-            "value": 0.65,
-            "score": 35.0,
-            "dimension": "construction",
-            "weight_in_dimension": 2.0,
-            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
-            "missing_fields": []
-          },
-          "G-03": {
-            "rule_id": "G-03",
-            "name": "预制构件种类数",
-            "status": "scored",
-            "value": 20.0,
-            "score": 0.0,
-            "dimension": "construction",
-            "weight_in_dimension": 1.0,
-            "formula": "component_types；分段线性 8→100, 14→60, 20→0",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
-            "missing_fields": []
-          },
           "G-04": {
             "rule_id": "G-04",
             "name": "体形系数",
@@ -1241,7 +1218,7 @@
             "dimension": "green",
             "weight_in_dimension": 1.0,
             "formula": "floor_efficiency = footprint * floors / gfa；分段线性 0.65→0, 0.8→70, 0.95→100",
-            "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
+            "source": "项目偏好代理指标，非规范限值；面积口径与绿色性能解释待专业核定。若基底由 gfa/floors 反推，本量恒约为1，不能证明绿色优势，应通过项目 scoring_exclusions 暂不计分。参考 GB/T 50378-2019，条文及2024年版适用性待核对。",
             "missing_fields": []
           },
           "Q-01": {
@@ -1301,19 +1278,19 @@
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
+            "source": "项目偏好代理指标，非规范限值；单栋总户数不能直接代表居住品质。保障房尚无单元组织、电梯服务户数与本曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "Q-06": {
             "rule_id": "Q-06",
-            "name": "标准层交通规模",
+            "name": "每栋每层平均户数（品质代理）",
             "status": "scored",
             "value": 5.0,
             "score": 52.5,
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_floor = units / (floors * buildings)；分段线性 2→100, 4→70, 8→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
+            "source": "项目偏好代理指标，非规范限值；units/(floors*buildings) 是每栋每层平均户数，不能解释成每单元或每台电梯服务户数。保障房尚无交通组织与曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "S-01": {
@@ -1356,7 +1333,7 @@
         "dimension_scores": {
           "quality": 90.3125,
           "structure": 84.496,
-          "construction": 33.3333,
+          "construction": 43.3333,
           "green": 64.0
         },
         "dimension_coverage": {
@@ -1867,30 +1844,6 @@
             "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。",
             "missing_fields": []
           },
-          "G-02": {
-            "rule_id": "G-02",
-            "name": "标准层重复率",
-            "status": "scored",
-            "value": 0.8,
-            "score": 70.0,
-            "dimension": "construction",
-            "weight_in_dimension": 2.0,
-            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
-            "missing_fields": []
-          },
-          "G-03": {
-            "rule_id": "G-03",
-            "name": "预制构件种类数",
-            "status": "scored",
-            "value": 14.0,
-            "score": 60.0,
-            "dimension": "construction",
-            "weight_in_dimension": 1.0,
-            "formula": "component_types；分段线性 8→100, 14→60, 20→0",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
-            "missing_fields": []
-          },
           "G-04": {
             "rule_id": "G-04",
             "name": "体形系数",
@@ -1912,7 +1865,7 @@
             "dimension": "green",
             "weight_in_dimension": 1.0,
             "formula": "floor_efficiency = footprint * floors / gfa；分段线性 0.65→0, 0.8→70, 0.95→100",
-            "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
+            "source": "项目偏好代理指标，非规范限值；面积口径与绿色性能解释待专业核定。若基底由 gfa/floors 反推，本量恒约为1，不能证明绿色优势，应通过项目 scoring_exclusions 暂不计分。参考 GB/T 50378-2019，条文及2024年版适用性待核对。",
             "missing_fields": []
           },
           "Q-01": {
@@ -1972,19 +1925,19 @@
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
+            "source": "项目偏好代理指标，非规范限值；单栋总户数不能直接代表居住品质。保障房尚无单元组织、电梯服务户数与本曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "Q-06": {
             "rule_id": "Q-06",
-            "name": "标准层交通规模",
+            "name": "每栋每层平均户数（品质代理）",
             "status": "scored",
             "value": 5.0,
             "score": 52.5,
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_floor = units / (floors * buildings)；分段线性 2→100, 4→70, 8→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
+            "source": "项目偏好代理指标，非规范限值；units/(floors*buildings) 是每栋每层平均户数，不能解释成每单元或每台电梯服务户数。保障房尚无交通组织与曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "S-01": {
@@ -2027,7 +1980,7 @@
         "dimension_scores": {
           "quality": 54.6875,
           "structure": 95.0921,
-          "construction": 70.0,
+          "construction": 73.3333,
           "green": 80.0
         },
         "dimension_coverage": {
@@ -2540,30 +2493,6 @@
             "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。",
             "missing_fields": []
           },
-          "G-02": {
-            "rule_id": "G-02",
-            "name": "标准层重复率",
-            "status": "scored",
-            "value": 0.95,
-            "score": 100.0,
-            "dimension": "construction",
-            "weight_in_dimension": 2.0,
-            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
-            "missing_fields": []
-          },
-          "G-03": {
-            "rule_id": "G-03",
-            "name": "预制构件种类数",
-            "status": "scored",
-            "value": 8.0,
-            "score": 100.0,
-            "dimension": "construction",
-            "weight_in_dimension": 1.0,
-            "formula": "component_types；分段线性 8→100, 14→60, 20→0",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
-            "missing_fields": []
-          },
           "G-04": {
             "rule_id": "G-04",
             "name": "体形系数",
@@ -2585,7 +2514,7 @@
             "dimension": "green",
             "weight_in_dimension": 1.0,
             "formula": "floor_efficiency = footprint * floors / gfa；分段线性 0.65→0, 0.8→70, 0.95→100",
-            "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
+            "source": "项目偏好代理指标，非规范限值；面积口径与绿色性能解释待专业核定。若基底由 gfa/floors 反推，本量恒约为1，不能证明绿色优势，应通过项目 scoring_exclusions 暂不计分。参考 GB/T 50378-2019，条文及2024年版适用性待核对。",
             "missing_fields": []
           },
           "Q-01": {
@@ -2645,19 +2574,19 @@
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
+            "source": "项目偏好代理指标，非规范限值；单栋总户数不能直接代表居住品质。保障房尚无单元组织、电梯服务户数与本曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "Q-06": {
             "rule_id": "Q-06",
-            "name": "标准层交通规模",
+            "name": "每栋每层平均户数（品质代理）",
             "status": "scored",
             "value": 6.0,
             "score": 35.0,
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_floor = units / (floors * buildings)；分段线性 2→100, 4→70, 8→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
+            "source": "项目偏好代理指标，非规范限值；units/(floors*buildings) 是每栋每层平均户数，不能解释成每单元或每台电梯服务户数。保障房尚无交通组织与曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "S-01": {
@@ -3215,30 +3144,6 @@
             "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。",
             "missing_fields": []
           },
-          "G-02": {
-            "rule_id": "G-02",
-            "name": "标准层重复率",
-            "status": "scored",
-            "value": 0.85,
-            "score": 80.0,
-            "dimension": "construction",
-            "weight_in_dimension": 2.0,
-            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
-            "missing_fields": []
-          },
-          "G-03": {
-            "rule_id": "G-03",
-            "name": "预制构件种类数",
-            "status": "scored",
-            "value": 12.0,
-            "score": 73.33333333333334,
-            "dimension": "construction",
-            "weight_in_dimension": 1.0,
-            "formula": "component_types；分段线性 8→100, 14→60, 20→0",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
-            "missing_fields": []
-          },
           "G-04": {
             "rule_id": "G-04",
             "name": "体形系数",
@@ -3260,7 +3165,7 @@
             "dimension": "green",
             "weight_in_dimension": 1.0,
             "formula": "floor_efficiency = footprint * floors / gfa；分段线性 0.65→0, 0.8→70, 0.95→100",
-            "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
+            "source": "项目偏好代理指标，非规范限值；面积口径与绿色性能解释待专业核定。若基底由 gfa/floors 反推，本量恒约为1，不能证明绿色优势，应通过项目 scoring_exclusions 暂不计分。参考 GB/T 50378-2019，条文及2024年版适用性待核对。",
             "missing_fields": []
           },
           "Q-01": {
@@ -3320,19 +3225,19 @@
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
+            "source": "项目偏好代理指标，非规范限值；单栋总户数不能直接代表居住品质。保障房尚无单元组织、电梯服务户数与本曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "Q-06": {
             "rule_id": "Q-06",
-            "name": "标准层交通规模",
+            "name": "每栋每层平均户数（品质代理）",
             "status": "scored",
             "value": 6.0,
             "score": 35.0,
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_floor = units / (floors * buildings)；分段线性 2→100, 4→70, 8→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
+            "source": "项目偏好代理指标，非规范限值；units/(floors*buildings) 是每栋每层平均户数，不能解释成每单元或每台电梯服务户数。保障房尚无交通组织与曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "S-01": {
@@ -3375,7 +3280,7 @@
         "dimension_scores": {
           "quality": 75.1771,
           "structure": 92.82,
-          "construction": 80.0,
+          "construction": 82.2222,
           "green": 84.0
         },
         "dimension_coverage": {
@@ -3884,30 +3789,6 @@
             "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。",
             "missing_fields": []
           },
-          "G-02": {
-            "rule_id": "G-02",
-            "name": "标准层重复率",
-            "status": "scored",
-            "value": 0.75,
-            "score": 58.33333333333333,
-            "dimension": "construction",
-            "weight_in_dimension": 2.0,
-            "formula": "std_floor_repeat；分段线性 0.5→0, 0.8→70, 0.95→100",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
-            "missing_fields": []
-          },
-          "G-03": {
-            "rule_id": "G-03",
-            "name": "预制构件种类数",
-            "status": "scored",
-            "value": 15.0,
-            "score": 50.0,
-            "dimension": "construction",
-            "weight_in_dimension": 1.0,
-            "formula": "component_types；分段线性 8→100, 14→60, 20→0",
-            "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
-            "missing_fields": []
-          },
           "G-04": {
             "rule_id": "G-04",
             "name": "体形系数",
@@ -3929,7 +3810,7 @@
             "dimension": "green",
             "weight_in_dimension": 1.0,
             "formula": "floor_efficiency = footprint * floors / gfa；分段线性 0.65→0, 0.8→70, 0.95→100",
-            "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
+            "source": "项目偏好代理指标，非规范限值；面积口径与绿色性能解释待专业核定。若基底由 gfa/floors 反推，本量恒约为1，不能证明绿色优势，应通过项目 scoring_exclusions 暂不计分。参考 GB/T 50378-2019，条文及2024年版适用性待核对。",
             "missing_fields": []
           },
           "Q-01": {
@@ -3989,19 +3870,19 @@
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_building = units / buildings；分段线性 60→100, 120→70, 200→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
+            "source": "项目偏好代理指标，非规范限值；单栋总户数不能直接代表居住品质。保障房尚无单元组织、电梯服务户数与本曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "Q-06": {
             "rule_id": "Q-06",
-            "name": "标准层交通规模",
+            "name": "每栋每层平均户数（品质代理）",
             "status": "scored",
             "value": 6.0,
             "score": 35.0,
             "dimension": "quality",
             "weight_in_dimension": 1.0,
             "formula": "units_per_floor = units / (floors * buildings)；分段线性 2→100, 4→70, 8→0",
-            "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
+            "source": "项目偏好代理指标，非规范限值；units/(floors*buildings) 是每栋每层平均户数，不能解释成每单元或每台电梯服务户数。保障房尚无交通组织与曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
             "missing_fields": []
           },
           "S-01": {
@@ -4044,7 +3925,7 @@
         "dimension_scores": {
           "quality": 54.3333,
           "structure": 70.82,
-          "construction": 60.0,
+          "construction": 64.4444,
           "green": 68.0
         },
         "dimension_coverage": {
@@ -4220,11 +4101,11 @@
             100.0,
             100.0
           ],
-          "closeness": 0.7198422331646823,
+          "closeness": 0.7005639268838398,
           "rank": 1,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.759
+          "first_place_probability": 0.683
         },
         {
           "scheme_id": "4",
@@ -4232,14 +4113,14 @@
           "dimension_scores": [
             75.1771,
             92.82,
-            80.0,
+            82.2222,
             84.0
           ],
-          "closeness": 0.6777694578700283,
+          "closeness": 0.6717293863806023,
           "rank": 2,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.238
+          "first_place_probability": 0.308
         },
         {
           "scheme_id": "1",
@@ -4247,14 +4128,14 @@
           "dimension_scores": [
             90.3125,
             84.496,
-            33.3333,
+            43.3333,
             64.0
           ],
-          "closeness": 0.42018797218627146,
+          "closeness": 0.4484424666489496,
           "rank": 3,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.003
+          "first_place_probability": 0.009
         },
         {
           "scheme_id": "5",
@@ -4262,10 +4143,10 @@
           "dimension_scores": [
             54.3333,
             70.82,
-            60.0,
+            64.4444,
             68.0
           ],
-          "closeness": 0.2267208451543058,
+          "closeness": 0.18860366302356701,
           "rank": 4,
           "is_non_dominated": false,
           "dominated_by": [
@@ -4290,43 +4171,43 @@
         "schemes": [
           {
             "index": 0,
-            "closeness": 0.42018797218627146,
-            "distance_to_best": 0.08955061616424832,
+            "closeness": 0.4484424666489496,
+            "distance_to_best": 0.0798195109867142,
             "distance_to_worst": 0.06489705285343808,
             "rank": 3
           },
           {
             "index": 1,
-            "closeness": 0.7198422331646823,
+            "closeness": 0.7005639268838398,
             "distance_to_best": 0.03822263950796448,
-            "distance_to_worst": 0.09820991397691713,
+            "distance_to_worst": 0.08942610738545605,
             "rank": 1
           },
           {
             "index": 2,
-            "closeness": 0.6777694578700283,
-            "distance_to_best": 0.03938606530422278,
-            "distance_to_worst": 0.082843395143187,
+            "closeness": 0.6717293863806023,
+            "distance_to_best": 0.0378288166239512,
+            "distance_to_worst": 0.07740786632754366,
             "rank": 2
           },
           {
             "index": 3,
-            "closeness": 0.2267208451543058,
-            "distance_to_best": 0.09828045190295626,
-            "distance_to_worst": 0.028815243470557157,
+            "closeness": 0.18860366302356701,
+            "distance_to_best": 0.09580227624816331,
+            "distance_to_worst": 0.022268599700277027,
             "rank": 4
           }
         ],
         "ideal_best": [
           0.14294546566896532,
           0.2112316683326771,
-          0.1058841904361857,
+          0.10190644665399101,
           0.14373751783691074
         ],
         "ideal_worst": [
           0.08599804976976158,
           0.1611659852544731,
-          0.035294694850665095,
+          0.04415942624791389,
           0.09199201141562287
         ],
         "weights": [
@@ -4421,15 +4302,15 @@
               0.14461538461538467,
               0.21692307692307694
             ],
-            "top_index": 1,
+            "top_index": 2,
             "ranks": [
               3,
-              1,
               2,
+              1,
               4
             ],
-            "rank_changed": false,
-            "top_changed": false
+            "rank_changed": true,
+            "top_changed": true
           },
           {
             "criterion": "structure",
@@ -4677,14 +4558,14 @@
             "criterion": "quality",
             "criterion_index": 0,
             "baseline_weight": 0.23076923076923075,
-            "flip_weight": 0.3,
+            "flip_weight": 0.27,
             "new_top_index": 2
           },
           {
             "criterion": "structure",
             "criterion_index": 1,
             "baseline_weight": 0.3846153846153846,
-            "flip_weight": 0.52,
+            "flip_weight": 0.48,
             "new_top_index": 2
           },
           {
@@ -4719,34 +4600,34 @@
       "rank_acceptability": {
         "probabilities": [
           [
-            0.003,
-            0.025,
-            0.921,
-            0.051
+            0.009,
+            0.036,
+            0.948,
+            0.007
           ],
           [
-            0.759,
-            0.213,
-            0.028,
+            0.683,
+            0.272,
+            0.045,
             0.0
           ],
           [
-            0.238,
-            0.762,
+            0.308,
+            0.692,
             0.0,
             0.0
           ],
           [
             0.0,
             0.0,
-            0.051,
-            0.949
+            0.007,
+            0.993
           ]
         ],
         "first_place_probability": [
-          0.003,
-          0.759,
-          0.238,
+          0.009,
+          0.683,
+          0.308,
           0.0
         ],
         "samples": 1000,
@@ -4800,11 +4681,11 @@
             100.0,
             100.0
           ],
-          "closeness": 0.7581928284584777,
+          "closeness": 0.7280722980074743,
           "rank": 1,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.95
+          "first_place_probability": 0.904
         },
         {
           "scheme_id": "4",
@@ -4812,14 +4693,14 @@
           "dimension_scores": [
             75.1771,
             92.82,
-            80.0,
+            82.2222,
             84.0
           ],
-          "closeness": 0.6727805454095515,
+          "closeness": 0.6585666624724777,
           "rank": 2,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.05
+          "first_place_probability": 0.096
         },
         {
           "scheme_id": "1",
@@ -4827,10 +4708,10 @@
           "dimension_scores": [
             90.3125,
             84.496,
-            33.3333,
+            43.3333,
             64.0
           ],
-          "closeness": 0.3458722577091163,
+          "closeness": 0.3853429262303577,
           "rank": 3,
           "is_non_dominated": true,
           "dominated_by": [],
@@ -4842,10 +4723,10 @@
           "dimension_scores": [
             54.3333,
             70.82,
-            60.0,
+            64.4444,
             68.0
           ],
-          "closeness": 0.305444514780128,
+          "closeness": 0.26340104738652453,
           "rank": 4,
           "is_non_dominated": false,
           "dominated_by": [
@@ -4870,43 +4751,43 @@
         "schemes": [
           {
             "index": 0,
-            "closeness": 0.3458722577091163,
-            "distance_to_best": 0.1309749885859821,
+            "closeness": 0.3853429262303577,
+            "distance_to_best": 0.11046559157674314,
             "distance_to_worst": 0.06925346851519815,
             "rank": 3
           },
           {
             "index": 1,
-            "closeness": 0.7581928284584777,
+            "closeness": 0.7280722980074743,
             "distance_to_best": 0.043123337901351554,
-            "distance_to_worst": 0.13521437485729,
+            "distance_to_worst": 0.11546049738048687,
             "rank": 1
           },
           {
             "index": 2,
-            "closeness": 0.6727805454095515,
-            "distance_to_best": 0.050109530086811384,
-            "distance_to_worst": 0.10302785029764354,
+            "closeness": 0.6585666624724777,
+            "distance_to_best": 0.04636488190707248,
+            "distance_to_worst": 0.08942994774495323,
             "rank": 2
           },
           {
             "index": 3,
-            "closeness": 0.305444514780128,
-            "distance_to_best": 0.11186556000815188,
-            "distance_to_worst": 0.04919509301187165,
+            "closeness": 0.26340104738652453,
+            "distance_to_best": 0.10520861462294952,
+            "distance_to_worst": 0.03762163818920309,
             "rank": 4
           }
         ],
         "ideal_best": [
           0.16518142699524885,
           0.14645395671065614,
-          0.18353259675605518,
+          0.17663784086691772,
           0.12457251545865598
         ],
         "ideal_worst": [
           0.09937552417839117,
           0.11174174977643468,
-          0.061177471074486144,
+          0.07654300549638406,
           0.07972640989353984
         ],
         "weights": [
@@ -4943,12 +4824,12 @@
             ],
             "top_index": 1,
             "ranks": [
-              4,
+              3,
               1,
               2,
-              3
+              4
             ],
-            "rank_changed": true,
+            "rank_changed": false,
             "top_changed": false
           },
           {
@@ -5143,12 +5024,12 @@
             ],
             "top_index": 1,
             "ranks": [
-              4,
+              3,
               1,
               2,
-              3
+              4
             ],
-            "rank_changed": true,
+            "rank_changed": false,
             "top_changed": false
           },
           {
@@ -5163,12 +5044,12 @@
             ],
             "top_index": 1,
             "ranks": [
-              4,
+              3,
               1,
               2,
-              3
+              4
             ],
-            "rank_changed": true,
+            "rank_changed": false,
             "top_changed": false
           },
           {
@@ -5257,14 +5138,14 @@
             "criterion": "quality",
             "criterion_index": 0,
             "baseline_weight": 0.26666666666666666,
-            "flip_weight": 0.4,
+            "flip_weight": 0.37,
             "new_top_index": 2
           },
           {
             "criterion": "structure",
             "criterion_index": 1,
             "baseline_weight": 0.26666666666666666,
-            "flip_weight": 0.59,
+            "flip_weight": 0.54,
             "new_top_index": 2
           },
           {
@@ -5300,33 +5181,33 @@
         "probabilities": [
           [
             0.0,
-            0.004,
-            0.631,
-            0.365
+            0.015,
+            0.842,
+            0.143
           ],
           [
-            0.95,
-            0.046,
-            0.004,
+            0.904,
+            0.081,
+            0.015,
             0.0
           ],
           [
-            0.05,
-            0.95,
+            0.096,
+            0.904,
             0.0,
             0.0
           ],
           [
             0.0,
             0.0,
-            0.365,
-            0.635
+            0.143,
+            0.857
           ]
         ],
         "first_place_probability": [
           0.0,
-          0.95,
-          0.05,
+          0.904,
+          0.096,
           0.0
         ],
         "samples": 1000,
@@ -5380,11 +5261,11 @@
             100.0,
             100.0
           ],
-          "closeness": 0.8739947326232377,
+          "closeness": 0.852817786794998,
           "rank": 1,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 1.0
+          "first_place_probability": 0.999
         },
         {
           "scheme_id": "4",
@@ -5392,14 +5273,14 @@
           "dimension_scores": [
             75.1771,
             92.82,
-            80.0,
+            82.2222,
             84.0
           ],
-          "closeness": 0.7039452784911392,
+          "closeness": 0.6948164182288938,
           "rank": 2,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.0
+          "first_place_probability": 0.001
         },
         {
           "scheme_id": "5",
@@ -5407,10 +5288,10 @@
           "dimension_scores": [
             54.3333,
             70.82,
-            60.0,
+            64.4444,
             68.0
           ],
-          "closeness": 0.35780075582815973,
+          "closeness": 0.32029182461152983,
           "rank": 3,
           "is_non_dominated": false,
           "dominated_by": [
@@ -5425,10 +5306,10 @@
           "dimension_scores": [
             90.3125,
             84.496,
-            33.3333,
+            43.3333,
             64.0
           ],
-          "closeness": 0.21353309738398535,
+          "closeness": 0.2470287386845983,
           "rank": 4,
           "is_non_dominated": true,
           "dominated_by": [],
@@ -5450,43 +5331,43 @@
         "schemes": [
           {
             "index": 0,
-            "closeness": 0.21353309738398535,
-            "distance_to_best": 0.16789398900345137,
+            "closeness": 0.2470287386845983,
+            "distance_to_best": 0.13894752541411212,
             "distance_to_worst": 0.045584783523387046,
             "rank": 4
           },
           {
             "index": 1,
-            "closeness": 0.8739947326232377,
+            "closeness": 0.852817786794998,
             "distance_to_best": 0.024718542303200915,
-            "distance_to_worst": 0.17145216403156835,
+            "distance_to_worst": 0.14322663099550342,
             "rank": 1
           },
           {
             "index": 2,
-            "closeness": 0.7039452784911392,
-            "distance_to_best": 0.05328576547713573,
-            "distance_to_worst": 0.1267004384434152,
+            "closeness": 0.6948164182288938,
+            "distance_to_best": 0.04681218663974174,
+            "distance_to_worst": 0.10657806577184381,
             "rank": 2
           },
           {
             "index": 3,
-            "closeness": 0.35780075582815973,
-            "distance_to_best": 0.11782123420735792,
-            "distance_to_worst": 0.06564399917094735,
+            "closeness": 0.32029182461152983,
+            "distance_to_best": 0.10625382483555071,
+            "distance_to_worst": 0.05006888641450009,
             "rank": 3
           }
         ],
         "ideal_best": [
           0.08849005017602618,
           0.1961436920232002,
-          0.24580258494114532,
+          0.23656853687533624,
           0.08898036818475429
         ],
         "ideal_worst": [
           0.05323688795270956,
           0.1496541291648679,
-          0.08193411304618681,
+          0.10251295378980008,
           0.05694743563824274
         ],
         "weights": [
@@ -5683,12 +5564,12 @@
             ],
             "top_index": 1,
             "ranks": [
-              4,
+              3,
               1,
               2,
-              3
+              4
             ],
-            "rank_changed": false,
+            "rank_changed": true,
             "top_changed": false
           },
           {
@@ -5837,14 +5718,14 @@
             "criterion": "quality",
             "criterion_index": 0,
             "baseline_weight": 0.14285714285714288,
-            "flip_weight": 0.41,
+            "flip_weight": 0.37,
             "new_top_index": 2
           },
           {
             "criterion": "structure",
             "criterion_index": 1,
             "baseline_weight": 0.35714285714285715,
-            "flip_weight": 0.73,
+            "flip_weight": 0.7,
             "new_top_index": 2
           },
           {
@@ -5881,32 +5762,32 @@
           [
             0.0,
             0.0,
-            0.06,
-            0.94
+            0.206,
+            0.794
           ],
           [
-            1.0,
+            0.999,
+            0.001,
             0.0,
+            0.0
+          ],
+          [
+            0.001,
+            0.999,
             0.0,
             0.0
           ],
           [
             0.0,
-            1.0,
             0.0,
-            0.0
-          ],
-          [
-            0.0,
-            0.0,
-            0.94,
-            0.06
+            0.794,
+            0.206
           ]
         ],
         "first_place_probability": [
           0.0,
-          1.0,
-          0.0,
+          0.999,
+          0.001,
           0.0
         ],
         "samples": 1000,
@@ -5957,14 +5838,14 @@
           "dimension_scores": [
             90.3125,
             84.496,
-            33.3333,
+            43.3333,
             64.0
           ],
-          "closeness": 0.7297065685825734,
+          "closeness": 0.7401496051734157,
           "rank": 1,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.952
+          "first_place_probability": 0.974
         },
         {
           "scheme_id": "4",
@@ -5972,14 +5853,14 @@
           "dimension_scores": [
             75.1771,
             92.82,
-            80.0,
+            82.2222,
             84.0
           ],
-          "closeness": 0.5911193663144516,
+          "closeness": 0.5895574463400965,
           "rank": 2,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.047
+          "first_place_probability": 0.025
         },
         {
           "scheme_id": "3",
@@ -5990,7 +5871,7 @@
             100.0,
             100.0
           ],
-          "closeness": 0.44939933469548193,
+          "closeness": 0.442985531410151,
           "rank": 3,
           "is_non_dominated": true,
           "dominated_by": [],
@@ -6002,10 +5883,10 @@
           "dimension_scores": [
             54.3333,
             70.82,
-            60.0,
+            64.4444,
             68.0
           ],
-          "closeness": 0.07779545194611384,
+          "closeness": 0.06333871787141733,
           "rank": 4,
           "is_non_dominated": false,
           "dominated_by": [
@@ -6030,43 +5911,43 @@
         "schemes": [
           {
             "index": 0,
-            "closeness": 0.7297065685825734,
-            "distance_to_best": 0.05172313052974877,
+            "closeness": 0.7401496051734157,
+            "distance_to_best": 0.049023175076700884,
             "distance_to_worst": 0.13963605366688964,
             "rank": 1
           },
           {
             "index": 1,
-            "closeness": 0.44939933469548193,
+            "closeness": 0.442985531410151,
             "distance_to_best": 0.08984081355783971,
-            "distance_to_worst": 0.07332792055211979,
+            "distance_to_worst": 0.07144909653243649,
             "rank": 3
           },
           {
             "index": 2,
-            "closeness": 0.5911193663144516,
-            "distance_to_best": 0.061910594299243116,
-            "distance_to_worst": 0.0895042422049865,
+            "closeness": 0.5895574463400965,
+            "distance_to_best": 0.06175011685786885,
+            "distance_to_worst": 0.08869753119237592,
             "rank": 2
           },
           {
             "index": 3,
-            "closeness": 0.07779545194611384,
-            "distance_to_best": 0.14682108980772565,
-            "distance_to_worst": 0.012385552707278098,
+            "closeness": 0.06333871787141733,
+            "distance_to_best": 0.1465505148207545,
+            "distance_to_worst": 0.009910008974694098,
             "rank": 4
           }
         ],
         "ideal_best": [
           0.34842957256810303,
           0.10297543831218009,
-          0.04301545236470044,
+          0.04139949395318385,
           0.11678673324248998
         ],
         "ideal_worst": [
           0.2096202463137939,
           0.07856841781155564,
-          0.014338469783082694,
+          0.017939766913215017,
           0.07474350927519359
         ],
         "weights": [
@@ -6424,14 +6305,14 @@
             "criterion": "structure",
             "criterion_index": 1,
             "baseline_weight": 0.1875,
-            "flip_weight": 0.53,
+            "flip_weight": 0.54,
             "new_top_index": 2
           },
           {
             "criterion": "construction",
             "criterion_index": 2,
             "baseline_weight": 0.06250000000000001,
-            "flip_weight": 0.16,
+            "flip_weight": 0.19,
             "new_top_index": 2
           },
           {
@@ -6459,20 +6340,20 @@
       "rank_acceptability": {
         "probabilities": [
           [
-            0.952,
-            0.033,
-            0.015,
+            0.974,
+            0.021,
+            0.005,
             0.0
           ],
           [
             0.001,
-            0.014,
-            0.985,
+            0.004,
+            0.995,
             0.0
           ],
           [
-            0.047,
-            0.953,
+            0.025,
+            0.975,
             0.0,
             0.0
           ],
@@ -6484,9 +6365,9 @@
           ]
         ],
         "first_place_probability": [
-          0.952,
+          0.974,
           0.001,
-          0.047,
+          0.025,
           0.0
         ],
         "samples": 1000,
@@ -6532,6 +6413,21 @@
       },
       "ranking": [
         {
+          "scheme_id": "4",
+          "scheme_name": "D 均衡",
+          "dimension_scores": [
+            75.1771,
+            92.82,
+            82.2222,
+            84.0
+          ],
+          "closeness": 0.656186843062655,
+          "rank": 1,
+          "is_non_dominated": true,
+          "dominated_by": [],
+          "first_place_probability": 0.525
+        },
+        {
           "scheme_id": "3",
           "scheme_name": "C MiC 高标准化",
           "dimension_scores": [
@@ -6540,26 +6436,11 @@
             100.0,
             100.0
           ],
-          "closeness": 0.6655987777871679,
-          "rank": 1,
-          "is_non_dominated": true,
-          "dominated_by": [],
-          "first_place_probability": 0.511
-        },
-        {
-          "scheme_id": "4",
-          "scheme_name": "D 均衡",
-          "dimension_scores": [
-            75.1771,
-            92.82,
-            80.0,
-            84.0
-          ],
-          "closeness": 0.6626782563731904,
+          "closeness": 0.645177225030757,
           "rank": 2,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.464
+          "first_place_probability": 0.437
         },
         {
           "scheme_id": "1",
@@ -6567,14 +6448,14 @@
           "dimension_scores": [
             90.3125,
             84.496,
-            33.3333,
+            43.3333,
             64.0
           ],
-          "closeness": 0.4781778348105975,
+          "closeness": 0.5069225297662685,
           "rank": 3,
           "is_non_dominated": true,
           "dominated_by": [],
-          "first_place_probability": 0.025
+          "first_place_probability": 0.038
         },
         {
           "scheme_id": "5",
@@ -6582,10 +6463,10 @@
           "dimension_scores": [
             54.3333,
             70.82,
-            60.0,
+            64.4444,
             68.0
           ],
-          "closeness": 0.20702901699007953,
+          "closeness": 0.17072295006510593,
           "rank": 4,
           "is_non_dominated": false,
           "dominated_by": [
@@ -6610,43 +6491,43 @@
         "schemes": [
           {
             "index": 0,
-            "closeness": 0.4781778348105975,
-            "distance_to_best": 0.0831541435810877,
+            "closeness": 0.5069225297662685,
+            "distance_to_best": 0.07411811734480601,
             "distance_to_worst": 0.07619927052869005,
             "rank": 3
           },
           {
             "index": 1,
-            "closeness": 0.6655987777871679,
+            "closeness": 0.645177225030757,
             "distance_to_best": 0.046560765836829845,
-            "distance_to_worst": 0.09267546520539971,
-            "rank": 1
-          },
-          {
-            "index": 2,
-            "closeness": 0.6626782563731904,
-            "distance_to_best": 0.041502316216165805,
-            "distance_to_worst": 0.08153249253924374,
+            "distance_to_worst": 0.08466183068580278,
             "rank": 2
           },
           {
+            "index": 2,
+            "closeness": 0.656186843062655,
+            "distance_to_best": 0.04023386053796195,
+            "distance_to_worst": 0.07678859693970225,
+            "rank": 1
+          },
+          {
             "index": 3,
-            "closeness": 0.20702901699007953,
-            "distance_to_best": 0.10248579765890173,
-            "distance_to_worst": 0.026757011794088785,
+            "closeness": 0.17072295006510593,
+            "distance_to_best": 0.1004421418116298,
+            "distance_to_worst": 0.02067798543597152,
             "rank": 4
           }
         ],
         "ideal_best": [
           0.17698010035205233,
           0.19614369202320014,
-          0.09832103397645812,
+          0.09462741475013449,
           0.13347055227713137
         ],
         "ideal_worst": [
           0.10647377590541911,
           0.14965412916486787,
-          0.03277364521847472,
+          0.04100518151592003,
           0.08542115345736409
         ],
         "weights": [
@@ -6665,11 +6546,11 @@
         ],
         "baseline_ranks": [
           3,
-          1,
           2,
+          1,
           4
         ],
-        "baseline_top_index": 1,
+        "baseline_top_index": 2,
         "cells": [
           {
             "criterion": "quality",
@@ -6688,8 +6569,8 @@
               2,
               4
             ],
-            "rank_changed": false,
-            "top_changed": false
+            "rank_changed": true,
+            "top_changed": true
           },
           {
             "criterion": "quality",
@@ -6708,8 +6589,8 @@
               2,
               4
             ],
-            "rank_changed": false,
-            "top_changed": false
+            "rank_changed": true,
+            "top_changed": true
           },
           {
             "criterion": "quality",
@@ -6728,8 +6609,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "quality",
@@ -6748,8 +6629,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "structure",
@@ -6768,8 +6649,8 @@
               2,
               4
             ],
-            "rank_changed": false,
-            "top_changed": false
+            "rank_changed": true,
+            "top_changed": true
           },
           {
             "criterion": "structure",
@@ -6781,11 +6662,11 @@
               0.1507936507936508,
               0.2261904761904762
             ],
-            "top_index": 1,
+            "top_index": 2,
             "ranks": [
               3,
-              1,
               2,
+              1,
               4
             ],
             "rank_changed": false,
@@ -6808,8 +6689,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "structure",
@@ -6828,8 +6709,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "construction",
@@ -6848,8 +6729,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "construction",
@@ -6868,8 +6749,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "construction",
@@ -6881,11 +6762,11 @@
               0.15714285714285714,
               0.21071428571428572
             ],
-            "top_index": 1,
+            "top_index": 2,
             "ranks": [
               3,
-              1,
               2,
+              1,
               4
             ],
             "rank_changed": false,
@@ -6908,8 +6789,8 @@
               2,
               4
             ],
-            "rank_changed": false,
-            "top_changed": false
+            "rank_changed": true,
+            "top_changed": true
           },
           {
             "criterion": "green",
@@ -6928,8 +6809,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "green",
@@ -6948,8 +6829,8 @@
               1,
               4
             ],
-            "rank_changed": true,
-            "top_changed": true
+            "rank_changed": false,
+            "top_changed": false
           },
           {
             "criterion": "green",
@@ -6968,8 +6849,8 @@
               2,
               4
             ],
-            "rank_changed": false,
-            "top_changed": false
+            "rank_changed": true,
+            "top_changed": true
           },
           {
             "criterion": "green",
@@ -6988,8 +6869,8 @@
               2,
               4
             ],
-            "rank_changed": false,
-            "top_changed": false
+            "rank_changed": true,
+            "top_changed": true
           }
         ],
         "flip_points": [
@@ -6997,29 +6878,29 @@
             "criterion": "quality",
             "criterion_index": 0,
             "baseline_weight": 0.2857142857142857,
-            "flip_weight": 0.3,
-            "new_top_index": 2
+            "flip_weight": 0.0,
+            "new_top_index": 1
           },
           {
             "criterion": "structure",
             "criterion_index": 1,
             "baseline_weight": 0.3571428571428571,
-            "flip_weight": 0.38,
-            "new_top_index": 2
+            "flip_weight": 0.0,
+            "new_top_index": 1
           },
           {
             "criterion": "construction",
             "criterion_index": 2,
             "baseline_weight": 0.14285714285714285,
-            "flip_weight": 0.0,
-            "new_top_index": 2
+            "flip_weight": 0.16,
+            "new_top_index": 1
           },
           {
             "criterion": "green",
             "criterion_index": 3,
             "baseline_weight": 0.21428571428571425,
-            "flip_weight": 0.0,
-            "new_top_index": 2
+            "flip_weight": 0.24,
+            "new_top_index": 1
           }
         ]
       },
@@ -7039,34 +6920,34 @@
       "rank_acceptability": {
         "probabilities": [
           [
-            0.025,
-            0.077,
-            0.883,
-            0.015
+            0.038,
+            0.116,
+            0.845,
+            0.001
           ],
           [
-            0.511,
-            0.387,
-            0.102,
+            0.437,
+            0.409,
+            0.154,
             0.0
           ],
           [
-            0.464,
-            0.536,
+            0.525,
+            0.475,
             0.0,
             0.0
           ],
           [
             0.0,
             0.0,
-            0.015,
-            0.985
+            0.001,
+            0.999
           ]
         ],
         "first_place_probability": [
-          0.025,
-          0.511,
-          0.464,
+          0.038,
+          0.437,
+          0.525,
           0.0
         ],
         "samples": 1000,
@@ -7294,6 +7175,22 @@
           "type": "string",
           "required": false,
           "constraints": {}
+        },
+        {
+          "name": "scoring_exclusions",
+          "label": "暂不纳入评分的代理指标",
+          "description": "本项目暂不纳入评分的代理指标；仅允许 G-05、Q-05、Q-06，不能关闭硬约束。应在案例来源与边界中记录原因、资料依据和核对人；不适用项不参与维度均值。",
+          "unit": "—",
+          "group": "基本信息",
+          "type": "array<string>",
+          "required": false,
+          "constraints": {},
+          "options": [
+            "G-05",
+            "Q-05",
+            "Q-06"
+          ],
+          "allow_custom_options": false
         }
       ]
     },
@@ -8195,9 +8092,9 @@
     }
   },
   "rules": {
-    "rule_count": 112,
+    "rule_count": 110,
     "hard_count": 96,
-    "metric_count": 16,
+    "metric_count": 14,
     "rules": [
       {
         "definition": {
@@ -8717,74 +8614,6 @@
       },
       {
         "definition": {
-          "id": "G-02",
-          "pack": "GB",
-          "name": "标准层重复率",
-          "type": "metric",
-          "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。",
-          "when": null,
-          "check": null,
-          "message": null,
-          "severity": "error",
-          "dimension": "construction",
-          "value": "std_floor_repeat",
-          "scoring": {
-            "kind": "piecewise",
-            "points": [
-              [
-                0.5,
-                0.0
-              ],
-              [
-                0.8,
-                70.0
-              ],
-              [
-                0.95,
-                100.0
-              ]
-            ]
-          },
-          "weight_in_dimension": 2.0
-        },
-        "source_file": "green.yaml"
-      },
-      {
-        "definition": {
-          "id": "G-03",
-          "pack": "GB",
-          "name": "预制构件种类数",
-          "type": "metric",
-          "source": "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。",
-          "when": null,
-          "check": null,
-          "message": null,
-          "severity": "error",
-          "dimension": "construction",
-          "value": "component_types",
-          "scoring": {
-            "kind": "piecewise",
-            "points": [
-              [
-                8.0,
-                100.0
-              ],
-              [
-                14.0,
-                60.0
-              ],
-              [
-                20.0,
-                0.0
-              ]
-            ]
-          },
-          "weight_in_dimension": 1.0
-        },
-        "source_file": "green.yaml"
-      },
-      {
-        "definition": {
           "id": "G-04",
           "pack": "GB",
           "name": "体形系数",
@@ -8823,8 +8652,8 @@
           "pack": "GB",
           "name": "楼层效率",
           "type": "metric",
-          "source": "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。",
-          "when": null,
+          "source": "项目偏好代理指标，非规范限值；面积口径与绿色性能解释待专业核定。若基底由 gfa/floors 反推，本量恒约为1，不能证明绿色优势，应通过项目 scoring_exclusions 暂不计分。参考 GB/T 50378-2019，条文及2024年版适用性待核对。",
+          "when": "'G-05' not in scoring_exclusions",
           "check": null,
           "message": null,
           "severity": "error",
@@ -9533,8 +9362,8 @@
           "pack": "GB",
           "name": "单栋户数",
           "type": "metric",
-          "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第24-27条）：住宅公共走廊、楼梯、出入口和电梯配置应满足日常使用与安全要求。评分点为服务品质代理指标。",
-          "when": null,
+          "source": "项目偏好代理指标，非规范限值；单栋总户数不能直接代表居住品质。保障房尚无单元组织、电梯服务户数与本曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
+          "when": "'Q-05' not in scoring_exclusions",
           "check": null,
           "message": null,
           "severity": "error",
@@ -9565,10 +9394,10 @@
         "definition": {
           "id": "Q-06",
           "pack": "GB",
-          "name": "标准层交通规模",
+          "name": "每栋每层平均户数（品质代理）",
           "type": "metric",
-          "source": "《住宅项目规范》GB 55038-2025；条文号：待按正式文本核对；原文依据（专业判断第25-27条）：公共走廊、楼梯、出入口和电梯应按净尺寸及使用需求验收。评分点为项目偏好口径。",
-          "when": null,
+          "source": "项目偏好代理指标，非规范限值；units/(floors*buildings) 是每栋每层平均户数，不能解释成每单元或每台电梯服务户数。保障房尚无交通组织与曲线适用性依据时，应通过项目 scoring_exclusions 暂不计分。参考 GB 55038-2025，条文待核对。",
+          "when": "'Q-06' not in scoring_exclusions",
           "check": null,
           "message": null,
           "severity": "error",
@@ -10574,7 +10403,7 @@
   "imports": [
     {
       "filename": "demo-import.xlsx",
-      "sha256": "c7106c74594f5e28eb8743edecd0d84f9d83b3c7f5f04fad3368413ae98a373f",
+      "sha256": "1f5a4fe35c3e748a802d816d901901a9e2a0b1ef52ccaa7813ae5e99ad5dada3",
       "schemes": [
         {
           "name": "A 高品质",
@@ -10899,13 +10728,14 @@
         "density_max": 0.22,
         "height_max": 54.0,
         "climate_zone": "夏热冬冷",
-        "seismic_intensity": "6度(0.05g)"
+        "seismic_intensity": "6度(0.05g)",
+        "scoring_exclusions": []
       },
       "errors": []
     },
     {
       "filename": "demo-invalid.xlsx",
-      "sha256": "b0b4c0771d58d39266eebe9457bae0e82ed88540bbdb86bae68a2dedcb4ef52f",
+      "sha256": "d64dc04a3f2cf6fcc368e6dd1d2aecdac15cd93143b3a351b94628c780c6b00c",
       "schemes": [
         {
           "name": "A 高品质",
@@ -11228,7 +11058,8 @@
         "density_max": 0.22,
         "height_max": 54.0,
         "climate_zone": "夏热冬冷",
-        "seismic_intensity": "6度(0.05g)"
+        "seismic_intensity": "6度(0.05g)",
+        "scoring_exclusions": []
       },
       "errors": [
         {
@@ -11247,7 +11078,7 @@
     },
     {
       "filename": "方案录入模板.xlsx",
-      "sha256": "360cd7b3104308c5389f0183de5918b48eb84b2a101c2ba0b6c6e6bfcc813945",
+      "sha256": "18e5957c968cddc671baefbc408128f2d40d225ac927334f6aeb25413201557d",
       "schemes": [],
       "project_params": {},
       "errors": []
@@ -11263,7 +11094,8 @@
       "seismic_intensity": null,
       "province": null,
       "standard_packs": null,
-      "project_notes": null
+      "project_notes": null,
+      "scoring_exclusions": []
     },
     "scheme": {
       "structure_type": null,
@@ -11596,6 +11428,28 @@
           "group": "基本信息",
           "label": "案例来源与边界",
           "title": "Project Notes",
+          "unit": "—"
+        },
+        "scoring_exclusions": {
+          "allow_custom_options": false,
+          "description": "本项目暂不纳入评分的代理指标；仅允许 G-05、Q-05、Q-06，不能关闭硬约束。应在案例来源与边界中记录原因、资料依据和核对人；不适用项不参与维度均值。",
+          "group": "基本信息",
+          "items": {
+            "enum": [
+              "G-05",
+              "Q-05",
+              "Q-06"
+            ],
+            "type": "string"
+          },
+          "label": "暂不纳入评分的代理指标",
+          "options": [
+            "G-05",
+            "Q-05",
+            "Q-06"
+          ],
+          "title": "Scoring Exclusions",
+          "type": "array",
           "unit": "—"
         }
       },
