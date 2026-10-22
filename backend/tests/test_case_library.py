@@ -49,7 +49,10 @@ def test_invalid_project_does_not_replace_existing(engine, tmp_path, dry_run, pa
 def test_strict_real_background_has_no_unverified_planning_limits(slug):
     payload = json.loads((CASES / slug / "project_verified.json").read_text(encoding="utf-8"))
     for field in ("far_max", "density_max", "height_max", "seismic_intensity"):
-        assert payload["params"][field] is None, (slug, field)
+        if slug == "xiasha-real" and field == "density_max":
+            assert payload["params"][field] == 0.22
+        else:
+            assert payload["params"][field] is None, (slug, field)
     _, schemes = checker.load_case(CASES / slug)
     assert len(schemes) == 3
     for scheme in schemes:
@@ -73,4 +76,6 @@ def test_whatif_classification_matches_importer(slug):
 def test_public_area_breakdown_does_not_turn_into_far_limit():
     """公开建筑规模含非计容部分；记录规模不应产生规划上限。"""
     facts = json.loads((CASES / "xiasha-real" / "project_verified.json").read_text(encoding="utf-8"))["_public_facts"]
-    assert facts["above_ground_gfa"] + facts["non_far_stilt_gfa"] + facts["underground_gfa"] == facts["total_gfa"]
+    assert facts["total_gfa_excludes_stilt"] is True
+    assert facts["above_ground_gfa"] + facts["underground_gfa"] == pytest.approx(facts["total_gfa"])
+    assert facts["residential_gfa"] + facts["ancillary_gfa"] == pytest.approx(facts["above_ground_gfa"])

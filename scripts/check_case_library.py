@@ -25,7 +25,11 @@ def verify(slug: str, mode: str, result: dict) -> None:
     """验证展示场景的关键行为，不指定任何方案的排名。"""
     rows = result["schemes"]
     assert len(rows) >= 3, f"{slug}: 至少需要三个方案"
-    if slug == "xiasha-real" or (slug == "qiantang-real" and mode == "verified"):
+    if slug == "xiasha-real":
+        for row in rows:
+            assert {"C-01", "C-02"} <= set(row["insufficient_rules"]), row
+            assert "C-03" not in row["insufficient_rules"] + row["blocking_rules"], row
+    if slug == "qiantang-real" and mode == "verified":
         for row in rows:
             assert {"C-01", "C-02", "C-03"} <= set(row["insufficient_rules"]), row
     if slug == "linping-donghu-real" and mode == "verified":

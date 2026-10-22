@@ -27,6 +27,8 @@ def test_xiasha_scores_use_each_construction_input_once_and_exclude_unverified_p
     project, schemes, rules = load_inputs()
     assert len(schemes) == 3
     assert project.seismic_intensity is None
+    assert project.density_max == 0.22
+    assert project.far_max is None and project.height_max is None
     for result in evaluate(project, schemes, rules):
         assert "G-02" not in result.metrics and "G-03" not in result.metrics
         for key in ("G-05", "Q-05", "Q-06"):
@@ -34,7 +36,8 @@ def test_xiasha_scores_use_each_construction_input_once_and_exclude_unverified_p
             assert result.metrics[key].score is None
         k1, k2 = result.metrics["K-01"], result.metrics["K-02"]
         assert result.dimension_scores.construction == pytest.approx((k1.score * 2 + k2.score) / 3, abs=1e-4)
-        assert sum(item.status == "insufficient_data" for item in result.compliance) == 5
+        assert sum(item.status == "insufficient_data" for item in result.compliance) == 4
+        assert next(item for item in result.compliance if item.rule_id == "C-03").status == "passed"
         assert next(item for item in result.compliance if item.rule_id == "K-05").status == "failed"
     assert all(item.params.unit_mix is None and item.params.risk_features == [] for item in schemes)
 
@@ -65,7 +68,7 @@ def test_report_keeps_counts_exclusions_and_teaching_notes_even_when_details_are
         "schemes": [{"scheme_id": row.scheme_id, "scheme_notes": row.params.scheme_notes} for row in schemes],
     }}
     brief = compact_evidence(evidence)
-    assert all(row["insufficient_compliance_count"] == 5 for row in brief["evaluation"]["results"])
+    assert all(row["insufficient_compliance_count"] == 4 for row in brief["evaluation"]["results"])
     assert all({"G-05", "Q-05", "Q-06"} <= set(row["unscored_metrics"]) for row in brief["evaluation"]["results"])
     view = reader_evidence(evidence, 2, "解释方案取舍", builtin_labels())
     assert "0.95" in view["方案数据说明"]
@@ -94,3 +97,17 @@ def test_case_notes_are_scoped_to_the_current_project(engine):
     assert notes["project_notes"] == "本项目来源"
     assert [row["scheme_notes"] for row in notes["schemes"]] == ["本方案假设"]
     assert len(tools.case_context(True)["schemes"]) == 2
+
+
+def test_official_notice_distinguishes_design_values_from_planning_limits():
+    payload = json.loads((CASE / "project_verified.json").read_text(encoding="utf-8"))
+    source = json.loads((CASE / "sources/manifest.json").read_text(encoding="utf-8"))
+    assert source["article_url"].startswith("https://www.qiantang.gov.cn/")
+    assert source["adopted_limit"]["value"] == payload["params"]["density_max"] == 0.22
+    assert source["not_limits"]["design_far"] == 2.8
+    assert source["not_limits"]["outdoor_ground_to_parapet_m"] == 73.3
+    assert payload["params"]["far_max"] is None
+    assert payload["params"]["height_max"] is None
+    assert payload["_public_facts"]["floors_by_building"]["4"] == 22
+    _, schemes, _ = load_inputs()
+    assert all(row.params.gfa == 71615.6 and row.params.footprint == 5626.94 for row in schemes)

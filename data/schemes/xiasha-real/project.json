@@ -4,7 +4,7 @@
   "params": {
     "site_area": 25577,
     "far_max": null,
-    "density_max": null,
+    "density_max": 0.22,
     "height_max": null,
     "climate_zone": "夏热冬冷",
     "seismic_intensity": null,
@@ -18,30 +18,59 @@
       "Q-05",
       "Q-06"
     ],
-    "project_notes": "路演主案例：真实地块参考，A/B/C全部为教学自拟方案。采用2025年5月债券披露规模作为背景：用地25577m²、地上71585m²、地下46608m²、不计容架空3812m²、总面积122005m²。2025年12月竣工报道另称总面积约11.3万m²、两室占比超70%；保留版本差异，不混拼成真实建成数据。统一23层、8栋及基底=gfa/层数仅为教学体量假设；2024年报道为1栋22层、7栋23层。户型配比、住宅/配套面积拆分、单元及每台电梯服务户数未知，未编造。规划三项上限及本项目设防文件未取得，均留空；B的预制墙底剪力占比仍缺失。G-05因反推基底导致恒约为1，Q-05/Q-06因保障房服务品质代理口径待核定，本项目暂不计分。G-02/G-03合并至K-01/K-02，使用施工组原有经验曲线，不重复计权。核对状态：建筑/土木专业核对人待签认，当前不得表述为全部合规后确定最优方案。"
+    "project_notes": "路演主案例：真实地块参考，A/B/C全部为教学自拟方案。资料背景统一改用2022年9月2日钱塘区政府原始初步设计公示及公示图.zip，已下载原件并核读：用地25577m²、地上计容71615.60m²，其中住宅65081.71m²、配套6533.89m²；地下41247.51m²；公示总建筑面积112863.11m²明确不含架空层，架空层677.20m²另列，不重复相加。基底5626.94m²。指标表明确建筑密度规划要求≤22%，因此density_max补为0.22；图中容积率2.80仅为设计值，不是上限；图例H=73.30m是室外地坪至女儿墙顶、h=70.20m是室内地坪至屋面，均不是规划限高。far_max与height_max继续缺失。逐栋图纸4号楼22层，其余1/2/3/5/6/7/8号楼23层；教学候选仍统一23层和3m层高，模型总高69m不等于公示建筑高度。户型配比、单元及每台电梯服务户数仍未知。住宅/配套面积只作同阶段背景，不外推到每套自拟户型。未取得本项目设防文件，seismic_intensity留空；B为自拟MiC路线，真实项目的公示不能提供B的预制墙底剪力计算结果。G-05因多栋、裙房、架空和最大层数口径不具可比性，Q-05/Q-06因保障房服务品质代理口径待核定，本项目暂不计分。2025年2月调整公示转载、2025年5月债券披露及2025年12月竣工报道分别存档为版本差异，不混入本次输入。G-02/G-03已合并至K-01/K-02。专业核对人仍待签认；当前仅展示已知条件下的评分与取舍。"
   },
   "_field_status": {
-    "site_area": "公开债券披露，PDF 第43页项目53；非规划条件原件",
-    "far_max": "缺失；不得将地上建筑面积/用地面积反推值当成容积率上限",
-    "density_max": "缺失；规划上限未取得",
-    "height_max": "缺失；规划限高未取得",
-    "seismic_intensity": "缺失：本项目设防文件未取得，不沿用相邻项目烈度",
+    "site_area": "已核读政府2022-09-02公示图经济技术指标第1项，25577m²；公示阶段，非竣工实测",
+    "far_max": "仍缺失：同图第6项2.80为方案容积率，未标规划上限，不能填入far_max",
+    "density_max": "已核读同图第8项备注“规划要求≤22%”；取0.22，仅对应本次采用的2022公示阶段",
+    "height_max": "仍缺失：图例73.30/70.20m为不同起算点的设计高度，不能填入规划限高",
+    "seismic_intensity": "仍缺失：政府公示图无本项目设防烈度，未取得结构设计总说明或设防批复",
     "climate_zone": "杭州夏热冬冷；地区输入，非本项目许可字段"
   },
   "_public_facts": {
+    "source_stage": "2022-09-02初步设计公示",
     "site_area": 25577,
-    "above_ground_gfa": 71585,
-    "total_gfa": 122005,
-    "non_far_stilt_gfa": 3812,
-    "underground_gfa": 46608
+    "above_ground_gfa": 71615.6,
+    "residential_gfa": 65081.71,
+    "ancillary_gfa": 6533.89,
+    "total_gfa": 112863.11,
+    "total_gfa_excludes_stilt": true,
+    "non_far_stilt_gfa": 677.2,
+    "underground_gfa": 41247.51,
+    "footprint": 5626.94,
+    "design_far": 2.8,
+    "density_max": 0.22,
+    "design_green_ratio": 0.35,
+    "planning_green_ratio_min": 0.35,
+    "units": 1114,
+    "floors_by_building": {
+      "1": 23,
+      "2": 23,
+      "3": 23,
+      "4": 22,
+      "5": 23,
+      "6": 23,
+      "7": 23,
+      "8": 23
+    },
+    "outdoor_ground_to_parapet_m": 73.3,
+    "indoor_ground_to_roof_m": 70.2
   },
   "_design_notes": {
-    "purpose": "路演主案例；债券披露规模背景与教学候选方案分开，不代表批准或建成方案。",
+    "purpose": "路演主案例；采用可下载核验的2022-09-02政府公示原件作规模及条件背景",
     "scheme_status": "所有方案参数均为演示自拟，包括沿公开规模设定的面积和户数；未做工程验证。",
-    "planning_scope": "公开实际面积/容积率不是规划上限；缺失条件不得按已合规解释。",
-    "source_version": "采用2025-05债券披露阶段；2025-12竣工报道只记差异，不用于覆盖该阶段输入。"
+    "planning_scope": "密度上限0.22来自明确的规划要求备注；容积率设计值与建筑设计高度不作为规划上限",
+    "source_version": "当前采用2022-09-02初步设计公示阶段；后续调整/债券/竣工记录分别保留，不拼接成建成数据"
   },
   "_sources": [
+    {
+      "url": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html",
+      "attachment_url": "https://www.qiantang.gov.cn/api-gateway/jpaas-web-server/front/document/file-download?fileUrl=/cms_files/jcms1/web3176/site/attach/0/78df19aee5864811a02f6f1b5c4c92b1.zip",
+      "published_at": "2022-09-02",
+      "checked_at": "2026-10-22",
+      "status": "已读取政府原页并下载公示图.zip；图表、图例和逐栋标注均已视觉核读，原件摘要及哈希见sources/manifest.json"
+    },
     {
       "url": "https://www.governbond.org.cn/uploadFiles/33/attachFiles/202505/388fa8b9-b364-4828-b9aa-0fdb2644e484.pdf",
       "page": 43,
@@ -63,9 +92,25 @@
   ],
   "_version_differences": [
     {
+      "stage": "2022-09-02政府初步设计公示",
+      "total_gfa": 112863.11,
+      "total_excludes_stilt": true,
+      "used_for_input": true,
+      "status": "2026-10-22已下载政府原始公示图并核读，详见sources/manifest.json"
+    },
+    {
+      "stage": "2025-02调整公示转载",
+      "total_gfa": 113103.79,
+      "residential_gfa": 65144.79,
+      "ancillary_gfa": 6470.81,
+      "underground_gfa": 41488.19,
+      "used_for_input": false,
+      "status": "已核读转载图；政府调整原件未取得，不能用转载覆盖已核读的原始阶段"
+    },
+    {
       "stage": "2025-05债券披露",
       "total_gfa": 122005,
-      "used_for_input": true,
+      "used_for_input": false,
       "status": "沿用仓库2026-10-14核读记录；2026-10-22在线PDF复核超时"
     },
     {

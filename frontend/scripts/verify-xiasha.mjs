@@ -35,12 +35,13 @@ try {
   assert.equal(evaluation.rule_count, 58)
   assert.equal(evaluation.results.length, 3)
   for (const row of evaluation.results) {
-    assert.equal(row.compliance.filter(item => item.status === 'insufficient_data').length, 5)
+    assert.equal(row.compliance.filter(item => item.status === 'insufficient_data').length, 4)
+    assert.equal(row.compliance.find(item => item.rule_id === 'C-03').status, 'passed')
     for (const key of ['G-05', 'Q-05', 'Q-06']) assert.equal(row.metrics[key].status, 'not_applicable')
     assert.equal(row.metrics['G-02'], undefined)
     assert.equal(row.metrics['G-03'], undefined)
   }
-  checks.push('实际API：三套各5条数据不足，三代理指标不计分，施工无重复计权')
+  checks.push('实际API：政府公示密度上限22%生效，三套各4条数据不足，三代理指标不计分，施工无重复计权')
   await page.goto(`${base}/projects/${projectId}/dashboard`)
   await expect(page.getByText('已知条件下的评分与取舍', { exact: true })).toBeVisible()
   await expect(page.getByText('暂不纳入评分：G-05、Q-05、Q-06', { exact: true })).toBeVisible()

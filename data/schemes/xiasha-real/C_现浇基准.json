@@ -21,12 +21,12 @@
     "highest_occupied_floor_height": 66,
     "daylight_factor": 0.027,
     "sunlight_hours": 2.7,
-    "gfa": 71585,
-    "footprint": 3112.39,
+    "gfa": 71615.6,
+    "footprint": 5626.94,
     "buildings": 8,
     "floors": 23,
     "envelope_area": 30390,
-    "volume": 214755,
+    "volume": 214846.8,
     "slab_thickness": 120,
     "design_working_life": 50,
     "min_plan_width": 26,
@@ -60,14 +60,14 @@
     "retaining_concrete_grade": 30,
     "brace_type": "混凝土内支撑",
     "brace_concrete_grade": 30,
-    "scheme_notes": "教学自拟，非真实项目方案。全部统一23层、8栋、1114户；基底由71585/23反推，住宅与配套未拆分，户型配比未知留空。得房率、日照、构件种类和装配率均无实测依据。施工共同假设：4m基坑、69m落地式钢管脚手架，三方案均保留K-05专家论证提示；不将C单独标记为深基坑，也不以无依据的脚手架差异制造优势。专业核对人：待建筑/土木签认；参数依据见parameter-review.md。"
+    "scheme_notes": "教学自拟，非真实项目方案。以2022-09-02政府公示同阶段的地上计容71615.60m²、基底5626.94m²、1114户为共同背景；住宅65081.71m²/配套6533.89m²仅作背景拆分，未证明各自拟方案的逐户面积。实际4号楼22层、其余7栋23层；教学仍统一23层、3m层高，volume=gfa×3仅为体量假设。gfa不含地下和架空；图中73.30m/70.20m不是规划限高，教学总高69m不是图纸实况。户型配比、单元和电梯服务户数未知；得房率、日照、构件种类和装配率均无实测依据。施工共同假设：4m基坑、69m落地式脚手架，均保留K-05提示。专业核对人待建筑/土木签认，详见parameter-review.md。"
   },
   "_design_notes": {
     "data_status": "全部方案参数为演示自拟，不能当作实际项目方案。",
     "comparison_scope": "同一地块保持面积、户数、栋数与层数一致，比较结构路线、居住参数及产业化参数；不预设名次。",
-    "geometry": "纯住宅等高体量演示假设：总基底=gfa/floors；volume=gfa*3。实际混合高度、架空、裙房需单独建模。",
-    "scope": "G-05/Q-05/Q-06暂不纳入本项目评分；规划、设防、MiC底剪力条件缺失仍待补证。",
-    "public_scale": "1114户和8栋作为公开规模参考；统一23层为教学简化，非逐栋实况。",
+    "geometry": "采用同一2022公示阶段地上计容面积和总基底作规模背景；volume=gfa*3及统一23层仍为教学假设，不能代表混合高度、裙房或架空实况。",
+    "scope": "密度上限补为0.22；容积率上限、规划限高、设防及MiC底剪力占比仍缺。G-05/Q-05/Q-06暂不计分。",
+    "public_scale": "政府原始公示：1114户、8栋；4号22层，其余23层。教学候选统一23层，不冒充逐栋实际方案。",
     "construction": "三方案统一4m基坑和69m落地式脚手架教学基准，全部触发K-05；风险标签统一为空，不替代专项方案。"
   },
   "_parameter_evidence": {
@@ -82,9 +82,9 @@
       "reviewer": "待建筑/土木专业签认"
     },
     "units": {
-      "status": "教学假设，非工程实测",
-      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
-      "reviewer": "待建筑/土木专业签认"
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
     },
     "unit_mix": {
       "status": "缺失，待补证",
@@ -142,19 +142,19 @@
       "reviewer": "待建筑/土木专业签认"
     },
     "gfa": {
-      "status": "教学假设，非工程实测",
-      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
-      "reviewer": "待建筑/土木专业签认"
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
     },
     "footprint": {
-      "status": "教学假设，非工程实测",
-      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
-      "reviewer": "待建筑/土木专业签认"
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
     },
     "buildings": {
-      "status": "教学假设，非工程实测",
-      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
-      "reviewer": "待建筑/土木专业签认"
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
     },
     "floors": {
       "status": "教学假设，非工程实测",
@@ -167,9 +167,9 @@
       "reviewer": "待建筑/土木专业签认"
     },
     "volume": {
-      "status": "教学假设，非工程实测",
-      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
-      "reviewer": "待建筑/土木专业签认"
+      "status": "教学推算，非工程实测",
+      "basis": "71615.60*3=214846.8；无法替代多栋、裙房和架空体量模型",
+      "reviewer": "待建筑专业签认"
     },
     "slab_thickness": {
       "status": "教学假设，非工程实测",
@@ -217,9 +217,9 @@
       "reviewer": "待建筑/土木专业签认"
     },
     "green_ratio": {
-      "status": "教学假设，非工程实测",
-      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
-      "reviewer": "待建筑/土木专业签认"
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
     },
     "structural_height_classification": {
       "status": "教学假设，非工程实测",
