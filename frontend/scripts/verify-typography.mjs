@@ -1,4 +1,4 @@
-/** Readability against the isolated local preview. TYPOGRAPHY_PHASE=before records an optional heading baseline. */
+/** Readability against the isolated local preview. Set TYPOGRAPHY_COMPARE_BASELINE=1 to compare a recorded heading baseline. */
 import assert from 'node:assert/strict'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import { fileURLToPath } from 'node:url'
@@ -57,7 +57,7 @@ try {
     checks.push(`${width}px 首页、项目总览、方案录入、对比看板、对话页`)
   }
   if (phase === 'after') {
-    const baseline = await readFile(new URL('../before/report.json', output), 'utf8').then(JSON.parse).catch(error => {
+    const baseline = process.env.TYPOGRAPHY_COMPARE_BASELINE === '1' && await readFile(new URL('../before/report.json', output), 'utf8').then(JSON.parse).catch(error => {
       if (error.code === 'ENOENT') return undefined
       throw error
     })

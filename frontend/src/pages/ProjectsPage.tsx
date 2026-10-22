@@ -35,7 +35,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { projects } from '../api/projects'
 import { USE_MOCK } from '../api/client'
 import { schemes } from '../api/schemes'
-import { schema } from '../api/schema'
+import { schemaOptions } from '../utils/project-queries'
+import { usePagePrefetch } from '../utils/use-page-prefetch'
 import type { Project, ProjectParams } from '../api/types'
 import type { SchemaFormValues } from '../components/SchemaForm'
 import { featuredProject, isTeachingCase } from '../utils/project-presentation'
@@ -91,6 +92,7 @@ export async function clearProjectDerivedQueries(
 export default function ProjectsPage() {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
+  const prefetch = usePagePrefetch()
   const [open, setOpen] = useState(false)
   const dialogOpener = useRef<HTMLElement | null>(null)
   const createButton = useRef<HTMLButtonElement>(null)
@@ -119,10 +121,7 @@ export default function ProjectsPage() {
     queryKey: ['projects'],
     queryFn: () => projects.list(),
   })
-  const schemaQuery = useQuery({
-    queryKey: ['schema'],
-    queryFn: () => schema.get(),
-  })
+  const schemaQuery = useQuery(schemaOptions())
   // 优先真实地块上的教学推演；编号和列表位置不决定方案真实性。
   const featured = featuredProject(projectQuery.data, selectedProjectId)
   const schemeQuery = useQuery({
@@ -291,7 +290,7 @@ export default function ProjectsPage() {
       cell: ({ row }) => (
         <div className="home-row-actions">
           <Button asChild variant="ghost" size="sm">
-            <Link to={`/projects/${row.original.id}/schemes`}>
+            <Link to={`/projects/${row.original.id}/schemes`} {...prefetch(`/projects/${row.original.id}/schemes`)}>
               管理方案
               <ArrowRight size={13} />
             </Link>
@@ -646,7 +645,7 @@ export default function ProjectsPage() {
                 </div>
               </dl>
               <Button asChild className="home-open-dashboard">
-                <Link to={`/projects/${featured.id}/dashboard`}>
+                <Link to={`/projects/${featured.id}/dashboard`} {...prefetch(`/projects/${featured.id}/dashboard`)}>
                   打开比选看板
                   <ArrowRight size={15} />
                 </Link>
@@ -697,6 +696,7 @@ export default function ProjectsPage() {
               )}
               <Link
                 to={`/projects/${featured.id}/schemes`}
+                {...prefetch(`/projects/${featured.id}/schemes`)}
                 className="home-detail-link"
               >
                 管理全部方案

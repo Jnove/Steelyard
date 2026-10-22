@@ -2,9 +2,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Alert, Button, Empty, Radio, Select, Skeleton, Slider, Tag, Tooltip } from 'antd'
 import { useQuery } from '@tanstack/react-query'
 import { Link, useParams } from 'react-router-dom'
-import { evaluation } from '../api/evaluation'
 import { ranking } from '../api/ranking'
-import { projects } from '../api/projects'
+import { evaluationOptions, projectOptions, roleQueryOptions } from '../utils/project-queries'
 import type { EvalResult, RankResponse } from '../api/types'
 import { dimensions, type DimensionKey, isMock } from '../constants/dimensions'
 import { schemeColor, tokens } from '../theme'
@@ -85,9 +84,9 @@ function ProjectDashboard({ id }: { id: number }) {
   const request = decisionInput(context)
   const [debounced, setDebounced] = useState<RankInput>(request)
   const [trace, setTrace] = useState<{ evaluation: EvalResult; dimension?: DimensionKey; ruleId?: string }>()
-  const project = useQuery({ queryKey: ['project',id], queryFn: () => projects.get(id) })
-  const evaluated = useQuery({ queryKey: ['evaluation',id], queryFn: () => evaluation.get(id) })
-  const roles = useQuery({ queryKey: ['roles',id], queryFn: () => ranking.roles(id) })
+  const project = useQuery(projectOptions(id))
+  const evaluated = useQuery(evaluationOptions(id))
+  const roles = useQuery(roleQueryOptions(id))
   const requestKey = JSON.stringify(request)
   useEffect(() => { const timer = setTimeout(() => setDebounced(JSON.parse(requestKey) as RankInput), 150); return () => clearTimeout(timer) }, [requestKey])
   useEffect(() => {

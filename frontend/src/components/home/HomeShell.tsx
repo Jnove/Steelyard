@@ -20,6 +20,8 @@ import {
 } from 'lucide-react'
 import { projects } from '../../api/projects'
 import { USE_MOCK } from '../../api/client'
+import { projectOptions } from '../../utils/project-queries'
+import { usePagePrefetch } from '../../utils/use-page-prefetch'
 import { Button } from '../ui/button'
 import {
   Dialog,
@@ -36,6 +38,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
   const menuTrigger = useRef<HTMLButtonElement>(null)
   const location = useLocation()
   const navigate = useNavigate()
+  const prefetch = usePagePrefetch()
   const projectId = Number(location.pathname.match(/\/projects\/(\d+)/)?.[1])
   const section = location.pathname.split('/').at(-1)
   const pageName = section === 'schemes' ? '方案录入' : section === 'dashboard' ? '对比看板' : section === 'chat' ? '对话与报告' : '项目总览'
@@ -46,7 +49,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
   const recent = [...(query.data ?? [])]
     .sort((a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at))
     .slice(0, 5)
-  const current = useQuery({ queryKey: ['project', projectId], queryFn: () => projects.get(projectId), enabled: Number.isSafeInteger(projectId) && projectId > 0 })
+  const current = useQuery({ ...projectOptions(projectId), enabled: Number.isSafeInteger(projectId) && projectId > 0 })
   const destinations = [
     { to: '/projects', label: '项目总览', icon: FolderOpen },
     ...(projectId > 0 ? [
@@ -55,7 +58,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
       { to: `/projects/${projectId}/chat`, label: '对话与报告', icon: MessageSquare },
     ] : []),
   ]
-  const navigation = (close?: () => void) => destinations.map(item => <NavLink end key={item.to} to={item.to} onClick={close} className={({ isActive }) => isActive ? 'home-nav-active' : ''}><item.icon size={17} /><span>{item.label}</span></NavLink>)
+  const navigation = (close?: () => void) => destinations.map(item => <NavLink end key={item.to} to={item.to} {...prefetch(item.to)} onClick={close} className={({ isActive }) => isActive ? 'home-nav-active' : ''}><item.icon size={17} /><span>{item.label}</span></NavLink>)
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [location.pathname])
@@ -115,6 +118,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
                 <Link
                   key={project.id}
                   to={`/projects/${project.id}/schemes`}
+                  {...prefetch(`/projects/${project.id}/schemes`)}
                   title={project.name}
                 >
                   <FolderClosed size={15} />
@@ -160,7 +164,7 @@ export default function HomeShell({ children }: { children: ReactNode }) {
               <li><Link className="home-breadcrumb-parent" to="/projects">工作空间</Link></li>
               <li className="workbench-path-divider" aria-hidden="true"><ChevronRight size={13} /></li>
               {projectId > 0 && <>
-                <li className="workbench-path-project"><Link className="workbench-breadcrumb-project" to={`/projects/${projectId}/schemes`} title={current.data?.name}>{current.data?.name ?? '正在加载项目…'}</Link></li>
+                <li className="workbench-path-project"><Link className="workbench-breadcrumb-project" to={`/projects/${projectId}/schemes`} {...prefetch(`/projects/${projectId}/schemes`)} title={current.data?.name}>{current.data?.name ?? '正在加载项目…'}</Link></li>
                 <li className="workbench-path-divider" aria-hidden="true"><ChevronRight size={13} /></li>
               </>}
               <li><span aria-current="page">{pageName}</span></li>

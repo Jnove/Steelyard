@@ -1,10 +1,14 @@
-import ReactECharts from 'echarts-for-react'
+import { lazy } from 'react'
+import { Skeleton } from 'antd'
 import type { EChartsOption } from 'echarts'
-import { tokens } from '../theme'
+import DeferredContent from './DeferredContent'
+
+const ChartRenderer = lazy(() => import('./ChartRenderer'))
 
 export default function Chart({ option, height = 280, label }: { option: EChartsOption; height?: number; label: string }) {
-  return <div role="img" aria-label={label}><ReactECharts notMerge option={{
-    animationDuration: tokens.duration, textStyle: { fontFamily: tokens.font, fontSize: tokens.small, color: tokens.ink },
-    color: tokens.chart, ...option,
-  }} style={{ height, width: '100%' }} /></div>
+  return <div role="img" aria-label={label}>
+    <DeferredContent errorTitle="图表暂时无法加载" fallback={<div style={{ height }} role="status" aria-label="图表加载中"><Skeleton active /></div>}>
+      <ChartRenderer option={option} height={height} />
+    </DeferredContent>
+  </div>
 }

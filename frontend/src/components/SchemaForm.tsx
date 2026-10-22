@@ -1,8 +1,10 @@
 import { useState } from 'react'
-import { errorMessages, orderedFields, fieldType, normalizeRequiredOptions, schemaInitialParams, schemaSubmitParams, validateSchemaField } from '../utils/schema-form'
+import { orderedFields, fieldType, normalizeRequiredOptions, schemaInitialParams, schemaSubmitParams, validateSchemaField } from '../utils/schema-form'
 export * from '../utils/schema-form'
+import { RequestErrors } from './RequestErrors'
+export { RequestErrors } from './RequestErrors'
 
-import { Alert, Button, Checkbox, Collapse, Form, Input, InputNumber, Select, Space, Tag, Tooltip } from 'antd'
+import { Button, Checkbox, Collapse, Form, Input, InputNumber, Select, Space, Tag, Tooltip } from 'antd'
 import type { FieldMetadata, FieldSchema } from '../api/types'
 
 export interface SchemaFormValues {
@@ -18,12 +20,6 @@ interface SchemaFormProps {
   error?: unknown
   onSubmit: (values: SchemaFormValues) => void
   onCancel: () => void
-}
-
-export function RequestErrors({ error, title = '操作未完成' }: { error: unknown; title?: string }) {
-  const messages = errorMessages(error)
-  if (!messages.length) return null
-  return <Alert type="error" showIcon message={title} description={<ul>{messages.map((message, index) => <li key={index}>{message}</li>)}</ul>} />
 }
 
 function RequiredOptionsListInput({ field, options, value, onChange }: {

@@ -1,22 +1,26 @@
-import { useState } from 'react'
+import { lazy, useState } from 'react'
 import { Alert, Button, Empty, Modal, Result, Skeleton, Space, Table, Tag, Tooltip, Typography, Upload, message } from 'antd'
 import type { ColumnsType } from 'antd/es/table'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { projects } from '../api/projects'
 import { schemes } from '../api/schemes'
 import { API_BASE } from '../api/base'
 import { USE_MOCK } from '../api/client'
 import { evaluation } from '../api/evaluation'
-import { schema } from '../api/schema'
+import { projectOptions, schemaOptions, schemeOptions } from '../utils/project-queries'
 import type { FieldMetadata, Scheme, SchemeParams } from '../api/types'
-import SchemaForm, { orderedFields, recordedSchemaFields, schemaFieldValue, RequestErrors } from '../components/SchemaForm'
+import { orderedFields, recordedSchemaFields, schemaFieldValue } from '../utils/schema-form'
+import { RequestErrors } from '../components/RequestErrors'
+import DeferredContent from '../components/DeferredContent'
 import type { SchemaFormValues } from '../components/SchemaForm'
 import { IconPlay, IconPlus, IconUpload } from '../components/Icons'
 import { parameterSummary } from '../utils/scheme-presentation'
 import { schemeColor } from '../theme'
 import DeleteConfirm from '../components/DeleteConfirm'
 import { clearDeletedData } from '../utils/deletion-cache'
+import { invalidateSchemeResults } from '../utils/invalidate-scheme-results'
+
+const SchemaForm = lazy(() => import('../components/SchemaForm'))
 
 function getSchemePresentation(scheme: Scheme) {
   return { ...parameterSummary(scheme.params), color: schemeColor(scheme.id) }
@@ -64,16 +68,10 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
   const [editing, setEditing] = useState<Scheme | 'new' | null>(null)
   const [deletingScheme, setDeletingScheme] = useState<Scheme>()
   const [fileError, setFileError] = useState<string | null>(null)
-  const projectQuery = useQuery({ queryKey: ['project', projectId], queryFn: () => projects.get(projectId) })
-  const schemeQuery = useQuery({ queryKey: ['schemes', projectId], queryFn: () => schemes.list(projectId) })
-  const schemaQuery = useQuery({ queryKey: ['schema'], queryFn: () => schema.get() })
-  const invalidateResults = async () => {
-    await Promise.all([
-      queryClient.invalidateQueries({ queryKey: ['schemes', projectId] }),
-      queryClient.invalidateQueries({ queryKey: ['evaluation', projectId] }),
-      queryClient.invalidateQueries({ queryKey: ['rank', projectId] }),
-    ])
-  }
+  const projectQuery = useQuery(projectOptions(projectId))
+  const schemeQuery = useQuery(schemeOptions(projectId))
+  const schemaQuery = useQuery(schemaOptions())
+  const invalidateResults = () => invalidateSchemeResults(queryClient, projectId)
   const saveScheme = useMutation({
     mutationFn: ({ values, schemeId }: { values: SchemaFormValues; schemeId?: number }) => {
       const input = { name: values.name, params: values.params as SchemeParams }
@@ -98,10 +96,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
   const evaluate = useMutation({
     mutationFn: () => evaluation.run(projectId),
     onSuccess: async () => {
-      await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['evaluation', projectId] }),
-        queryClient.invalidateQueries({ queryKey: ['rank', projectId] }),
-      ])
+      await invalidateResults()
       navigate(`/projects/${projectId}/dashboard`)
     },
   })
@@ -325,7 +320,7 @@ function ProjectSchemes({ projectId }: { projectId: number }) {
       </section>
 
       <Modal title={editing === 'new' ? '添加候选方案' : `编辑方案 · ${editing?.name ?? ''}`} open={editing !== null} footer={null} width={900} maskClosable={false} closable={!saveScheme.isPending} keyboard={!saveScheme.isPending} onCancel={() => { if (!saveScheme.isPending) setEditing(null) }}>
-        {editing !== null && schemaQuery.data && <SchemaForm key={editing === 'new' ? 'new' : editing.id} schema={schemaQuery.data.scheme_params} nameLabel="方案名称" initialValues={editing === 'new' ? undefined : editing} pending={saveScheme.isPending} error={saveScheme.error} onSubmit={(values) => saveScheme.mutate({ values, schemeId: editing === 'new' ? undefined : editing.id })} onCancel={() => setEditing(null)} />}
+        {editing !== null && schemaQuery.data && <DeferredContent errorTitle="方案表单暂时无法加载" fallback={<Skeleton active paragraph={{ rows: 6 }} />}><SchemaForm key={editing === 'new' ? 'new' : editing.id} schema={schemaQuery.data.scheme_params} nameLabel="方案名称" initialValues={editing === 'new' ? undefined : editing} pending={saveScheme.isPending} error={saveScheme.error} onSubmit={(values) => saveScheme.mutate({ values, schemeId: editing === 'new' ? undefined : editing.id })} onCancel={() => setEditing(null)} /></DeferredContent>}
       </Modal>
     </>
   )

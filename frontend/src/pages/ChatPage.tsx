@@ -13,6 +13,7 @@ import { API_BASE } from '../api/base'
 import { ApiError } from '../api/client'
 import { applyAgentEvent, numberSegments, type StreamContent, type ToolCall } from '../api/agent-state'
 import TraceDrawer from '../components/TraceDrawer'
+import { invalidateSchemeResults } from '../utils/invalidate-scheme-results'
 import { IconFileText } from '../components/Icons'
 import { planRequest, suggestedQuestions, type PlanResponse } from '../api/agents'
 import { offlineQuestions } from '../utils/suggested-questions'
@@ -349,7 +350,10 @@ function ProjectChat({ projectId }: { projectId: number }) {
         } else if (event.type === 'tool_start' || event.type === 'tool_end') {
           update(item => applyAgentEvent(item, event))
           if (!isMock && event.type === 'tool_end' && event.result && typeof event.result === 'object') {
-            if (event.name === 'evaluate') queryClient.setQueryData(['evaluation', projectId], event.result)
+            if (event.name === 'evaluate') {
+              await queryClient.cancelQueries({ queryKey: ['evaluation', projectId] })
+              queryClient.setQueryData(['evaluation', projectId], event.result)
+            }
             // 工具排序可能包含副本，不能写入正式方案的排序查询缓存。
           }
         } else if (event.type === 'citation_warning') {
@@ -364,9 +368,7 @@ function ProjectChat({ projectId }: { projectId: number }) {
           update((item) => ({ ...applyAgentEvent(item, event), status: 'done' }))
           // 后端可能创建副本或重新评估；回到看板时读取本次的结果。
           if (!isMock) {
-            for (const key of ['evaluation', 'rank', 'schemes']) {
-              void queryClient.invalidateQueries({ queryKey: [key, projectId], refetchType: 'none' })
-            }
+            await invalidateSchemeResults(queryClient, projectId, 'none')
             if (confirmedRequest?.intent === 'reweight') {
               updateContext(confirmedRequest.weights
                 ? { role: 'custom', weights: confirmedRequest.weights }
