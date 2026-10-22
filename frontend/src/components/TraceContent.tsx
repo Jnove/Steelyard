@@ -50,7 +50,7 @@ export default function TraceContent({ evaluation, dimension, ruleId, open }: Tr
           { key: 'score', label: '得分', children: metric.score == null ? '—（数据不足或不适用）' : metric.score.toFixed(2) + ' / 100' },
           { key: 'formula', label: '计算公式', children: <code>{metric.formula}</code> },
           { key: 'weight', label: '维度内权重', children: metric.weight_in_dimension ?? 1 },
-          { key: 'source', label: '依据', children: metric.source },
+          { key: 'source', label: '依据', children: metric.source.replaceAll('条文号：待按正式文本核对；', '') },
         ]} />
         {!!metric.missing_fields?.length && <Alert type="warning" message={'缺少字段：' + metric.missing_fields.join('、')} />}
         {points.length > 0 && <Chart height={200} label={metric.name + '评分分段与当前值'} option={{
@@ -71,7 +71,7 @@ export default function TraceContent({ evaluation, dimension, ruleId, open }: Tr
         { key: 'value', label: '原始值', children: check.value ?? '—' },
         { key: 'limit', label: '条件', children: check.limit ?? '—' },
         { key: 'formula', label: '判定公式', children: <code>{check.formula}</code> },
-        { key: 'source', label: '依据', children: check.source ?? 'TODO(专业组)' },
+        { key: 'source', label: '依据', children: (check.source ?? 'TODO(专业组)').replaceAll('条文号：待按正式文本核对；', '') },
       ]} />
     </section>)}
   </>
