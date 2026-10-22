@@ -198,11 +198,6 @@ function ProjectDashboard({ id }: { id: number }) {
         <span className="muted">讨论与报告沿用当前视角、权重和所选方案。</span>
       </div>
 
-      {results.some(row => (row.compliance ?? []).some(item => item.status === 'insufficient_data')) && (
-        <Alert showIcon type="warning" style={{ marginBottom: 16 }}
-          message="已知条件下的评分与取舍"
-          description="仍有检查数据不足，当前排名不能认定全部合规或确定最优方案。请先补齐规划条件和结构依据。" />
-      )}
       {!!project.data?.params.scoring_exclusions?.length && (
         <Alert showIcon type="info" style={{ marginBottom: 16 }}
           message={'暂不纳入评分：' + project.data.params.scoring_exclusions.join('、')}
