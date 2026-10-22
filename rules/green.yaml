@@ -15,33 +15,8 @@
   weight_in_dimension: 2
   source: "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第10、20-24条）：装配率不得低于 50%，达到基本认定条件后按装配率区间划分等级。"
 
-- id: G-02
-  name: 标准层重复率
-  type: metric
-  dimension: construction
-  value: "std_floor_repeat"
-  scoring:
-    kind: piecewise
-    points:
-      - [0.50, 0]
-      - [0.80, 70]
-      - [0.95, 100]
-  weight_in_dimension: 2
-  source: "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第25-29条）：标准化和模数协调有助于提高真实装配化水平，应减少非标构件及现场切割。"
-
-- id: G-03
-  name: 预制构件种类数
-  type: metric
-  dimension: construction
-  value: "component_types"
-  scoring:
-    kind: piecewise
-    points:
-      - [8, 100]
-      - [14, 60]
-      - [20, 0]
-  weight_in_dimension: 1
-  source: "《装配式建筑评价标准》GB/T 51129-2017；条文号：待按正式文本核对；原文依据（专业判断第27-29条）：应优先采用重复性高、尺寸协调、接口统一的构件和部品，减少非标构件及现场二次加工。"
+# G-02 / G-03 已合并至 K-01 / K-02（2026-10-22）：同一输入只计权一次。
+# 保留施工组已声明为经验口径的曲线，旧编号不再加载，历史报告仍按原版本解释。
 
 - id: G-04
   name: 体形系数
@@ -60,6 +35,7 @@
 - id: G-05
   name: 楼层效率
   type: metric
+  when: "'G-05' not in scoring_exclusions"
   dimension: green
   value: "floor_efficiency"
   scoring:
@@ -69,4 +45,4 @@
       - [0.80, 70]
       - [0.95, 100]
   weight_in_dimension: 1
-  source: "《绿色建筑评价标准》GB/T 50378-2019；条文号：待按正式文本核对；原文依据（专业判断第28-34条）：节地与土地利用应以集约、高效和减少生态扰动为目标。需同步核对 2024 年版及地方实施文件。"
+  source: "项目偏好代理指标，非规范限值；面积口径与绿色性能解释待专业核定。若基底由 gfa/floors 反推，本量恒约为1，不能证明绿色优势，应通过项目 scoring_exclusions 暂不计分。参考 GB/T 50378-2019，条文及2024年版适用性待核对。"

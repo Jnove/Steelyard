@@ -5,11 +5,7 @@
     "structure_type": "剪力墙",
     "mic_system": null,
     "units": 1114,
-    "unit_mix": {
-      "一室": 371,
-      "两室": 371,
-      "三室": 372
-    },
+    "unit_mix": null,
     "floor_height": 3.0,
     "inner_area_ratio": 0.8,
     "south_room_ratio": 0.78,
@@ -25,12 +21,12 @@
     "highest_occupied_floor_height": 66,
     "daylight_factor": 0.028,
     "sunlight_hours": 2.8,
-    "gfa": 71585,
-    "footprint": 3112.39,
+    "gfa": 71615.6,
+    "footprint": 5626.94,
     "buildings": 8,
     "floors": 23,
     "envelope_area": 28364,
-    "volume": 214755,
+    "volume": 214846.8,
     "slab_thickness": 120,
     "design_working_life": 50,
     "min_plan_width": 20,
@@ -63,13 +59,282 @@
     "retaining_wall_two_in_one": false,
     "retaining_concrete_grade": 30,
     "brace_type": "混凝土内支撑",
-    "brace_concrete_grade": 30
+    "brace_concrete_grade": 30,
+    "scheme_notes": "教学自拟，非真实项目方案。以2022-09-02政府公示同阶段的地上计容71615.60m²、基底5626.94m²、1114户为共同背景；住宅65081.71m²/配套6533.89m²仅作背景拆分，未证明各自拟方案的逐户面积。实际4号楼22层、其余7栋23层；教学仍统一23层、3m层高，volume=gfa×3仅为体量假设。gfa不含地下和架空；图中73.30m/70.20m不是规划限高，教学总高69m不是图纸实况。户型配比、单元和电梯服务户数未知；得房率、日照、构件种类和装配率均无实测依据。施工共同假设：4m基坑、69m落地式脚手架，均保留K-05提示。专业核对人待建筑/土木签认，详见parameter-review.md。"
   },
   "_design_notes": {
     "data_status": "全部方案参数为演示自拟，不能当作实际项目方案。",
     "comparison_scope": "同一地块保持面积、户数、栋数与层数一致，比较结构路线、居住参数及产业化参数；不预设名次。",
-    "geometry": "纯住宅等高体量演示假设：总基底=gfa/floors；volume=gfa*3。实际混合高度、架空、裙房需单独建模。",
-    "scope": "原案例的专业待核定边界仍存在：Q-05/Q-06的保障房评分偏差、S-29缺字段提示、MiC适用条件缺口。",
-    "public_scale": "同区规模对照与缺规划条件的诚实提示。户数1114、23层、8栋参考2024年项目报道，仍按演示方案处理。"
+    "geometry": "采用同一2022公示阶段地上计容面积和总基底作规模背景；volume=gfa*3及统一23层仍为教学假设，不能代表混合高度、裙房或架空实况。",
+    "scope": "密度上限补为0.22；容积率上限、规划限高、设防及MiC底剪力占比仍缺。G-05/Q-05/Q-06暂不计分。",
+    "public_scale": "政府原始公示：1114户、8栋；4号22层，其余23层。教学候选统一23层，不冒充逐栋实际方案。",
+    "construction": "三方案统一4m基坑和69m落地式脚手架教学基准，全部触发K-05；风险标签统一为空，不替代专项方案。"
+  },
+  "_parameter_evidence": {
+    "structure_type": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "mic_system": {
+      "status": "缺失，待补证",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "units": {
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
+    },
+    "unit_mix": {
+      "status": "缺失，待补证",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "floor_height": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "inner_area_ratio": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "south_room_ratio": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "window_floor_ratio": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "window_wall_ratio": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "elevators_per_unit": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "highest_occupied_floor": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "highest_occupied_floor_height": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "daylight_factor": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "sunlight_hours": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "gfa": {
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
+    },
+    "footprint": {
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
+    },
+    "buildings": {
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
+    },
+    "floors": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "envelope_area": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "volume": {
+      "status": "教学推算，非工程实测",
+      "basis": "71615.60*3=214846.8；无法替代多栋、裙房和架空体量模型",
+      "reviewer": "待建筑专业签认"
+    },
+    "slab_thickness": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "design_working_life": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "min_plan_width": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "concrete_grade": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "irregularity_items": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "std_floor_repeat": {
+      "status": "教学假设，非工程实测",
+      "basis": "应由重复标准层数/适用楼层数计算；本例直接假设，尚无标准层图或逐层清单",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "component_types": {
+      "status": "教学假设，非工程实测",
+      "basis": "应由构件分类清单去重计数；本例直接假设，尚无构件清单，分类粒度待核对",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "risk_features": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "prefab_ratio_est": {
+      "status": "教学假设，非工程实测",
+      "basis": "本例预估比例，尚无装配率计算书；不能将该输入视为GB/T 51129实算结果",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "green_ratio": {
+      "status": "2022政府公示阶段公开设计背景，非建成实测",
+      "basis": "https://www.qiantang.gov.cn/art/2022/9/2/art_1657687_58944568.html；详见sources/manifest.json和parameter-review.md",
+      "reviewer": "公开资料已核读，工程适用性待建筑/土木签认"
+    },
+    "structural_height_classification": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "shear_wall_thickness": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "foundation_type": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "foundation_depth": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "foundation_working_life": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "foundation_concrete_grade": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "raft_rebar_ratio": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "frame_beam_width": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "frame_column_shape": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "frame_column_size": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "has_staggered_floor": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "has_out_of_plane_staggered_wall": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "steel_system": {
+      "status": "缺失，待补证",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "excavation_depth": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "excavation_working_life": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "formwork_height": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "scaffold_type": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "scaffold_height": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "retaining_type": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "retaining_wall_two_in_one": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "retaining_concrete_grade": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "brace_type": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    },
+    "brace_concrete_grade": {
+      "status": "教学假设，非工程实测",
+      "basis": "详见parameter-review.md；原值仅用于已知条件下比较",
+      "reviewer": "待建筑/土木专业签认"
+    }
   }
 }

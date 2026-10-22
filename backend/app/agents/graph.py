@@ -324,6 +324,7 @@ class AgentGraph:
         if state.plan.intent == "reweight":
             previous = await self.call("reporter", "get_result", project_id=state.project_id)
             context["evidence"] = {**previous, "ranking": state.evidence["ranking"]}
+        context["evidence"]["data_notes"] = await asyncio.to_thread(self.tools.case_context, state.request.include_whatif)
         labels = await asyncio.to_thread(self.tools.field_labels)
         rule_names = {item["rule_id"]: item["name"] for row in context["evidence"].get("evaluation", {}).get("results", [])
                       for item in [*row.get("compliance", []), *row.get("metrics", {}).values()]}

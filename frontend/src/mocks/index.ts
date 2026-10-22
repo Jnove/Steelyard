@@ -154,7 +154,9 @@ export const schemes = {
       return { id: item.id, name: item.name }
     })
     const project = projectIn(state, id)
-    const project_params_updated = Object.values(project.params).every(value => value == null)
+    // 空的代理指标排除清单是模型默认值，不表示已录入地块参数。
+    const project_params_updated = Object.entries(project.params).every(([key, value]) =>
+      value == null || (key === 'scoring_exclusions' && Array.isArray(value) && value.length === 0))
     if (project_params_updated) project.params = { ...clone(fixture.defaults.project), ...clone(known.project_params) }
     save(state)
     return { created, errors: [], project_params_updated,

@@ -226,6 +226,8 @@ def render_fake_report(context: dict[str, Any]) -> str:
     brief_report = context.get("response_mode", "brief_report") == "brief_report"
     lines = ["## 结论"] if brief_report else []
     lines.append("FakeLLM 演示；以下仅摘录当前工具结果。")
+    if any(item["status"] == "insufficient_data" for row in results for item in row["compliance"]):
+        lines.append("仍有检查数据不足；排名仅展示已知条件下的评分与取舍，不能认定全部合规或确定最优方案。")
     labels = {"quality": "居住品质", "structure": "结构", "construction": "施工", "green": "绿色"}
     for item in ranking[:1]:
         lines.append(
