@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { Link } from 'react-router-dom'
-import { ArrowDown, ArrowRight, Scale } from 'lucide-react'
+import { ArrowDown, ArrowRight, BookOpen, Scale } from 'lucide-react'
 import { projects } from '../api/projects'
 import { schemes } from '../api/schemes'
 import BuildingShowcase from '../components/BuildingShowcase'
@@ -40,8 +40,8 @@ export default function LandingPage() {
           <span>筑衡<small>Steelyard</small></span>
         </Link>
         <nav aria-label="首页导航">
-          <a href="#workflow">如何使用</a>
-          <Link to="/projects">项目工作台 <ArrowRight size={17} /></Link>
+          <Button asChild variant="outline" className="landing-nav-help"><a href="#workflow"><BookOpen size={18} aria-hidden="true" />如何使用</a></Button>
+          <Button asChild className="landing-nav-workspace"><Link to="/projects">项目工作台 <ArrowRight size={18} aria-hidden="true" /></Link></Button>
         </nav>
       </header>
       <main id="landing-main">

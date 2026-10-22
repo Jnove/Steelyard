@@ -68,14 +68,14 @@
 .home-theme .field-group-tag { color: var(--color-muted); background: var(--color-background); }
 .home-theme .role-bar { display: block; border: 1px solid var(--color-border); background: var(--color-surface); padding: 16px 20px; border-radius: 8px; margin: 0 0 20px; box-shadow: none; backdrop-filter: none; }
 .role-bar-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 20px; }
-.home-theme .role-bar-controls h2 { font-size: 16px; font-weight: 600; white-space: nowrap; }
+.home-theme .role-bar-controls h2 { font-size: 20px; font-weight: 600; white-space: nowrap; }
 .home-theme .role-state { font-size: var(--small); margin-left: auto; color: var(--color-muted); white-space: nowrap; }
 .home-theme .decision-role-options { display: flex; flex-wrap: wrap; gap: 4px; max-width: 100%; }
 .home-theme .decision-role-options .ant-radio-button-wrapper { flex: 0 0 auto; min-width: 0; min-height: 40px; height: auto; padding: 7px 12px; line-height: 24px; text-align: center; border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: transparent; font-size: var(--fontSize); color: var(--color-muted); box-shadow: none; }
 .home-theme .decision-role-options .ant-radio-button-wrapper::before { display: none; }
 .home-theme .decision-role-options .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) { background: transparent; color: var(--color-primary); border-bottom-color: var(--color-primary); box-shadow: none; font-weight: 600; }
 .home-theme .decision-role-options .ant-radio-button-wrapper:has(:focus-visible) { outline: 2px solid var(--color-primary); outline-offset: 2px; }
-.role-weight-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 24px; margin-top: 12px; }
+.role-weight-meta { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px 24px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #edf1ef; }
 .role-weight-summary { display: flex; flex-wrap: wrap; gap: 9px 24px; font-size: var(--fontSize); }
 .role-weight-summary > div { display: flex; align-items: baseline; gap: 8px; }
 .role-weight-summary dt { color: var(--color-muted); }
