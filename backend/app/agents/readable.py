@@ -132,7 +132,12 @@ def reader_evidence(evidence: dict[str, Any], scheme_id: int | None, question: s
                     peer = other.get("metrics", {}).get(key, {})
                     if (metric.get("dimension") == dimension and metric.get("status") == peer.get("status") == "scored"
                         and metric.get("score") is not None and peer.get("score") is not None and metric["score"] != peer["score"]):
-                        clues.append({"指标": metric["name"], "当前规则评价": "较高" if metric["score"] > peer["score"] else "较低",
+                        value, peer_value = metric.get("value"), peer.get("value")
+                        numeric = all(isinstance(item, (int, float)) and not isinstance(item, bool)
+                                      for item in (value, peer_value))
+                        relation = ("较高" if value > peer_value else "较低" if value < peer_value else "相同") if numeric else "未提供，不推断"
+                        clues.append({"指标": metric["name"], "指标得分比较": "较高" if metric["score"] > peer["score"] else "较低",
+                                      "原始指标值比较": relation,
                                       **({"依据状态": "需专业组核实"} if "TODO" in metric.get("source", "") else {})})
                         break
             view["主要取舍"].append({"相比方案": other["scheme_name"],

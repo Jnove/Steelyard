@@ -108,6 +108,19 @@ def test_warning_keeps_procedure_requirement_without_hard_failure_label():
     assert questions["待核实的检查"][0]["目前结论"] == "触发提示"
 
 
+def test_lower_risk_value_and_higher_score_are_distinct_in_model_evidence():
+    def row(identifier, value, score):
+        return {"scheme_id": identifier, "scheme_name": identifier, "dimension_scores": {"structure": score},
+                "dimension_coverage": {"structure": 1}, "metrics": {"S-01": {
+                    "name": "结构风险特征加权指数（越少越好）", "dimension": "structure",
+                    "status": "scored", "value": value, "score": score}}}
+    view = reader_evidence({"evaluation": {"results": [row("1", 0.02, 90), row("2", 0.05, 70)]}},
+                           1, "比较方案取舍", builtin_labels())
+    clue = view["主要取舍"][0]["已有的具体指标线索"][0]
+    assert clue["指标得分比较"] == "较高" and clue["原始指标值比较"] == "较低"
+    assert "0.02" not in json.dumps(view) and "0.05" not in json.dumps(view)
+
+
 @pytest.mark.asyncio
 async def test_final_field_translation_precedes_citation_offsets(engine, mock_project):
     project, _ = mock_project
