@@ -72,6 +72,42 @@ def test_reader_summary_preserves_risk_and_comparisons_without_dumping_numbers()
     assert details["当前方案的相关指标详情"][0]["当前值"] == 0.76
 
 
+def test_general_tradeoff_answer_keeps_boundaries_without_unrelated_missing_checklist():
+    current = {"scheme_id": "1", "scheme_name": "B 候选", "dimension_scores": {},
+               "dimension_coverage": {}, "compliance": [
+        {"rule_id": "K-03", "name": "深基坑检查", "status": "insufficient_data", "missing_fields": ["excavation_depth"]},
+        {"rule_id": "C-01", "name": "建筑高度超限", "status": "failed"},
+    ]}
+    evidence = {"evaluation": {"results": [current]}, "ranking": {
+        "ranking": [], "excluded": [{"scheme_id": "1", "scheme_name": "B 候选"}]},
+        "data_notes": {"project_notes": "真实地块参考，候选为教学假设。"}, "clauses": []}
+    view = reader_evidence(evidence, 1, "当前方案有哪些需要接受的取舍？", builtin_labels())
+    assert [item["检查事项"] for item in view["当前最相关的待核实事项"]] == ["建筑高度超限"]
+    assert view["需先处理的问题"] and view["未参与当前排序的方案"] == ["B 候选"]
+    assert view["资料提醒"] and "教学假设" in view["案例来源与边界"]
+    assert "现有规则与计算依据" in view["条文依据"]
+    missing = reader_evidence(evidence, 1, "深基坑检查还缺哪些资料？", builtin_labels())
+    assert any(item.get("需要补充") == ["基坑开挖深度"] for item in missing["当前最相关的待核实事项"])
+    report = reader_evidence(evidence, 1, "生成方案比选报告", builtin_labels())
+    assert any(item.get("需要补充") == ["基坑开挖深度"] for item in report["当前最相关的待核实事项"])
+
+
+def test_warning_keeps_procedure_requirement_without_hard_failure_label():
+    warning = {"rule_id": "K-05", "name": "落地式脚手架超高（须专家论证）",
+               "status": "failed", "severity": "warning"}
+    row = {"scheme_id": "1", "scheme_name": "B 候选", "compliance": [warning],
+           "dimension_scores": {}, "dimension_coverage": {}}
+    view = reader_evidence({"evaluation": {"results": [row]}}, 1, "当前方案有哪些取舍？", builtin_labels())
+    assert "需先处理的问题" not in view
+    assert view["当前最相关的待核实事项"] == []
+    assert view["专项与施工提示"][0]["提示事项"] == [{"检查事项": warning["name"], "判断": "触发提示"}]
+    questions = reader_questions({"project": {"name": "公开示例"}, "standard_packs": [],
+        "evaluation_status": "current", "selected_scheme": {"id": 1, "name": "B 候选", "params": {}},
+        "evaluations": [{**row, "issues": [warning]}]}, builtin_labels())
+    assert "未通过的事项" not in questions
+    assert questions["待核实的检查"][0]["目前结论"] == "触发提示"
+
+
 @pytest.mark.asyncio
 async def test_final_field_translation_precedes_citation_offsets(engine, mock_project):
     project, _ = mock_project

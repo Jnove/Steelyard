@@ -342,6 +342,10 @@ class AgentGraph:
         details = detailed_request(state.request.message) or state.request.rule_id is not None
         selected_id = state.comparison.get("scheme_id") if state.plan.intent == "whatif" else state.request.scheme_id
         view = {
+            "本轮任务": "直接回答下面的用户问题，不要总结整份项目资料，也不要询问用户希望下一步做什么。",
+            "用户问题": state.request.message,
+            "输出要求": "只写一段八十至一百五十中文字：先直接回答问题与关键依据，最多一句相关限制；描述规则评价的取舍，不推断真实安全或居住体验变化。" if context["response_mode"] == "answer" and not details
+                        else "按用户问题给必要依据；报告用结论、关键问题、下一步三个小节。",
             "request": {"message": state.request.message}, "response_mode": context["response_mode"],
             "reader_view": reader_evidence(context["evidence"], selected_id, state.request.message, labels, details=details),
             "rewrite_numbers": context["rewrite_numbers"],
@@ -352,7 +356,7 @@ class AgentGraph:
             view["按需查看的调整结果"] = state.comparison
         messages = messages_for("reporter", state, view)
         messages[0]["content"] += ("\n本次按用户要求解释具体依据，参数一律使用中文名称。" if details else
-            "\n本次面向普通读者：先说影响和下一步，不抄分数、字段名、检查编号或公式。")
+            "\n本次面向普通读者：先直接回答当前方案的优势、取舍或调整效果，不抄分数、字段名、检查编号或公式。")
         if view["response_mode"] == "answer" and not details:
             messages[0]["content"] += "只写一段约一百字的简短答复，不用报告章节。"
         brief = state.request.intent == "new_eval" and state.request.message == "生成方案比选报告" and not state.request.history

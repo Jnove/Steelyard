@@ -43,7 +43,8 @@ def issue_view(item: dict[str, Any], labels: dict[str, str]) -> dict[str, Any]:
     if item.get("status") == "insufficient_data":
         name = re.split(r"[（(]|属", name, maxsplit=1)[0]
     return {"检查事项": humanize(name, labels),
-            "判断": STATUS_LABELS.get(item.get("status", ""), "待核实"),
+            "判断": "触发提示" if item.get("status") == "failed" and item.get("severity") == "warning"
+                    else STATUS_LABELS.get(item.get("status", ""), "待核实"),
             **({"需要补充": missing} if missing else {})}
 
 
@@ -61,7 +62,10 @@ def reader_evidence(evidence: dict[str, Any], scheme_id: int | None, question: s
     selected = next((row for row in rows if row["scheme_id"] == str(scheme_id)), None)
     selected = selected or next((row for row in rows if ranking and row["scheme_id"] == ranking[0]["scheme_id"]), None)
     selected = selected or next(iter(rows), None)
-    view: dict[str, Any] = {"说明": "以下是现有资料下的节选，未列出的检查不代表通过或不存在。评价高低不等于实际安全风险、工期或舒适度变化；缺资料不等于已超限。"}
+    view: dict[str, Any] = {
+        "说明": "按当前录入参数、规则和决策视角，解释已有评分与方案差异。评分表达规则下的相对评价。",
+        "回答重点": "先回答用户本次问题，解释有证据的优势、代价与可比较的结果。下列案例边界保留供判断，普通短答只说明影响本问的限制，不逐项复述；已有比较不因无关检查待补资料而失效。",
+    }
     notes = evidence.get("data_notes", {})
     if notes.get("project_notes"):
         view["案例来源与边界"] = notes["project_notes"]
@@ -83,9 +87,17 @@ def reader_evidence(evidence: dict[str, Any], scheme_id: int | None, question: s
         if details and weights.get("weights"):
             view["具体权重"] = {DIMENSIONS.get(key, key): value for key, value in zip(weights.get("criteria", []), weights["weights"], strict=False)}
     failed = [{"方案": row["scheme_name"], "未通过事项": [issue_view(item, labels) for item in row.get("compliance", [])
-               if item["status"] == "failed"][:2]} for row in rows if any(item["status"] == "failed" for item in row.get("compliance", []))]
+               if item["status"] == "failed" and item.get("severity", "error") == "error"][:2]}
+              for row in rows if any(item["status"] == "failed" and item.get("severity", "error") == "error"
+                                     for item in row.get("compliance", []))]
     if failed:
         view["需先处理的问题"] = failed
+    warnings = [{"方案": row["scheme_name"], "提示事项": [issue_view(item, labels) for item in row.get("compliance", [])
+                 if item["status"] == "failed" and item.get("severity") == "warning"][:2]}
+                for row in rows if any(item["status"] == "failed" and item.get("severity") == "warning"
+                                       for item in row.get("compliance", []))]
+    if warnings:
+        view["专项与施工提示"] = warnings
     excluded = evidence.get("ranking", {}).get("excluded", [])
     if excluded:
         view["未参与当前排序的方案"] = [item.get("scheme_name", "未命名方案") for item in excluded]
@@ -93,8 +105,9 @@ def reader_evidence(evidence: dict[str, Any], scheme_id: int | None, question: s
         view["当前方案"] = selected["scheme_name"]
         issues = [item for item in selected.get("compliance", []) if item["status"] in ("failed", "insufficient_data")]
         focus = {key for key, words in TOPICS.items() if any(word in question for word in words)}
-        if focus and not details and not re.search(r"缺|补充|资料|核实|风险|安全|超限", question):
-            issues = [item for item in issues if item["status"] == "failed" or issue_relevance(item, question, labels) > 0]
+        if not details and not re.search(r"缺|补充|资料|核实|风险|安全|超限|合规|可靠|真实|教学|假设|边界|论证|报告", question):
+            issues = [item for item in issues if item["status"] == "failed" and item.get("severity", "error") == "error"
+                      or issue_relevance(item, question, labels) > 0]
         issues.sort(key=lambda item: (-issue_relevance(item, question, labels), item["status"] != "failed"))
         view["当前最相关的待核实事项"] = [issue_view(item, labels) for item in issues[:3]]
         view["评分资料不足的方面"] = [DIMENSIONS[key] for key, coverage in selected.get("dimension_coverage", {}).items() if coverage < 1]
@@ -135,17 +148,22 @@ def reader_evidence(evidence: dict[str, Any], scheme_id: int | None, question: s
                 "依据": item.get("source"), "判断": STATUS_LABELS.get(item.get("status", ""), "待核实")}
                 for item in metrics[:4]]
     if "clauses" in evidence:
-        view["条文依据"] = evidence["clauses"] or "本次未取得检索条文，不能据此给出正式的条文结论。"
+        view["条文依据"] = evidence["clauses"] or "未取得检索原文；现有规则与计算依据仍可用于解释评分，正式条文结论需对应原文。"
     if evidence.get("explanation"):
         item = evidence["explanation"]
         view["指定检查"] = {"事项": item.get("name"), "依据": item.get("source"),
                           **({"规则编号": item.get("id"), "公式": humanize(str(item.get("formula", "")), labels)} if details else {})}
-    return view
+    # 先呈现本问的计算结论，资料来源和边界仍完整保留在后面供核对。
+    primary = ("当前方案", "决策视角", "当前排序", "主要取舍", "需先处理的问题", "未参与当前排序的方案")
+    return {**{key: view[key] for key in primary if key in view},
+            **{key: value for key, value in view.items() if key not in primary}}
 
 
 def reader_questions(context: dict[str, Any], labels: dict[str, str]) -> dict[str, Any]:
     selected = context.get("selected_scheme")
-    view: dict[str, Any] = {"项目": context["project"]["name"], "适用地区标准": context["standard_packs"],
+    view: dict[str, Any] = {"本轮任务": "为下面的项目和所选方案生成三个建议追问；已有评估时优先围绕方案优势与取舍。",
+                           "输出要求": '只输出 JSON 对象，格式为 {"questions":["问题一？","问题二？","问题三？"]}；每项只有一个十八至二十八字的简短问句。前两问解释已有指标对应的优势或代价，最多一问核实资料。只问已有线索，不扩展空间构造、审批便利或未提供的因果。不总结资料、不回答、不输出其他文字。',
+                           "项目": context["project"]["name"], "适用地区标准": context["standard_packs"],
                            "资料状态": {"current": "已有评估", "stale": "评估已过期", "not_evaluated": "尚未评估"}[context["evaluation_status"]]}
     if not selected:
         return view
@@ -155,17 +173,18 @@ def reader_questions(context: dict[str, Any], labels: dict[str, str]) -> dict[st
     issues = current.get("issues", [])[:3]
     view["待核实的检查"] = [{"核实事项": re.split(r"[（(]|属", item.get("name", "相关检查"), maxsplit=1)[0],
                              "待补资料": [labels.get(key, "待补充的设计参数") for key in item.get("missing_fields", [])],
-                             "目前结论": STATUS_LABELS.get(item.get("status", ""), "待核实")}
+                             "目前结论": "触发提示" if item.get("status") == "failed" and item.get("severity") == "warning"
+                                         else STATUS_LABELS.get(item.get("status", ""), "待核实")}
                             for item in issues]
-    if any(item["status"] == "failed" for item in issues):
-        view["未通过的事项"] = [item["name"] for item in issues if item["status"] == "failed"]
+    if any(item["status"] == "failed" and item.get("severity", "error") == "error" for item in issues):
+        view["未通过的事项"] = [item["name"] for item in issues if item["status"] == "failed" and item.get("severity", "error") == "error"]
     # 复用同一套基于已计算维度分数的比较，只向建议模型传入定性关系。
     evidence = {"evaluation": {"results": context.get("evaluations", [])}, "ranking": {"ranking": context.get("ranking", [])}}
     tradeoffs = context.get("tradeoffs") or reader_evidence(evidence, selected["id"], "", labels).get("主要取舍", [])
     # 建议只围绕具体指标提问，避免将维度评分高低解读成实际安全/体验结论。
     view["方案取舍"] = [{"相比方案": item["相比方案"], "已有的具体指标线索": item.get("已有的具体指标线索", [])}
                        for item in tradeoffs[:1]]
-    view["判断边界"] = "当前方案只是正在查看的候选，尚未确定采用。缺项资料只用于对应检查，不能归因到其他指标。规则评价差异不代表实际抗震风险、工期变化或居住损害；资料不足时先核实条件，不能认定已触发专项要求。"
+    view["判断边界"] = "当前方案只是正在查看的候选，尚未确定采用。缺项资料只用于对应检查，不能归因到其他指标。规则评价差异不代表实际抗震风险、工期变化或居住损害；资料不足不能认定已触发专项要求。标为触发提示的事项则已知需履行相应程序，不是缺资料、未闭合或论证未通过。"
     return view
 
 
@@ -184,6 +203,8 @@ def render_reader_demo(context: dict[str, Any]) -> str:
         lines.append("、".join(view["未参与当前排序的方案"]) + "未参与当前排序，需先核实排除原因。")
     for problem in view.get("需先处理的问题", [])[:2]:
         lines.append(problem["方案"] + "有未通过的检查：" + "、".join(item["检查事项"] for item in problem["未通过事项"]) + "。")
+    for warning in view.get("专项与施工提示", [])[:1]:
+        lines.append(warning["方案"] + "触发施工提示：" + "、".join(item["检查事项"] for item in warning["提示事项"]) + "。")
     for issue in view.get("当前最相关的待核实事项", [])[:2]:
         fields = "、".join(issue.get("需要补充", []))
         lines.append(f"{issue['检查事项']}：{('还需补充' + fields) if fields else issue['判断']}。")

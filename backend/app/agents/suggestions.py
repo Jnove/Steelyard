@@ -77,7 +77,7 @@ def project_context(engine: Engine, project_id: int, scheme_id: int | None) -> d
         "scheme_id": row["scheme_id"], "scheme_name": row["scheme_name"],
         "dimension_scores": row["dimension_scores"], "dimension_coverage": row["dimension_coverage"],
         # 建议问题只需知道哪项失败/缺资料，不重复长篇规范原文与数值阈值。
-        "issues": [{key: item[key] for key in ("rule_id", "name", "status", "missing_fields") if key in item}
+        "issues": [{key: item[key] for key in ("rule_id", "name", "status", "severity", "missing_fields") if key in item}
                    for item in row["compliance"] if item["status"] in ("failed", "insufficient_data")][:4]
                   if selected and row["scheme_id"] == str(selected.id) else [],
     } for row in results if row["scheme_id"] in relevant][:3]
