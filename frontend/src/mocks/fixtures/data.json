@@ -1,11 +1,11 @@
 {
-  "fixture_id": "34fd0a7b8a9bfb90431f3364bb5a28a6c127fc71fe0742b7692f6338e7160878",
+  "fixture_id": "ba40aee49d5e3786f6a3f4762f6708915e3d4d468604ebe2155fe7c7323a2c88",
   "disclaimer": "虚构数据，仅供开发调试，不得用于验证或答辩。评分与角色分析由真实引擎离线生成。",
   "source_hashes": {
     "backend/app/__init__.py": "8585773addcaa9ecbe82aeec2905d183182936dccca6f132bb855c28e715df04",
     "backend/app/agents/__init__.py": "b5feb469ab8614581b42d57a76a7259934b2ed2af36cc56972912e957913c97a",
     "backend/app/agents/citation.py": "7e532e1c1fe7b33697ab5ab5b6071406ae00f27dba468586b4af2967e9034988",
-    "backend/app/agents/graph.py": "d9ac710ca3dbfce76ed21034afeff4d6ebe5751eace41c802b6e48f487255b72",
+    "backend/app/agents/graph.py": "75af8bc1eb886c79e2576f350d49619dfaa18aab60db8390b9c885e82a889c9a",
     "backend/app/agents/llm.py": "cd25453a7148636dabcf0d44eb86e3ff088503090bd0fc26825a936294dfa25b",
     "backend/app/agents/presentation.py": "2899aa824ac206c212d3f60b24766b6492bf0a04b9c1c126a8f1dcb434378ac2",
     "backend/app/agents/question_cache.py": "ae7061f13869dd69864090ab521160009b2c1794cc2ad32d8f9442dfbbf5100d",

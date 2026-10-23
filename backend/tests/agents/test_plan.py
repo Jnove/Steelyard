@@ -171,6 +171,45 @@ def test_model_error_and_timeout_close_client(client, mock_project, monkeypatch)
     assert llm.closed
 
 
+@pytest.mark.parametrize("recover", [True, False])
+@pytest.mark.parametrize("include_scheme", [True, False])
+def test_from_to_plan_format_retries_once_without_writes(
+    client, engine, mock_project, monkeypatch, recover, include_scheme,
+):
+    project, ids = mock_project
+    before = snapshot(engine)
+    change = {"field": "std_floor_repeat", "from": 0.72, "to": 0.85}
+    if include_scheme:
+        change["scheme_id"] = ids[0]
+    invalid = LLMResponse(tool_calls=[ToolCall(
+        id="bad-plan", name="dispatch_intent", arguments={"intent": "whatif", "change": change},
+    )])
+    valid = LLMResponse(tool_calls=[ToolCall(
+        id="valid-plan", name="dispatch_intent", arguments={
+            "intent": "whatif", "change": {"scheme_id": ids[0], "field": "std_floor_repeat", "value": 0.85},
+        },
+    )])
+    llm = FakeLLM({"coordinator": [invalid, valid if recover else invalid, valid]})
+    monkeypatch.setattr(agents, "get_llm", lambda: llm)
+    response = client.post(f"/api/projects/{project}/plan", json={
+        "message": "将当前 A 方案的标准层重复率从 0.72 调整为 0.85，比较施工友好得分与当前住户视角下的排名变化。",
+        "scheme_id": ids[0], "role": "resident",
+    })
+    assert len(llm.calls) == 2
+    assert "上次计划未通过格式校验" not in llm.calls[0][0]["content"]
+    assert "上次计划未通过格式校验" in llm.calls[1][0]["content"]
+    assert llm.calls[0][-1] == llm.calls[1][-1]
+    assert snapshot(engine) == before
+    if recover:
+        assert response.status_code == 200, response.text
+        result = response.json()
+        assert result["plan"]["change"] == {"scheme_id": ids[0], "field": "std_floor_repeat", "value": 0.85}
+        assert result["plan"]["role"] == "resident"
+        assert result["proposal"]["after"] == 0.85
+    else:
+        assert response.status_code == 422
+
+
 def test_hallucinated_change_is_validated(client, mock_project, monkeypatch):
     project, ids = mock_project
     llm = FakeLLM({"coordinator": [LLMResponse(tool_calls=[ToolCall(

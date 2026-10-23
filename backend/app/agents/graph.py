@@ -11,6 +11,7 @@ from time import perf_counter
 from typing import Any
 
 from langgraph.graph import END, START, StateGraph
+from pydantic import ValidationError
 
 from app.agents.citation import check_citations
 from app.agents.llm import LLMClient, Messages
@@ -130,30 +131,40 @@ class AgentGraph:
 
     async def parse_intent(self, state: GraphState) -> Plan:
         context = await asyncio.to_thread(self.tools.planning_context, state.request.include_whatif)
-        response = await self.llm.chat(
-            messages_for("coordinator", state, {
-                "request": state.request.model_dump(exclude={"history"}), "project_context": context,
-            }),
-            [
-                {
-                    "type": "function",
-                    "function": {
-                        "name": "dispatch_intent",
-                        "description": "理解请求，返回意图与明确给定的参数；缺失参数保留空，不推测数值。",
-                        "parameters": Plan.model_json_schema(),
-                    },
-                }
-            ],
-        )
-        if not response.tool_calls and not response.content.strip():
-            raise ValueError("模型未返回有效的意图计划，请重试或使用报告、建议问题及假设推演入口")
-        if response.tool_calls:
-            if len(response.tool_calls) != 1 or response.tool_calls[0].name != "dispatch_intent":
-                raise ValueError("协调节点只允许返回一个 dispatch_intent")
-            plan = Plan.model_validate(response.tool_calls[0].arguments)
-        else:
-            plan = Plan.model_validate_json(response.content)
-        return plan
+        messages = messages_for("coordinator", state, {
+            "request": state.request.model_dump(exclude={"history"}), "project_context": context,
+        })
+        schemas = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "dispatch_intent",
+                    "description": "理解请求，返回意图与明确给定的参数；缺失参数保留空，不推测数值。",
+                    "parameters": Plan.model_json_schema(),
+                },
+            }
+        ]
+        for attempt in range(2):
+            response = await self.llm.chat(messages, schemas)
+            if not response.tool_calls and not response.content.strip():
+                raise ValueError("模型未返回有效的意图计划，请重试或使用报告、建议问题及假设推演入口")
+            try:
+                if response.tool_calls:
+                    if len(response.tool_calls) != 1 or response.tool_calls[0].name != "dispatch_intent":
+                        raise ValueError("协调节点只允许返回一个 dispatch_intent")
+                    return Plan.model_validate(response.tool_calls[0].arguments)
+                return Plan.model_validate_json(response.content)
+            except ValidationError:
+                if attempt:
+                    raise
+                # 仅重新解析只读计划，不纠正或执行模型给出的非法修改。
+                correction = (
+                    "\n上次计划未通过格式校验。请根据原始 request 重新调用 dispatch_intent，严格遵守工具 schema。"
+                    "change 只能包含 scheme_id、field、value；scheme_id 必须从项目方案列表映射，"
+                    "value 是用户明确给出的目标值，不能输出 from、to、before、after 等额外键。"
+                )
+                messages = [{**messages[0], "content": messages[0]["content"] + correction}, *messages[1:]]
+        raise AssertionError("unreachable")
 
     def validate_plan(self, state: GraphState, plan: Plan) -> Plan:
         # 结构化请求优先于模型解析，不能被历史消息覆盖。
