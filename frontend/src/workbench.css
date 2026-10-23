@@ -1,7 +1,9 @@
 /* Hallmark · modern-minimal · Workbench · 既有工业蓝主题 · N3 侧栏 · Ft2 单行页脚
    使用者：方案评委与开发团队；任务：比较方案并追溯；风格：工程工作台。
    视觉值由 theme.ts 注入，保证组件与图表共用同一来源。 */
-html, body { overflow-x: clip; }
+/* Keep root overflow visible so Ant Design's body scroll lock propagates to
+   the viewport without turning the full-height body into a scroll container. */
+.app-shell, .home-shell { overflow-x: clip; }
 html, body, #root { background: var(--color-background); color: var(--color-ink); font-family: var(--font-body); font-size: var(--fontSize); min-height: 100%; }
 * { box-sizing: border-box; }
 button, input, textarea { font-family: inherit; }

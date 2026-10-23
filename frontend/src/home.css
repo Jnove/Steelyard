@@ -37,10 +37,6 @@
   font-variant-numeric: tabular-nums;
   -webkit-font-smoothing: antialiased;
 }
-html:has(.home-shell),
-body.home-active {
-  overflow-x: clip;
-}
 body.home-active::before {
   display: none;
 }
